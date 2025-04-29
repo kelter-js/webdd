@@ -11,12 +11,108 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --bloody-red: #8b0000;
+  --golden: #d4af37;
+  --filth: #c2b280;
+  --dark-coal: #1a1a1a;
+  --green-dark: #556b2f;
 }
 
 * {
+  font-family: "Cormorant Unicase", serif;
   box-sizing: border-box;
   padding: 0;
 }
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background-image {
+  /* Растягиваем изображение, обрезая края */
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+}
+
+.image-map-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 1920px;
+  max-height: 954px;
+  overflow: hidden;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* Обрезаем края, сохраняя пропорции */
+  object-position: center;
+}
+
+.highlight-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Чтобы не блокировал взаимодействие с map */
+}
+
+/* Для area (опционально) */
+area {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* 1. Основная цветовая палитра (5-6 ключевых цветов)
+Рекомендую ограничиться 5-6 цветами (+ их оттенками), чтобы сохранить стилистическую целостность:
+
+Цвет	HEX	Использование	Пример аналога из DD
+Кроваво-красный	#8B0000	Важные элементы (здоровье, опасность)	Красный из логов DD
+Тускло-золотой	#D4AF37	Акценты (валюта, выделение)	Золото в интерфейсе
+Грязно-бежевый	#C2B280	Основной текст, фон UI	Пергаментные свитки
+Тёмно-угольный	#1A1A1A	Фоны, рамки	Чёрные тени
+Болотно-зелёный	#556B2F	Статусы (яды, болезни)	Зелень из квестов
+2. Дополнительные оттенки (для вариативности)
+Используйте тёмные/светлые тона основных цветов (например, #3D0000 для затемнённого красного). Пример:
+
+Тени: #0D0D0D (почти чёрный)
+
+Светлые акценты: #E6D8A5 (выбеленный золотой)
+
+3. Принципы сочетания
+Контраст текст/фон:
+
+Светлый текст (#E0E0E0) на тёмном (#1A1A1A).
+
+Тёмный текст (#3D3D3D) на пергаментном (#C2B280).
+
+Акценты:
+
+Красный/золотой — только для критически важных элементов (кнопки, здоровье).
+
+Зелёный/сизый — для второстепенных статусов (усталость, баффы).
+
+Эффекты:
+
+Текстуры: Добавляйте шум (noise) или лёгкие градиенты (#1A1A1A → #0D0D0D).
+
+Рамки: Грубые, «потрёпанные» края (используйте текстуры или SVG-фильтры).
+ */
 
 body {
   margin: 0;
@@ -25,4 +121,43 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+.dungeon-map {
+  display: grid;
+  grid-template-columns: repeat(5, 60px);
+  gap: 4px;
+  margin: 20px 0;
+}
+
+.room {
+  width: 60px;
+  height: 60px;
+  background: #222;
+  border: 2px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.room.start {
+  background: #2e7d32;
+}
+.room.end {
+  background: #c62828;
+}
+.room.player {
+  border-color: gold;
+}
+.room.visited {
+  background: #333;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+button {
+  font-size: 43px;
 }
