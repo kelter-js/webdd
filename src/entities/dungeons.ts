@@ -1,0 +1,6 @@
+export enum DUNGEONS {
+  FIND = "FIND",
+  CLOSE_PORTAL = "CLOSE_PORTAL",
+  CATCH_GOBLIN = "CATCH_GOBLIN",
+  STORY = "STORY",
+}

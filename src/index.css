@@ -11,11 +11,27 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Базовые цвета */
   --bloody-red: #8b0000;
   --golden: #d4af37;
   --filth: #c2b280;
   --dark-coal: #1a1a1a;
   --green-dark: #556b2f;
+
+  /* Чат */
+  --enemy-chat-message: #ff5555;
+  --player-chat-message: #00ff7f;
+
+  /* Общие */
+  --white: #ffffff;
+  --black: #000000;
+
+  /* 🎨 Дополнительно для UI */
+  --menu-line: #c0a080;
+  --menu-line-hover: #e0c0a0;
+  --menu-line-shadow: #c0a080;
+  --menu-line-hover-shadow: #e0c0a0;
 }
 
 * {
@@ -34,7 +50,6 @@
 }
 
 .background-image {
-  /* Растягиваем изображение, обрезая края */
   width: 100%;
   height: 100%;
   object-fit: fill;
@@ -59,7 +74,7 @@
 .background-image {
   width: 100%;
   height: 100%;
-  object-fit: fill; /* Обрезаем края, сохраняя пропорции */
+  object-fit: fill;
   object-position: center;
 }
 
@@ -69,58 +84,23 @@
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Чтобы не блокировал взаимодействие с map */
+  pointer-events: none;
 }
 
-/* Для area (опционально) */
 area {
   cursor: pointer;
   transition: all 0.3s;
 }
 
-/* 1. Основная цветовая палитра (5-6 ключевых цветов)
-Рекомендую ограничиться 5-6 цветами (+ их оттенками), чтобы сохранить стилистическую целостность:
-
-Цвет	HEX	Использование	Пример аналога из DD
-Кроваво-красный	#8B0000	Важные элементы (здоровье, опасность)	Красный из логов DD
-Тускло-золотой	#D4AF37	Акценты (валюта, выделение)	Золото в интерфейсе
-Грязно-бежевый	#C2B280	Основной текст, фон UI	Пергаментные свитки
-Тёмно-угольный	#1A1A1A	Фоны, рамки	Чёрные тени
-Болотно-зелёный	#556B2F	Статусы (яды, болезни)	Зелень из квестов
-2. Дополнительные оттенки (для вариативности)
-Используйте тёмные/светлые тона основных цветов (например, #3D0000 для затемнённого красного). Пример:
-
-Тени: #0D0D0D (почти чёрный)
-
-Светлые акценты: #E6D8A5 (выбеленный золотой)
-
-3. Принципы сочетания
-Контраст текст/фон:
-
-Светлый текст (#E0E0E0) на тёмном (#1A1A1A).
-
-Тёмный текст (#3D3D3D) на пергаментном (#C2B280).
-
-Акценты:
-
-Красный/золотой — только для критически важных элементов (кнопки, здоровье).
-
-Зелёный/сизый — для второстепенных статусов (усталость, баффы).
-
-Эффекты:
-
-Текстуры: Добавляйте шум (noise) или лёгкие градиенты (#1A1A1A → #0D0D0D).
-
-Рамки: Грубые, «потрёпанные» края (используйте текстуры или SVG-фильтры).
- */
-
-body {
+body,
+#root {
   margin: 0;
   padding: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  position: relative;
 }
 
 .dungeon-map {
@@ -144,12 +124,15 @@ body {
 .room.start {
   background: #2e7d32;
 }
+
 .room.end {
   background: #c62828;
 }
+
 .room.player {
   border-color: gold;
 }
+
 .room.visited {
   background: #333;
 }
@@ -158,6 +141,52 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 button {
   font-size: 43px;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@keyframes gentlePulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.995);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.005);
+  }
+}
+
+@keyframes gentleStroke {
+  0% {
+    stroke-opacity: 0.6;
+    stroke-width: 1.1;
+  }
+  100% {
+    stroke-opacity: 0.9;
+    stroke-width: 1.3;
+  }
+}
+
+@keyframes dashOffset {
+  to {
+    stroke-dashoffset: 18;
+  }
+}
+
+.highlight-overlay {
+  pointer-events: none;
+  overflow: visible;
+  filter: drop-shadow(0 0 1px rgba(150, 80, 0, 0.3));
 }

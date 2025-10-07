@@ -1,42 +1,16 @@
 import { create } from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
-import { Room } from "../types";
-import { GameStateData } from "./GameState";
 
-// Define your state interface
-interface StoreState {
-  gameSaves: { gameState: GameStateData; date: Date }[];
-
-  updateGameSaves: (gameState: GameStateData, index: number) => void;
-}
-
-// Define the type for persisted state
-type PersistedState = Omit<StoreState, "updateGameSaves">;
-
-// Define storage value type
-interface StorageValue {
-  state: {
-    gameSaves: { gameState: GameStateData; date: Date }[];
-    generatedDungeon: [];
-  };
-}
-
-const reviver = (key: string, value: any) => {
-  if (
-    typeof value === "string" &&
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)
-  ) {
-    return new Date(value);
-  }
-  return value;
-};
+import { PersistedState, StorageValue, StoreState } from "../types/gameSave";
+import { DEFAULT_GAME_SAVE, DEFAULT_GAME_SAVES } from "./constants";
+import { reviver } from "./utils";
 
 // Define persistence configuration
 const persistConfig: PersistOptions<StoreState, PersistedState> = {
   name: "game-saves",
-
   partialize: (state) => ({
     gameSaves: state.gameSaves,
+    defaultSave: state.defaultSave,
   }),
 
   storage: {
@@ -63,21 +37,56 @@ export const useGameSaves = create<StoreState>()(
   persist(
     (set) => ({
       // Initial state
-      gameSaves: [
-        {
-          gameState: { party: [], location: { dungeon: [] } },
-          date: new Date(),
-        },
-      ],
+      gameSaves: [],
+      defaultSave: null,
 
       // Methods
       updateGameSaves: (gameState, index) =>
         set((state) => {
-          const newGameSaves = [...state.gameSaves];
-          newGameSaves[index] = { gameState, date: new Date() };
+          if (state.gameSaves) {
+            const newGameSaves = [...state.gameSaves];
+            newGameSaves[index] = {
+              gameState: {
+                ...gameState,
+                location: gameState.location
+                  ? {
+                      ...gameState.location,
+                      dungeon: gameState.location.dungeon
+                        ? gameState.location.dungeon!.map((item) => {
+                            return item.map((subItem) => ({ ...subItem }));
+                          })
+                        : undefined,
+                    }
+                  : null,
+              },
+              date: new Date(),
+            };
 
-          return { gameSaves: newGameSaves };
+            return { gameSaves: newGameSaves };
+          }
+
+          return { gameSaves: [{ gameState, date: new Date() }] };
         }),
+
+      autoSave: (gameState) =>
+        set(() => ({
+          defaultSave: {
+            gameState: {
+              ...gameState,
+              location: gameState.location
+                ? {
+                    ...gameState.location,
+                    dungeon: gameState.location.dungeon
+                      ? gameState.location.dungeon!.map((item) => {
+                          return item.map((subItem) => ({ ...subItem }));
+                        })
+                      : undefined,
+                  }
+                : null,
+            },
+            date: new Date(),
+          },
+        })),
     }),
     persistConfig
   )

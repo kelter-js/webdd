@@ -1,0 +1,1 @@
+export { EconomicCard } from "./EconomicCard";

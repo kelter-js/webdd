@@ -1,0 +1,6 @@
+export enum GEAR_SLOTS {
+  ARMOR = "ARMOR",
+  WEAPON = "WEAPON",
+  NECK = "NECK",
+  ARTEFACT = "ARTEFACT",
+}

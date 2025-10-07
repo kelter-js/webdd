@@ -1,9 +1,19 @@
-import { useState } from "react";
-import { DIRECTIONS } from "../../entities/directions";
+import { useCallback, useEffect } from "react";
+
 import { Room } from "../../types";
 import { generateDungeon } from "../../utils/generateDungeon";
-import { useGameSaves } from "../../stores/GameSave";
-import { useGameState } from "../../stores/GameState";
+
+import { ClosePortal, QTEGame } from "../Minigames";
+import {
+  RENDER_LOCATIONS,
+  QUEST_STATUSES,
+  DUNGEONS,
+  DIRECTIONS,
+} from "../../entities";
+
+import { useAppState, useGameState, useGameSaves } from "../../stores";
+import { ROOM_TYPES } from "../../entities/room";
+import { DiceRollModal } from "../../common";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -14,8 +24,8 @@ const COBBLESTONE_TEXTURE = `
 `;
 
 const ROOM_STYLES = {
-  start: { bg: "#065f46", symbol: "🚪", color: "white" },
-  end: { bg: "#7f1d1d", symbol: "🏁", color: "white" },
+  [ROOM_TYPES.START]: { bg: "#065f46", symbol: "🚪", color: "white" },
+  [ROOM_TYPES.END]: { bg: "#7f1d1d", symbol: "🏁", color: "white" },
   deadEnd: { bg: "#1e293b", symbol: "✖", color: "#f59e0b" },
   visited: { bg: "#334155", symbol: "•", color: "white" },
   unvisited: { bg: "#1e293b", symbol: "?", color: "#64748b" },
@@ -23,31 +33,92 @@ const ROOM_STYLES = {
 
 export const Map = () => {
   const {
-    player: {
-      location: { dungeon },
-    },
+    player: { location },
     setDungeon,
+    setPlayerPosition,
+    updateDungeon,
+    setLocationState,
+    setQuestData,
   } = useGameState();
-  console.log("dungeon", dungeon);
+  const { setFading, toggleAutoSave } = useAppState();
 
-  const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 });
+  const { dungeon, position, type, ...rest } = location || {};
 
-  const canMove = (direction: DIRECTIONS) => {
-    const { x, y } = playerPos;
-    const room = dungeon[y]?.[x];
-    return room?.exits[direction] || false;
-  };
+  useEffect(() => {
+    if (!location || !position || !dungeon) {
+      setDungeon({
+        dungeon: [],
+        position: { x: 0, y: 0 },
+        type: DUNGEONS.CLOSE_PORTAL,
+      });
+    }
+  }, [location, position, dungeon]);
+
+  const handleWin = useCallback(() => {
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+    // здесь нужна функция рандомизации сколько золота получено
+    // в зависимости от типа квеста награда - передаем type, чтобы потом рассчитать кол-во шанса на айтем -
+    // награда item только за закрытие портала и поиск предмета
+    // портал - 20%, поиск предмета - 65%
+    // item нужно генерить в зависимости от открытого тира игроком подземелья
+    // разделить оружие на тиры
+    setFading(true);
+    setQuestData({
+      money: 150,
+      exp: 150,
+      status: QUEST_STATUSES.SUCCESS,
+    });
+    setDungeon(null);
+    toggleAutoSave();
+    console.log("we win!");
+  }, [toggleAutoSave]);
+
+  const handleFail = useCallback(() => {
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+    setFading(true);
+    // здесь нужна функция рандомизации сколько золота потеряно
+    setQuestData({
+      money: 150,
+      status: QUEST_STATUSES.FAILED,
+    });
+    setDungeon(null);
+    toggleAutoSave();
+  }, [toggleAutoSave]);
+
+  if (!location || !position || !dungeon) {
+    return null;
+  }
 
   const generateNewDungeon = () => {
     const newDungeon = generateDungeon(5, 5);
-    setDungeon(newDungeon);
-    setPlayerPos({ x: 0, y: 0 });
+
+    // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
+    const DEFAULT_ATTEMPS_AMOUNT = 5;
+    // здесь определяется тип подземелья
+    setDungeon({
+      dungeon: newDungeon,
+      type: DUNGEONS.CLOSE_PORTAL,
+      attempts: DEFAULT_ATTEMPS_AMOUNT,
+      position: { x: 0, y: 0 },
+    });
+  };
+
+  const currentCell =
+    position?.y && position?.x && dungeon[position.y]
+      ? dungeon[position.y][position.x]
+      : undefined;
+  const isDungeonExit = currentCell?.type === ROOM_TYPES.END;
+
+  const canMove = (direction: DIRECTIONS) => {
+    const { x, y } = position;
+    const room = dungeon[y]?.[x];
+    return room?.exits[direction] || false;
   };
 
   const movePlayer = (direction: DIRECTIONS) => {
     if (!canMove(direction)) return;
 
-    const { x, y } = playerPos;
+    const { x, y } = position;
     const newPos = {
       x:
         direction === DIRECTIONS.LEFT
@@ -63,9 +134,11 @@ export const Map = () => {
           : y,
     };
 
-    setPlayerPos(newPos);
+    setPlayerPosition(newPos);
 
-    setDungeon(dungeon, newPos);
+    updateDungeon({ position: newPos }, () => {
+      setFading(true);
+    });
 
     //mock
     // setDungeon((state) => {
@@ -80,13 +153,13 @@ export const Map = () => {
   };
 
   const renderRoom = (room: Room) => {
-    const isCurrent = playerPos.x === room.x && playerPos.y === room.y;
+    const isCurrent = position.x === room.x && position.y === room.y;
 
     const roomType =
-      room.type === "start"
-        ? "start"
-        : room.type === "end"
-        ? "end"
+      room.type === ROOM_TYPES.START
+        ? ROOM_TYPES.START
+        : room.type === ROOM_TYPES.END
+        ? ROOM_TYPES.END
         : room.isDeadEndRoom
         ? "deadEnd"
         : room.visited
@@ -199,8 +272,9 @@ export const Map = () => {
 
         {/* Содержимое комнаты */}
         <div style={{ position: "relative", zIndex: 4 }}>
-          {roomType === "start" && ROOM_STYLES.start.symbol}
-          {roomType === "end" && ROOM_STYLES.end.symbol}
+          {roomType === ROOM_TYPES.START &&
+            ROOM_STYLES[ROOM_TYPES.START].symbol}
+          {roomType === ROOM_TYPES.END && ROOM_STYLES[ROOM_TYPES.END].symbol}
           {roomType === "deadEnd" && (
             <div style={{ textAlign: "center" }}>
               {entranceDir && (
@@ -216,56 +290,6 @@ export const Map = () => {
         </div>
       </div>
     );
-  };
-
-  const renderConnections = () => {
-    const connections = [];
-    const cellSize = 64;
-    const connectionColor = "#4ade80";
-
-    for (let y = 0; y < dungeon.length; y++) {
-      for (let x = 0; x < dungeon[y].length; x++) {
-        const room = dungeon[y][x];
-
-        // Горизонтальные соединения
-        if (room.exits[DIRECTIONS.LEFT] && x > 0) {
-          connections.push(
-            <div
-              key={`h-${x}-${y}`}
-              style={{
-                position: "absolute",
-                left: x * cellSize,
-                top: y * cellSize + cellSize / 2 - 2,
-                width: cellSize,
-                height: 4,
-                backgroundColor: connectionColor,
-                zIndex: 1,
-              }}
-            />
-          );
-        }
-
-        // Вертикальные соединения
-        if (room.exits[DIRECTIONS.UP] && y > 0) {
-          connections.push(
-            <div
-              key={`v-${x}-${y}`}
-              style={{
-                position: "absolute",
-                left: x * cellSize + cellSize / 2 - 2,
-                top: y * cellSize,
-                width: 4,
-                height: cellSize,
-                backgroundColor: connectionColor,
-                zIndex: 1,
-              }}
-            />
-          );
-        }
-      }
-    }
-
-    return connections;
   };
 
   return (
@@ -409,10 +433,14 @@ export const Map = () => {
         <h3 style={{ marginTop: 0 }}>Легенда карты:</h3>
         <ul style={{ paddingLeft: 20, marginBottom: 0 }}>
           <li>
-            <span style={{ color: ROOM_STYLES.start.color }}>🚪</span> - Старт
+            <span style={{ color: ROOM_STYLES[ROOM_TYPES.START].color }}>
+              🚪
+            </span>{" "}
+            - Старт
           </li>
           <li>
-            <span style={{ color: ROOM_STYLES.end.color }}>🏁</span> - Выход
+            <span style={{ color: ROOM_STYLES[ROOM_TYPES.END].color }}>🏁</span>{" "}
+            - Выход
           </li>
           <li>
             <span style={{ color: ROOM_STYLES.deadEnd.color }}>
@@ -433,6 +461,14 @@ export const Map = () => {
           </li>
         </ul>
       </div>
+
+      {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
+        <ClosePortal onFail={handleFail} onWin={handleWin} />
+      )}
+
+      {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
+        <QTEGame onFail={handleFail} onWin={handleWin} />
+      )}
     </div>
   );
 };

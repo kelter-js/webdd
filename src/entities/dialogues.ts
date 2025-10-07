@@ -1,0 +1,3 @@
+export enum DIALOGUE_FLAGS {
+  ECONOMIC_INTRO = "ECONOMIC_INTRO",
+}

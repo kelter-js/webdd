@@ -1,13 +1,8 @@
 import { DIRECTIONS } from "../entities/directions";
-import { Room } from "../types";
+import { DirectionTuple } from "./types";
 import { isDeadEnd } from "./isDeadEnd";
-
-type DirectionTuple = [
-  dx: number,
-  dy: number,
-  exit: DIRECTIONS,
-  backExit: DIRECTIONS
-];
+import { Room } from "../types";
+import { ROOM_TYPES } from "../entities/room";
 
 export const generateDungeon = (width: number, height: number): Room[][] => {
   // 1. Создаём пустую сетку комнат
@@ -20,7 +15,7 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
           id: `${x}-${y}`,
           x,
           y,
-          type: "empty",
+          type: ROOM_TYPES.EMPTY,
           visited: false,
           exits: { top: false, right: false, bottom: false, left: false },
         }))
@@ -28,7 +23,7 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
 
   // 2. Начинаем с (0, 0)
   const stack: [number, number][] = [[0, 0]];
-  dungeon[0][0].type = "start";
+  dungeon[0][0].type = ROOM_TYPES.START;
   dungeon[0][0].visited = true;
 
   // 3. Пока есть непосещённые комнаты
@@ -68,13 +63,12 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
   }
 
   // 9. Делаем последнюю комнату "концом"
-  dungeon[height - 1][width - 1].type = "end";
+  dungeon[height - 1][width - 1].type = ROOM_TYPES.END;
 
-  console.log("dungeon", dungeon);
-
-  dungeon = dungeon.map((row) =>
-    row.map((room) => {
+  dungeon = dungeon.map((row, rowIndex) =>
+    row.map((room, roomIndex) => {
       const isDeadEndRoom = isDeadEnd(room);
+      room.visited = rowIndex === 0 && roomIndex === 0 ? true : false;
 
       return { ...room, isDeadEndRoom };
     })

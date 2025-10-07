@@ -1,10 +1,14 @@
-// contexts/SnackbarContext.tsx
-import React, { createContext, useContext, useState } from "react";
+import {
+  FC,
+  createContext,
+  useContext,
+  useState,
+  PropsWithChildren,
+  useMemo,
+} from "react";
 import { Alert, AlertColor, Snackbar } from "@mui/material";
 
-type SnackbarContextType = {
-  showSnackbar: (message: string, severity?: AlertColor) => void;
-};
+import { SnackbarContextType } from "./types";
 
 const SnackbarContext = createContext<SnackbarContextType>({
   showSnackbar: () => {},
@@ -12,13 +16,9 @@ const SnackbarContext = createContext<SnackbarContextType>({
 
 export const useSnackbar = () => useContext(SnackbarContext);
 
-type SnackbarProviderProps = {
-  children: React.ReactNode;
-};
+const HIDE_DURATION = 3000;
 
-export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
-  children,
-}) => {
+export const SnackbarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<AlertColor>("info");
@@ -29,16 +29,18 @@ export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     setOpen(true);
   };
 
+  const memoizedValue = useMemo(() => ({ showSnackbar }), []);
+
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <SnackbarContext.Provider value={{ showSnackbar }}>
+    <SnackbarContext.Provider value={memoizedValue}>
       {children}
       <Snackbar
         open={open}
-        autoHideDuration={3000}
+        autoHideDuration={HIDE_DURATION}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
