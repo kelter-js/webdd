@@ -1,6 +1,6 @@
 import { DIRECTIONS } from "../entities/directions";
 import { DirectionTuple } from "./types";
-import { isDeadEnd } from "./isDeadEnd";
+import { isDeadEnd } from "./";
 import { Room } from "../types";
 import { ROOM_TYPES } from "../entities/room";
 
