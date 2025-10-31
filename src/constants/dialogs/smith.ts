@@ -2,6 +2,7 @@ import { Dialogues } from "../../types/dialogue";
 import blacksmith from "../../assets/npc/smith.png";
 import questDesk from "../../assets/npc/quest_desk.png";
 import accountant from "../../assets/npc/accountant.png";
+import priest from "../../assets/npc/priest.png";
 import { BUILDING_NAMES } from "..";
 import { DIALOGUE_FLAGS } from "../../entities/dialogues";
 
@@ -46,6 +47,57 @@ export const questDeskDialog: Dialogues = {
       end: {
         text: "Мне нужно закончить предыдущую работу...",
         options: [{ text: "[Уйти]", nextNode: "end" }],
+      },
+    },
+  },
+};
+
+export const priestDialog: Dialogues = {
+  intro_npc: {
+    id: BUILDING_NAMES.MEDICAL_STATION,
+    src: priest,
+    name: "Жрец времени",
+    startNode: "welcome",
+    nodes: {
+      welcome: {
+        text: "О, ещё один потеряшка. Вопросы 'Кто вы такие', 'Где я' и прочее можешь не задавать. Мы сами на это не можем ответить. Просто оказались здесь.",
+        options: [
+          {
+            text: "И всё же... кто ты?",
+            nextNode: "who_are_you",
+          },
+          {
+            text: "Мне нужна твоя помощь... [вылечиться]",
+            nextNode: "heal",
+          },
+        ],
+        flags: [DIALOGUE_FLAGS.PRIEST_WELCOME],
+      },
+      greetings: {
+        text: "Всё ещё ищешь ответы?.. Я вот тоже в поисках.",
+        options: [
+          { text: "И всё же... кто ты?", nextNode: "who_are_you" },
+          {
+            text: "Мне нужна твоя помощь... [вылечиться]",
+            nextNode: "heal",
+          },
+        ],
+      },
+
+      who_are_you: {
+        text: "Какая-то часть моей личности погибла. Мы все здесь также как и ты - помним только начиная... От этого места [окидывает местность взглядом]. Я - жрец времени. Я лечу людей по мере сил, подбадриваю их, иногда убиваю время в библиотеке, жадно поглощая книги, в надежде найти ответ на вопрос что это за место, и как я здесь оказался. Вся моя жизнь как будто в сумрачной дымке.",
+        options: [{ text: "[Уйти]", nextNode: "end" }],
+      },
+      // Здесь рандомную генерацию фраз
+      heal: {
+        text: "Ого... Давно не видел столько крови.",
+        options: [{ text: "[Уйти]", nextNode: "end" }],
+        flags: [DIALOGUE_FLAGS.HEAL],
+      },
+      end: {
+        text: "Удачи, путник...",
+
+        options: [],
       },
     },
   },
