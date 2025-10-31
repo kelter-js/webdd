@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, PersistOptions } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 import {
   BATTLE_STATES,
@@ -7,50 +7,37 @@ import {
   RENDER_LOCATIONS,
   TURN_STATES,
   ECONOMIC_TYPES,
-} from "../entities";
+  DUNGEONS,
+} from "../../entities";
 import {
+  DAMAGER_BASE_MODEL,
   DEFAULT_GAME_STATE,
+  HEALER_BASE_MODEL,
   MAX_ENCOUNTER_CHANCE,
   MIN_ENCOUNTER_CHANCE,
-} from "./constants";
+  TANK_BASE_MODEL,
+} from "../constants";
 import {
   calculateStatistics,
   generateBattle,
   getBattleState,
   getEncounterRoll,
   getFirstTurn,
-  reviver,
-} from "./utils";
-import { PersistedState, StorageValue, StoreState } from "../types/gameState";
-import { ROOM_TYPES } from "../entities/room";
-
-// Define persistence configuration
-const persistConfig: PersistOptions<StoreState, PersistedState> = {
-  name: "game-state",
-
-  partialize: (state) => ({
-    player: state.player,
-  }),
-
-  storage: {
-    getItem: (name: string) => {
-      const str = localStorage.getItem(name);
-      if (!str) return null;
-
-      return JSON.parse(str, reviver) as StorageValue;
-    },
-
-    setItem: (name: string, value: unknown) => {
-      const storageValue = value as StorageValue;
-      const serialized: StorageValue = {
-        state: storageValue.state,
-      };
-      localStorage.setItem(name, JSON.stringify(serialized));
-    },
-
-    removeItem: (name: string) => localStorage.removeItem(name),
-  },
-};
+} from "../utils";
+import { StoreState } from "../../types/gameState";
+import { ROOM_TYPES } from "../../entities/room";
+import { CONSUMABLES } from "../../entities/consumables";
+import { persistConfig } from "./config";
+import {
+  healTeam,
+  initiateState,
+  resetGame,
+  setEconomicBranch,
+  setGameOver,
+  turnOffDices,
+  updateDialogFlags,
+  useAbility,
+} from "./actions";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -59,6 +46,7 @@ export const useGameState = create<StoreState>()(
       // Initial state
       player: DEFAULT_GAME_STATE,
       effects: null,
+      inventory: null,
       statistics: null,
       gear: null,
       abilities: null,
@@ -67,17 +55,6 @@ export const useGameState = create<StoreState>()(
       playersLvlUpNotifications: [],
 
       // Methods
-      resetGame: () =>
-        set(() => ({
-          player: { ...DEFAULT_GAME_STATE },
-          effects: null,
-          statistics: null,
-          gear: null,
-          abilities: null,
-          isDiceRequiredRoll: false,
-          isAutoSaveRequired: false,
-          playersLvlUpNotifications: [],
-        })),
 
       setQuestData: (data) =>
         set((state) => {
@@ -138,6 +115,7 @@ export const useGameState = create<StoreState>()(
                   type,
                   attempts,
                   position,
+                  roomsVisited: 0,
                 },
               },
             };
@@ -154,6 +132,14 @@ export const useGameState = create<StoreState>()(
 
           if (newDungeon) {
             const currentCell = newDungeon[position.y][position.x];
+
+            if (
+              state.player?.location?.roomsVisited !== undefined &&
+              !currentCell.visited
+            ) {
+              state.player.location.roomsVisited += 1;
+            }
+
             const isAlreadyVisited = currentCell.visited;
             const isPlayableArea =
               currentCell.type !== ROOM_TYPES.END &&
@@ -298,36 +284,25 @@ export const useGameState = create<StoreState>()(
               name,
               experience: 0,
               level: 1,
-              currentHealth: 6 * 12,
-              endurance: 12,
-              accuracy: 5,
-              agility: 7,
+              ...DAMAGER_BASE_MODEL,
               points: 5,
-              critChance: 0,
-              critStrike: 0,
               perksList: [],
             },
             {
               name: "SomeWhatOfTestingName-HEALER",
               experience: 0,
               level: 1,
-              currentHealth: 6 * 10,
-              endurance: 10,
-              accuracy: 7,
-              agility: 7,
+              ...HEALER_BASE_MODEL,
               points: 5,
               critChance: 0,
               critStrike: 0,
               perksList: [],
             },
             {
-              name: "SomeWhatOfTestingName-DAMAGER",
+              name: "SomeWhatOfTestingName-TANK",
               experience: 0,
               level: 1,
-              currentHealth: 6 * 8,
-              endurance: 8,
-              accuracy: 9,
-              agility: 9,
+              ...TANK_BASE_MODEL,
               points: 5,
               critChance: 0,
               critStrike: 0,
@@ -493,80 +468,6 @@ export const useGameState = create<StoreState>()(
           };
         }),
 
-      useAbility: (characterName, abilityId) =>
-        set((state) => {
-          // нужна утиль функция возвращающая модель абилки
-          // const abilityData = getAbilityDataById(abilityId);
-          const character = state.player.party.find(
-            (player) => player.name === characterName
-          );
-          // в зависимости от AbilityData - вешаем дебафф на противника, хилимся, наносим урон противнику и т.д.
-          return state;
-        }),
-
-      initiateState: () =>
-        set((state) => {
-          const stateCopy = { ...state };
-          stateCopy.statistics = {};
-          stateCopy.abilities = {};
-          stateCopy.gear = {};
-          stateCopy.effects = {};
-
-          // инициализируем хар-ки
-          state.player.party.forEach((player) => {
-            stateCopy.statistics![player.name] = calculateStatistics(player);
-
-            player.perksList.forEach((perk) => {
-              if (perk.isAbility) {
-                // нужна утиль функция возвращающая модель Ability, она имеет тип, внутри стейта будет функция useAbility,
-                //  ей передается тип и она в зависимости от него делает что-то
-                // stateCopy.abilities![player.name] = createAbility(perk);
-              }
-            });
-          });
-
-          // if (stateCopy.player.gear_memoized && !state.gear) {
-          //   // здесь вызываем функцию, которая сначала парсит строку на объект с данными
-          //   const parsedGear = parseGear(stateCopy.player.gear_memoized);
-          //   if (parsedGear) {
-          //     // затем мы должны вызывать мап функцию, которая из строки сформирует нужные объекты с уже заполненными данными, иконкой, эффектами, статами
-          //     parsedGear.forEach((gear) => {
-          //       // ф-ия возвращает поле characterName и массив вещей, с уже заполненными полями
-          //       const { characterName, ...rest } = generateGear(gear);
-
-          // const currentCharacterStats = stateCopy.statistics[characterName];
-          //       rest.forEach((equipment) => {
-          //     if ( equipment.type === "ARTIFACT") {
-          //        const {effectName, effectValue} = getEffectFromGear(equipment);
-          //        state.effects[effectName] = effectValue;
-          //     }
-
-          //         if (equipment.type === "WEAPON") {
-          //           // из экипировки вычисляем урон и прибавляем к значениям, которые высчитали из хар-ик
-          //           currentCharacterStats.minAttack += equipment.minAttack;
-          //           currentCharacterStats.maxAttack += equipment.maxAttack;
-          //         }
-          //         if (equipment.type === "ARMOR") {
-          //           // из экипировки вычисляем броню и устанавливаем
-          //           currentCharacterStats.defense = equipment.armor;
-          //         }
-          // const { statName, statValue } = getStatsFromItem(equipment);
-          //           currentCharacterStats[statName] += statValue;
-          //       });
-          //       stateCopy.gear![characterName] = rest;
-          //     });
-          //   }
-          // }
-
-          console.log("so we fire too?");
-          return {
-            ...state,
-            statistics: { ...(stateCopy.statistics || {}) },
-            gear: { ...(stateCopy.gear || {}) },
-            abilities: { ...(stateCopy.abilities || {}) },
-          };
-        }),
-
       increaseAccuracy: (characterName) =>
         set((state) => {
           const currentCharacter = state.player.party.find(
@@ -677,14 +578,6 @@ export const useGameState = create<StoreState>()(
 
           return state;
         }),
-      turnOffDices: () =>
-        set((state) => ({ ...state, isDiceRequiredRoll: false })),
-
-      setGameOver: () =>
-        set((state) => ({
-          ...state,
-          player: { ...state.player, isGameOver: true },
-        })),
 
       updateGameTier: () =>
         set((state) => ({
@@ -695,20 +588,91 @@ export const useGameState = create<StoreState>()(
           },
         })),
 
-      updateDialogFlags: (flags) =>
-        set((state) => ({
-          ...state,
-          player: {
-            ...state.player,
-            dialogFlags: [...state.player.dialogFlags, ...flags],
-          },
-        })),
+      updateDialogFlags: updateDialogFlags(set),
+      setEconomicBranch: setEconomicBranch(set),
+      healTeam: healTeam(set),
+      turnOffDices: turnOffDices(set),
+      setGameOver: setGameOver(set),
+      useAbility: useAbility(set),
+      initiateState: initiateState(set),
+      resetGame: resetGame(set),
 
-      setEconomicBranch: (economicBranch) =>
-        set((state) => ({
-          ...state,
-          player: { ...state.player, economic: economicBranch },
-        })),
+      handleExitDungeon: () =>
+        set((state) => {
+          console.log("we invoked", state.player.economic);
+          const stateCopy = {
+            ...state,
+            player: { ...state.player },
+          };
+
+          let newConsumables = null;
+          let newInventory = null;
+          let newMemoizedInventory = null;
+
+          if (stateCopy.player.location) {
+            stateCopy.player.location.encounterChance = MIN_ENCOUNTER_CHANCE;
+          }
+
+          if (stateCopy.player.location?.type === DUNGEONS.STORY) {
+            stateCopy.player.dungeonsCounter += 1;
+          }
+
+          if (stateCopy.player.economic === ECONOMIC_TYPES.ALCHEMISTRY) {
+            // FIXME: по мере дополнения систем инвентаря - допилить
+            newConsumables = [...stateCopy.player.consumables];
+            // FIXME определиться с фиксированным вознаграждением и названиями эликсиров, заменить стринги на енамы
+            // проверяем, есть ли у игрока вообще уже такие зелья
+            const elixirIndex = newConsumables.findIndex(
+              (item) => item[0] === CONSUMABLES.SMALL_HEALTH_POTION
+            );
+
+            if (elixirIndex !== -1) {
+              // если зелья есть - увеличиваем их кол-во
+              // второе значение массива - кол-во, обращаемся по индексу [1] -
+              // обновляем количество
+              const [name, count] = newConsumables[elixirIndex];
+              newConsumables[elixirIndex] = [
+                name,
+                String(Number(count ?? 0) + 2),
+              ];
+            } else {
+              // если нет - устанавливаем их
+              newConsumables.push([CONSUMABLES.SMALL_HEALTH_POTION, "2"]);
+            }
+          }
+
+          if (stateCopy.player.economic === ECONOMIC_TYPES.FISHING) {
+            // FIXME определиться с фиксированным вознаграждением в виде голды и привести к балансу
+            stateCopy.player.gold += 150;
+          }
+
+          if (stateCopy.player.economic === ECONOMIC_TYPES.WEAPONRY) {
+            newInventory = stateCopy.inventory ? [...stateCopy.inventory] : [];
+            newMemoizedInventory = [...stateCopy.player.inventory_memoized];
+            // FIXME: логика генерации оружия или брони - 50% на 50% или броня или оружие, шанс прока второго или 3 тира в зависимости от тира игры
+            // const chanceToSpawnWeapon = getRandom();
+            // let item;
+            // if (chanceToSpawnWeapon < 50) {
+            // item = generateWeapon(stateCopy.player.tier);
+            // } else {
+            // item = generateArmor(stateCopy.player.tier);
+            // }
+            // newInventory.push(item);
+
+            // FIXME: логика приведения оружия к стринговому виду для хранения в кач-ве мемоизированного значения
+            // const memoizedItem = memoize(item);
+            const memoizedItem = "";
+            newMemoizedInventory.push(memoizedItem);
+          }
+
+          stateCopy.player.consumables =
+            newConsumables ?? stateCopy.player.consumables;
+          stateCopy.inventory = newInventory ?? stateCopy.inventory;
+          stateCopy.player.inventory_memoized =
+            newMemoizedInventory ?? stateCopy.player.inventory_memoized;
+
+          return stateCopy;
+        }),
     }),
     persistConfig
   )

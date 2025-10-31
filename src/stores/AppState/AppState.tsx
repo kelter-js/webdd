@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { AppState } from "../types/appState";
+import { AppState } from "../../types/appState";
 
 export const useAppState = create<AppState>((set) => ({
   isMenuOpen: false,
-  isFading: true,
+  isFading: false,
   toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
   setFading: (state) => set(() => ({ isFading: state })),
   toggleSaveList: (saveMode) => set(() => ({ saveMode })),
