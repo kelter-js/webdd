@@ -8,7 +8,7 @@ import {
   useMemo,
 } from "react";
 
-import { PlayerContextData } from "./types";
+import { AudioFilesData, PlayerContextData } from "./types";
 
 // REFACTORING CHECKED ✅
 
@@ -23,11 +23,21 @@ export const usePlayer = () => useContext(PlayerContext);
 
 // Возможно нужно будет несколько playerов, для эмбиента и для эффектов
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [players, setPlayers] = useState<Record<string, string>>({});
+  const [players, setPlayers] = useState<AudioFilesData>({});
   const refs = useRef<Record<string, HTMLAudioElement | null>>({});
 
-  const handleSetSrc = (id: string, newSrc: string) => {
-    setPlayers((prev) => ({ ...prev, [id]: newSrc }));
+  const handleSetSrc = (
+    id: string,
+    newSrc: string,
+    hasLoop: boolean = false
+  ) => {
+    setPlayers((prev) => ({
+      ...prev,
+      [id]: {
+        src: newSrc,
+        hasLoop,
+      },
+    }));
   };
 
   const handleRemoveSrc = (id: string) => {
@@ -47,16 +57,17 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <PlayerContext.Provider value={memoizedValue}>
-      {Object.entries(players).map(([id, src]) =>
-        src ? (
+      {Object.entries(players).map(([id, audioFile]) =>
+        audioFile ? (
           <audio
             key={id}
-            src={src}
+            src={audioFile.src}
             ref={(el) => {
               refs.current[id] = el;
             }}
             className="visually-hidden"
             autoPlay
+            loop={audioFile.hasLoop}
           />
         ) : null
       )}
