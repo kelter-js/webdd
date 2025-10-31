@@ -1,5 +1,5 @@
 import { QUEST_STATUSES } from "../../entities/questStatuses";
-import { useGameState } from "../../stores/GameState";
+import { useGameState } from "../../stores/GameState/GameState";
 import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
 import * as S from "./QuestResults.styled";
 
@@ -27,6 +27,7 @@ export const QuestResults = () => {
 
   return (
     <Modal
+      onClose={handleCloseResults}
       open={!!quest}
       sx={{
         display: "flex",
@@ -43,7 +44,7 @@ export const QuestResults = () => {
         <Box sx={{ mt: 3 }}>
           {typeof money === "number" && (
             <S.RewardItem>
-              <Typography variant="h5" sx={{ color: "#c08040" }}>
+              <Typography variant="h5" color="#c08040">
                 ▸
               </Typography>
               <S.RewardText>
@@ -56,7 +57,7 @@ export const QuestResults = () => {
 
           {typeof exp === "number" && (
             <S.RewardItem>
-              <Typography variant="h5" sx={{ color: "#c08040" }}>
+              <Typography variant="h5" color="#c08040">
                 ▸
               </Typography>
               <S.RewardText>
@@ -82,23 +83,9 @@ export const QuestResults = () => {
           )} */}
         </Box>
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+        <Box display="flex" justifyContent="flex-end" mt={3}>
           <S.StyledButton onClick={handleCloseResults}>
-            <Typography
-              sx={{
-                width: "100%",
-                color: "#c08040",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-                p: "8px",
-                borderBottom: "1px solid #5a3020",
-                fontFamily: "Cormorant Unicase",
-              }}
-              variant="h5"
-            >
-              Принять
-            </Typography>
+            <S.EndQuestText variant="h5">Принять</S.EndQuestText>
           </S.StyledButton>
         </Box>
       </S.ModalContent>
