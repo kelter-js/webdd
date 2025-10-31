@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { Room } from "../../types";
-import { generateDungeon } from "../../utils/generateDungeon";
+import { generateDungeon } from "../../utils";
 
 import { ClosePortal, QTEGame } from "../Minigames";
 import {
@@ -9,6 +9,7 @@ import {
   QUEST_STATUSES,
   DUNGEONS,
   DIRECTIONS,
+  ECONOMIC_TYPES,
 } from "../../entities";
 
 import { useAppState, useGameState, useGameSaves } from "../../stores";
@@ -33,12 +34,13 @@ const ROOM_STYLES = {
 
 export const Map = () => {
   const {
-    player: { location },
+    player: { location, economic },
     setDungeon,
     setPlayerPosition,
     updateDungeon,
     setLocationState,
     setQuestData,
+    handleExitDungeon,
   } = useGameState();
   const { setFading, toggleAutoSave } = useAppState();
 
@@ -49,7 +51,7 @@ export const Map = () => {
       setDungeon({
         dungeon: [],
         position: { x: 0, y: 0 },
-        type: DUNGEONS.CLOSE_PORTAL,
+        type: DUNGEONS.STORY,
       });
     }
   }, [location, position, dungeon]);
@@ -68,10 +70,11 @@ export const Map = () => {
       exp: 150,
       status: QUEST_STATUSES.SUCCESS,
     });
+    handleExitDungeon();
     setDungeon(null);
     toggleAutoSave();
     console.log("we win!");
-  }, [toggleAutoSave]);
+  }, [toggleAutoSave, economic, handleExitDungeon]);
 
   const handleFail = useCallback(() => {
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
@@ -81,13 +84,23 @@ export const Map = () => {
       money: 150,
       status: QUEST_STATUSES.FAILED,
     });
+
+    handleExitDungeon();
     setDungeon(null);
     toggleAutoSave();
-  }, [toggleAutoSave]);
+  }, [toggleAutoSave, economic, handleExitDungeon]);
 
   if (!location || !position || !dungeon) {
     return null;
   }
+
+  const handleEscapeFromDungeon = () => {
+    setFading(true);
+    handleExitDungeon();
+    setDungeon(null);
+    toggleAutoSave();
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+  };
 
   const generateNewDungeon = () => {
     const newDungeon = generateDungeon(5, 5);
@@ -97,7 +110,7 @@ export const Map = () => {
     // здесь определяется тип подземелья
     setDungeon({
       dungeon: newDungeon,
-      type: DUNGEONS.CLOSE_PORTAL,
+      type: DUNGEONS.STORY,
       attempts: DEFAULT_ATTEMPS_AMOUNT,
       position: { x: 0, y: 0 },
     });
@@ -308,6 +321,22 @@ export const Map = () => {
       >
         Сгенерировать подземелье
       </button>
+      {isDungeonExit && type === DUNGEONS.STORY && (
+        <button
+          style={{
+            fontSize: 18,
+            padding: "10px 20px",
+            marginBottom: 20,
+            backgroundColor: "#3b82f6",
+            color: "white",
+            border: "none",
+            borderRadius: 5,
+          }}
+          onClick={handleEscapeFromDungeon}
+        >
+          Выйти из подземелья
+        </button>
+      )}
 
       {dungeon.length > 0 && (
         <div
