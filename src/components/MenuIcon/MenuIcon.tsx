@@ -1,4 +1,4 @@
-import { useAppState } from "../../stores/AppState";
+import { useAppState } from "../../stores";
 import { MenuIconWrapper, MenuLine } from "./MenuIcon.styled";
 
 // REFACTORING CHECKED ✅

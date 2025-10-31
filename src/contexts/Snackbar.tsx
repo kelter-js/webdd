@@ -9,14 +9,17 @@ import {
 import { Alert, AlertColor, Snackbar } from "@mui/material";
 
 import { SnackbarContextType } from "./types";
+import { VOID_EMPTY_FUNCTION } from "../share/constants";
+
+// REFACTORING CHECKED ✅
 
 const SnackbarContext = createContext<SnackbarContextType>({
-  showSnackbar: () => {},
+  showSnackbar: VOID_EMPTY_FUNCTION,
 });
 
 export const useSnackbar = () => useContext(SnackbarContext);
 
-const HIDE_DURATION = 3000;
+const SNACKBAR_HIDE_DURATION = 3000;
 
 export const SnackbarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -31,16 +34,14 @@ export const SnackbarProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const memoizedValue = useMemo(() => ({ showSnackbar }), []);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   return (
     <SnackbarContext.Provider value={memoizedValue}>
       {children}
       <Snackbar
         open={open}
-        autoHideDuration={HIDE_DURATION}
+        autoHideDuration={SNACKBAR_HIDE_DURATION}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >

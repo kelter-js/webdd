@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import { SnackbarProvider } from "./contexts/Snackbar.tsx";
 import { PlayerProvider } from "./contexts/Player.tsx";
+
 import { App } from "./App.tsx";
 import "./index.css";
 

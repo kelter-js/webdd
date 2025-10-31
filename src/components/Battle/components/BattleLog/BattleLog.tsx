@@ -1,7 +1,7 @@
 import logsScreen from "../../../../assets/static/logs.png";
 import { LogsContainer, MessagesContainer } from "./BattleLog.styled";
 import { Typography } from "@mui/material";
-import { useGameState } from "../../../../stores/GameState";
+import { useGameState } from "../../../../stores/GameState/GameState";
 
 export const BattleLog = () => {
   const {

@@ -2,11 +2,10 @@ import { useRef } from "react";
 import { Button } from "@mui/material";
 
 import { SAVE_MODES } from "../../entities/saveModes";
-import { useAppState } from "../../stores/AppState";
 import { useClickOutside } from "../../hooks";
 import { SaveList } from "../SaveList";
 import { MenuButtonText, ModalContent, ModalWindow } from "./Menu.styled";
-import { useGameState } from "../../stores";
+import { useGameState, useAppState } from "../../stores";
 
 // REFACTORING CHECKED ✅
 

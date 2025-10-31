@@ -15,7 +15,7 @@ import {
   VISITED_LOCATION_WITHOUT_LIGHT,
 } from "./constants";
 import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
-import { getRandom } from "../utils/getRandom";
+import { getRandom } from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
@@ -210,11 +210,11 @@ export const calculateStatistics = (
 ) => {
   const statistics = {
     defense: 0,
-    minAttack: character.accuracy * 4,
-    maxAttack: character.accuracy * 4,
-    evasionChance: character.agility * 3,
-    maxHealth: character.endurance * 6,
-    critChance: Math.max((character.accuracy + character.agility) / 4, 80),
+    minAttack: character.accuracy * 0.7,
+    maxAttack: character.accuracy * 0.7,
+    evasionChance: character.agility * 4,
+    maxHealth: character.endurance * 10,
+    critChance: character.agility * 0.5,
   };
 
   // character.perksList.forEach((perk) => {

@@ -1,7 +1,7 @@
-import { useGameState } from "../../../stores/GameState";
+import { useGameState } from "../../../stores/GameState/GameState";
 // мок массива
 // import {массивАссетовСПутями} from './'
-import { getRandom } from "../../../utils/getRandom";
+import { getRandom } from "../../../utils";
 
 export const useGenerateLocationImage = () => {
   // Здесь смотрим на тир и исходя из тира генерим изображение из массива выбирая рандомные
@@ -15,7 +15,7 @@ export const useGenerateLocationImage = () => {
     // if (battle.index) {
     // return ARRAY[BATTLE.INDEX]
     // }
-    // const newIndex = getRandom(0, ARRAY.length);
+    // const newIndex = getRandom(0, ARRAY.length - 1);
     // setBackgroundIndex(newIndex);
     // return ARRAY[newIndex]
   }

@@ -1,4 +1,4 @@
-import { getRandom } from "../../../utils/getRandom";
+import { getRandom } from "../../../utils";
 import { QTE_SEQUENCE_TEMPLATE, VALID_KEYS } from "./constants";
 
 export const generateSequence = () =>

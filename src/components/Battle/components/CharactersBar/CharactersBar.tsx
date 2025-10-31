@@ -1,4 +1,4 @@
-import { useGameState } from "../../../../stores/GameState";
+import { useGameState } from "../../../../stores/GameState/GameState";
 import * as S from "./CharactersBar.styled";
 import { Button } from "@mui/material";
 

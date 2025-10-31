@@ -4,7 +4,7 @@ import { Container, Fragment } from "./Enemy.styled";
 import { useGetEnemyImage } from "../../hooks/useGetEnemyImage";
 import { FragmentData, RenderedFragmentProps } from "./types";
 import { cols, fragHeight, fragWidth, rows } from "./constants";
-import { useGameState } from "../../../../stores/GameState";
+import { useGameState } from "../../../../stores/GameState/GameState";
 
 const RenderedFragment: FC<RenderedFragmentProps> = ({
   data,
@@ -36,7 +36,6 @@ export const Enemy = () => {
 
   // const enemySource = getSource(battle?.enemy?.type);
   const enemySource = useGetEnemyImage();
-  console.log("enemySource", enemySource);
 
   const fragmentsRef = useRef<FragmentData[] | null>(null);
 
