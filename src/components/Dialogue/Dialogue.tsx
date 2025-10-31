@@ -1,23 +1,17 @@
 import { FC, useState } from "react";
-
-import {
-  Avatar,
-  ContinueButton,
-  DialogueModal,
-  SpeakerName,
-} from "./Dialogue.styled";
+import { Backdrop, Stack } from "@mui/material";
 
 import { TextHolder } from "./TextHolder";
 
-import { Stack } from "@mui/material";
-import { useAppState } from "../../stores/AppState";
+import { useAppState } from "../../stores";
 import { DialogueProps } from "./types";
 import { DIALOGUE_FLAGS } from "../../entities/dialogues";
 import { useGameState } from "../../stores";
+import * as S from "./Dialogue.styled";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const { setDialogueOpen, toggleEconomicModal } = useAppState();
-  const { updateDialogFlags } = useGameState();
+  const { updateDialogFlags, healTeam } = useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
 
@@ -25,21 +19,18 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
   // const { text, options, flags } = nodes[currentNode];
   const { text, options, flags } = nodes[currentNode];
-  console.log("flags", flags);
-  console.log("options", options);
 
   const handleOptionClick = (option: { nextNode: string }) => {
-    // Обновляем флаги если они есть в опции
-
-    // Если есть флаги в узле, добавляем их
-    // const nodeFlags = [...newFlags, ...(flags || [])];
-    console.log("option", option);
-
     if (flags?.length) {
       if (flags.includes(DIALOGUE_FLAGS.ECONOMIC_INTRO)) {
         toggleEconomicModal();
-        updateDialogFlags(flags);
       }
+
+      if (flags.includes(DIALOGUE_FLAGS.HEAL)) {
+        healTeam();
+      }
+
+      updateDialogFlags(flags);
     }
 
     if (option.nextNode === "end") {
@@ -50,23 +41,32 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   };
 
   return (
-    <DialogueModal>
-      <Avatar src={src} alt="npc_avatar" />
-      <SpeakerName variant="h5" sx={{ textTransform: "uppercase" }}>
-        {name}
-      </SpeakerName>
-      <TextHolder text={text} />
+    <Backdrop
+      open={true}
+      sx={{
+        color: "#fff",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        backgroundColor: "transparent",
+      }}
+    >
+      <S.DialogueModal>
+        <S.Avatar src={src} alt="npc_avatar" />
+        <S.SpeakerName variant="h5" sx={{ textTransform: "uppercase" }}>
+          {name}
+        </S.SpeakerName>
+        <TextHolder text={text} />
 
-      <Stack gap={2}>
-        {options.map((option, index) => (
-          <ContinueButton
-            key={`${option.nextNode}-${index}`}
-            onClick={() => handleOptionClick(option)}
-          >
-            {option.text}
-          </ContinueButton>
-        ))}
-      </Stack>
-    </DialogueModal>
+        <Stack gap={2}>
+          {options.map((option, index) => (
+            <S.ContinueButton
+              key={`${option.nextNode}-${index}`}
+              onClick={() => handleOptionClick(option)}
+            >
+              {option.text}
+            </S.ContinueButton>
+          ))}
+        </Stack>
+      </S.DialogueModal>
+    </Backdrop>
   );
 };
