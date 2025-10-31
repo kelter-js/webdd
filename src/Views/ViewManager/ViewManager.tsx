@@ -1,4 +1,3 @@
-import { useGameState } from "../../stores/GameState";
 import { RENDER_LOCATIONS } from "../../entities";
 import { LevelingMock } from "../../components/Leveling/LevelingMock";
 import { Inventory } from "../../components/Inventory";
@@ -7,7 +6,7 @@ import { Battle } from "../../components/Battle";
 import { MenuLayout } from "../MenuLayout";
 import { Settlement } from "../Settlement";
 import { Shake } from "../../common";
-import { useAppState } from "../../stores/AppState";
+import { useAppState, useGameState } from "../../stores";
 import { InfoBar } from "../../components/InfoBar/InfoBar";
 import { LevelUp } from "../../common/LevelUp";
 
