@@ -9,15 +9,15 @@ export const ModalContent = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
   paddingRight: "20px",
   gap: theme.spacing(2),
-  backgroundColor: "rgba(30, 20, 10, 0.50)", // почти прозрачный
-  border: "1px solid rgba(192, 160, 128, 0.3)", // мягкая рамка
+  backgroundColor: "rgba(30, 20, 10, 0.50)",
+  border: "1px solid rgba(192, 160, 128, 0.3)",
   boxShadow: theme.shadows[5],
   borderRadius: 4,
   backgroundImage: `linear-gradient(
     rgba(30, 20, 10, 0.15),
     rgba(50, 30, 15, 0.15)
   )`,
-  backdropFilter: "blur(2px)", // лёгкое размытие
+  backdropFilter: "blur(2px)",
   WebkitBackdropFilter: "blur(2px)",
   color: "#e0c0a0",
   zIndex: 99999,

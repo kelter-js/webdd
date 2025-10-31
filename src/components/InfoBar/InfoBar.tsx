@@ -1,14 +1,16 @@
 import { TorchIcon, GoldIcon } from "../../common";
 import { useGameState } from "../../stores";
-import { getQuestInfo } from "./utils";
+import { getEconomicInfo, getQuestInfo } from "./utils";
 import { BarStatusText, ModalContent, StatContainer } from "./InfoBar.styled";
-import { Stack, Tooltip } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useMemo } from "react";
 import { LeveledUpCharacter } from "../../common/Icons/LeveledUpCharacter";
+import { Tooltip } from "../../common/Tooltip";
+import { EconomyOrnament } from "../../common/Icons/EconomicBranch";
 
 export const InfoBar = () => {
   const {
-    player: { gold, torches, quest, consumables, party },
+    player: { gold, torches, quest, consumables, party, economic },
     toggleCharacterPanel,
   } = useGameState();
 
@@ -27,6 +29,14 @@ export const InfoBar = () => {
 
   return (
     <ModalContent>
+      <StatContainer>
+        <Tooltip title={getEconomicInfo(economic)}>
+          <Stack alignItems="center" direction="row">
+            <EconomyOrnament />
+          </Stack>
+        </Tooltip>
+      </StatContainer>
+
       {Boolean(charactersWithPointsToSpend.length) &&
         charactersWithPointsToSpend.map((item) => (
           <Tooltip title={`${item} имеет нераспределенные очки`} key={item}>
@@ -35,6 +45,7 @@ export const InfoBar = () => {
             </StatContainer>
           </Tooltip>
         ))}
+
       <StatContainer>
         <Tooltip title="Факела">
           <Stack alignItems="center" direction="row">
