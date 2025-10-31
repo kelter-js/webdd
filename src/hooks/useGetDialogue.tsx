@@ -2,6 +2,7 @@ import {
   questDeskDialog,
   smithDialog,
   citadelDialog,
+  priestDialog,
 } from "../constants/dialogs/smith";
 
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
@@ -13,6 +14,7 @@ export const useGetDialogue = (npc: string | null) => {
   const {
     player: { dialogFlags },
   } = useGameState();
+  console.log("dialogFlags", dialogFlags);
 
   const { toggleEconomicModal, setDialogueOpen } = useAppState();
 
@@ -23,6 +25,14 @@ export const useGetDialogue = (npc: string | null) => {
 
       case BUILDING_NAMES.QUEST_DESK:
         return questDeskDialog.intro_npc;
+
+      case BUILDING_NAMES.MEDICAL_STATION:
+        if (dialogFlags.includes(DIALOGUE_FLAGS.PRIEST_WELCOME)) {
+          console.log("priestDialog", priestDialog);
+          priestDialog.intro_npc.startNode = "greetings";
+        }
+
+        return priestDialog.intro_npc;
 
       case BUILDING_NAMES.CITADEL: {
         if (dialogFlags.includes(DIALOGUE_FLAGS.ECONOMIC_INTRO)) {
