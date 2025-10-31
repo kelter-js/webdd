@@ -1,8 +1,8 @@
 import { AlertColor } from "@mui/material";
 
 export interface PlayerContextData {
-  players: Record<string, string>; // key = id плеера, value = src
-  handleSetSrc: (id: string, newSrc: string) => void;
+  players: AudioFilesData;
+  handleSetSrc: (id: string, newSrc: string, hasLoop?: boolean) => void;
   getPlayerRef: (id: string) => HTMLAudioElement | null | undefined;
   handleRemoveSrc: (id: string) => void;
 }
@@ -10,3 +10,10 @@ export interface PlayerContextData {
 export type SnackbarContextType = {
   showSnackbar: (message: string, severity?: AlertColor) => void;
 };
+
+export interface AudioFilesData {
+  [key: string]: {
+    src: string;
+    hasLoop: boolean;
+  };
+}

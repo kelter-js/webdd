@@ -9,6 +9,8 @@ import {
   BATTLE_TARGET,
   ECONOMIC_TYPES,
 } from "../entities";
+import { CLASSES } from "../entities/characterClasses";
+import { CONSUMABLES } from "../entities/consumables";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
 import { GEAR_SLOTS } from "../entities/gear";
 
@@ -28,6 +30,7 @@ export interface Character {
   critStrike: number;
   // заменить any на типизацию
   perksList: Perk[];
+  characterClass: CLASSES;
 }
 
 // храним только айди, по нему всё высчитываем потом
@@ -87,6 +90,7 @@ export interface Location {
   type?: DUNGEONS;
   attempts?: number;
   encounterChance?: number;
+  roomsVisited?: number;
 }
 
 export interface BattleUpdateState {
@@ -160,9 +164,10 @@ export interface GameStateData {
   isGameOver: boolean;
   torches: number;
   currentTier: number;
-  consumables: [string, string][];
+  consumables: [CONSUMABLES, string][];
   dialogFlags: DIALOGUE_FLAGS[];
   economic: ECONOMIC_TYPES | null;
+  dungeonsCounter: number;
 }
 
 export interface StoreState {
@@ -173,6 +178,8 @@ export interface StoreState {
   // увеличение кол-ва награды, шанса на выпадение предмета, шанса на воскрешение сопартийца, парсится после того, как распарсили и установили gear
   effects: null | Effects;
   // уже после вычисления хар-ки
+  inventory: null | Item[];
+  // хранит в себе не мемоизированные модели предметов - не привязано к игроку, просто массив вещей
   statistics: null | { [key: string]: Statistics };
   abilities: null | { [key: string]: Ability };
   setDungeon: (newDungeon: DungeonCreation | null) => void;
@@ -194,6 +201,7 @@ export interface StoreState {
   isDiceRequiredRoll: boolean;
   useAbility: (characterName: string, abilityId: string) => void;
   toggleInventory: VoidFunction;
+  handleExitDungeon: VoidFunction;
   toggleCharacterPanel: VoidFunction;
   setQuestData: (data: Quest | null) => void;
   updateDialogFlags: (flags: DIALOGUE_FLAGS[]) => void;
@@ -204,6 +212,7 @@ export interface StoreState {
   initiateState: VoidFunction;
   turnOffDices: VoidFunction;
   playersLvlUpNotifications: string[];
+  healTeam: VoidFunction;
 }
 
 // Define the type for persisted state
@@ -215,6 +224,7 @@ export type PersistedState = Omit<
   | "setPlayerName"
   | "setLocationState"
   | "setBattle"
+  | "handleExitDungeon"
   | "updateBattle"
   | "changeAttempts"
   | "toggleInventory"
@@ -222,6 +232,7 @@ export type PersistedState = Omit<
   | "setEconomicBranch"
   | "toggleCharacterPanel"
   | "setQuestData"
+  | "healTeam"
   | "setGameOver"
   | "resetGame"
   | "updateDialogFlags"
