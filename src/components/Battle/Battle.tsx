@@ -28,6 +28,24 @@ export const Battle = () => {
     }
   }, [isFading]);
 
+  // useEffect(() => {
+  //   if (battle.enemy.currentHealth <= 0) {
+  //     // логика конца боя
+  //   }
+  // }, [battle.enemy.currentHealth]);
+
+  // useEffect(() => {
+  //   if (battle.turn === TURN_STATES.ENEMY_TURN) {
+  //     const runAi = async () => {
+  //       const logic = getAiPackageByCreatureId(battle.enemy.id);
+  //       const { isGameOver, model } = await logic(battle);
+  //       // установка модели, проверка конца боя
+  //        меняем ход на ход игрока
+  //     };
+  //     runAi();
+  //   }
+  // }, [battle.turn]);
+
   return (
     <Stack
       position="relative"
