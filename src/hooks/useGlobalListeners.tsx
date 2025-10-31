@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 
-import { useAppState } from "../stores/AppState";
-import { useGameState } from "../stores/GameState";
+import { useAppState, useGameState, useGameSaves } from "../stores/";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
 import { ROOM_TYPES } from "../entities/room";
 import { useSnackbar } from "../contexts/Snackbar";
-import { useGameSaves } from "../stores";
 
 // REFACTORING CHECKED ✅
 
@@ -42,6 +40,11 @@ export const useGlobalListeners = () => {
     const handleKeyBindings = (event: KeyboardEvent) => {
       if (isGameInitiated && !hasChallenge && !isGameOver) {
         if (event.key === "Escape") {
+          if (locationState === RENDER_LOCATIONS.LEVELING) {
+            toggleCharacterPanel();
+            return;
+          }
+
           if (isDialogueOpen) {
             setDialogueOpen(null);
             return;
