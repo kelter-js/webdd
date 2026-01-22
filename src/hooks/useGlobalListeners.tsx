@@ -15,12 +15,14 @@ export const useGlobalListeners = () => {
     toggleMenu,
     isDialogueOpen,
     setDialogueOpen,
+    selectedEnemy,
+    setSelectedEnemy,
   } = useAppState();
 
   const {
     toggleInventory,
     toggleCharacterPanel,
-    player: { name, locationState, location, isGameOver },
+    player: { name, locationState, location, isGameOver, sliderId, battle },
     setState,
   } = useGameState();
 
@@ -36,9 +38,81 @@ export const useGlobalListeners = () => {
     location?.dungeon[location?.position?.x][location?.position?.y]?.type ===
       ROOM_TYPES.END;
 
+  const getNextTargetIndex = () => {
+    const aliveEnemies =
+      battle?.enemy?.party?.filter((enemy) => enemy.health > 0)?.length || 0;
+
+    console.log("aliveEnemies", aliveEnemies);
+    if (aliveEnemies <= 1) {
+      return 0;
+    }
+
+    switch (aliveEnemies) {
+      case 2: {
+        if (selectedEnemy === 1) {
+          return 0;
+        }
+
+        return 1;
+      }
+
+      case 3: {
+        if (selectedEnemy === 1) {
+          return 2;
+        }
+
+        if (selectedEnemy === 2) {
+          return 0;
+        }
+
+        return 1;
+      }
+
+      default: {
+        return 0;
+      }
+    }
+  };
+
+  const getPreviousTargetIndex = () => {
+    const aliveEnemies =
+      battle?.enemy?.party?.filter((enemy) => enemy.health > 0)?.length || 0;
+
+    console.log("aliveEnemies", aliveEnemies);
+    if (aliveEnemies <= 1) {
+      return 0;
+    }
+
+    switch (aliveEnemies) {
+      case 2: {
+        if (selectedEnemy === 1) {
+          return 0;
+        }
+
+        return 1;
+      }
+
+      case 3: {
+        if (selectedEnemy === 1) {
+          return 0;
+        }
+
+        if (selectedEnemy === 2) {
+          return 1;
+        }
+
+        return 2;
+      }
+
+      default: {
+        return 0;
+      }
+    }
+  };
+
   useEffect(() => {
     const handleKeyBindings = (event: KeyboardEvent) => {
-      if (isGameInitiated && !hasChallenge && !isGameOver) {
+      if (isGameInitiated && !hasChallenge && !isGameOver && !sliderId) {
         if (event.key === "Escape") {
           if (locationState === RENDER_LOCATIONS.LEVELING) {
             toggleCharacterPanel();
@@ -79,6 +153,24 @@ export const useGlobalListeners = () => {
         ) {
           toggleCharacterPanel();
         }
+
+        if (
+          event.code === "KeyA" &&
+          locationState === RENDER_LOCATIONS.BATTLE &&
+          (battle?.enemy?.party?.length || 0) > 1
+        ) {
+          console.log("we fire ", getPreviousTargetIndex());
+          setSelectedEnemy(getPreviousTargetIndex());
+        }
+
+        if (
+          event.code === "KeyD" &&
+          locationState === RENDER_LOCATIONS.BATTLE &&
+          (battle?.enemy?.party?.length || 0) > 1
+        ) {
+          console.log("we fire ", getNextTargetIndex());
+          setSelectedEnemy(getNextTargetIndex());
+        }
       }
     };
 
@@ -96,5 +188,8 @@ export const useGlobalListeners = () => {
     hasChallenge,
     defaultSave,
     isGameOver,
+    sliderId,
+    battle,
+    selectedEnemy,
   ]);
 };

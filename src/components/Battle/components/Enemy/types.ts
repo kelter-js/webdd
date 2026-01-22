@@ -14,13 +14,12 @@ export interface FragmentData {
   dy: string;
 }
 
-export interface RenderedFragmentProps {
-  data: FragmentData;
-  imgSrc: string;
-  animated: boolean;
-  onAnimationEnd: () => void;
-}
-
 export interface EnemyProps {
-  isDead: boolean;
+  damage?: number;
+  isCritical?: boolean;
+  onDamageAnimationEnd?: VoidFunction;
+  layout: string;
+  isAttacking: boolean;
+  isSelected: boolean;
+  onAttackEnd: VoidFunction;
 }

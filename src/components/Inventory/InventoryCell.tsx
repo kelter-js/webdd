@@ -3,6 +3,8 @@ import { InventoryCellProps } from "./types";
 import { Stack } from "@mui/material";
 import { useDrag, useDrop } from "react-dnd";
 
+import emptySlot from "../../assets/static/empty_slot.png";
+
 const ITEM_TYPE = "INVENTORY_ITEM";
 
 export const InventoryCell: FC<InventoryCellProps> = ({ type, id, index }) => {
@@ -46,7 +48,7 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, id, index }) => {
       }}
       sx={{
         border: `${isDragging ? "5px" : "1px"} solid ${
-          isDragging ? "gold" : "orange"
+          isDragging ? "gold" : "transparent"
         }`,
         height: 190,
         width: 190,
@@ -54,6 +56,8 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, id, index }) => {
         opacity: isDragging ? 0 : 1,
         cursor: "pointer",
       }}
-    ></Stack>
+    >
+      <img src={emptySlot} />
+    </Stack>
   );
 };

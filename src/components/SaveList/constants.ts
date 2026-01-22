@@ -4,4 +4,5 @@ export const EMPTY_SAVE_DESCRIPTION = "Пустое сохранение";
 export enum SAVE_LOAD_STATUSES {
   LOAD = "Сохранение загружено",
   SAVE = "Игра сохранена",
+  NO_AUTO_SAVES = "Отсутствуют автосохранения, что-то пошло не так...",
 }

@@ -13,12 +13,24 @@ export interface AppState {
   isShaking: boolean;
   toggleShaking: VoidFunction;
   isModalOpen: boolean;
+  setNewGame: (state: boolean) => void;
+  isNewGame: boolean;
   toggleModal: VoidFunction;
   isAutoSaveRequired: boolean;
   toggleAutoSave: VoidFunction;
+  isAlmanacOpen: boolean;
+  enableAudio: VoidFunction;
+  isAudioEnabled: boolean;
+  toggleAlmanac: VoidFunction;
   isQuestModalOpen: boolean;
+  toggleTradeModal: VoidFunction;
+  isTradeModalOpen: boolean;
   toggleQuestModal: VoidFunction;
   isEconomicModalOpen: boolean;
+  toggleBuyPotionsModal: (value?: boolean) => void;
+  isBuyPotionsModalOpen: boolean;
   toggleEconomicModal: (value?: boolean) => void;
   reset: VoidFunction;
+  selectedEnemy: number;
+  setSelectedEnemy: (index: number) => void;
 }

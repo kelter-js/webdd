@@ -66,5 +66,13 @@ export const StartGameText = styled(Typography)(({ theme: { spacing } }) => ({
   letterSpacing: "1px",
   padding: spacing(1),
   borderBottom: "1px solid #5a3020",
+  borderTop: "1px solid #5a3020",
   fontFamily: "Cormorant Unicase",
+}));
+
+export const ClassDescription = styled(StartGameText)(() => ({
+  borderBottom: "none",
+  borderTop: "none",
+  fontSize: "18px",
+  textAlign: "center",
 }));

@@ -3,14 +3,17 @@ import { StoreSet } from "./types";
 
 export const resetGame = (set: StoreSet) => () =>
   // FIXME: возможно тут нужно рекалькулировать статы
-  set(() => ({
-    player: { ...DEFAULT_GAME_STATE },
-    effects: null,
-    inventory: null,
-    statistics: null,
-    gear: null,
-    abilities: null,
-    isDiceRequiredRoll: false,
-    isAutoSaveRequired: false,
-    playersLvlUpNotifications: [],
-  }));
+  set(() => {
+    console.log("DEFAULT_GAME_STATE", DEFAULT_GAME_STATE);
+    return {
+      player: { ...DEFAULT_GAME_STATE, consumables: [], name: "" },
+      effects: null,
+      inventory: null,
+      statistics: null,
+      gear: null,
+      abilities: null,
+      isDiceRequiredRoll: false,
+      isAutoSaveRequired: false,
+      playersLvlUpNotifications: [],
+    };
+  });

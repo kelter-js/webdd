@@ -1,19 +1,23 @@
-import { CatchGoblinIcon } from "./Icons/CatchGoblin";
-import { ClosePortalIcon } from "./Icons/ClosePortal";
+import { GameOverScreen } from "./GameOverScreen";
 import { LowHealthAura } from "./LowHealthAura";
 import { DiceRollModal } from "./DiceRollModal";
 import { FindItemIcon } from "./Icons/FindItem";
-import { TorchIcon } from "./Icons/Torch";
-import { GoldIcon } from "./Icons/Gold";
+import { TurnIndicator } from "./TurnIndicator";
+import { LoadingModal } from "./LoadingModal";
+import { Tooltip } from "./Tooltip";
+import { LevelUp } from "./LevelUp";
 import { Shake } from "./Shake";
+import * as Icons from "./Icons";
 
 export {
-  CatchGoblinIcon,
-  ClosePortalIcon,
+  GameOverScreen,
   LowHealthAura,
   DiceRollModal,
+  TurnIndicator,
   FindItemIcon,
-  TorchIcon,
-  GoldIcon,
+  LoadingModal,
+  Tooltip,
+  LevelUp,
   Shake,
+  Icons,
 };

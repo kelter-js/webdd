@@ -12,11 +12,13 @@ export const StyledModal = styled(Modal)(() => ({
   backdropFilter: "blur(4px) brightness(0.7)",
 }));
 
-export const ModalInner = styled("div")(() => ({
+export const ModalInner = styled("div", {
+  shouldForwardProp: (prop) => prop !== "height" && prop !== "height",
+})<{ withoutPadding?: boolean }>(({ withoutPadding }) => ({
   flex: 1,
   width: "100%",
   height: "100%",
-  padding: "24px",
+  padding: withoutPadding ? "0px" : "24px",
   borderRadius: "8px",
   background: `linear-gradient(
     rgba(25, 15, 10, 0.95),
@@ -37,10 +39,12 @@ export const Sparkles = styled("div")({
   animation: `${sparkle} 1.2s infinite ease-in-out`,
 });
 
-export const ModalContainer = styled("div")(() => ({
-  width: "75%",
+export const ModalContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "height" && prop !== "height",
+})<{ width: string; height: string }>(({ width, height }) => ({
+  width: width,
   maxWidth: "1200px",
-  height: "75%",
+  height: height,
   maxHeight: "85%",
   display: "flex",
 }));

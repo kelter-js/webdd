@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { Room } from "../../types";
 import { generateDungeon } from "../../utils";
 
-import { ClosePortal, QTEGame } from "../Minigames";
+import { ClosePortal, QTEGame, ShootingRange } from "../Minigames";
 import {
   RENDER_LOCATIONS,
   QUEST_STATUSES,
@@ -15,6 +15,9 @@ import {
 import { useAppState, useGameState, useGameSaves } from "../../stores";
 import { ROOM_TYPES } from "../../entities/room";
 import { DiceRollModal } from "../../common";
+import { BattleResult } from "./components/BattleResult";
+import { usePlayer } from "../../contexts/Player";
+import encunterSFX from "../../assets/audio/encounter.mp3";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -32,9 +35,11 @@ const ROOM_STYLES = {
   unvisited: { bg: "#1e293b", symbol: "?", color: "#64748b" },
 };
 
+const ENCOUNTER_SFX_PLAYER_REF = "encounter";
+
 export const Map = () => {
   const {
-    player: { location, economic },
+    player: { location, economic, battle },
     setDungeon,
     setPlayerPosition,
     updateDungeon,
@@ -43,6 +48,8 @@ export const Map = () => {
     handleExitDungeon,
   } = useGameState();
   const { setFading, toggleAutoSave } = useAppState();
+
+  const { handleSetSrc } = usePlayer();
 
   const { dungeon, position, type, ...rest } = location || {};
 
@@ -137,20 +144,21 @@ export const Map = () => {
         direction === DIRECTIONS.LEFT
           ? x - 1
           : direction === DIRECTIONS.RIGHT
-          ? x + 1
-          : x,
+            ? x + 1
+            : x,
       y:
         direction === DIRECTIONS.UP
           ? y - 1
           : direction === DIRECTIONS.DOWN
-          ? y + 1
-          : y,
+            ? y + 1
+            : y,
     };
 
     setPlayerPosition(newPos);
 
     updateDungeon({ position: newPos }, () => {
       setFading(true);
+      handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encunterSFX);
     });
 
     //mock
@@ -165,6 +173,7 @@ export const Map = () => {
     // });
   };
 
+  const reward = battle?.reward;
   const renderRoom = (room: Room) => {
     const isCurrent = position.x === room.x && position.y === room.y;
 
@@ -172,12 +181,12 @@ export const Map = () => {
       room.type === ROOM_TYPES.START
         ? ROOM_TYPES.START
         : room.type === ROOM_TYPES.END
-        ? ROOM_TYPES.END
-        : room.isDeadEndRoom
-        ? "deadEnd"
-        : room.visited
-        ? "visited"
-        : "unvisited";
+          ? ROOM_TYPES.END
+          : room.isDeadEndRoom
+            ? "deadEnd"
+            : room.visited
+              ? "visited"
+              : "unvisited";
 
     // Определяем направление входа для тупика
     const entranceDir = room.isDeadEndRoom
@@ -375,7 +384,7 @@ export const Map = () => {
                 >
                   {renderRoom(room)}
                 </div>
-              ))
+              )),
             )}
           </div>
         </div>
@@ -491,6 +500,8 @@ export const Map = () => {
         </ul>
       </div>
 
+      {reward && <BattleResult />}
+
       {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
         <ClosePortal onFail={handleFail} onWin={handleWin} />
       )}
@@ -498,6 +509,8 @@ export const Map = () => {
       {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
         <QTEGame onFail={handleFail} onWin={handleWin} />
       )}
+
+      <ShootingRange onFail={handleFail} onWin={handleWin} />
     </div>
   );
 };

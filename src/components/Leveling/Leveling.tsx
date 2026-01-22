@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+
+import { Tooltip } from "../../common";
 import {
   AbilityGrid,
   AbilityIcon,
@@ -8,7 +10,6 @@ import {
   CharacterName,
   StatItem,
 } from "./Leveling.styled";
-import { Tooltip } from "../../common/Tooltip";
 
 export const CharacterCard = ({ character }: any) => {
   const [activeAbility, setActiveAbility] = useState<null | number>(null);

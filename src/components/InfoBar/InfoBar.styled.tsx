@@ -20,7 +20,7 @@ export const ModalContent = styled(Box)(({ theme }) => ({
   backdropFilter: "blur(2px)",
   WebkitBackdropFilter: "blur(2px)",
   color: "#e0c0a0",
-  zIndex: 99999,
+  zIndex: 999999999999999999,
 }));
 
 export const StatContainer = styled("div")(({ theme }) => ({

@@ -4,7 +4,10 @@ import {
   Character,
   Creature,
   Effects,
+  GameStateData,
+  GearData,
   Item,
+  StoreState,
 } from "../types/gameState";
 import {
   DEAD_END_ENEMY_CHANCE,
@@ -27,7 +30,7 @@ export const getEncounterRoll = (
   effects: Effects | null,
   alreadyVisited: boolean,
   hasLight: boolean,
-  isDeadEnd: boolean
+  isDeadEnd: boolean,
 ) => {
   if (isDeadEnd) {
     return DEAD_END_ENEMY_CHANCE;
@@ -83,7 +86,7 @@ export const reviver = (_: string, value: any) => {
 const generateTierCreature = (
   locationTier: number,
   isDeadEnd?: boolean,
-  isComingBackWithoutTorchlight?: boolean
+  isComingBackWithoutTorchlight?: boolean,
 ) => {
   switch (locationTier) {
     case 1:
@@ -157,7 +160,7 @@ export const getFirstTurn = (
   enemyTier: 1 | 2 | 3,
   playerEffect: any,
   players: Character[],
-  isSpecial?: boolean
+  isSpecial?: boolean,
 ): TURN_STATES => {
   if (playerEffect?.sleep || playerEffect?.skip) {
     return TURN_STATES.ENEMY_TURN;
@@ -166,12 +169,12 @@ export const getFirstTurn = (
   // поправь формулу!
   const partyMaxHealth = players.reduce(
     (acc, item) => acc + item.endurance * 6,
-    0
+    0,
   );
 
   const partyCurrentHealth = players.reduce(
     (acc, item) => acc + item.currentHealth,
-    0
+    0,
   );
 
   // если у игрока оч мало хп - даем ему первый ход
@@ -201,20 +204,23 @@ export const getFirstTurn = (
 
   const roll = getRandom(0, 100);
 
+  console.log("roll", roll);
+  console.log("enemyChance", enemyChance);
+
   return roll < enemyChance ? TURN_STATES.ENEMY_TURN : TURN_STATES.PLAYER_TURN;
 };
 
 export const calculateStatistics = (
   character: Character,
-  gear?: Item[] | null
+  gear?: Item[] | null,
 ) => {
   const statistics = {
     defense: 0,
-    minAttack: character.accuracy * 0.7,
-    maxAttack: character.accuracy * 0.7,
-    evasionChance: character.agility * 4,
-    maxHealth: character.endurance * 10,
-    critChance: character.agility * 0.5,
+    minAttack: Math.round(character.accuracy * 0.7),
+    maxAttack: Math.round(character.accuracy * 0.7),
+    evasionChance: Math.round(character.agility * 4),
+    maxHealth: Math.round(character.endurance * 10),
+    critChance: Math.round(character.agility * 0.5),
   };
 
   // character.perksList.forEach((perk) => {
@@ -266,7 +272,7 @@ export const generateBattle = (
   tier: number,
   firstTurn: TURN_STATES,
   party: Character[],
-  isSpecial?: boolean
+  isSpecial?: boolean,
 ) => {
   if (isSpecial) {
     // всего их будет 3
@@ -364,4 +370,40 @@ export const generateBattle = (
 
   // mock
   return {};
+};
+
+export const increaseCharacterStat = (
+  state: StoreState,
+  characterName: string,
+  stat: "accuracy" | "agility" | "endurance",
+) => {
+  const { player, gear } = state;
+  const currentCharacter = player.party.find(
+    (character) => character.name === characterName,
+  );
+
+  if (currentCharacter) {
+    const characterCopy = { ...currentCharacter };
+    // увеличиваем характеристику
+    characterCopy[stat] += 1;
+    // уменьшаем кол-во имеющихся очков
+    characterCopy.points -= 1;
+
+    const characterGear = gear ? gear[characterCopy.name] : null;
+
+    return {
+      ...state,
+      player: {
+        ...player,
+        party: player.party.map((player) =>
+          player.name === characterName ? characterCopy : player,
+        ),
+      },
+      statistics: {
+        [characterCopy.name]: calculateStatistics(characterCopy, characterGear),
+      },
+    };
+  }
+
+  return state;
 };

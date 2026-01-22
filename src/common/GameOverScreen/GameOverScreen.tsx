@@ -1,17 +1,22 @@
+import { FC } from "react";
 import { Box } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { SAVE_LOAD_STATUSES } from "../../components/SaveList/constants";
 import { useAppState, useGameSaves, useGameState } from "../../stores";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { GameOverScreenProps } from "./types";
 
 import * as A from "./animation";
 import * as C from "./constants";
 import * as S from "./GameOverScreen.styled";
+import { resetDialogs } from "../../constants/dialogs/smith";
 
 // REFACTORING CHECKED ✅
 
-export const GameOverScreen = ({ isVisible = true }) => {
+export const GameOverScreen: FC<GameOverScreenProps> = ({
+  isVisible = true,
+}) => {
   const { setState, resetGame } = useGameState();
   const { reset } = useAppState();
   const { defaultSave } = useGameSaves();
@@ -22,13 +27,14 @@ export const GameOverScreen = ({ isVisible = true }) => {
       setState(defaultSave.gameState);
       showSnackbar(SAVE_LOAD_STATUSES.LOAD);
     } else {
-      showSnackbar("Отсутствуют автосохранения, что-то пошло не так...");
+      showSnackbar(SAVE_LOAD_STATUSES.NO_AUTO_SAVES);
     }
   };
 
   const startNewGame = () => {
     resetGame();
     reset();
+    resetDialogs();
   };
 
   return (

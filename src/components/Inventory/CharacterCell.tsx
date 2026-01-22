@@ -52,8 +52,8 @@ export const CharacterCell: FC<InventoryCellProps> = ({ type, id, index }) => {
         border: `${isOver || isDragging ? "5px" : "1px"} solid ${
           isOver || isDragging ? "gold" : "orange"
         }`,
-        height: 190,
-        width: 190,
+        height: 100,
+        width: 150,
         flexGrow: 1,
         opacity: isOver ? 0.5 : isDragging ? 0 : 1,
         cursor: "pointer",

@@ -10,6 +10,8 @@ export const useAppState = create<AppState>((set) => ({
   resetMenu: () => set(() => ({ saveMode: null, isMenuOpen: false })),
   saveMode: null,
   isDialogueOpen: null,
+  isNewGame: false,
+  setNewGame: (state) => set(() => ({ isNewGame: state })),
   setDialogueOpen: (dialogueId) => set(() => ({ isDialogueOpen: dialogueId })),
   isShaking: false,
   toggleShaking: () => set((state) => ({ isShaking: !state.isShaking })),
@@ -21,10 +23,28 @@ export const useAppState = create<AppState>((set) => ({
   isQuestModalOpen: false,
   toggleQuestModal: () =>
     set((state) => ({ isQuestModalOpen: !state.isQuestModalOpen })),
+  isAlmanacOpen: false,
+  toggleAlmanac: () =>
+    set((state) => ({ isAlmanacOpen: !state.isAlmanacOpen })),
   isEconomicModalOpen: false,
   toggleEconomicModal: (value?: boolean) =>
     set((state) => ({
       isEconomicModalOpen: value ?? !state.isEconomicModalOpen,
+    })),
+  isBuyPotionsModalOpen: false,
+  isAudioEnabled: false,
+  toggleBuyPotionsModal: (value?: boolean) =>
+    set((state) => ({
+      isBuyPotionsModalOpen: value ?? !state.isBuyPotionsModalOpen,
+    })),
+  isTradeModalOpen: false,
+  toggleTradeModal: () =>
+    set((state) => ({
+      isTradeModalOpen: !state.isTradeModalOpen,
+    })),
+  enableAudio: () =>
+    set(() => ({
+      isAudioEnabled: true,
     })),
   reset: () =>
     set(() => ({
@@ -37,5 +57,11 @@ export const useAppState = create<AppState>((set) => ({
       isAutoSaveRequired: false,
       isQuestModalOpen: false,
       isEconomicModalOpen: false,
+      isBuyPotionsModalOpen: false,
+    })),
+  selectedEnemy: 0,
+  setSelectedEnemy: (index) =>
+    set(() => ({
+      selectedEnemy: index,
     })),
 }));

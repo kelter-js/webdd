@@ -1,8 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { LevelUpContainer, PlayerLevel, PlayerName } from "./LevelUp.styled";
-import ornament from "../../assets/effects/lvlup.png";
-import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Box } from "@mui/material";
+
+import ornament from "../../assets/effects/lvlup.png";
+import { LevelUpContainer, PlayerLevel, PlayerName } from "./LevelUp.styled";
 
 export const LevelUp = () => {
   const [show, setShow] = useState(false);

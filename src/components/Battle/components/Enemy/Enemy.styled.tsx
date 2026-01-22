@@ -1,17 +1,27 @@
 import { styled } from "@mui/system";
 import { FragmentProps } from "./types";
+import { motion } from "framer-motion";
 
-export const Container = styled("div")({
+export const Container = styled(motion.div, {
+  shouldForwardProp: (prop: PropertyKey) => !["left"].includes(prop as string),
+})<{ left: string }>(({ left }) => ({
   position: "absolute",
   width: "408px",
-  height: "612px",
+  height: "555px",
   overflow: "hidden",
   textAlign: "center",
   zIndex: 99999999,
-  left: "50%",
-  top: "10%", // вертикальное смещение выше центра
-  transform: "translateX(-50%)",
-});
+  left: left,
+  top: "0%", // вертикальное смещение выше центра
+}));
+
+export const TargetContainer = styled("div")`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99999999;
+`;
 
 // Стилизованный фрагмент
 export const Fragment = styled("div", {

@@ -64,6 +64,12 @@ export const ContinueButton = styled(Button)({
   color: "#e0c4a0",
   border: "1px solid #3a1a10",
   padding: "0.3rem 1rem",
+
+  "&:disabled": {
+    color: "#e0c4a0",
+    opacity: 0.3,
+  },
+
   "&:hover": {
     backgroundColor: "#7a4030",
   },

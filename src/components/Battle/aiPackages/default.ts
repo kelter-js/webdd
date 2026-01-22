@@ -70,6 +70,7 @@ export const defaultCreatureBattleAi = async (battle: Battle) => {
     isGameOver: false,
     // FIXME: модель может обновляться иначе, могут быть увеличены ХП у врага, он может себя баффнуть
     // Как только определится логика с бафами и хилом - так и обновится модель возвращаемая из функции
+    target: target.name,
     model: { ...battle, player: { ...battle.player, party: updatedParty } },
   };
 };

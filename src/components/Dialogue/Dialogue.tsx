@@ -5,13 +5,21 @@ import { TextHolder } from "./TextHolder";
 
 import { useAppState } from "../../stores";
 import { DialogueProps } from "./types";
-import { DIALOGUE_FLAGS } from "../../entities/dialogues";
+import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
 import { useGameState } from "../../stores";
 import * as S from "./Dialogue.styled";
+import { DialogueOption } from "../../types/dialogue";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
-  const { setDialogueOpen, toggleEconomicModal } = useAppState();
-  const { updateDialogFlags, healTeam } = useGameState();
+  const {
+    setDialogueOpen,
+    toggleEconomicModal,
+    toggleBuyPotionsModal,
+    toggleAlmanac,
+    toggleTradeModal,
+  } = useAppState();
+  const { updateDialogFlags, healTeam, buyCamera, increaseResourcesBagLevel } =
+    useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
 
@@ -20,7 +28,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   // const { text, options, flags } = nodes[currentNode];
   const { text, options, flags } = nodes[currentNode];
 
-  const handleOptionClick = (option: { nextNode: string }) => {
+  const handleOptionClick = ({ nextNode, id }: DialogueOption) => {
     if (flags?.length) {
       if (flags.includes(DIALOGUE_FLAGS.ECONOMIC_INTRO)) {
         toggleEconomicModal();
@@ -33,11 +41,35 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       updateDialogFlags(flags);
     }
 
-    if (option.nextNode === "end") {
+    if (id === DIALOGUE_IDS.TAVERN_BUY) {
+      toggleBuyPotionsModal();
+    }
+
+    if (id === DIALOGUE_IDS.BUY_CAMERA) {
+      buyCamera();
+    }
+
+    if (id === DIALOGUE_IDS.ALMANAC) {
+      toggleAlmanac();
+    }
+
+    if (id === DIALOGUE_IDS.SMITH_TRADE) {
+      toggleTradeModal();
+    }
+
+    if (id === DIALOGUE_IDS.IMPROVE_BAG_INTRO) {
+      updateDialogFlags([DIALOGUE_FLAGS.IMPROVE_BAG]);
+    }
+
+    if (id === DIALOGUE_IDS.BUY_BAG_IMPROVEMENT) {
+      increaseResourcesBagLevel();
+    }
+
+    if (nextNode === "end") {
       setDialogueOpen(null);
     }
 
-    setCurrentNode(option.nextNode);
+    setCurrentNode(nextNode);
   };
 
   return (
@@ -61,6 +93,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
             <S.ContinueButton
               key={`${option.nextNode}-${index}`}
               onClick={() => handleOptionClick(option)}
+              disabled={option.isDisabled}
             >
               {option.text}
             </S.ContinueButton>

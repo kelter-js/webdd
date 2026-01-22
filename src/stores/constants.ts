@@ -1,7 +1,8 @@
+import { ENEMIES } from "../entities";
 import { CLASSES } from "../entities/characterClasses";
 import { DUNGEONS } from "../entities/dungeons";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
-import { GameStateData } from "../types/gameState";
+import { GameStateData, KillCounter } from "../types/gameState";
 
 export const MIN_ENCOUNTER_CHANCE = 8;
 export const MIN_ENCOUNTER_CHANCE_MID_TIER = 6;
@@ -18,6 +19,7 @@ export const DAMAGER_CLASS_DAMAGE_MLTPL = 1.2;
 export const HEALER_CLASS_DAMAGE_MLTPL = 0.8;
 
 export const HP_PER_ENDURANCE_POINT = 10;
+export const MAX_AMOUNT_OF_POTIONS_TO_SELL = 8;
 
 // EVADE DAMAGE FORMULA
 // Character.Agility × 0.4
@@ -125,6 +127,8 @@ export const TANK_BASE_MODEL = {
   currentHealth: 100,
   accuracy: 3,
   agility: 2,
+  critChance: 1.5,
+  critStrike: 1.1,
   characterClass: CLASSES.TANK,
 };
 export const DAMAGER_BASE_MODEL = {
@@ -142,6 +146,8 @@ export const HEALER_BASE_MODEL = {
   currentHealth: 60,
   accuracy: 5,
   agility: 4,
+  critChance: 1.5,
+  critStrike: 1.2,
   characterClass: CLASSES.HEALER,
 };
 
@@ -161,13 +167,27 @@ export const DEFAULT_GAME_STATE: GameStateData = {
   quest: null,
   gear_memoized: {},
   consumables: [],
-  gold: 0,
+  gold: 450,
   isGameOver: false,
   currentTier: 1,
   torches: 0,
   dialogFlags: [],
   economic: null,
-  dungeonsCounter: 0,
+
+  potionsToBuy: null,
+  sliderId: null,
+  playStatistics: {
+    dungeonCounter: 0,
+    kills: Object.fromEntries(
+      Object.keys(ENEMIES).map((item) => [item, 0]),
+    ) as KillCounter,
+  },
+  hasCamera: false,
+  junk: [],
+  resources: [],
+  resourcesBagLevel: 1,
+  collected: [],
+  flags: [],
 };
 
 export const DEFAULT_GAME_SAVE = {

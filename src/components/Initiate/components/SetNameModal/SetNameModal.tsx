@@ -1,5 +1,5 @@
 import { ChangeEventHandler, KeyboardEvent, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
 import {
   NAME_FIELD_INPUT_PROPS,
@@ -7,15 +7,30 @@ import {
 } from "./input-styles-config";
 import { useGameState, useAppState } from "../../../../stores";
 import * as S from "./SetNameModal.styled";
+import { CLASSES } from "../../../../entities/characterClasses";
+import medic from "../../../../assets/classIcons/medical.svg";
+import damager from "../../../../assets/classIcons/sniper.svg";
+import tank from "../../../../assets/classIcons/soldier.svg";
+import { FLAGS } from "../../../../constants";
 
 // REFACTORING CHECKED ✅
+
+const CLASS_DESCRIPTIONS = {
+  [CLASSES.DAMAGER]:
+    "Класс стрелка - рассчитан на нанесение большого количества урона, мало защиты.",
+  [CLASSES.HEALER]:
+    "Класс поддержки - направлен на лечение сопартийцев, средняя защита и урон.",
+  [CLASSES.TANK]:
+    "Класс инженера - способен пережить большое количество ранений, наносит мало урона.",
+};
 
 export const SetNameModal = () => {
   const [name, setName] = useState("");
   const [tryAmount, setTryAmount] = useState(0);
+  const [selectedClass, setSelectedClass] = useState<CLASSES>(CLASSES.DAMAGER);
 
-  const { setPlayerName } = useGameState();
-  const { setFading } = useAppState();
+  const { setPlayerName, setSliders, updateFlags } = useGameState();
+  const { setFading, setNewGame } = useAppState();
 
   const isEmptyName = name.trim().length === 0;
 
@@ -24,7 +39,12 @@ export const SetNameModal = () => {
       setTryAmount(1);
     } else {
       setFading(true);
-      setPlayerName(name);
+      setPlayerName(name, selectedClass);
+      // FIXME: передавать нужно реальный объект слайдеров
+      // setSliders(INTRO_SLIDES);
+      setSliders("something");
+      updateFlags(FLAGS.GAME_INITIATED);
+      setNewGame(true);
     }
   };
 
@@ -68,6 +88,47 @@ export const SetNameModal = () => {
             value={name}
             onChange={handleChangeName}
           />
+
+          <Stack gap={1} direction="row" justifyContent="center">
+            <Button
+              onClick={() => setSelectedClass(CLASSES.DAMAGER)}
+              sx={{
+                ...(selectedClass === CLASSES.DAMAGER && {
+                  border: "2px solid #c0a080",
+                }),
+              }}
+            >
+              <img src={damager} />
+            </Button>
+
+            <Button
+              onClick={() => setSelectedClass(CLASSES.HEALER)}
+              sx={{
+                ...(selectedClass === CLASSES.HEALER && {
+                  border: "2px solid #c0a080",
+                }),
+              }}
+            >
+              <img src={medic} />
+            </Button>
+
+            <Button
+              onClick={() => setSelectedClass(CLASSES.TANK)}
+              sx={{
+                ...(selectedClass === CLASSES.TANK && {
+                  border: "2px solid #c0a080",
+                }),
+              }}
+            >
+              <img src={tank} />
+            </Button>
+          </Stack>
+
+          <div>
+            <S.ClassDescription variant="h5">
+              {CLASS_DESCRIPTIONS[selectedClass]}
+            </S.ClassDescription>
+          </div>
 
           <Button
             variant="text"

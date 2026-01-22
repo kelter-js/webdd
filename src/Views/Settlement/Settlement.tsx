@@ -12,6 +12,9 @@ import { AVAILABLE_ECONOMIC_TYPES, AVAILABLE_QUESTS_TYPES } from "./constants";
 import { GameModal } from "../../components/GameModal";
 import { QuestCard } from "../../components/QuestCard";
 import { EconomicCard } from "../../components/EconomicCard";
+import { PotionsBuyModal } from "../../components/PotionsBuyModal";
+import { AlmanacModal } from "../../components/AlmanacModal";
+import { TradeModal } from "../../components/TradeModal";
 
 export const Settlement = () => {
   const {
@@ -25,6 +28,9 @@ export const Settlement = () => {
     isQuestModalOpen,
     toggleEconomicModal,
     isEconomicModalOpen,
+    isBuyPotionsModalOpen,
+    isAlmanacOpen,
+    isTradeModalOpen,
   } = useAppState();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
@@ -67,6 +73,10 @@ export const Settlement = () => {
           </Stack>
         </GameModal>
       )}
+
+      {isBuyPotionsModalOpen && <PotionsBuyModal />}
+      {isAlmanacOpen && <AlmanacModal />}
+      {isTradeModalOpen && <TradeModal />}
 
       {isEconomicModalOpen && (
         <GameModal onClose={() => toggleEconomicModal()}>

@@ -5,14 +5,13 @@ import { Map } from "../../components/Map";
 import { Battle } from "../../components/Battle";
 import { MenuLayout } from "../MenuLayout";
 import { Settlement } from "../Settlement";
-import { Shake } from "../../common";
 import { useAppState, useGameState } from "../../stores";
 import { InfoBar } from "../../components/InfoBar/InfoBar";
-import { LevelUp } from "../../common/LevelUp";
+import { LevelUp, Shake } from "../../common";
 
 export const ViewManager = () => {
   const {
-    player: { locationState },
+    player: { locationState, sliderId },
   } = useGameState();
 
   // const { isModalOpen, toggleModal } = useAppState();
@@ -20,7 +19,8 @@ export const ViewManager = () => {
   const isServiceLayoutVisible =
     locationState !== RENDER_LOCATIONS.BATTLE &&
     locationState !== RENDER_LOCATIONS.INVENTORY &&
-    locationState !== RENDER_LOCATIONS.LEVELING;
+    locationState !== RENDER_LOCATIONS.LEVELING &&
+    !sliderId;
 
   return (
     <Shake>

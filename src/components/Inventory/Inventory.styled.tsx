@@ -5,7 +5,7 @@ export const InventoryContainer = styled("div")`
   display: flex;
   flex-wrap: wrap;
   width: calc(100% - 64px);
-  height: 489px;
+  height: 463px;
   border: 2px solid blue;
   margin: 0 32px;
   margin-top: 16px;
@@ -21,6 +21,7 @@ export const CharactersView = styled("div")`
 `;
 
 export const CharacterGear = styled("div")(({ theme }) => ({
+  position: "relative",
   width: "35%",
   height: 400,
   border: "2px solid black",

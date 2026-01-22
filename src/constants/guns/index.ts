@@ -13,6 +13,152 @@ import { GUN_TYPES } from "../../entities/guns";
 // PISTOL 2 - FN 57
 // PISTOL 3 - DEAGLE
 
+// SHOTGUN 1 - MP-155
+// SHOTGUN 2 - Remington Model 870
+// SHOTGUN 3 - saiga 12
+
+// ASSAULT 1 - AK-12
+// ASSAULT 2 - M4A1
+// ASSAULT 3 - SA-58
+
+// MACHINE GUN 1 - RPK
+// MACHINE GUN 2 - PKM
+// MACHINE GUN 3 - M60
+
+// SNIPER 1 - SV-98
+// SNIPER 2 - ДВЛ-10
+// SNIPER 3 - AXMC .338
+
+// !!! СНАЙПЕРКИ
+export const SNIPER_TIER_1 = {
+  name: "SV-98",
+  description: "Российская снайперская винтовка СВ-98",
+  id: "SNIPER_TIER_1",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SNIPER_RIFLE,
+  magSize: 10,
+  critChance: 5,
+  tier: 1,
+  criticalStrike: 2.5,
+  bulletsPerTurn: 1,
+  minDamage: 9,
+  maxDamage: 18,
+};
+
+export const SNIPER_TIER_2 = {
+  name: "ДВЛ-10",
+  description: "Российская снайперская винтовка",
+  id: "SNIPER_TIER_2",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SNIPER_RIFLE,
+  magSize: 10,
+  critChance: 10,
+  tier: 1,
+  criticalStrike: 4,
+  bulletsPerTurn: 1,
+  minDamage: 14,
+  maxDamage: 28,
+};
+
+// !!! ДРОБОВИКИ
+export const SHOTGUN_TIER_1 = {
+  name: "MP-155",
+  description: "Американский дробовик",
+  id: "SHOTGUN_TIER_1",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SHOTGUN,
+  magSize: 8,
+  critChance: 1.2,
+  tier: 1,
+  criticalStrike: 0.9,
+  bulletsPerTurn: 1,
+  minDamage: 6,
+  maxDamage: 10,
+};
+
+export const SHOTGUN_TIER_2 = {
+  name: "Remington Model 870",
+  description: "Итальянский дробовик",
+  id: "SHOTGUN_TIER_2",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SHOTGUN,
+  magSize: 8,
+  critChance: 1.3,
+  tier: 2,
+  criticalStrike: 1,
+  bulletsPerTurn: 2,
+  minDamage: 10,
+  maxDamage: 16,
+};
+
+export const SHOTGUN_TIER_3 = {
+  name: "Saiga-12",
+  description: "Полуавтоматический дробовик",
+  id: "SHOTGUN_TIER_3",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SHOTGUN,
+  magSize: 12,
+  critChance: 1.2,
+  tier: 2,
+  criticalStrike: 1.1,
+  bulletsPerTurn: 2,
+  minDamage: 15,
+  maxDamage: 25,
+};
+
+export const ASSAULT_TIER_1 = {
+  name: "AK-12",
+  description: "Калашников",
+  id: "ASSAULT_TIER_1",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.ASSAULT_RIFLE,
+  magSize: 30,
+  critChance: 1.5,
+  tier: 1,
+  criticalStrike: 1,
+  bulletsPerTurn: 5,
+  minDamage: 7,
+  maxDamage: 12,
+};
+
+export const ASSAULT_TIER_2 = {
+  name: "M4A1",
+  description: "Кольт",
+  id: "ASSAULT_TIER_2",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.ASSAULT_RIFLE,
+  magSize: 30,
+  critChance: 1.4,
+  tier: 2,
+  criticalStrike: 1.1,
+  bulletsPerTurn: 6,
+  minDamage: 11,
+  maxDamage: 18,
+};
+
+export const ASSAULT_TIER_3 = {
+  name: "SA-58",
+  description: "Австрия",
+  id: "ASSAULT_TIER_3",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.ASSAULT_RIFLE,
+  magSize: 20,
+  critChance: 1.8,
+  tier: 3,
+  criticalStrike: 1.2,
+  bulletsPerTurn: 5,
+  minDamage: 16,
+  maxDamage: 26,
+};
+
 // !!! ПИСТОЛЕТЫ-ПУЛЕМЕТЫ
 export const SMG_TIER_1 = {
   name: "MP5SD",
@@ -28,6 +174,38 @@ export const SMG_TIER_1 = {
   bulletsPerTurn: 10,
   minDamage: 5,
   maxDamage: 9,
+};
+
+export const SMG_TIER_2 = {
+  name: "FN P90S",
+  description: "Футуристичный ПП",
+  id: "SMG_TIER_2",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SMG,
+  magSize: 50,
+  critChance: 3,
+  tier: 2,
+  criticalStrike: 0.9,
+  bulletsPerTurn: 10,
+  minDamage: 7,
+  maxDamage: 13,
+};
+
+export const SMG_TIER_3 = {
+  name: "KRISS VECTOR",
+  description: "Не менее футуристичный ПП",
+  id: "SMG_TIER_3",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SMG,
+  magSize: 48,
+  critChance: 2,
+  tier: 3,
+  criticalStrike: 1.5,
+  bulletsPerTurn: 12,
+  minDamage: 8,
+  maxDamage: 14,
 };
 
 // !!! ПИСТОЛЕТЫ
@@ -80,6 +258,23 @@ export const PISTOL_TIER_3 = {
 };
 
 // массив, который будет содержать все оружия первого тира
-export const WEAPONS_TIER_1 = [SMG_TIER_1, PISTOL_TIER_1];
-export const WEAPONS_TIER_2 = [PISTOL_TIER_2];
-export const WEAPONS_TIER_3 = [PISTOL_TIER_3];
+export const WEAPONS_TIER_1 = [
+  SMG_TIER_1,
+  PISTOL_TIER_1,
+  SHOTGUN_TIER_1,
+  ASSAULT_TIER_1,
+  SNIPER_TIER_1,
+];
+export const WEAPONS_TIER_2 = [
+  PISTOL_TIER_2,
+  SMG_TIER_2,
+  SHOTGUN_TIER_2,
+  ASSAULT_TIER_2,
+  SNIPER_TIER_2,
+];
+export const WEAPONS_TIER_3 = [
+  PISTOL_TIER_3,
+  SMG_TIER_3,
+  SHOTGUN_TIER_3,
+  ASSAULT_TIER_3,
+];

@@ -4,6 +4,8 @@ export interface DialogueOption {
   text: string;
   nextNode: string;
   flags?: string[]; // Опциональные флаги
+  id?: string;
+  isDisabled?: boolean;
 }
 
 export interface DialogueNode {

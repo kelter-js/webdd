@@ -104,7 +104,7 @@ export const TURN_INDICATOR_STYLE_CONFIG: MotionStyle = {
   width: "100%",
   height: "100%",
   backgroundColor: "rgba(0, 0, 0, 0.7)",
-  zIndex: 999999,
+  zIndex: 9999999999,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

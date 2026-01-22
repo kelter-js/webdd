@@ -1,7 +1,9 @@
 import cityImage from "../assets/city.png";
+import city2Image from "../assets/city2.png";
 
 export enum LOCATION_NAMES {
   CITY = "CITY",
+  CITY2 = "CITY2",
 }
 
 export enum BUILDING_NAMES {
@@ -11,7 +13,7 @@ export enum BUILDING_NAMES {
   GRAVEYARD = "graveyard",
   TOWER = "tower",
   TAVERN = "tavern",
-  RANGER = "ranger",
+  SHOP = "shop",
   CITADEL = "citadel",
 }
 
@@ -47,7 +49,7 @@ export const LOCATIONS = {
       {
         coords:
           "850,245,924,337,916,371,962,381,1072,352,1086,282,1041,228,865,209",
-        name: BUILDING_NAMES.RANGER,
+        name: BUILDING_NAMES.SHOP,
       },
       {
         coords:
@@ -57,6 +59,69 @@ export const LOCATIONS = {
     ],
     mapImage: cityImage,
   },
+  [LOCATION_NAMES.CITY2]: {
+    coords: [
+      {
+        // Большая область слева вверху
+        coords: "145,207,179,428,430,387,423,185",
+        name: BUILDING_NAMES.GRAVEYARD,
+      },
+      {
+        // Большая область слева внизу
+        coords: "31,535,289,497,413,558,454,660,148,720,38,687",
+        name: BUILDING_NAMES.CITADEL,
+      },
+      {
+        // Центральная нижняя область
+        coords: "539,402,481,482,444,553,635,611,851,557,842,463",
+        name: BUILDING_NAMES.TAVERN,
+      },
+      {
+        // Большая область справа внизу
+        coords: "1353,660,1395,521,1499,523,1787,565,1906,659,1695,744",
+        name: BUILDING_NAMES.SMITH,
+      },
+      {
+        // Прямоугольная область справа (средний уровень)
+        coords: "1914,513,1919,331,1748,313,1552,326,1549,463,1739,496",
+        name: BUILDING_NAMES.MEDICAL_STATION,
+      },
+      {
+        // Узкая горизонтальная область в центре
+        coords: "1320,470,1154,521,946,485,957,401,1102,351,1161,358",
+        name: BUILDING_NAMES.QUEST_DESK,
+      },
+      {
+        // Вертикальная область (похожа на Башню)
+        coords: "1219,170,1155,87,1097,136,1071,355,1226,372,1253,365",
+        name: BUILDING_NAMES.TOWER,
+      },
+      {
+        // Область справа вверху
+        coords: "1242,394,1244,321,1392,182,1607,204,1609,389,1482,412",
+        name: BUILDING_NAMES.SHOP,
+      },
+    ],
+    mapImage: city2Image,
+  },
 };
 
 export const ONE_SECOND_IN_MS = 1000;
+
+export enum FLAGS {
+  // флаги относящиеся к инициации игры
+  GAME_INITIATED = "GAME_INITIATED",
+
+  // улучшение артефактов
+  SMITH_ARTIFACT_ACHIEVED_TIER_1 = "SMITH_ARTIFACT_ACHIEVED_TIER_1",
+  SMITH_ARTIFACT_ACHIEVED_TIER_2 = "SMITH_ARTIFACT_ACHIEVED_TIER_2",
+  SMITH_ARTIFACT_ACHIEVED_TIER_3 = "SMITH_ARTIFACT_ACHIEVED_TIER_3",
+
+  ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1 = "ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1",
+  ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2 = "ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2",
+  ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_3 = "ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_3",
+
+  STARCOUNTER_ARTIFACT_ACHIEVED_TIER_1 = "STARCOUNTER_ARTIFACT_ACHIEVED_TIER_1",
+  STARCOUNTER_ARTIFACT_ACHIEVED_TIER_2 = "STARCOUNTER_ARTIFACT_ACHIEVED_TIER_2",
+  STARCOUNTER_ARTIFACT_ACHIEVED_TIER_3 = "STARCOUNTER_ARTIFACT_ACHIEVED_TIER_3",
+}

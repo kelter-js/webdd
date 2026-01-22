@@ -1,14 +1,20 @@
+import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
 import { calculateStatistics } from "../../utils";
 import { StoreSet } from "./types";
 
 export const initiateState = (set: StoreSet) => () =>
   set((state) => {
-    const stateCopy = { ...state };
+    const stateCopy = { ...state, player: { ...state.player } };
     stateCopy.statistics = {};
     stateCopy.abilities = {};
     stateCopy.gear = {};
     stateCopy.effects = {};
 
+    if (!stateCopy.player.potionsToBuy) {
+      stateCopy.player.potionsToBuy = generatePotionsList(
+        stateCopy.player.currentTier
+      );
+    }
     // инициализируем хар-ки
     state.player.party.forEach((player) => {
       stateCopy.statistics![player.name] = calculateStatistics(player);
@@ -58,6 +64,7 @@ export const initiateState = (set: StoreSet) => () =>
     console.log("so we fire too?");
     return {
       ...state,
+      player: { ...stateCopy.player },
       statistics: { ...(stateCopy.statistics || {}) },
       gear: { ...(stateCopy.gear || {}) },
       abilities: { ...(stateCopy.abilities || {}) },

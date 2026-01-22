@@ -41,11 +41,13 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleRemoveSrc = (id: string) => {
-    const srcCopies = { ...players };
-    delete srcCopies[id];
-    setPlayers(srcCopies);
+    if (players[id]) {
+      const srcCopies = { ...players };
+      delete srcCopies[id];
+      setPlayers(srcCopies);
 
-    delete refs.current[id];
+      delete refs.current[id];
+    }
   };
 
   const getPlayerRef = (id: string) => refs.current[id];
@@ -54,7 +56,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
     () => ({ players, handleSetSrc, getPlayerRef, handleRemoveSrc }),
     [players]
   );
-
+  console.log("players", players);
   return (
     <PlayerContext.Provider value={memoizedValue}>
       {Object.entries(players).map(([id, audioFile]) =>
@@ -68,6 +70,11 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
             className="visually-hidden"
             autoPlay
             loop={audioFile.hasLoop}
+            onEnded={() => {
+              if (!audioFile.hasLoop) {
+                handleRemoveSrc(id);
+              }
+            }}
           />
         ) : null
       )}

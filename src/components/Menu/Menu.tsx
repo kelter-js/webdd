@@ -6,6 +6,7 @@ import { useClickOutside } from "../../hooks";
 import { SaveList } from "../SaveList";
 import { MenuButtonText, ModalContent, ModalWindow } from "./Menu.styled";
 import { useGameState, useAppState } from "../../stores";
+import { resetDialogs } from "../../constants/dialogs/smith";
 
 // REFACTORING CHECKED ✅
 
@@ -23,6 +24,7 @@ export const Menu = () => {
   const startNewGame = () => {
     resetGame();
     reset();
+    resetDialogs();
   };
 
   useClickOutside(modalRef, resetMenu);

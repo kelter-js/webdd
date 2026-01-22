@@ -19,6 +19,8 @@ export const DICE_SHADOWS_STYLES: MotionStyle = {
 export const DICE_ROLL_CONTAINER_STYLES: MotionStyle = {
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
   gap: "40px",
   zIndex: 9999999999,
 };

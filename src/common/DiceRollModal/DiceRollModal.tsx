@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 import {
   DEFAULT_DICES_STATE,
@@ -22,7 +22,10 @@ import { DiceRollContainer } from "./DiceRollFramer.styled";
 
 // REFACTORING CHECKED ✅
 
-export const DiceRollModal: FC<DiceRollModalProps> = ({ turnOwner }) => {
+export const DiceRollModal: FC<DiceRollModalProps> = ({
+  turnOwner,
+  onAnimationEnd,
+}) => {
   const [isRolling, setIsRolling] = useState(true);
 
   const [diceResults, setDiceResults] =
@@ -52,7 +55,7 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({ turnOwner }) => {
         {/* Контейнер для кубиков */}
         <motion.div style={DICE_ROLL_CONTAINER_STYLES}>
           {/* Анимация для двух кубиков */}
-          <Stack direction="row">
+          <Stack direction="row" gap={2}>
             {DICES_AMOUNT.map((index) => (
               <motion.div
                 key={`dice-${index}`}
@@ -66,7 +69,11 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({ turnOwner }) => {
               </motion.div>
             ))}
           </Stack>
-          {!isRolling && turnOwner}
+          {!isRolling && (
+            <Typography variant="h5" fontFamily="inherit">
+              {turnOwner}
+            </Typography>
+          )}
         </motion.div>
       </DiceRollContainer>
     </AnimatePresence>

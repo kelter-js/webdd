@@ -20,3 +20,6 @@ export const CREATURE_ID_TO_AI_PACK_MAP = {};
 // каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
 // ключи - айди существа - значение это путь к имени с существом
 export const CREATURE_ID_TO_NAME_MAP = {};
+
+// FIXME: нужна имплементация генерации лута и награды за битву
+export const getRandomReward = () => {};
