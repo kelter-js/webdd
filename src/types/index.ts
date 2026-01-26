@@ -1,5 +1,6 @@
 // types.ts
 
+import { BASE_ITEMS_ID } from "../constants/items";
 import { ROOM_TYPES } from "../entities/room";
 
 export type Location =
@@ -26,3 +27,7 @@ export interface Room {
   isDeadEndRoom?: boolean;
   isLighted?: boolean;
 }
+
+// BASE_ITEMS_ID - для маппинга на основной предмет
+// второй стринг - uuidv4 уникальный айди для каждого предмета
+export type MemoizedItem = [BASE_ITEMS_ID, string];

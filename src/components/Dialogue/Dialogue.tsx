@@ -53,7 +53,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       toggleAlmanac();
     }
 
-    if (id === DIALOGUE_IDS.SMITH_TRADE) {
+    if (id === DIALOGUE_IDS.TRADER_BUY) {
       toggleTradeModal();
     }
 

@@ -9,16 +9,16 @@ import { useGameState, useAppState } from "../../../../stores";
 import * as S from "./SetNameModal.styled";
 import { CLASSES } from "../../../../entities/characterClasses";
 import medic from "../../../../assets/classIcons/medical.svg";
-import damager from "../../../../assets/classIcons/sniper.svg";
+import sniper from "../../../../assets/classIcons/sniper.svg";
 import tank from "../../../../assets/classIcons/soldier.svg";
 import { FLAGS } from "../../../../constants";
 
 // REFACTORING CHECKED ✅
 
 const CLASS_DESCRIPTIONS = {
-  [CLASSES.DAMAGER]:
+  [CLASSES.SNIPER]:
     "Класс стрелка - рассчитан на нанесение большого количества урона, мало защиты.",
-  [CLASSES.HEALER]:
+  [CLASSES.MEDIC]:
     "Класс поддержки - направлен на лечение сопартийцев, средняя защита и урон.",
   [CLASSES.TANK]:
     "Класс инженера - способен пережить большое количество ранений, наносит мало урона.",
@@ -27,7 +27,7 @@ const CLASS_DESCRIPTIONS = {
 export const SetNameModal = () => {
   const [name, setName] = useState("");
   const [tryAmount, setTryAmount] = useState(0);
-  const [selectedClass, setSelectedClass] = useState<CLASSES>(CLASSES.DAMAGER);
+  const [selectedClass, setSelectedClass] = useState<CLASSES>(CLASSES.SNIPER);
 
   const { setPlayerName, setSliders, updateFlags } = useGameState();
   const { setFading, setNewGame } = useAppState();
@@ -91,20 +91,20 @@ export const SetNameModal = () => {
 
           <Stack gap={1} direction="row" justifyContent="center">
             <Button
-              onClick={() => setSelectedClass(CLASSES.DAMAGER)}
+              onClick={() => setSelectedClass(CLASSES.SNIPER)}
               sx={{
-                ...(selectedClass === CLASSES.DAMAGER && {
+                ...(selectedClass === CLASSES.SNIPER && {
                   border: "2px solid #c0a080",
                 }),
               }}
             >
-              <img src={damager} />
+              <img src={sniper} />
             </Button>
 
             <Button
-              onClick={() => setSelectedClass(CLASSES.HEALER)}
+              onClick={() => setSelectedClass(CLASSES.MEDIC)}
               sx={{
-                ...(selectedClass === CLASSES.HEALER && {
+                ...(selectedClass === CLASSES.MEDIC && {
                   border: "2px solid #c0a080",
                 }),
               }}

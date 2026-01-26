@@ -26,6 +26,7 @@ export const ShootingRange: FC<MiniGameProps> = (props) => {
         new Array(targets.length).fill(null).map((_, index) => {
           return (
             <div
+              key={index}
               onClick={handleHitTarget}
               style={{
                 position: "absolute",

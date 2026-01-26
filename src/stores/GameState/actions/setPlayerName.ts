@@ -1,20 +1,20 @@
 import { CLASSES } from "../../../entities/characterClasses";
 import {
-  DAMAGER_BASE_MODEL,
-  HEALER_BASE_MODEL,
+  SNIPER_BASE_MODEL,
+  MEDIC_BASE_MODEL,
   TANK_BASE_MODEL,
 } from "../../constants";
 import { StoreSet } from "./types";
 
 const CLASSES_MAP = {
-  [CLASSES.DAMAGER]: DAMAGER_BASE_MODEL,
-  [CLASSES.HEALER]: HEALER_BASE_MODEL,
+  [CLASSES.SNIPER]: SNIPER_BASE_MODEL,
+  [CLASSES.MEDIC]: MEDIC_BASE_MODEL,
   [CLASSES.TANK]: TANK_BASE_MODEL,
 };
 
 const getBaseModelBySelectedClass = (selectedClass: CLASSES) =>
   CLASSES_MAP[selectedClass];
-const classList = [CLASSES.DAMAGER, CLASSES.HEALER, CLASSES.TANK];
+const classList = [CLASSES.SNIPER, CLASSES.MEDIC, CLASSES.TANK];
 
 const getOtherClassModelsList = (selectedClass: CLASSES) =>
   classList
@@ -39,7 +39,7 @@ export const setPlayerName =
           perksList: [],
         },
         {
-          name: "SomeWhatOfTestingName-HEALER",
+          name: "SomeWhatOfTestingName-MEDIC",
           experience: 0,
           level: 1,
           ...firstAvailableClassModel,

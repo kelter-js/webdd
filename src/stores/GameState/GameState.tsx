@@ -10,9 +10,9 @@ import {
   DUNGEONS,
 } from "../../entities";
 import {
-  DAMAGER_BASE_MODEL,
+  SNIPER_BASE_MODEL,
   DEFAULT_GAME_STATE,
-  HEALER_BASE_MODEL,
+  MEDIC_BASE_MODEL,
   MAX_ENCOUNTER_CHANCE,
   MIN_ENCOUNTER_CHANCE,
   TANK_BASE_MODEL,
@@ -71,6 +71,7 @@ import {
   giveResources,
   updateFlags,
   increaseResourcesBagLevel,
+  sellItem,
 } from "./actions";
 
 // Create the store
@@ -280,6 +281,7 @@ export const useGameState = create<StoreState>()(
       sellJunk: sellJunk(set),
       addJunk: addJunk(set),
       addResource: addResource(set),
+      sellItem: sellItem(set),
       giveResources: giveResources(set),
 
       handleExitDungeon: () =>
@@ -346,8 +348,8 @@ export const useGameState = create<StoreState>()(
 
             // FIXME: логика приведения оружия к стринговому виду для хранения в кач-ве мемоизированного значения
             // const memoizedItem = memoize(item);
-            const memoizedItem = "";
-            newMemoizedInventory.push(memoizedItem);
+            // const memoizedItem = "";
+            // newMemoizedInventory.push(memoizedItem);
           }
 
           stateCopy.player.consumables =

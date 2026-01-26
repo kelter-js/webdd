@@ -1,5 +1,5 @@
 export enum CLASSES {
-  HEALER = "HEALER",
+  MEDIC = "MEDIC",
   TANK = "TANK",
-  DAMAGER = "DAMAGER",
+  SNIPER = "SNIPER",
 }

@@ -6,7 +6,7 @@ import { useClickOutside } from "../../hooks";
 import { SaveList } from "../SaveList";
 import { MenuButtonText, ModalContent, ModalWindow } from "./Menu.styled";
 import { useGameState, useAppState } from "../../stores";
-import { resetDialogs } from "../../constants/dialogs/smith";
+import { resetDialogs } from "../../constants/dialogs";
 
 // REFACTORING CHECKED ✅
 

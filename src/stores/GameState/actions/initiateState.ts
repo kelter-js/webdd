@@ -1,3 +1,4 @@
+import { dememoizeItem } from "../../../utils/dememoizeItem";
 import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
 import { calculateStatistics } from "../../utils";
 import { StoreSet } from "./types";
@@ -9,12 +10,29 @@ export const initiateState = (set: StoreSet) => () =>
     stateCopy.abilities = {};
     stateCopy.gear = {};
     stateCopy.effects = {};
+    stateCopy.inventory =
+      stateCopy.player.inventory_memoized?.map((item) => dememoizeItem(item)) ||
+      [];
+
+    Object.entries(stateCopy.player?.gear_memoized || {}).forEach(
+      ([character, gearItems]) => {
+        if (stateCopy.gear) {
+          stateCopy.gear[character] = gearItems.map((item) =>
+            dememoizeItem(item),
+          );
+        }
+      },
+    );
 
     if (!stateCopy.player.potionsToBuy) {
       stateCopy.player.potionsToBuy = generatePotionsList(
-        stateCopy.player.currentTier
+        stateCopy.player.currentTier,
       );
     }
+
+    // MOCK
+    // здесь же нужно проинициализировать интентарь покупок если он пуст
+
     // инициализируем хар-ки
     state.player.party.forEach((player) => {
       stateCopy.statistics![player.name] = calculateStatistics(player);
@@ -28,42 +46,8 @@ export const initiateState = (set: StoreSet) => () =>
       });
     });
 
-    // if (stateCopy.player.gear_memoized && !state.gear) {
-    //   // здесь вызываем функцию, которая сначала парсит строку на объект с данными
-    //   const parsedGear = parseGear(stateCopy.player.gear_memoized);
-    //   if (parsedGear) {
-    //     // затем мы должны вызывать мап функцию, которая из строки сформирует нужные объекты с уже заполненными данными, иконкой, эффектами, статами
-    //     parsedGear.forEach((gear) => {
-    //       // ф-ия возвращает поле characterName и массив вещей, с уже заполненными полями
-    //       const { characterName, ...rest } = generateGear(gear);
-
-    // const currentCharacterStats = stateCopy.statistics[characterName];
-    //       rest.forEach((equipment) => {
-    //     if ( equipment.type === "ARTIFACT") {
-    //        const {effectName, effectValue} = getEffectFromGear(equipment);
-    //        state.effects[effectName] = effectValue;
-    //     }
-
-    //         if (equipment.type === "WEAPON") {
-    //           // из экипировки вычисляем урон и прибавляем к значениям, которые высчитали из хар-ик
-    //           currentCharacterStats.minAttack += equipment.minAttack;
-    //           currentCharacterStats.maxAttack += equipment.maxAttack;
-    //         }
-    //         if (equipment.type === "ARMOR") {
-    //           // из экипировки вычисляем броню и устанавливаем
-    //           currentCharacterStats.defense = equipment.armor;
-    //         }
-    // const { statName, statValue } = getStatsFromItem(equipment);
-    //           currentCharacterStats[statName] += statValue;
-    //       });
-    //       stateCopy.gear![characterName] = rest;
-    //     });
-    //   }
-    // }
-
-    console.log("so we fire too?");
     return {
-      ...state,
+      ...stateCopy,
       player: { ...stateCopy.player },
       statistics: { ...(stateCopy.statistics || {}) },
       gear: { ...(stateCopy.gear || {}) },

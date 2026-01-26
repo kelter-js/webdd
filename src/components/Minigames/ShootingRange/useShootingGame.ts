@@ -32,7 +32,7 @@ export const useShootingGame = ({ onFail, onWin }: MiniGameProps) => {
       const timerId = setTimeout(() => {
         setIndex((state) => state + 1);
         setFailsAmount((state) => state + 1);
-      }, 900);
+      }, 800);
       return () => clearTimeout(timerId);
     }
   }, [isStarted, currentIndex]);

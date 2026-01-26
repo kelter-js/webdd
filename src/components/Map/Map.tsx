@@ -510,7 +510,7 @@ export const Map = () => {
         <QTEGame onFail={handleFail} onWin={handleWin} />
       )}
 
-      <ShootingRange onFail={handleFail} onWin={handleWin} />
+      {/* <ShootingRange onFail={handleFail} onWin={handleWin} /> */}
     </div>
   );
 };

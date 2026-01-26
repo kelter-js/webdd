@@ -2,15 +2,17 @@ import { useState } from "react";
 import { TRADE_TYPES } from "./constants";
 import { GameModal } from "../GameModal";
 import { TabsContainer } from "./TradeModal.styled";
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useAppState } from "../../stores";
+import { BuyList } from "./components/BuyList";
+import { SellList } from "./components/SellList";
 
 export const TradeModal = () => {
   const { toggleTradeModal } = useAppState();
   const [tab, setTab] = useState<TRADE_TYPES>(TRADE_TYPES.BUY);
 
   return (
-    <GameModal onClose={toggleTradeModal}>
+    <GameModal onClose={toggleTradeModal} withoutPadding>
       <TabsContainer>
         <Button
           variant="text"
@@ -59,6 +61,11 @@ export const TradeModal = () => {
           </Typography>
         </Button>
       </TabsContainer>
+
+      <Stack sx={{ mt: 4 }}>
+        {tab === TRADE_TYPES.BUY && <BuyList />}
+        {tab === TRADE_TYPES.SELL && <SellList />}
+      </Stack>
     </GameModal>
   );
 };

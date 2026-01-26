@@ -1,4 +1,6 @@
+import { GEAR_SLOTS } from "../../entities/gear";
 import { GUN_TYPES } from "../../entities/guns";
+import { BASE_ITEMS_ID } from "../items";
 
 // FIXME: возможные эффекты на оружии в текущий момент - увеличение кол-ва патронов в магазине
 // увеличение шанса крита
@@ -33,23 +35,24 @@ import { GUN_TYPES } from "../../entities/guns";
 export const SNIPER_TIER_1 = {
   name: "SV-98",
   description: "Российская снайперская винтовка СВ-98",
-  id: "SNIPER_TIER_1",
   iconSrc: "",
   soundSrc: "",
-  type: GUN_TYPES.SNIPER_RIFLE,
+  gunType: GUN_TYPES.SNIPER_RIFLE,
+  type: GEAR_SLOTS.WEAPON,
   magSize: 10,
   critChance: 5,
   tier: 1,
   criticalStrike: 2.5,
   bulletsPerTurn: 1,
-  minDamage: 9,
-  maxDamage: 18,
+  minValue: 9,
+  value: 18,
+  baseId: BASE_ITEMS_ID.SNIPER_TIER_1,
+  price: 200,
 };
 
 export const SNIPER_TIER_2 = {
   name: "ДВЛ-10",
   description: "Российская снайперская винтовка",
-  id: "SNIPER_TIER_2",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SNIPER_RIFLE,
@@ -62,11 +65,25 @@ export const SNIPER_TIER_2 = {
   maxDamage: 28,
 };
 
+export const SNIPER_TIER_3 = {
+  name: "AXMC",
+  description: ".338 rifle",
+  iconSrc: "",
+  soundSrc: "",
+  type: GUN_TYPES.SNIPER_RIFLE,
+  magSize: 6,
+  critChance: 12,
+  tier: 1,
+  criticalStrike: 5,
+  bulletsPerTurn: 2,
+  minDamage: 22,
+  maxDamage: 40,
+};
+
 // !!! ДРОБОВИКИ
 export const SHOTGUN_TIER_1 = {
   name: "MP-155",
   description: "Американский дробовик",
-  id: "SHOTGUN_TIER_1",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SHOTGUN,
@@ -82,7 +99,6 @@ export const SHOTGUN_TIER_1 = {
 export const SHOTGUN_TIER_2 = {
   name: "Remington Model 870",
   description: "Итальянский дробовик",
-  id: "SHOTGUN_TIER_2",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SHOTGUN,
@@ -98,7 +114,6 @@ export const SHOTGUN_TIER_2 = {
 export const SHOTGUN_TIER_3 = {
   name: "Saiga-12",
   description: "Полуавтоматический дробовик",
-  id: "SHOTGUN_TIER_3",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SHOTGUN,
@@ -114,7 +129,7 @@ export const SHOTGUN_TIER_3 = {
 export const ASSAULT_TIER_1 = {
   name: "AK-12",
   description: "Калашников",
-  id: "ASSAULT_TIER_1",
+
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.ASSAULT_RIFLE,
@@ -130,7 +145,6 @@ export const ASSAULT_TIER_1 = {
 export const ASSAULT_TIER_2 = {
   name: "M4A1",
   description: "Кольт",
-  id: "ASSAULT_TIER_2",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.ASSAULT_RIFLE,
@@ -146,7 +160,6 @@ export const ASSAULT_TIER_2 = {
 export const ASSAULT_TIER_3 = {
   name: "SA-58",
   description: "Австрия",
-  id: "ASSAULT_TIER_3",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.ASSAULT_RIFLE,
@@ -163,7 +176,6 @@ export const ASSAULT_TIER_3 = {
 export const SMG_TIER_1 = {
   name: "MP5SD",
   description: "Немецкий ПП",
-  id: "SMG_TIER_1",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SMG,
@@ -179,7 +191,6 @@ export const SMG_TIER_1 = {
 export const SMG_TIER_2 = {
   name: "FN P90S",
   description: "Футуристичный ПП",
-  id: "SMG_TIER_2",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SMG,
@@ -195,7 +206,6 @@ export const SMG_TIER_2 = {
 export const SMG_TIER_3 = {
   name: "KRISS VECTOR",
   description: "Не менее футуристичный ПП",
-  id: "SMG_TIER_3",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.SMG,
@@ -212,7 +222,6 @@ export const SMG_TIER_3 = {
 export const PISTOL_TIER_1 = {
   name: "GLOCK 17",
   description: "Пистолет глок",
-  id: "PISTOL_TIER_1",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.PISTOL,
@@ -228,7 +237,6 @@ export const PISTOL_TIER_1 = {
 export const PISTOL_TIER_2 = {
   name: "FN Five Seven",
   description: "Пистолет Five Seven",
-  id: "PISTOL_TIER_2",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.PISTOL,
@@ -244,7 +252,6 @@ export const PISTOL_TIER_2 = {
 export const PISTOL_TIER_3 = {
   name: "Desert Eagle",
   description: "Пистолет DEAGLE",
-  id: "PISTOL_TIER_3",
   iconSrc: "",
   soundSrc: "",
   type: GUN_TYPES.PISTOL,

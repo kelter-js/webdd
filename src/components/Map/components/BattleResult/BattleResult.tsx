@@ -10,9 +10,10 @@ import { GEAR_SLOTS } from "../../../../entities/gear";
 import { POTION_TYPES } from "../../../../entities/consumables";
 import { GUN_TYPES } from "../../../../entities/guns";
 import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
+import { BASE_ITEMS_ID } from "../../../../constants/items";
 
 const mockReward: Reward = {
-  experience: [{ tank: 50 }, { healer: 30 }, { warrior: 20 }],
+  experience: [{ tank: 50 }, { medic: 30 }, { warrior: 20 }],
   money: 1500,
   potions: [
     {
@@ -33,8 +34,10 @@ const mockReward: Reward = {
       effect: {}, // пустой эффект, пока интерфейс пустой
       price: 1200,
       tier: 2,
-      modificationTier: 1,
       gearId: "weapon-001",
+      baseId: BASE_ITEMS_ID.SNIPER_TIER_1,
+      description: "",
+      iconSrc: "",
     },
     {
       type: GEAR_SLOTS.ARTIFACT,
@@ -43,8 +46,10 @@ const mockReward: Reward = {
       effect: {},
       price: 800,
       tier: 1,
-      modificationTier: 0,
       gearId: "armor-003",
+      baseId: BASE_ITEMS_ID.SNIPER_TIER_1,
+      description: "",
+      iconSrc: "",
     },
   ],
   junk: [
@@ -154,7 +159,7 @@ export const BattleResult = () => {
           </Stack>
         ))}
 
-        {items?.map(({ type, gunType, modificationTier, gearId }) => (
+        {items?.map(({ type, gunType, tier, gearId }) => (
           <Stack
             alignItems="center"
             width="100%"
@@ -167,7 +172,7 @@ export const BattleResult = () => {
             </Stack>
 
             <Typography fontFamily="inherit" fontSize={20}>
-              {getItemNameByGearId(gearId)} MK{modificationTier}
+              {getItemNameByGearId(gearId)} MK{tier}
             </Typography>
           </Stack>
         ))}

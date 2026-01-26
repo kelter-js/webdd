@@ -32,6 +32,7 @@ import { buyCamera } from "./buyCamera";
 import { setState } from "./setState";
 import { healTeam } from "./healTeam";
 import { sellJunk } from "./sellJunk";
+import { sellItem } from "./sellItem";
 import { addJunk } from "./addJunk";
 
 export {
@@ -69,5 +70,6 @@ export {
   setState,
   healTeam,
   sellJunk,
+  sellItem,
   addJunk,
 };

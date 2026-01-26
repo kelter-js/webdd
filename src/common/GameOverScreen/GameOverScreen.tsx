@@ -10,7 +10,7 @@ import { GameOverScreenProps } from "./types";
 import * as A from "./animation";
 import * as C from "./constants";
 import * as S from "./GameOverScreen.styled";
-import { resetDialogs } from "../../constants/dialogs/smith";
+import { resetDialogs } from "../../constants/dialogs";
 
 // REFACTORING CHECKED ✅
 

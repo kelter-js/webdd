@@ -1,6 +1,7 @@
-import { Room } from ".";
+import { MemoizedItem, Room } from ".";
 import { POSITIONS } from "../common/TurnIndicator/entities";
 import { FLAGS } from "../constants";
+import { BASE_ITEMS_ID } from "../constants/items";
 
 import {
   RENDER_LOCATIONS,
@@ -58,7 +59,7 @@ export interface Statistics {
 }
 
 // интерфейс модели предмета, в свойстве inventory будет массив из таких моделей
-// memoized вариант будет содержать только modificationTier и id
+// memoized вариант будет содержать только Tier и baseId и id
 export interface Item {
   type: GEAR_SLOTS;
   gunType?: GUN_TYPES;
@@ -67,9 +68,16 @@ export interface Item {
   effect?: ItemEffects;
   price: number;
   tier: number;
-  modificationTier: number;
+  baseId: BASE_ITEMS_ID;
   // нужно будет типизировать - уникальный айди каждому предмету
-  gearId: any;
+  gearId: string;
+  description: string;
+  iconSrc: string;
+  soundSrc?: string;
+  magSize?: number;
+  critChance?: number;
+  criticalStrike?: number;
+  bulletsPerTurn?: number;
 }
 // интерфейс модели представляющий противника ЛЮБОГО
 export interface Creature {
@@ -197,14 +205,14 @@ export interface PlayStatistics {
 export interface GameStateData {
   party: Character[];
   // memoized - будет храниться в localStorage, иметь максимально сокращенную структуру, парситься и устанавливаться в gear
-  gear_memoized: Record<string, string>;
+  gear_memoized: Record<string, MemoizedItem[]>;
   location: null | Location;
   name: string;
   locationState: RENDER_LOCATIONS;
   prevLocationState: null | RENDER_LOCATIONS;
   battle: null | Battle;
   quest: null | Quest;
-  inventory_memoized: string[];
+  inventory_memoized: MemoizedItem[];
   gold: number;
   isGameOver: boolean;
   torches: number;
@@ -274,6 +282,7 @@ export interface StoreState {
   buyCamera: VoidFunction;
   increaseResourcesBagLevel: VoidFunction;
   setBattleTurn: (newTurn: TURN_STATES) => void;
+  sellItem: (itemId: string) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
   setSliders: (newTurn: string | null) => void;
@@ -341,6 +350,7 @@ export type PersistedState = Omit<
   | "sellJunk"
   | "addJunk"
   | "giveResources"
+  | "sellItem"
 
   // ф-ии чисто для тестов
   | "killEnemy"
