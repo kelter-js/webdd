@@ -106,7 +106,6 @@ export const AbilityGrid = styled(Box)({
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: "16px",
-  margin: "24px 0",
 });
 
 export const AbilityIcon = styled(motion.div)({
@@ -141,26 +140,34 @@ export const AbilityIcon = styled(motion.div)({
   },
 });
 
-export const StatItem = styled(Box)({
+export const StatItem = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "hasSparePoints",
+})<{ hasSparePoints: boolean }>(({ hasSparePoints }) => ({
+  position: "relative",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "8px 12px",
+  paddingRight: hasSparePoints ? "30px" : "12px",
   backgroundColor: "rgba(40, 20, 20, 0.5)",
   borderLeft: "3px solid #5a2a2a",
   marginBottom: "8px",
+  cursor: hasSparePoints ? "pointer" : "unset",
+  pointerEvents: hasSparePoints ? "all" : "none",
   "& .stat-name": {
     color: "#c0a080",
     fontSize: "1.1rem",
+    userSelect: "none",
   },
   "& .stat-value": {
     color: "#e0b050",
     fontWeight: "bold",
     fontSize: "1.2rem",
     textShadow: "0 0 5px rgba(224, 176, 80, 0.5)",
+    userSelect: "none",
   },
   "&:hover": {
     backgroundColor: "rgba(80, 40, 40, 0.3)",
     borderLeftColor: "#a05050",
   },
-});
+}));

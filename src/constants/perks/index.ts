@@ -1,0 +1,295 @@
+import { CLASSES } from "../../entities/characterClasses";
+
+export enum TANK_PERKS {
+  // 1 тир перков
+  HEALTH = "HEALTH",
+  DODGE = "DODGE",
+
+  // 2 тир перков
+  INSPIRATION = "INSPIRATION",
+  VAMPIRE = "VAMPIRE",
+
+  // 3 тир перков
+  HEALTH_V2 = "HEALTH_V2",
+  DODGE_V2 = "DODGE_V2",
+
+  // 4 тир перков
+  CRUSHER = "CRUSHER",
+  RECKLESSNESS = "RECKLESSNESS",
+
+  // 5 тир перков
+  LAST_STAND = "LAST_STAND",
+  SCARLESS = "SCARLESS",
+}
+
+export const TANK_PERKS_DESCRIPTIONS = {
+  [TANK_PERKS.HEALTH]: "Увеличение здоровья",
+  [TANK_PERKS.DODGE]: "Шанс увернуться от атаки",
+  [TANK_PERKS.INSPIRATION]: "Шанс на дополнительную атаку за ход",
+  [TANK_PERKS.VAMPIRE]:
+    "Шанс восстановить здоровье после атаки на половину нанесенного урона",
+  [TANK_PERKS.HEALTH_V2]: "Увеличение здоровья",
+  [TANK_PERKS.DODGE_V2]: "Шанс увернуться от атаки",
+  [TANK_PERKS.CRUSHER]: "Шанс оглушить противника атакой",
+  [TANK_PERKS.RECKLESSNESS]:
+    "Шанс совершить фронтальную атаку, которая нанесет урон всем врагам на поле",
+  [TANK_PERKS.LAST_STAND]:
+    "Активная способность: снижает весь получаемый урон на 15% на следующие два раунда",
+  [TANK_PERKS.SCARLESS]:
+    "Пассивная способность: снижает в два раза шанс получить критический урон",
+} as const;
+
+export const TANK_PERKS_DATA = {
+  firstTier: [
+    {
+      id: TANK_PERKS.HEALTH,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.HEALTH],
+    },
+    {
+      id: TANK_PERKS.DODGE,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.DODGE],
+    },
+  ],
+  secondTier: [
+    {
+      id: TANK_PERKS.INSPIRATION,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.INSPIRATION],
+    },
+    {
+      id: TANK_PERKS.VAMPIRE,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.VAMPIRE],
+    },
+  ],
+  thirdTier: [
+    {
+      id: TANK_PERKS.HEALTH_V2,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.HEALTH_V2],
+    },
+    {
+      id: TANK_PERKS.DODGE_V2,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.DODGE_V2],
+    },
+  ],
+  fourthTier: [
+    {
+      id: TANK_PERKS.CRUSHER,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.CRUSHER],
+    },
+    {
+      id: TANK_PERKS.RECKLESSNESS,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.RECKLESSNESS],
+    },
+  ],
+  fifthTier: [
+    {
+      id: TANK_PERKS.LAST_STAND,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.LAST_STAND],
+      isAbility: true,
+    },
+    {
+      id: TANK_PERKS.SCARLESS,
+      description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.SCARLESS],
+    },
+  ],
+} as const;
+
+export enum SNIPER_PERKS {
+  // 1 тир перков
+  CRITICAL_CHANCE = "CRITICAL_CHANCE",
+  CRITICAL_STRIKE = "CRITICAL_STRIKE",
+
+  // 2 тир перков
+  SHOCKER = "SHOCKER",
+  LIFE_STEALER = "LIFE_STEALER",
+
+  // 3 тир перков
+  CRITICAL_CHANCE_V2 = "CRITICAL_CHANCE_V2",
+  CRITICAL_STRIKE_V2 = "CRITICAL_STRIKE_V2",
+
+  // 4 тир перков
+  DAMAGE_INSPIRATION = "DAMAGE_INSPIRATION",
+  RICOCHETTE = "RICOCHETTE",
+
+  // 5 тир перков
+  INSTAKILL = "INSTAKILL",
+  BREACHER = "BREACHER",
+}
+
+export const SNIPER_PERKS_DESCRIPTIONS = {
+  [SNIPER_PERKS.CRITICAL_CHANCE]: "Увеличение шанса критического урона",
+  [SNIPER_PERKS.CRITICAL_STRIKE]: "Увеличение силы критического удара",
+  [SNIPER_PERKS.SHOCKER]:
+    "Небольшой шанс, что ваша атака заставит врага пропустить ход",
+  [SNIPER_PERKS.LIFE_STEALER]:
+    "Небольшой шанс, что ваша атака восстановит ваше здоровье",
+  [SNIPER_PERKS.CRITICAL_CHANCE_V2]: "Увеличение шанса критического урона",
+  [SNIPER_PERKS.CRITICAL_STRIKE_V2]: "Увеличение силы критического удара",
+  [SNIPER_PERKS.DAMAGE_INSPIRATION]:
+    "Небольшой шанс, что ваша атака вдохновит союзников, и в следующий ход они получат дополнительно +5% урона",
+  [SNIPER_PERKS.RICOCHETTE]:
+    "Небольшой шанс, что ваша атака может вызвать рикошет и нанести половину основного урона другим врагам",
+  [SNIPER_PERKS.INSTAKILL]:
+    "Активная: с небольшим шансом следующая атака убьет врага с одного удара - перезарядка два хода",
+  [SNIPER_PERKS.BREACHER]:
+    "Пассивная: ваша атака имеет шанс уменьшить сопротивление врага вдвое",
+} as const;
+
+export const SNIPER_PERKS_DATA = {
+  firstTier: [
+    {
+      id: SNIPER_PERKS.CRITICAL_CHANCE,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.CRITICAL_CHANCE],
+    },
+    {
+      id: SNIPER_PERKS.CRITICAL_STRIKE,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.CRITICAL_STRIKE],
+    },
+  ],
+  secondTier: [
+    {
+      id: SNIPER_PERKS.SHOCKER,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.SHOCKER],
+    },
+    {
+      id: SNIPER_PERKS.LIFE_STEALER,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.LIFE_STEALER],
+    },
+  ],
+  thirdTier: [
+    {
+      id: SNIPER_PERKS.CRITICAL_CHANCE_V2,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.CRITICAL_CHANCE_V2],
+    },
+    {
+      id: SNIPER_PERKS.CRITICAL_STRIKE_V2,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.CRITICAL_STRIKE_V2],
+    },
+  ],
+  fourthTier: [
+    {
+      id: SNIPER_PERKS.DAMAGE_INSPIRATION,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.DAMAGE_INSPIRATION],
+    },
+    {
+      id: SNIPER_PERKS.RICOCHETTE,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.RICOCHETTE],
+    },
+  ],
+  fifthTier: [
+    {
+      id: SNIPER_PERKS.INSTAKILL,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.INSTAKILL],
+      isAbility: true,
+    },
+    {
+      id: SNIPER_PERKS.BREACHER,
+      description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.BREACHER],
+    },
+  ],
+} as const;
+
+export enum MEDIC_PERKS {
+  // 1 тир перков
+  INCREASE_DAMAGE = "INCREASE_DAMAGE",
+  INCREASE_HEALTH = "INCREASE_HEALTH",
+
+  // 2 тир перков
+  BLEED = "BLEED",
+  HEAL = "HEAL",
+
+  // 3 тир перков
+  INCREASE_DAMAGE_V2 = "INCREASE_DAMAGE_V2",
+  INCREASE_HEALTH_V2 = "INCREASE_HEALTH_V2",
+
+  // 4 тир перков
+  CURSED_ATTACK = "CURSED_ATTACK",
+  WEAK_SPOTTER = "WEAK_SPOTTER",
+
+  // 5 тир перков
+  HEAL_ALL = "HEAL_ALL",
+  FORTIFICATION = "FORTIFICATION",
+}
+
+export const MEDIC_PERKS_DESCRIPTIONS = {
+  [MEDIC_PERKS.INCREASE_DAMAGE]: "Увеличение урона на 5%",
+  [MEDIC_PERKS.INCREASE_HEALTH]: "Увеличение здоровья",
+  [MEDIC_PERKS.BLEED]:
+    "Шанс, что следующая атака вызовет у врага кровотечение - 5% урона за ход в течение двух ходов",
+  [MEDIC_PERKS.HEAL]: "Шанс, что следующая атака вылечит весь отряд на 10%",
+  [MEDIC_PERKS.INCREASE_DAMAGE_V2]: "Увеличение урона на 5%",
+  [MEDIC_PERKS.INCREASE_HEALTH_V2]: "Увеличение здоровья",
+  [MEDIC_PERKS.CURSED_ATTACK]:
+    "Небольшой шанс, что атака уменьшит урон врага вдвое на следующий раунд",
+  [MEDIC_PERKS.WEAK_SPOTTER]:
+    "Небольшой шанс, что атака уменьшит сопротивление врага на 15%",
+  [MEDIC_PERKS.HEAL_ALL]:
+    "Активная: лечит весь отряд на 30% - перезарядка 2 хода",
+  [MEDIC_PERKS.FORTIFICATION]:
+    "Пассивная: увеличивает здоровье всех членов команды на 20%",
+} as const;
+
+export const MEDIC_PERKS_DATA = {
+  firstTier: [
+    {
+      id: MEDIC_PERKS.INCREASE_DAMAGE,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.INCREASE_DAMAGE],
+    },
+    {
+      id: MEDIC_PERKS.INCREASE_HEALTH,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.INCREASE_HEALTH],
+    },
+  ],
+  secondTier: [
+    {
+      id: MEDIC_PERKS.BLEED,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.BLEED],
+    },
+    {
+      id: MEDIC_PERKS.HEAL,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.HEAL],
+    },
+  ],
+  thirdTier: [
+    {
+      id: MEDIC_PERKS.INCREASE_DAMAGE_V2,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.INCREASE_DAMAGE_V2],
+    },
+    {
+      id: MEDIC_PERKS.INCREASE_HEALTH_V2,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.INCREASE_HEALTH_V2],
+    },
+  ],
+  fourthTier: [
+    {
+      id: MEDIC_PERKS.CURSED_ATTACK,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.CURSED_ATTACK],
+    },
+    {
+      id: MEDIC_PERKS.WEAK_SPOTTER,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.WEAK_SPOTTER],
+    },
+  ],
+  fifthTier: [
+    {
+      id: MEDIC_PERKS.HEAL_ALL,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.HEAL_ALL],
+      isAbility: true,
+    },
+    {
+      id: MEDIC_PERKS.FORTIFICATION,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.FORTIFICATION],
+    },
+  ],
+} as const;
+
+export const PERK_DATA_BY_CLASSES = {
+  [CLASSES.MEDIC]: MEDIC_PERKS_DATA,
+  [CLASSES.SNIPER]: SNIPER_PERKS_DATA,
+  [CLASSES.TANK]: TANK_PERKS_DATA,
+};
+
+export const FIRST_PERK_LEVEL_REQUIREMENT = 3;
+export const SECOND_PERK_LEVEL_REQUIREMENT = 6;
+export const THIRD_PERK_LEVEL_REQUIREMENT = 9;
+export const FOURTH_PERK_LEVEL_REQUIREMENT = 12;
+export const FIFTH_PERK_LEVEL_REQUIREMENT = 15;

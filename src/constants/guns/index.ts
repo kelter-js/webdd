@@ -48,6 +48,7 @@ export const SV98_TIER_1 = {
   value: 18,
   baseId: BASE_ITEMS_ID.SV98_TIER_1,
   price: 200,
+  overAllTier: 1,
 };
 
 export const SV98_TIER_2 = {
@@ -66,6 +67,7 @@ export const SV98_TIER_2 = {
   value: 23,
   baseId: BASE_ITEMS_ID.SV98_TIER_2,
   price: 500,
+  overAllTier: 1,
 };
 
 export const SV98_TIER_3 = {
@@ -84,6 +86,7 @@ export const SV98_TIER_3 = {
   value: 28,
   baseId: BASE_ITEMS_ID.SV98_TIER_3,
   price: 1000,
+  overAllTier: 1,
 };
 
 export const DLV10_TIER_1 = {
@@ -102,6 +105,7 @@ export const DLV10_TIER_1 = {
   value: 28,
   baseId: BASE_ITEMS_ID.DLV10_TIER_1,
   price: 800,
+  overAllTier: 2,
 };
 
 export const DLV10_TIER_2 = {
@@ -120,6 +124,7 @@ export const DLV10_TIER_2 = {
   value: 35,
   baseId: BASE_ITEMS_ID.DLV10_TIER_2,
   price: 1200,
+  overAllTier: 2,
 };
 
 export const DLV10_TIER_3 = {
@@ -138,6 +143,7 @@ export const DLV10_TIER_3 = {
   value: 43,
   baseId: BASE_ITEMS_ID.DLV10_TIER_3,
   price: 1500,
+  overAllTier: 2,
 };
 
 export const AXMC_TIER_1 = {
@@ -156,6 +162,7 @@ export const AXMC_TIER_1 = {
   value: 40,
   baseId: BASE_ITEMS_ID.AXMC_TIER_1,
   price: 1500,
+  overAllTier: 3,
 };
 
 export const AXMC_TIER_2 = {
@@ -174,6 +181,7 @@ export const AXMC_TIER_2 = {
   value: 50,
   baseId: BASE_ITEMS_ID.AXMC_TIER_2,
   price: 1500,
+  overAllTier: 3,
 };
 
 export const AXMC_TIER_3 = {
@@ -192,6 +200,7 @@ export const AXMC_TIER_3 = {
   value: 62,
   baseId: BASE_ITEMS_ID.AXMC_TIER_3,
   price: 2000,
+  overAllTier: 3,
 };
 
 // !!! ДРОБОВИКИ
@@ -211,6 +220,7 @@ export const MP155_TIER_1 = {
   value: 10,
   baseId: BASE_ITEMS_ID.MP155_TIER_1,
   price: 1500,
+  overAllTier: 1,
 };
 
 export const MP155_TIER_2 = {
@@ -229,6 +239,7 @@ export const MP155_TIER_2 = {
   value: 13,
   baseId: BASE_ITEMS_ID.MP155_TIER_2,
   price: 2000,
+  overAllTier: 1,
 };
 
 export const MP155_TIER_3 = {
@@ -247,6 +258,7 @@ export const MP155_TIER_3 = {
   value: 15,
   baseId: BASE_ITEMS_ID.MP155_TIER_3,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const REMINGTON_870_TIER_1 = {
@@ -265,6 +277,7 @@ export const REMINGTON_870_TIER_1 = {
   value: 16,
   baseId: BASE_ITEMS_ID.REMINGTON_870_TIER_1,
   price: 1500,
+  overAllTier: 2,
 };
 
 export const REMINGTON_870_TIER_2 = {
@@ -283,6 +296,7 @@ export const REMINGTON_870_TIER_2 = {
   value: 20,
   baseId: BASE_ITEMS_ID.REMINGTON_870_TIER_2,
   price: 2000,
+  overAllTier: 2,
 };
 
 export const REMINGTON_870_TIER_3 = {
@@ -301,6 +315,7 @@ export const REMINGTON_870_TIER_3 = {
   value: 25,
   baseId: BASE_ITEMS_ID.REMINGTON_870_TIER_3,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const SAIGA_TIER_1 = {
@@ -319,6 +334,7 @@ export const SAIGA_TIER_1 = {
   value: 25,
   baseId: BASE_ITEMS_ID.SAIGA_TIER_1,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const SAIGA_TIER_2 = {
@@ -337,6 +353,7 @@ export const SAIGA_TIER_2 = {
   value: 31,
   baseId: BASE_ITEMS_ID.SAIGA_TIER_2,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const SAIGA_TIER_3 = {
@@ -355,6 +372,7 @@ export const SAIGA_TIER_3 = {
   value: 39,
   baseId: BASE_ITEMS_ID.SAIGA_TIER_3,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const AK_12_TIER_1 = {
@@ -373,6 +391,7 @@ export const AK_12_TIER_1 = {
   value: 12,
   baseId: BASE_ITEMS_ID.AK_12_TIER_1,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const AK_12_TIER_2 = {
@@ -391,6 +410,7 @@ export const AK_12_TIER_2 = {
   value: 15,
   baseId: BASE_ITEMS_ID.AK_12_TIER_2,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const AK_12_TIER_3 = {
@@ -409,6 +429,7 @@ export const AK_12_TIER_3 = {
   value: 19,
   baseId: BASE_ITEMS_ID.AK_12_TIER_3,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const M4A1_TIER_1 = {
@@ -427,6 +448,7 @@ export const M4A1_TIER_1 = {
   value: 18,
   baseId: BASE_ITEMS_ID.M4A1_TIER_1,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const M4A1_TIER_2 = {
@@ -445,6 +467,7 @@ export const M4A1_TIER_2 = {
   value: 23,
   baseId: BASE_ITEMS_ID.M4A1_TIER_2,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const M4A1_TIER_3 = {
@@ -463,6 +486,7 @@ export const M4A1_TIER_3 = {
   value: 28,
   baseId: BASE_ITEMS_ID.M4A1_TIER_3,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const SA58_TIER_1 = {
@@ -481,6 +505,7 @@ export const SA58_TIER_1 = {
   value: 26,
   baseId: BASE_ITEMS_ID.SA58_TIER_1,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const SA58_TIER_2 = {
@@ -499,6 +524,7 @@ export const SA58_TIER_2 = {
   value: 33,
   baseId: BASE_ITEMS_ID.SA58_TIER_2,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const SA58_TIER_3 = {
@@ -517,6 +543,7 @@ export const SA58_TIER_3 = {
   value: 40,
   baseId: BASE_ITEMS_ID.SA58_TIER_3,
   price: 2500,
+  overAllTier: 3,
 };
 
 // !!! ПИСТОЛЕТЫ-ПУЛЕМЕТЫ
@@ -536,6 +563,7 @@ export const MP5SD_TIER_1 = {
   value: 9,
   baseId: BASE_ITEMS_ID.MP5SD_TIER_1,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const MP5SD_TIER_2 = {
@@ -554,6 +582,7 @@ export const MP5SD_TIER_2 = {
   value: 11,
   baseId: BASE_ITEMS_ID.MP5SD_TIER_2,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const MP5SD_TIER_3 = {
@@ -572,6 +601,7 @@ export const MP5SD_TIER_3 = {
   value: 14,
   baseId: BASE_ITEMS_ID.MP5SD_TIER_3,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const FN_P90S_TIER_1 = {
@@ -590,6 +620,7 @@ export const FN_P90S_TIER_1 = {
   value: 14,
   baseId: BASE_ITEMS_ID.FN_P90S_TIER_1,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const FN_P90S_TIER_2 = {
@@ -608,6 +639,7 @@ export const FN_P90S_TIER_2 = {
   value: 17,
   baseId: BASE_ITEMS_ID.FN_P90S_TIER_2,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const FN_P90S_TIER_3 = {
@@ -626,6 +658,7 @@ export const FN_P90S_TIER_3 = {
   value: 21,
   baseId: BASE_ITEMS_ID.FN_P90S_TIER_3,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const KRISS_VECTOR_TIER_1 = {
@@ -644,6 +677,7 @@ export const KRISS_VECTOR_TIER_1 = {
   value: 20,
   baseId: BASE_ITEMS_ID.KRISS_VECTOR_TIER_1,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const KRISS_VECTOR_TIER_2 = {
@@ -662,6 +696,7 @@ export const KRISS_VECTOR_TIER_2 = {
   value: 25,
   baseId: BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const KRISS_VECTOR_TIER_3 = {
@@ -680,6 +715,7 @@ export const KRISS_VECTOR_TIER_3 = {
   value: 31,
   baseId: BASE_ITEMS_ID.KRISS_VECTOR_TIER_3,
   price: 2500,
+  overAllTier: 3,
 };
 
 // !!! ПИСТОЛЕТЫ
@@ -699,6 +735,7 @@ export const GLOCK_17_TIER_1 = {
   value: 8,
   baseId: BASE_ITEMS_ID.GLOCK_17_TIER_1,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const GLOCK_17_TIER_2 = {
@@ -717,6 +754,7 @@ export const GLOCK_17_TIER_2 = {
   value: 10,
   baseId: BASE_ITEMS_ID.GLOCK_17_TIER_2,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const GLOCK_17_TIER_3 = {
@@ -735,6 +773,7 @@ export const GLOCK_17_TIER_3 = {
   value: 12,
   baseId: BASE_ITEMS_ID.GLOCK_17_TIER_3,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const FN_57_TIER_1 = {
@@ -753,6 +792,7 @@ export const FN_57_TIER_1 = {
   value: 13,
   baseId: BASE_ITEMS_ID.FN_57_TIER_1,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const FN_57_TIER_2 = {
@@ -771,6 +811,7 @@ export const FN_57_TIER_2 = {
   value: 16,
   baseId: BASE_ITEMS_ID.FN_57_TIER_2,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const FN_57_TIER_3 = {
@@ -789,6 +830,7 @@ export const FN_57_TIER_3 = {
   value: 20,
   baseId: BASE_ITEMS_ID.FN_57_TIER_3,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const DESERT_EAGLE_TIER_1 = {
@@ -807,6 +849,7 @@ export const DESERT_EAGLE_TIER_1 = {
   value: 18,
   baseId: BASE_ITEMS_ID.DESERT_EAGLE_TIER_1,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const DESERT_EAGLE_TIER_2 = {
@@ -825,6 +868,7 @@ export const DESERT_EAGLE_TIER_2 = {
   value: 23,
   baseId: BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const DESERT_EAGLE_TIER_3 = {
@@ -843,6 +887,7 @@ export const DESERT_EAGLE_TIER_3 = {
   value: 28,
   baseId: BASE_ITEMS_ID.DESERT_EAGLE_TIER_3,
   price: 2500,
+  overAllTier: 3,
 };
 
 // !!! LMG
@@ -862,6 +907,7 @@ export const RPD_TIER_1 = {
   value: 9,
   baseId: BASE_ITEMS_ID.RPD_TIER_1,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const RPD_TIER_2 = {
@@ -880,6 +926,7 @@ export const RPD_TIER_2 = {
   value: 11,
   baseId: BASE_ITEMS_ID.RPD_TIER_2,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const RPD_TIER_3 = {
@@ -898,6 +945,7 @@ export const RPD_TIER_3 = {
   value: 14,
   baseId: BASE_ITEMS_ID.RPD_TIER_3,
   price: 2500,
+  overAllTier: 1,
 };
 
 export const M60_TIER_1 = {
@@ -916,6 +964,7 @@ export const M60_TIER_1 = {
   value: 15,
   baseId: BASE_ITEMS_ID.M60_TIER_1,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const M60_TIER_2 = {
@@ -934,6 +983,7 @@ export const M60_TIER_2 = {
   value: 19,
   baseId: BASE_ITEMS_ID.M60_TIER_2,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const M60_TIER_3 = {
@@ -952,6 +1002,7 @@ export const M60_TIER_3 = {
   value: 23,
   baseId: BASE_ITEMS_ID.M60_TIER_3,
   price: 2500,
+  overAllTier: 2,
 };
 
 export const PKM_TIER_1 = {
@@ -970,6 +1021,7 @@ export const PKM_TIER_1 = {
   value: 22,
   baseId: BASE_ITEMS_ID.PKM_TIER_1,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const PKM_TIER_2 = {
@@ -988,6 +1040,7 @@ export const PKM_TIER_2 = {
   value: 27,
   baseId: BASE_ITEMS_ID.PKM_TIER_2,
   price: 2500,
+  overAllTier: 3,
 };
 
 export const PKM_TIER_3 = {
@@ -1006,6 +1059,7 @@ export const PKM_TIER_3 = {
   value: 34,
   baseId: BASE_ITEMS_ID.PKM_TIER_3,
   price: 2500,
+  overAllTier: 3,
 };
 
 // массив, который будет содержать все оружия первого тира

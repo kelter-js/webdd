@@ -1,5 +1,5 @@
 import { RENDER_LOCATIONS } from "../../entities";
-import { LevelingMock } from "../../components/Leveling/LevelingMock";
+import { LevelingContainer } from "../../components/Leveling/LevelingContainer";
 import { Inventory } from "../../components/Inventory";
 import { Map } from "../../components/Map";
 import { Battle } from "../../components/Battle";
@@ -25,7 +25,7 @@ export const ViewManager = () => {
   return (
     <Shake>
       {/* <DiceRollModal /> */}
-      {locationState === RENDER_LOCATIONS.LEVELING && <LevelingMock />}
+      {locationState === RENDER_LOCATIONS.LEVELING && <LevelingContainer />}
 
       {locationState === RENDER_LOCATIONS.SETTLEMENT && <Settlement />}
       {locationState === RENDER_LOCATIONS.INVENTORY && <Inventory />}

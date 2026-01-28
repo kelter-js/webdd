@@ -20,6 +20,7 @@ export const MEDIC_CLASS_DAMAGE_MLTPL = 0.8;
 
 export const HP_PER_ENDURANCE_POINT = 10;
 export const MAX_AMOUNT_OF_POTIONS_TO_SELL = 8;
+export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 8;
 
 // EVADE DAMAGE FORMULA
 // Character.Agility × 0.4
@@ -151,6 +152,8 @@ export const MEDIC_BASE_MODEL = {
   characterClass: CLASSES.MEDIC,
 };
 
+export const SPECIAL_ENCOUNTER_DEFAULT_CHANCE = 5;
+
 export const DEFAULT_GAME_STATE: GameStateData = {
   party: [],
   location: {
@@ -175,6 +178,7 @@ export const DEFAULT_GAME_STATE: GameStateData = {
   economic: null,
 
   potionsToBuy: null,
+  itemsToBuy: null,
   sliderId: null,
   playStatistics: {
     dungeonCounter: 0,
@@ -188,6 +192,7 @@ export const DEFAULT_GAME_STATE: GameStateData = {
   resourcesBagLevel: 1,
   collected: [],
   flags: [],
+  specialEncounterChance: SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 };
 
 export const DEFAULT_GAME_SAVE = {

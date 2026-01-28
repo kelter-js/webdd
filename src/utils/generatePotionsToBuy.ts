@@ -31,7 +31,7 @@ export const generatePotion = (tier: number) => {
       type: POTION_TYPES.EXTRA_LARGE_HEALTH_POTION,
       price: getPotionPriceByTypeAndTier(
         tier,
-        POTION_TYPES.EXTRA_LARGE_HEALTH_POTION
+        POTION_TYPES.EXTRA_LARGE_HEALTH_POTION,
       ),
     };
   }
@@ -42,7 +42,7 @@ export const generatePotion = (tier: number) => {
       type: POTION_TYPES.LARGE_HEALTH_POTION,
       price: getPotionPriceByTypeAndTier(
         tier,
-        POTION_TYPES.LARGE_HEALTH_POTION
+        POTION_TYPES.LARGE_HEALTH_POTION,
       ),
     };
   }
@@ -53,7 +53,7 @@ export const generatePotion = (tier: number) => {
       type: POTION_TYPES.MEDIUM_HEALTH_POTION,
       price: getPotionPriceByTypeAndTier(
         tier,
-        POTION_TYPES.MEDIUM_HEALTH_POTION
+        POTION_TYPES.MEDIUM_HEALTH_POTION,
       ),
     };
   }
@@ -64,7 +64,7 @@ export const generatePotion = (tier: number) => {
       type: POTION_TYPES.SMALL_HEALTH_POTION,
       price: getPotionPriceByTypeAndTier(
         tier,
-        POTION_TYPES.SMALL_HEALTH_POTION
+        POTION_TYPES.SMALL_HEALTH_POTION,
       ),
     };
   }
@@ -72,9 +72,8 @@ export const generatePotion = (tier: number) => {
   return null;
 };
 
-export const generatePotionsList = (tier: number) => {
-  return new Array(MAX_AMOUNT_OF_POTIONS_TO_SELL)
+export const generatePotionsList = (tier: number) =>
+  new Array(MAX_AMOUNT_OF_POTIONS_TO_SELL)
     .fill(null)
     .map(() => generatePotion(tier))
     .filter((potion): potion is NonNullable<typeof potion> => potion !== null);
-};

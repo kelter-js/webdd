@@ -58,7 +58,7 @@ export const Map = () => {
       setDungeon({
         dungeon: [],
         position: { x: 0, y: 0 },
-        type: DUNGEONS.STORY,
+        type: DUNGEONS.CATCH_GOBLIN,
       });
     }
   }, [location, position, dungeon]);
@@ -117,7 +117,7 @@ export const Map = () => {
     // здесь определяется тип подземелья
     setDungeon({
       dungeon: newDungeon,
-      type: DUNGEONS.STORY,
+      type: DUNGEONS.CATCH_GOBLIN,
       attempts: DEFAULT_ATTEMPS_AMOUNT,
       position: { x: 0, y: 0 },
     });

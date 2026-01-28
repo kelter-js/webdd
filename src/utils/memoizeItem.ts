@@ -1,3 +1,7 @@
+import { MemoizedItem } from "../types";
 import { Item } from "../types/gameState";
 
-export const memoizeItem = (item: Item) => [item.baseId, item.gearId];
+export const memoizeItem = (item: Item): MemoizedItem => [
+  item.baseId,
+  item.gearId,
+];

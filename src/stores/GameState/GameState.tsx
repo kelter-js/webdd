@@ -16,6 +16,7 @@ import {
   MAX_ENCOUNTER_CHANCE,
   MIN_ENCOUNTER_CHANCE,
   TANK_BASE_MODEL,
+  SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 } from "../constants";
 import {
   calculateStatistics,
@@ -72,7 +73,14 @@ import {
   updateFlags,
   increaseResourcesBagLevel,
   sellItem,
+  swapItem,
 } from "./actions";
+import { getRandom } from "../../utils";
+import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
+import {
+  ENCOUNTER_MAP,
+  generateSpecialEncounter,
+} from "../../utils/generateSpecialEncounter";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -81,6 +89,7 @@ export const useGameState = create<StoreState>()(
       // Initial state
       player: DEFAULT_GAME_STATE,
       effects: null,
+      sell_inventory: null,
       inventory: null,
       statistics: null,
       gear: null,
@@ -93,7 +102,12 @@ export const useGameState = create<StoreState>()(
 
       updateDungeon: ({ position }, onFightStart) =>
         set((state) => {
-          const newDungeon = state.player?.location?.dungeon?.map((row) => [
+          const copyState = {
+            ...state,
+            player: { ...state.player, location: { ...state.player.location } },
+          };
+
+          const newDungeon = copyState.player?.location?.dungeon?.map((row) => [
             ...row,
           ]);
 
@@ -101,10 +115,10 @@ export const useGameState = create<StoreState>()(
             const currentCell = newDungeon[position.y][position.x];
 
             if (
-              state.player?.location?.roomsVisited !== undefined &&
+              copyState.player?.location?.roomsVisited !== undefined &&
               !currentCell.visited
             ) {
-              state.player.location.roomsVisited += 1;
+              copyState.player.location.roomsVisited += 1;
             }
 
             const isAlreadyVisited = currentCell.visited;
@@ -114,134 +128,150 @@ export const useGameState = create<StoreState>()(
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
 
-            if (isPlayableArea) {
-              // сюда нужно вписать логику уменьшения кол-ва факелов в инвентаре
-              if (state.player?.torches && !currentCell.isLighted) {
-                currentCell.isLighted = true;
-              }
-            }
-
             // если это не начало и не конец - подземелья
             if (isPlayableArea) {
-              const encounterChance = Math.random() * 100;
-              const currentChance = state.player.location?.encounterChance!;
-              const roll = getEncounterRoll(
-                currentChance!,
-                state.effects,
-                isAlreadyVisited,
-                Boolean(currentCell.isLighted),
-                Boolean(isDeadEnd),
-              );
-              const hasEncounter = encounterChance < roll;
+              // сюда нужно вписать логику уменьшения кол-ва факелов в инвентаре
+              if (copyState.player?.torches && !currentCell.isLighted) {
+                currentCell.isLighted = true;
+              }
 
-              if (hasEncounter) {
-                onFightStart();
-                console.log("do we reach that place?");
-                if (isDeadEnd) {
-                  // передавать реальный тир т екущий
-                  const firstTurn = getFirstTurn(
-                    1,
-                    state.effects,
-                    state.player.party,
-                    true,
-                  );
-                  const battle = generateBattle(
-                    1,
-                    firstTurn,
-                    state.player.party,
-                    true,
-                  );
-                  // state.player.battle = battle;
-                  // MOCK - убрать коммент для начала битвы
-                  state.player.locationState = RENDER_LOCATIONS.BATTLE;
-                  state.player.battle = {
-                    enemy: {
-                      effects: [],
-                      party: [
-                        { health: 150 } as Creature,
-                        { health: 150 } as Creature,
-                        { health: 150 } as Creature,
-                      ],
-                    },
-                    player: {
-                      effects: [],
-                      party: state.player.party.map((hero) => ({
-                        ...hero,
-                        hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
-                      })),
-                    },
-                    turn: firstTurn,
-                    messages: [],
-                    reward: null,
-                  };
+              // Логика рассчета того, что это спешиал энкаунтер
+              if (
+                isSpecialEncounter(
+                  copyState.player.flags,
+                  copyState.player.specialEncounterChance,
+                )
+              ) {
+                // сбрасываем шанс на спешиал энкаунтер к дефолтному
+                copyState.player.specialEncounterChance =
+                  SPECIAL_ENCOUNTER_DEFAULT_CHANCE;
 
-                  // генерируем особого моба т.к. dead end
+                const specialEncounter = generateSpecialEncounter(
+                  copyState.player.flags,
+                );
+
+                copyState.player.location.specialEncounter = specialEncounter;
+                copyState.player.flags.push(ENCOUNTER_MAP[specialEncounter]);
+              }
+
+              if (!copyState.player.location?.specialEncounter) {
+                // Логика рассчета того, что мы попали в бой
+                const encounterChance = Math.random() * 100;
+                const currentChance =
+                  copyState.player.location?.encounterChance!;
+                const roll = getEncounterRoll(
+                  currentChance!,
+                  copyState.effects,
+                  isAlreadyVisited,
+                  Boolean(currentCell.isLighted),
+                  Boolean(isDeadEnd),
+                );
+                const hasEncounter = encounterChance < roll;
+
+                if (hasEncounter) {
+                  onFightStart();
+                  console.log("do we reach that place?");
+                  if (isDeadEnd) {
+                    // передавать реальный тир т екущий
+                    const firstTurn = getFirstTurn(
+                      copyState.player.currentTier,
+                      copyState.effects,
+                      copyState.player.party,
+                      true,
+                    );
+                    const battle = generateBattle(
+                      copyState.player.currentTier,
+                      firstTurn,
+                      copyState.player.party,
+                      true,
+                    );
+                    // state.player.battle = battle;
+                    // MOCK - убрать коммент для начала битвы
+                    copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
+                    copyState.player.battle = {
+                      enemy: {
+                        effects: [],
+                        party: [
+                          { health: 150 } as Creature,
+                          { health: 150 } as Creature,
+                          { health: 150 } as Creature,
+                        ],
+                      },
+                      player: {
+                        effects: [],
+                        party: copyState.player.party.map((hero) => ({
+                          ...hero,
+                          hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
+                        })),
+                      },
+                      turn: firstTurn,
+                      messages: [],
+                      reward: null,
+                    };
+
+                    // генерируем особого моба т.к. dead end
+                  } else {
+                    const firstTurn = getFirstTurn(
+                      copyState.player.currentTier,
+                      copyState.effects,
+                      copyState.player.party,
+                    );
+                    // нужно передавать реальый тир вместо 1
+                    const battle = generateBattle(
+                      copyState.player.currentTier,
+                      firstTurn,
+                      copyState.player.party,
+                    );
+                    // state.player.battle = battle;
+                    // MOCK - убрать коммент для начала битвы
+                    copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
+                    copyState.player.battle = {
+                      enemy: {
+                        effects: [],
+                        party: [
+                          { health: 150 } as Creature,
+                          { health: 150 } as Creature,
+                          { health: 150 } as Creature,
+                        ],
+                      },
+                      player: {
+                        effects: [],
+                        party: copyState.player.party.map((hero) => ({
+                          ...hero,
+                          hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
+                        })),
+                      },
+                      turn: firstTurn,
+                      messages: [],
+                      reward: null,
+                    };
+                    //сбрасываем шанс на встречу с энкаунтером
+                  }
+                  // тут нужжен код генерации битвы/противника и т.д.
+
+                  if (copyState.player.location) {
+                    copyState.player.location.encounterChance =
+                      MIN_ENCOUNTER_CHANCE;
+                  }
+                  copyState.isDiceRequiredRoll = true;
                 } else {
-                  const firstTurn = getFirstTurn(
-                    1,
-                    state.effects,
-                    state.player.party,
-                  );
-                  // нужно передавать реальый тир вместо 1
-                  const battle = generateBattle(
-                    1,
-                    firstTurn,
-                    state.player.party,
-                  );
-                  // state.player.battle = battle;
-                  // MOCK - убрать коммент для начала битвы
-                  state.player.locationState = RENDER_LOCATIONS.BATTLE;
-                  state.player.battle = {
-                    enemy: {
-                      effects: [],
-                      party: [
-                        { health: 150 } as Creature,
-                        { health: 150 } as Creature,
-                        { health: 150 } as Creature,
-                      ],
-                    },
-                    player: {
-                      effects: [],
-                      party: state.player.party.map((hero) => ({
-                        ...hero,
-                        hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
-                      })),
-                    },
-                    turn: firstTurn,
-                    messages: [],
-                    reward: null,
-                  };
-                  //сбрасываем шанс на встречу с энкаунтером
-                }
-                // тут нужжен код генерации битвы/противника и т.д.
+                  if (copyState.player.location && !isDeadEnd) {
+                    copyState.player.location.encounterChance = Math.min(
+                      currentChance + MIN_ENCOUNTER_CHANCE,
+                      MAX_ENCOUNTER_CHANCE,
+                    );
+                  }
 
-                if (state.player.location) {
-                  state.player.location.encounterChance = MIN_ENCOUNTER_CHANCE;
-                }
-                state.isDiceRequiredRoll = true;
-              } else {
-                if (state.player.location && !isDeadEnd) {
-                  state.player.location.encounterChance = Math.min(
-                    currentChance + MIN_ENCOUNTER_CHANCE,
-                    MAX_ENCOUNTER_CHANCE,
-                  );
-                }
-
-                if (isDeadEnd) {
-                  // если не прокнул противник и мы в тупике - значит нужно сгенерировать событие получения награды!
+                  if (isDeadEnd) {
+                    // если не прокнул противник и мы в тупике - значит нужно сгенерировать событие получения награды!
+                  }
                 }
               }
             }
 
-            return {
-              player: {
-                ...state.player,
-                location: {
-                  ...state.player.location,
-                  dungeon: newDungeon,
-                },
-              },
-            };
+            copyState.player.location.dungeon = newDungeon;
+
+            return copyState;
           }
 
           return state;
@@ -257,6 +287,7 @@ export const useGameState = create<StoreState>()(
       setDungeon: setDungeon(set),
       changeAttempts: changeAttempts(set),
       setQuestData: setQuestData(set),
+      swapItem: swapItem(set),
       setState: setState(set),
       setPlayerName: setPlayerName(set),
       setLocationState: setLocationState(set),

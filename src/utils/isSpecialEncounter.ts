@@ -1,10 +1,10 @@
 import { FLAGS } from "../constants";
 import { getRandom } from "./getRandom";
 
-// ТУТ ФИКС ШАНС НА СПЕШИАЛ ЭНКАУНТЕР
-const SPECIAL_ENCOUNTER_CHANCE = 10;
-
-export const isSpecialEncounter = (flags: FLAGS[]) => {
+export const isSpecialEncounter = (
+  flags: FLAGS[],
+  specialEncounterChance: number,
+) => {
   if (
     flags.includes(FLAGS.SPECIAL_ENCOUNTER_GHOST) &&
     flags.includes(FLAGS.SPECIAL_ENCOUNTER_SHOOTING) &&
@@ -15,5 +15,5 @@ export const isSpecialEncounter = (flags: FLAGS[]) => {
 
   const roll = getRandom(0, 100);
 
-  return roll < SPECIAL_ENCOUNTER_CHANCE;
+  return roll < specialEncounterChance;
 };

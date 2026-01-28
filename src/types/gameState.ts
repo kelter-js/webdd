@@ -2,6 +2,7 @@ import { MemoizedItem, Room } from ".";
 import { POSITIONS } from "../common/TurnIndicator/entities";
 import { FLAGS } from "../constants";
 import { BASE_ITEMS_ID } from "../constants/items";
+import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
 
 import {
   RENDER_LOCATIONS,
@@ -19,6 +20,7 @@ import { GEAR_SLOTS } from "../entities/gear";
 import { GUN_TYPES } from "../entities/guns";
 import { JUNK_TYPES } from "../entities/junk";
 import { RESOURCES } from "../entities/resources";
+import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
 
 // интерфейс модели игрока, в свойстве party будет массив из трех таких моделей
 export interface Character {
@@ -42,8 +44,8 @@ export interface Character {
 
 // храним только айди, по нему всё высчитываем потом
 export interface Perk {
-  id: string;
-  isAbility: boolean;
+  id: MEDIC_PERKS | SNIPER_PERKS | TANK_PERKS;
+  isAbility?: boolean;
 }
 
 export interface Ability {
@@ -78,6 +80,7 @@ export interface Item {
   critChance?: number;
   criticalStrike?: number;
   bulletsPerTurn?: number;
+  overAllTier: number;
 }
 // интерфейс модели представляющий противника ЛЮБОГО
 export interface Creature {
@@ -117,6 +120,7 @@ export interface Location {
   encounterChance?: number;
   roomsVisited?: number;
   movementAmount?: number;
+  specialEncounter?: SPECIAL_ENCOUNTERS;
 }
 
 export interface BattleUpdateState {
@@ -221,6 +225,7 @@ export interface GameStateData {
   dialogFlags: DIALOGUE_FLAGS[];
   economic: ECONOMIC_TYPES | null;
   potionsToBuy: PotionsReceivedData[] | null;
+  itemsToBuy: MemoizedItem[] | null;
   sliderId: string | null;
   playStatistics: PlayStatistics;
   hasCamera: boolean;
@@ -229,6 +234,7 @@ export interface GameStateData {
   resourcesBagLevel: number;
   collected: [RESOURCES, string][];
   flags: FLAGS[];
+  specialEncounterChance: number;
 }
 
 export interface GearData {
@@ -244,6 +250,7 @@ export interface StoreState {
   effects: null | Effects;
   // уже после вычисления хар-ки
   inventory: null | Item[];
+  sell_inventory: null | Item[];
   // хранит в себе не мемоизированные модели предметов - не привязано к игроку, просто массив вещей
   statistics: null | { [key: string]: Statistics };
   abilities: null | { [key: string]: Ability };
@@ -280,6 +287,11 @@ export interface StoreState {
   healTeam: VoidFunction;
   resetBattle: VoidFunction;
   buyCamera: VoidFunction;
+  swapItem: (
+    equipItemId: string,
+    unequipItemId: string,
+    characterName: string,
+  ) => void;
   increaseResourcesBagLevel: VoidFunction;
   setBattleTurn: (newTurn: TURN_STATES) => void;
   sellItem: (itemId: string) => void;
@@ -317,6 +329,7 @@ export type PersistedState = Omit<
   | "toggleInventory"
   | "updateDungeon"
   | "setEconomicBranch"
+  | "swapItem"
   | "toggleCharacterPanel"
   | "setQuestData"
   | "healTeam"
@@ -333,6 +346,7 @@ export type PersistedState = Omit<
   | "isAutoSaveRequired"
   | "abilities"
   | "inventory"
+  | "sell_inventory"
   | "increaseEndurance"
   | "useAbility"
   | "increaseAccuracy"

@@ -11,6 +11,10 @@ export const JUNK_DATA = {
     price: 200,
     title: "Декоративный топорик",
   },
+  [JUNK_TYPES.CRYSTAL_ORB]: {
+    price: 300,
+    title: "Кристальный шар",
+  },
 };
 
 export const FIRST_TIER_JUNK = [JUNK_TYPES.AXE];

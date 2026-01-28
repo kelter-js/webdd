@@ -29,6 +29,7 @@ import { setReward } from "./setReward";
 import { resetGame } from "./resetGame";
 import { setBattle } from "./setBattle";
 import { buyCamera } from "./buyCamera";
+import { swapItem } from "./swapItem";
 import { setState } from "./setState";
 import { healTeam } from "./healTeam";
 import { sellJunk } from "./sellJunk";
@@ -67,6 +68,7 @@ export {
   resetGame,
   setBattle,
   buyCamera,
+  swapItem,
   setState,
   healTeam,
   sellJunk,

@@ -1,5 +1,8 @@
 import { dememoizeItem } from "../../../utils/dememoizeItem";
 import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
+import { generateStoreItems } from "../../../utils/generateStoreItems";
+import { getItemPrice } from "../../../utils/getItemPrice";
+import { memoizeItem } from "../../../utils/memoizeItem";
 import { calculateStatistics } from "../../utils";
 import { StoreSet } from "./types";
 
@@ -32,6 +35,27 @@ export const initiateState = (set: StoreSet) => () =>
 
     // MOCK
     // здесь же нужно проинициализировать интентарь покупок если он пуст
+    if (!stateCopy.player.itemsToBuy) {
+      // const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
+      const itemsToBuy = generateStoreItems(3);
+      console.log("itemsToBuy in state", itemsToBuy);
+
+      stateCopy.sell_inventory = itemsToBuy.map((item) => {
+        const itemPrice = getItemPrice(item, stateCopy.player.currentTier);
+        return { ...item, price: itemPrice };
+      });
+
+      stateCopy.player.itemsToBuy = itemsToBuy.map((item) => memoizeItem(item));
+    } else {
+      stateCopy.sell_inventory = stateCopy.player.itemsToBuy.map((item) => {
+        const dememeoizedItem = dememoizeItem(item);
+        const itemPrice = getItemPrice(
+          dememeoizedItem,
+          stateCopy.player.currentTier,
+        );
+        return { ...dememeoizedItem, price: itemPrice };
+      });
+    }
 
     // инициализируем хар-ки
     state.player.party.forEach((player) => {

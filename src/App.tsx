@@ -142,7 +142,7 @@ import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
 // 2 - chance to heal up after attack for half of done damage
 // 3 - chance to dodge attack
 // 3 - increase health
-// 4 - chance that attack will stun enemy and he will do half of his damage
+// 4 - chance that attack will stun enemy
 // 4 - chance to make front attack that will damage all enemies on field
 // 5 - active: reduce all income damage for 15% for next two rounds
 // 5 - passive: reduce on half chance to receive critical damage
@@ -157,7 +157,7 @@ import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
 // 4 - low chance that your attack will inspire teammates and next turn they will have additional +5% damage
 // 4 - low chance that your attack can cause ricochette and deal half of main damage to other enemies
 // 5 - active: with low chance next attack will one shot enemy - cooldown two turns;
-// 5 - passive: your attack have low chance to decrease enemy resist by half
+// 5 - passive: your attack have chance to decrease enemy resist by half
 
 // support
 // 1 - increase health
@@ -169,7 +169,7 @@ import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
 // 4 - low chance that attack will reduce enemy damage by half for next round
 // 4 - low chance that attack will decrease enemy resist by 15%
 // 5 - active: heal all command for 30% - cooldown for 2 turns
-// 5 - passive: increase all team members health by 25%
+// 5 - passive: increase all team members health by 20%
 
 //!!!ВАЖНЫЕ МЫСЛИ
 // Добавить дефрагментатор - разбирает противников после смерт на фрагменты, это определенный предмет, который имеет свою систему прогрессии
@@ -271,19 +271,22 @@ const timeout_config = { enter: 100, exit: 500 };
 
 export const App = () => {
   const { progress, loaded } = usePreloadAllAssets();
-  console.log("prog", progress);
-  console.log("loaded", loaded);
+
   useScrollbarWidth();
 
   const {
-    player: { name, isGameOver, currentTier, sliderId, flags },
+    player: { name, isGameOver, currentTier, sliderId, flags, itemsToBuy },
     setLocationState,
     initiateState,
     setGameOver,
     updateGameTier,
     killEnemy,
     cheatGold,
+    sell_inventory,
   } = useGameState();
+
+  console.log("itemsToBuy", itemsToBuy);
+  console.log("sell_inventory", sell_inventory);
 
   const {
     setFading,
@@ -424,25 +427,31 @@ export const App = () => {
 // торговец безумный продаст артефакт за голду - диалог с тупыми вопросами - 6 попыток - каждый верный ответ сбрасывает цену
 // ФАКЕЛА - заняться этой идеей и продумать у кого брать и почем и как тратить
 // систему выбора цели и фильтрации целей
+// есть значение на шанс спешиал энкаунтера - за каждый ПОКИНУТЫЙ успешно данж - нужно повышать шанс этой встречи
 
 // 30.01
+// вывести рендер перков в отдельный компонент и отладить его отрисовку и код
+// реализовать выделение взятых перков визуально
+// написать код ограничивающий выбор перков и в целом установку перков в стор
+// сгенерить иконки для снайперских перков
 
 // 29.01
 // добавить ещё предмет мусора
 // добавить артефакты 1 тира
 // добавить первый компонент спешиал энкаунтера - только заготовку
+// в useGlobalListeners добавить проверку - если флаг инициации приложения отсутствует - посмотреть в хуке за саундтрек отвечающим что именно за флаг -
+// если флаг false - то вообще не слушаем кнопки
 
 // 28.01
-// уделить время окну прокачки - чекнуть реальные ли значения и имена передаются, добавить массив взятых перков, и проверять массив по длине и текущему уровню -
-// чтобы понять, можем ли брать следующий перк
-// сделать типизацию/константы/утиль функции получения нужных перков и названий и описаний их
-// сделать экшн функцию для стора с мок кодом для переодевания предмета
+// уделить время окну прокачки - чекнуть реальные ли значения и имена передаются, добавить массив взятых перков, и проверять массив по длине и текущему уровню - done
+// сделать типизацию/константы/утиль функции получения нужных перков и названий и описаний их - done
+// сделать экшн функцию для стора с мок кодом для переодевания предмета - done
 
 // 27.01
-// Добавить логику установки и генерации спешиалов в сторе - флаг для хранения текущего энкаунтера, флаги установки посещенных - логику эту добавить в экшн передвижения по данжу
-// Добавить логику в хук инициализации по установке инвентаря покупки - если он пустой, генерацию этого инвентаря (мок)
-// привести в порядок текущие константы оружия
-// добавить мусорный предмет
+// Добавить логику установки и генерации спешиалов в сторе - флаг для хранения текущего энкаунтера, флаги установки посещенных
+// - логику эту добавить в экшн передвижения по данжу - done
+// Добавить логику в хук инициализации по установке инвентаря покупки - если он пустой, генерацию этого инвентаря (мок) - done
+// добавить мусорный предмет - done
 
 // 26.01
 // сделать конкретную типизацию для мемоизированных предметов, определиться со структурой - done

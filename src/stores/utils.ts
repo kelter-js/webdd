@@ -157,7 +157,7 @@ const DEFAULT_ENEMY_START_FIRST_CHANCE = 50;
 const LOWER_ENEMY_START_FIRST_CHANCE = 30;
 
 export const getFirstTurn = (
-  enemyTier: 1 | 2 | 3,
+  enemyTier: number,
   playerEffect: any,
   players: Character[],
   isSpecial?: boolean,
