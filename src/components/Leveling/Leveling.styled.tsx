@@ -108,37 +108,44 @@ export const AbilityGrid = styled(Box)({
   gap: "16px",
 });
 
-export const AbilityIcon = styled(motion.div)({
-  width: "80px",
-  height: "80px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: "#2a1a1a",
-  border: "3px solid #5a3a3a",
-  borderRadius: "4px",
-  cursor: "pointer",
-  position: "relative",
-  overflow: "hidden",
-  "&:hover": {
-    borderColor: "#a05050",
-    boxShadow: "0 0 15px rgba(160, 80, 80, 0.7)",
-    animation: `${abilityPulse} 1s infinite`,
-  },
-  "& img": {
-    width: "70%",
-    height: "70%",
-    objectFit: "contain",
-    filter: "drop-shadow(0 0 4px rgba(0,0,0,0.5))",
-  },
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    inset: 0,
-    background:
-      "linear-gradient(45deg, transparent 60%, rgba(160, 80, 80, 0.3))",
-  },
-});
+export const AbilityIcon = styled(motion.div, {
+  shouldForwardProp: (prop) =>
+    prop !== "isSelected" && prop !== "canAcquirePerk",
+})<{ isSelected: boolean; canAcquirePerk: boolean }>(
+  ({ isSelected, canAcquirePerk }) => ({
+    width: "80px",
+    height: "80px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#2a1a1a",
+    border: `3px solid ${isSelected ? "rgb(224, 176, 80)" : "#5a3a3a"}`,
+    borderRadius: "4px",
+    cursor: "pointer",
+    position: "relative",
+    overflow: "hidden",
+    animation:
+      canAcquirePerk && !isSelected ? `${abilityPulse} 1s infinite` : "unset",
+    "&:hover": {
+      borderColor: `${isSelected ? "rgb(224, 176, 80)" : "#a05050"}`,
+      boxShadow: "0 0 15px rgba(160, 80, 80, 0.7)",
+      animation: isSelected ? "unset" : `${abilityPulse} 1s infinite`,
+    },
+    "& img": {
+      width: "70%",
+      height: "70%",
+      objectFit: "contain",
+      filter: "drop-shadow(0 0 4px rgba(0,0,0,0.5))",
+    },
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(45deg, transparent 60%, rgba(160, 80, 80, 0.3))",
+    },
+  }),
+);
 
 export const StatItem = styled(Box, {
   shouldForwardProp: (prop) => prop !== "hasSparePoints",

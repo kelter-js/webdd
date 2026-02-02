@@ -18,6 +18,8 @@ import { DiceRollModal } from "../../common";
 import { BattleResult } from "./components/BattleResult";
 import { usePlayer } from "../../contexts/Player";
 import encunterSFX from "../../assets/audio/encounter.mp3";
+import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
+import { CrazyTrader, ImmortalWarrior, Widow } from "../SpecialEncounters";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -508,6 +510,16 @@ export const Map = () => {
 
       {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
         <QTEGame onFail={handleFail} onWin={handleWin} />
+      )}
+
+      {location.specialEncounter === SPECIAL_ENCOUNTERS.GHOST && <Widow />}
+
+      {location.specialEncounter === SPECIAL_ENCOUNTERS.TRADER && (
+        <CrazyTrader />
+      )}
+
+      {location.specialEncounter === SPECIAL_ENCOUNTERS.SHOOTING && (
+        <ImmortalWarrior />
       )}
 
       {/* <ShootingRange onFail={handleFail} onWin={handleWin} /> */}

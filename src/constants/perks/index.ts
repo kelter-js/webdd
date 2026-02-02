@@ -1,4 +1,5 @@
 import { CLASSES } from "../../entities/characterClasses";
+import { PerkData } from "../../types";
 
 export enum TANK_PERKS {
   // 1 тир перков
@@ -39,7 +40,7 @@ export const TANK_PERKS_DESCRIPTIONS = {
     "Пассивная способность: снижает в два раза шанс получить критический урон",
 } as const;
 
-export const TANK_PERKS_DATA = {
+export const TANK_PERKS_DATA: Record<string, PerkData[]> = {
   firstTier: [
     {
       id: TANK_PERKS.HEALTH,
@@ -134,7 +135,7 @@ export const SNIPER_PERKS_DESCRIPTIONS = {
     "Пассивная: ваша атака имеет шанс уменьшить сопротивление врага вдвое",
 } as const;
 
-export const SNIPER_PERKS_DATA = {
+export const SNIPER_PERKS_DATA: Record<string, PerkData[]> = {
   firstTier: [
     {
       id: SNIPER_PERKS.CRITICAL_CHANCE,
@@ -228,7 +229,7 @@ export const MEDIC_PERKS_DESCRIPTIONS = {
     "Пассивная: увеличивает здоровье всех членов команды на 20%",
 } as const;
 
-export const MEDIC_PERKS_DATA = {
+export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {
   firstTier: [
     {
       id: MEDIC_PERKS.INCREASE_DAMAGE,
@@ -287,6 +288,51 @@ export const PERK_DATA_BY_CLASSES = {
   [CLASSES.SNIPER]: SNIPER_PERKS_DATA,
   [CLASSES.TANK]: TANK_PERKS_DATA,
 };
+
+export const FIRST_TIER_PERKS = [
+  MEDIC_PERKS.INCREASE_DAMAGE,
+  MEDIC_PERKS.INCREASE_HEALTH,
+  SNIPER_PERKS.CRITICAL_CHANCE,
+  SNIPER_PERKS.CRITICAL_STRIKE,
+  TANK_PERKS.HEALTH,
+  TANK_PERKS.DODGE,
+];
+
+export const SECOND_TIER_PERKS = [
+  MEDIC_PERKS.BLEED,
+  MEDIC_PERKS.HEAL,
+  SNIPER_PERKS.SHOCKER,
+  SNIPER_PERKS.LIFE_STEALER,
+  TANK_PERKS.INSPIRATION,
+  TANK_PERKS.VAMPIRE,
+];
+
+export const THIRD_TIER_PERKS = [
+  MEDIC_PERKS.INCREASE_DAMAGE_V2,
+  MEDIC_PERKS.INCREASE_HEALTH_V2,
+  SNIPER_PERKS.CRITICAL_CHANCE_V2,
+  SNIPER_PERKS.CRITICAL_STRIKE_V2,
+  TANK_PERKS.HEALTH_V2,
+  TANK_PERKS.DODGE_V2,
+];
+
+export const FOURTH_TIER_PERKS = [
+  MEDIC_PERKS.CURSED_ATTACK,
+  MEDIC_PERKS.WEAK_SPOTTER,
+  SNIPER_PERKS.DAMAGE_INSPIRATION,
+  SNIPER_PERKS.RICOCHETTE,
+  TANK_PERKS.CRUSHER,
+  TANK_PERKS.RECKLESSNESS,
+];
+
+export const FIFTH_TIER_PERKS = [
+  MEDIC_PERKS.HEAL_ALL,
+  MEDIC_PERKS.FORTIFICATION,
+  SNIPER_PERKS.INSTAKILL,
+  SNIPER_PERKS.BREACHER,
+  TANK_PERKS.LAST_STAND,
+  TANK_PERKS.SCARLESS,
+];
 
 export const FIRST_PERK_LEVEL_REQUIREMENT = 3;
 export const SECOND_PERK_LEVEL_REQUIREMENT = 6;

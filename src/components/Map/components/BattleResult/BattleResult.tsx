@@ -11,9 +11,10 @@ import { POTION_TYPES } from "../../../../entities/consumables";
 import { GUN_TYPES } from "../../../../entities/guns";
 import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
 import { BASE_ITEMS_ID } from "../../../../constants/items";
+import { JUNK_TYPES } from "../../../../entities/junk";
 
 const mockReward: Reward = {
-  experience: [{ tank: 50 }, { medic: 30 }, { warrior: 20 }],
+  experience: { tank: 50, medic: 30, warrior: 20 },
   money: 1500,
   potions: [
     {
@@ -38,6 +39,7 @@ const mockReward: Reward = {
       baseId: BASE_ITEMS_ID.SV98_TIER_1,
       description: "",
       iconSrc: "",
+      overAllTier: 1,
     },
     {
       type: GEAR_SLOTS.ARTIFACT,
@@ -50,14 +52,10 @@ const mockReward: Reward = {
       baseId: BASE_ITEMS_ID.SV98_TIER_1,
       description: "",
       iconSrc: "",
+      overAllTier: 1,
     },
   ],
-  junk: [
-    {
-      type: "мусор",
-      amount: 3,
-    },
-  ],
+  junk: [JUNK_TYPES.AXE],
 };
 
 export const BattleResult = () => {
@@ -87,9 +85,7 @@ export const BattleResult = () => {
           </Stack>
         )}
 
-        {experience.map((item) => {
-          const [name, value] = Object.entries(item)[0];
-
+        {Object.entries(experience).map(([name, value]) => {
           return (
             <Stack
               alignItems="center"
@@ -138,23 +134,20 @@ export const BattleResult = () => {
           </Stack>
         ))}
 
-        {junk?.map(({ type, amount }) => (
+        {junk?.map((junk, index) => (
           <Stack
             alignItems="center"
             width="100%"
             direction="row"
             gap={1}
-            key={type}
+            key={index}
           >
             <Stack alignItems="center" justifyContent="center" width="55px">
               <Icons.Scrap />
             </Stack>
 
             <Typography fontSize={20} fontFamily="inherit">
-              {type} -
-            </Typography>
-            <Typography fontFamily="inherit" fontSize={20}>
-              {amount}
+              {junk}
             </Typography>
           </Stack>
         ))}

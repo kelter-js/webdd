@@ -33,7 +33,7 @@ export const setPlayerName =
         {
           name,
           experience: 0,
-          level: 1,
+          level: 20,
           ...getBaseModelBySelectedClass(characterClass),
           points: 5,
           perksList: [],
@@ -41,7 +41,7 @@ export const setPlayerName =
         {
           name: "SomeWhatOfTestingName-MEDIC",
           experience: 0,
-          level: 1,
+          level: 15,
           ...firstAvailableClassModel,
           points: 5,
           critChance: 0,
@@ -51,7 +51,7 @@ export const setPlayerName =
         {
           name: "SomeWhatOfTestingName-TANK",
           experience: 0,
-          level: 1,
+          level: 12,
           ...lastAvailableClassModel,
           points: 5,
           critChance: 0,

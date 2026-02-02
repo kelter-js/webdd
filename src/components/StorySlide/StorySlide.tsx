@@ -72,7 +72,11 @@ export const StorySlide: FC<StorySlideProps> = ({ slides }) => {
             color: "white",
           }}
         >
-          <Typography variant="body1" sx={{ fontSize: "1.2rem" }}>
+          <Typography
+            variant="body1"
+            sx={{ fontSize: "1.2rem" }}
+            component="div"
+          >
             {current.text}
           </Typography>
         </Paper>

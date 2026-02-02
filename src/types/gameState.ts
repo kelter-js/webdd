@@ -42,9 +42,11 @@ export interface Character {
   hasTurn?: boolean;
 }
 
+export type PERK_ID_DATA = MEDIC_PERKS | SNIPER_PERKS | TANK_PERKS;
+
 // храним только айди, по нему всё высчитываем потом
 export interface Perk {
-  id: MEDIC_PERKS | SNIPER_PERKS | TANK_PERKS;
+  id: PERK_ID_DATA;
   isAbility?: boolean;
 }
 
@@ -131,9 +133,7 @@ export interface BattleUpdateState {
   message: Message;
 }
 
-export interface ExperienceReceivedData {
-  [name: string]: number;
-}
+export type ExperienceReceivedData = Record<string, number>;
 
 export interface PotionsReceivedData {
   type: POTION_TYPES;
@@ -142,11 +142,12 @@ export interface PotionsReceivedData {
 }
 
 export interface Reward {
-  experience: ExperienceReceivedData[];
+  experience: ExperienceReceivedData;
   money?: number;
   potions?: PotionsReceivedData[];
   items?: Item[];
-  junk?: any[];
+  junk?: JUNK_TYPES[];
+  resources?: RESOURCES[];
 }
 
 export interface Battle {
@@ -230,7 +231,7 @@ export interface GameStateData {
   playStatistics: PlayStatistics;
   hasCamera: boolean;
   junk: [JUNK_TYPES, string][];
-  resources: [RESOURCES, string][];
+  resources: RESOURCES[];
   resourcesBagLevel: number;
   collected: [RESOURCES, string][];
   flags: FLAGS[];
@@ -298,8 +299,7 @@ export interface StoreState {
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
   setSliders: (newTurn: string | null) => void;
-
-  addResource: (resourceToAdd: RESOURCES, amount: number) => void;
+  acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
 
   giveResources: (resourceToGive: RESOURCES) => void;
 
@@ -354,13 +354,13 @@ export type PersistedState = Omit<
   | "setBattleTurn"
   | "setReward"
   | "setSliders"
+  | "acquirePerk"
   | "buyPotion"
   | "initiateState"
   | "updateFlags"
   | "increaseResourcesBagLevel"
   | "turnOffDices"
   | "buyCamera"
-  | "addResource"
   | "sellJunk"
   | "addJunk"
   | "giveResources"

@@ -1,18 +1,30 @@
-import { FC, useState } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { FC, useMemo, useState } from "react";
+import { Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
-import { Tooltip } from "../../common";
 import {
   AbilityGrid,
-  AbilityIcon,
   CharacterContainer,
   CharacterName,
   StatItem,
 } from "./Leveling.styled";
 import { CharacterCardProps } from "./types";
 import { useGameState } from "../../stores";
-import { PERK_DATA_BY_CLASSES } from "../../constants/perks";
+import {
+  FIRST_PERK_LEVEL_REQUIREMENT,
+  SECOND_PERK_LEVEL_REQUIREMENT,
+  THIRD_PERK_LEVEL_REQUIREMENT,
+  FOURTH_PERK_LEVEL_REQUIREMENT,
+  FIFTH_PERK_LEVEL_REQUIREMENT,
+  FIRST_TIER_PERKS,
+  SECOND_TIER_PERKS,
+  THIRD_TIER_PERKS,
+  FOURTH_TIER_PERKS,
+  FIFTH_TIER_PERKS,
+  PERK_DATA_BY_CLASSES,
+} from "../../constants/perks";
+import { PERK_ID_DATA } from "../../types/gameState";
+import { PerkList } from "./components/PerkList";
 
 export const CharacterCard: FC<CharacterCardProps> = ({
   name,
@@ -21,8 +33,10 @@ export const CharacterCard: FC<CharacterCardProps> = ({
   agility,
   points,
   characterClass,
+  perksList,
+  level,
 }) => {
-  const { increaseAccuracy, increaseAgility, increaseEndurance } =
+  const { increaseAccuracy, increaseAgility, increaseEndurance, acquirePerk } =
     useGameState();
 
   const handleIncreaseAccuracy = () => {
@@ -43,6 +57,11 @@ export const CharacterCard: FC<CharacterCardProps> = ({
     }
   };
 
+  const handleAcquirePerk = (perkId: PERK_ID_DATA) => {
+    console.log("we fire?");
+    acquirePerk(perkId, name);
+  };
+
   const [activeAbility, setActiveAbility] = useState<null | number>(null);
 
   const handleAbilityClick = (index: number) => {
@@ -53,6 +72,10 @@ export const CharacterCard: FC<CharacterCardProps> = ({
   const hasSparePoints = points > 0;
 
   const perks = PERK_DATA_BY_CLASSES[characterClass];
+  const characterSelectedPerksList = useMemo(
+    () => perksList.map((item) => item.id),
+    [perksList],
+  );
 
   return (
     <CharacterContainer>
@@ -78,265 +101,70 @@ export const CharacterCard: FC<CharacterCardProps> = ({
         </Typography>
 
         <AbilityGrid>
-          {perks.firstTier.map((perk, index) => (
-            <Tooltip
-              key={perk.id}
-              title={perk.description}
-              placement="top"
-              arrow
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#1a0a0a",
-                    border: "2px solid #5a2a2a",
-                    fontSize: "1rem",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#5a2a2a",
-                  },
-                },
-              }}
-            >
-              <AbilityIcon
-                // onClick={() => handleAbilityClick(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                animate={
-                  // activeAbility === index
-                  false
-                    ? {
-                        scale: [1, 1.1, 1],
-                        boxShadow: [
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                          "0 0 20px rgba(255, 0, 0, 0.8)",
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.3 }}
-                style={{ marginLeft: index === 0 ? "60px" : 0 }}
-              >
-                {/* <img
-                src={ability.icon}
-                alt={ability.name}
-                onError={(e) => {
-                  // e.target?.src = "fallback-icon.svg";
-                }}
-              /> */}
-              </AbilityIcon>
-            </Tooltip>
-          ))}
+          <PerkList
+            perksList={perks.firstTier}
+            onSelect={handleAcquirePerk}
+            selectedPerksList={characterSelectedPerksList}
+            canAcquirePerk={
+              level >= FIRST_PERK_LEVEL_REQUIREMENT &&
+              !characterSelectedPerksList.some((perk) =>
+                FIRST_TIER_PERKS.includes(perk),
+              )
+            }
+            characterClass={characterClass}
+          />
 
-          {perks.secondTier.map((perk, index) => (
-            <Tooltip
-              key={perk.id}
-              title={perk.description}
-              placement="top"
-              arrow
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#1a0a0a",
-                    border: "2px solid #5a2a2a",
-                    fontSize: "1rem",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#5a2a2a",
-                  },
-                },
-              }}
-            >
-              <AbilityIcon
-                // onClick={() => handleAbilityClick(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                animate={
-                  // activeAbility === index
-                  false
-                    ? {
-                        scale: [1, 1.1, 1],
-                        boxShadow: [
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                          "0 0 20px rgba(255, 0, 0, 0.8)",
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.3 }}
-                style={{ marginLeft: index === 0 ? "60px" : 0 }}
-              >
-                {/* <img
-                src={ability.icon}
-                alt={ability.name}
-                onError={(e) => {
-                  // e.target?.src = "fallback-icon.svg";
-                }}
-              /> */}
-              </AbilityIcon>
-            </Tooltip>
-          ))}
+          <PerkList
+            perksList={perks.secondTier}
+            onSelect={handleAcquirePerk}
+            selectedPerksList={characterSelectedPerksList}
+            canAcquirePerk={
+              level >= SECOND_PERK_LEVEL_REQUIREMENT &&
+              !characterSelectedPerksList.some((perk) =>
+                SECOND_TIER_PERKS.includes(perk),
+              )
+            }
+            characterClass={characterClass}
+          />
 
-          {perks.thirdTier.map((perk, index) => (
-            <Tooltip
-              key={perk.id}
-              title={perk.description}
-              placement="top"
-              arrow
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#1a0a0a",
-                    border: "2px solid #5a2a2a",
-                    fontSize: "1rem",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#5a2a2a",
-                  },
-                },
-              }}
-            >
-              <AbilityIcon
-                // onClick={() => handleAbilityClick(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                animate={
-                  // activeAbility === index
-                  false
-                    ? {
-                        scale: [1, 1.1, 1],
-                        boxShadow: [
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                          "0 0 20px rgba(255, 0, 0, 0.8)",
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.3 }}
-                style={{ marginLeft: index === 0 ? "60px" : 0 }}
-              >
-                {/* <img
-                src={ability.icon}
-                alt={ability.name}
-                onError={(e) => {
-                  // e.target?.src = "fallback-icon.svg";
-                }}
-              /> */}
-              </AbilityIcon>
-            </Tooltip>
-          ))}
+          <PerkList
+            perksList={perks.thirdTier}
+            onSelect={handleAcquirePerk}
+            selectedPerksList={characterSelectedPerksList}
+            canAcquirePerk={
+              level >= THIRD_PERK_LEVEL_REQUIREMENT &&
+              !characterSelectedPerksList.some((perk) =>
+                THIRD_TIER_PERKS.includes(perk),
+              )
+            }
+            characterClass={characterClass}
+          />
 
-          {perks.fourthTier.map((perk, index) => (
-            <Tooltip
-              key={perk.id}
-              title={perk.description}
-              placement="top"
-              arrow
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#1a0a0a",
-                    border: "2px solid #5a2a2a",
-                    fontSize: "1rem",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#5a2a2a",
-                  },
-                },
-              }}
-            >
-              <AbilityIcon
-                // onClick={() => handleAbilityClick(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                animate={
-                  // activeAbility === index
-                  false
-                    ? {
-                        scale: [1, 1.1, 1],
-                        boxShadow: [
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                          "0 0 20px rgba(255, 0, 0, 0.8)",
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.3 }}
-                style={{ marginLeft: index === 0 ? "60px" : 0 }}
-              >
-                {/* <img
-                src={ability.icon}
-                alt={ability.name}
-                onError={(e) => {
-                  // e.target?.src = "fallback-icon.svg";
-                }}
-              /> */}
-              </AbilityIcon>
-            </Tooltip>
-          ))}
+          <PerkList
+            perksList={perks.fourthTier}
+            onSelect={handleAcquirePerk}
+            selectedPerksList={characterSelectedPerksList}
+            canAcquirePerk={
+              level >= FOURTH_PERK_LEVEL_REQUIREMENT &&
+              !characterSelectedPerksList.some((perk) =>
+                FOURTH_TIER_PERKS.includes(perk),
+              )
+            }
+            characterClass={characterClass}
+          />
 
-          {perks.fifthTier.map((perk, index) => (
-            <Tooltip
-              key={perk.id}
-              title={perk.description}
-              placement="top"
-              arrow
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "#1a0a0a",
-                    border: "2px solid #5a2a2a",
-                    fontSize: "1rem",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#5a2a2a",
-                  },
-                },
-              }}
-            >
-              <AbilityIcon
-                // onClick={() => handleAbilityClick(index)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                animate={
-                  // activeAbility === index
-                  false
-                    ? {
-                        scale: [1, 1.1, 1],
-                        boxShadow: [
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                          "0 0 20px rgba(255, 0, 0, 0.8)",
-                          "0 0 0px rgba(160, 80, 80, 0)",
-                        ],
-                      }
-                    : {}
-                }
-                transition={{ duration: 0.3 }}
-                style={{ marginLeft: index === 0 ? "60px" : 0 }}
-              >
-                {/* <img
-                src={ability.icon}
-                alt={ability.name}
-                onError={(e) => {
-                  // e.target?.src = "fallback-icon.svg";
-                }}
-              /> */}
-              </AbilityIcon>
-            </Tooltip>
-          ))}
+          <PerkList
+            perksList={perks.fifthTier}
+            onSelect={handleAcquirePerk}
+            selectedPerksList={characterSelectedPerksList}
+            canAcquirePerk={
+              level >= FIFTH_PERK_LEVEL_REQUIREMENT &&
+              !characterSelectedPerksList.some((perk) =>
+                FIFTH_TIER_PERKS.includes(perk),
+              )
+            }
+            characterClass={characterClass}
+          />
         </AbilityGrid>
 
         {/* Блок характеристик */}

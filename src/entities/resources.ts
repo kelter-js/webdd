@@ -3,4 +3,5 @@
 export enum RESOURCES {
   ORE = "ORE",
   SOUL = "SOUL",
+  PHOTO = "PHOTO",
 }

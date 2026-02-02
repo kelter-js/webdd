@@ -1,7 +1,9 @@
 // types.ts
 
 import { BASE_ITEMS_ID } from "../constants/items";
+import { MEDIC_PERKS } from "../constants/perks";
 import { ROOM_TYPES } from "../entities/room";
+import { PERK_ID_DATA } from "./gameState";
 
 export type Location =
   | "Ruins"
@@ -31,3 +33,8 @@ export interface Room {
 // BASE_ITEMS_ID - для маппинга на основной предмет
 // второй стринг - uuidv4 уникальный айди для каждого предмета
 export type MemoizedItem = [BASE_ITEMS_ID, string];
+export interface PerkData {
+  id: PERK_ID_DATA;
+  description: string;
+  isAbility?: boolean;
+}

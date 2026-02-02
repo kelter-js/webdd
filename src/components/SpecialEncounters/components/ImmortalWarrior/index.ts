@@ -1,0 +1,1 @@
+export { ImmortalWarrior } from "./ImmortalWarrior";

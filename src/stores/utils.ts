@@ -1,5 +1,6 @@
 // ТИПИЗАЦИЯ НУЖНА
 import {
+  Battle,
   BattleEffects,
   Character,
   Creature,
@@ -270,106 +271,49 @@ type EffectKey = keyof Effects;
 
 export const generateBattle = (
   tier: number,
-  firstTurn: TURN_STATES,
+  turn: TURN_STATES,
   party: Character[],
   isSpecial?: boolean,
 ) => {
-  if (isSpecial) {
-    // всего их будет 3
-    // const specialCreature = getSpecialCreatureByTier(tier);
-    // CREATURES_DEFAULT_STATS - мапа, где ключ - имя, а значение объект с дефолтными значениями для существ
-    // const creaturesStats = {...CREATURES_DEFAULT_STATS[specialCreature.name]};
-    // если isSpecial нужно сгенерировать рандомный положительный эффект на противнике
-    // const effectsList = getEffectForSpecialEncounter(tier);
-    const enhancementsCount = Math.max(1, Math.min(3, Math.floor(tier)));
+  // формируем battle model
+  const model: Battle = {
+    player: { effects: [], party },
+    // MOCK
+    // нужна реальная функция генерации противников в зависимости от тира и ситуации
+    // enemy: { effects: [], party: generateEnemy(tier, isSpecial) },
+    enemy: { effects: [], party: [] },
+    turn,
+    messages: [],
+    reward: null,
+  };
 
-    const possibleEnhancements: string[] = [
-      "health",
-      "defense",
-      "minAttack",
-      "maxAttack",
-      "evasionChance",
-    ];
-    const possibleEffects: EffectKey[] = [
-      "chanceToRevive",
-      "chanceToHeal",
-      "doubleDamageChance",
-      "makeSleepy",
-    ];
-
-    const effectsList: BattleEffects[] = [];
-
-    for (let i = 0; i < enhancementsCount; i++) {
-      const currentEnhancement = Math.random() < 0.5 ? "stat" : "effect";
-
-      if (currentEnhancement === "stat") {
-        const statIndex = getRandom(0, possibleEnhancements.length);
-
-        const statToEnhance = possibleEnhancements[statIndex];
-        possibleEnhancements.splice(statIndex, 1);
-
-        //   switch (statToEnhance) {
-        //   case "health": {
-        //     creaturesStats.health *= 2;
-        //     creaturesStats.maxHealth *= 2;
-        //     break;
-        //   }
-        //   case "defense": {
-        //     creaturesStats.defense += 5;
-        //     break;
-        //   }
-        //   case "minAttack": {
-        //     creaturesStats.minAttack += 5;
-        //     break;
-        //   }
-        //   case "maxAttack": {
-        //     creaturesStats.maxAttack += 5;
-        //     break;
-        //   }
-        //   case "evasionChance": {
-        //     creaturesStats.evasionChance += 15;
-        //     break;
-        //   }
-        //   default: {
-        //   }
-        // }
-      } else {
-        const effectIndex = getRandom(0, possibleEffects.length);
-
-        const effectToSet = possibleEffects[effectIndex];
-        possibleEffects.splice(effectIndex, 1);
-        effectsList.push({ type: { [effectToSet]: 15 }, duration: 3 });
-      }
-
-      // creaturesStats.isEnhanced = true;
-    }
-
-    // return {
-    //   enemy: { ...creaturesStats, effects: effectsList },
-    //   player: { party: [...party], effects: [] },
-    //   turn: firstTurn,
-    //   messages: [],
-    //  isDiceRolled:false
-    // };
-  }
-
-  // CREATURES - матрица, где в зависимости от тира возвращается другой массив дефолтных существ подходящих по тиру, только их имена
-  // const creaturesListByTier = CREATURES[tier - 1];
-  // const randomCreature =
-  //   creaturesListByTier[getRandom(0, creaturesListByTier.length)];
-  // CREATURES_DEFAULT_STATS - мапа, где ключ - имя, а значение объект с дефолтными значениями для существ
-  // const creaturesStats = CREATURES_DEFAULT_STATS[randomCreature.name];
-
-  // return {
-  //   enemy: { ...creaturesStats, effects: [] },
-  //   player: { party: [...party], effects: [] },
-  //   turn: firstTurn,
-  //   messages: [],
-  //  isDiceRolled:false
-  // };
-
+  // enemy: Enemy;
+  // player: Player;
+  // turn: TURN_STATES;
+  // messages: Message[];
+  // reward: null | Reward;
   // mock
   return {};
+};
+
+const CHANCE_TO_FULL_ENEMY_PARTY = 50;
+const CHANCE_TO_HALF_ENEMY_PARTY = 75;
+
+export const generateEnemy = (isSpecial: boolean, tier: number) => {
+  if (isSpecial) {
+    // здесь только 3 тира врагов спавним
+  }
+
+  // здесь спавним от 1 до 3 врагов, тир врагов от 1-2
+  const amountOfEnemiesRoll = getRandom(0, 100);
+
+  if (amountOfEnemiesRoll < CHANCE_TO_FULL_ENEMY_PARTY) {
+  }
+
+  if (amountOfEnemiesRoll < CHANCE_TO_HALF_ENEMY_PARTY) {
+  }
+
+  return [];
 };
 
 export const increaseCharacterStat = (

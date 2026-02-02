@@ -17,6 +17,7 @@ export const useGlobalListeners = () => {
     setDialogueOpen,
     selectedEnemy,
     setSelectedEnemy,
+    isAudioEnabled,
   } = useAppState();
 
   const {
@@ -112,14 +113,20 @@ export const useGlobalListeners = () => {
 
   useEffect(() => {
     const handleKeyBindings = (event: KeyboardEvent) => {
-      if (isGameInitiated && !hasChallenge && !isGameOver && !sliderId) {
+      if (
+        isGameInitiated &&
+        !hasChallenge &&
+        !isGameOver &&
+        !sliderId &&
+        isAudioEnabled
+      ) {
         if (event.key === "Escape") {
           if (locationState === RENDER_LOCATIONS.LEVELING) {
             toggleCharacterPanel();
             return;
           }
 
-          if (isDialogueOpen) {
+          if (isDialogueOpen && !location?.specialEncounter) {
             setDialogueOpen(null);
             return;
           }
@@ -191,5 +198,7 @@ export const useGlobalListeners = () => {
     sliderId,
     battle,
     selectedEnemy,
+    isAudioEnabled,
+    location?.specialEncounter,
   ]);
 };

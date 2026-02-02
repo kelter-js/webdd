@@ -18,6 +18,7 @@ import {
   REDUT_TIER_2,
   REDUT_TIER_3,
 } from "../constants/armor";
+import { HEALTH_ORB_TIER_1 } from "../constants/artifact";
 import {
   AK_12_TIER_1,
   AK_12_TIER_2,
@@ -150,6 +151,7 @@ const BASE_ITEM_TIER_BY_TYPE_MAP = {
   [BASE_ITEMS_ID.PKM_TIER_1]: PKM_TIER_1,
   [BASE_ITEMS_ID.PKM_TIER_2]: PKM_TIER_2,
   [BASE_ITEMS_ID.PKM_TIER_3]: PKM_TIER_3,
+  [BASE_ITEMS_ID.HEALTH_ORB_TIER_1]: HEALTH_ORB_TIER_1,
 };
 
 export const getBaseItemByBaseId = (

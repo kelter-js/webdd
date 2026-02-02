@@ -67,13 +67,14 @@ import {
   setPlayerPosition,
   buyCamera,
   sellJunk,
-  addResource,
   addJunk,
   giveResources,
   updateFlags,
   increaseResourcesBagLevel,
+  acquirePerk,
   sellItem,
   swapItem,
+  handleExitDungeon,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -157,8 +158,10 @@ export const useGameState = create<StoreState>()(
               if (!copyState.player.location?.specialEncounter) {
                 // Логика рассчета того, что мы попали в бой
                 const encounterChance = Math.random() * 100;
+
                 const currentChance =
                   copyState.player.location?.encounterChance!;
+
                 const roll = getEncounterRoll(
                   currentChance!,
                   copyState.effects,
@@ -170,15 +173,17 @@ export const useGameState = create<StoreState>()(
 
                 if (hasEncounter) {
                   onFightStart();
+
                   console.log("do we reach that place?");
+
                   if (isDeadEnd) {
-                    // передавать реальный тир т екущий
                     const firstTurn = getFirstTurn(
                       copyState.player.currentTier,
                       copyState.effects,
                       copyState.player.party,
                       true,
                     );
+
                     const battle = generateBattle(
                       copyState.player.currentTier,
                       firstTurn,
@@ -309,88 +314,12 @@ export const useGameState = create<StoreState>()(
       buyCamera: buyCamera(set),
       toggleCharacterPanel: toggleCharacterPanel(set),
       increaseResourcesBagLevel: increaseResourcesBagLevel(set),
+      acquirePerk: acquirePerk(set),
       sellJunk: sellJunk(set),
       addJunk: addJunk(set),
-      addResource: addResource(set),
       sellItem: sellItem(set),
       giveResources: giveResources(set),
-
-      handleExitDungeon: () =>
-        set((state) => {
-          console.log("we invoked", state.player.economic);
-          const stateCopy = {
-            ...state,
-            player: { ...state.player },
-          };
-
-          let newConsumables = null;
-          let newInventory = null;
-          let newMemoizedInventory = null;
-
-          if (stateCopy.player.location) {
-            stateCopy.player.location.encounterChance = MIN_ENCOUNTER_CHANCE;
-          }
-
-          if (stateCopy.player.location?.type === DUNGEONS.STORY) {
-            stateCopy.player.playStatistics.dungeonCounter += 1;
-          }
-
-          if (stateCopy.player.economic === ECONOMIC_TYPES.ALCHEMISTRY) {
-            // FIXME: по мере дополнения систем инвентаря - допилить
-            newConsumables = [...stateCopy.player.consumables];
-            // FIXME определиться с фиксированным вознаграждением и названиями эликсиров, заменить стринги на енамы
-            // проверяем, есть ли у игрока вообще уже такие зелья
-            const elixirIndex = newConsumables.findIndex(
-              (item) => item[0] === POTION_TYPES.SMALL_HEALTH_POTION,
-            );
-
-            if (elixirIndex !== -1) {
-              // если зелья есть - увеличиваем их кол-во
-              // второе значение массива - кол-во, обращаемся по индексу [1] -
-              // обновляем количество
-              const [name, count] = newConsumables[elixirIndex];
-              newConsumables[elixirIndex] = [
-                name,
-                String(Number(count ?? 0) + 2),
-              ];
-            } else {
-              // если нет - устанавливаем их
-              newConsumables.push([POTION_TYPES.SMALL_HEALTH_POTION, "2"]);
-            }
-          }
-
-          if (stateCopy.player.economic === ECONOMIC_TYPES.FISHING) {
-            // FIXME определиться с фиксированным вознаграждением в виде голды и привести к балансу
-            stateCopy.player.gold += 150;
-          }
-
-          if (stateCopy.player.economic === ECONOMIC_TYPES.WEAPONRY) {
-            newInventory = stateCopy.inventory ? [...stateCopy.inventory] : [];
-            newMemoizedInventory = [...stateCopy.player.inventory_memoized];
-            // FIXME: логика генерации оружия или брони - 50% на 50% или броня или оружие, шанс прока второго или 3 тира в зависимости от тира игры
-            // const chanceToSpawnWeapon = getRandom();
-            // let item;
-            // if (chanceToSpawnWeapon < 50) {
-            // item = generateWeapon(stateCopy.player.tier);
-            // } else {
-            // item = generateArmor(stateCopy.player.tier);
-            // }
-            // newInventory.push(item);
-
-            // FIXME: логика приведения оружия к стринговому виду для хранения в кач-ве мемоизированного значения
-            // const memoizedItem = memoize(item);
-            // const memoizedItem = "";
-            // newMemoizedInventory.push(memoizedItem);
-          }
-
-          stateCopy.player.consumables =
-            newConsumables ?? stateCopy.player.consumables;
-          stateCopy.inventory = newInventory ?? stateCopy.inventory;
-          stateCopy.player.inventory_memoized =
-            newMemoizedInventory ?? stateCopy.player.inventory_memoized;
-
-          return stateCopy;
-        }),
+      handleExitDungeon: handleExitDungeon(set),
 
       // ф-ии чисто для тестов
       killEnemy: () =>

@@ -15,17 +15,30 @@ export const JUNK_DATA = {
     price: 300,
     title: "Кристальный шар",
   },
+  [JUNK_TYPES.GOLDEN_CHAIN]: {
+    price: 500,
+    title: "Золотая цепочка",
+  },
 };
 
 export const FIRST_TIER_JUNK = [JUNK_TYPES.AXE];
-export const SECOND_TIER_JUNK = [];
-export const THIRD_TIER_JUNK = [];
+export const SECOND_TIER_JUNK = [JUNK_TYPES.CRYSTAL_ORB];
+export const THIRD_TIER_JUNK = [JUNK_TYPES.GOLDEN_CHAIN];
 
-export const POTION_TIERS = {
-  [POTION_TYPES.SMALL_HEALTH_POTION]: 1,
-  [POTION_TYPES.MEDIUM_HEALTH_POTION]: 2,
-  [POTION_TYPES.LARGE_HEALTH_POTION]: 3,
-  [POTION_TYPES.EXTRA_LARGE_HEALTH_POTION]: 4,
+export const getPotionByTier = (currentTier: number) => {
+  if (currentTier === 1) {
+    return POTION_TYPES.SMALL_HEALTH_POTION;
+  }
+
+  if (currentTier === 2) {
+    return POTION_TYPES.MEDIUM_HEALTH_POTION;
+  }
+
+  if (currentTier === 3) {
+    return POTION_TYPES.LARGE_HEALTH_POTION;
+  }
+
+  return POTION_TYPES.EXTRA_LARGE_HEALTH_POTION;
 };
 
 export enum BASE_ITEMS_ID {
@@ -101,4 +114,7 @@ export enum BASE_ITEMS_ID {
   PKM_TIER_1 = "PKM_TIER_1",
   PKM_TIER_2 = "PKM_TIER_2",
   PKM_TIER_3 = "PKM_TIER_3",
+
+  HEALTH_ORB_TIER_1 = "HEALTH_ORB_TIER_1",
+  BULLET_NECKLACE_TIER_1 = "BULLET_NECKLACE_TIER_1",
 }

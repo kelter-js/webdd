@@ -25,6 +25,105 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 8;
 // EVADE DAMAGE FORMULA
 // Character.Agility × 0.4
 
+// export const ENEMY_POOLS = {
+//   LOCATION_TIER_1: {
+//     rat: {
+//       tier1: { hp: 50, minDmg: 2, maxDmg: 4, xp: 100 },
+//       tier2: { hp: 70, minDmg: 3, maxDmg: 6, xp: 115 },
+//       tier3: { hp: 90, minDmg: 4, maxDmg: 8, xp: 130 },
+//     },
+//     bandit: {
+//       tier1: { hp: 100, minDmg: 4, maxDmg: 8, xp: 150 },
+//       tier2: { hp: 140, minDmg: 6, maxDmg: 10, xp: 170 },
+//       tier3: { hp: 180, minDmg: 8, maxDmg: 12, xp: 200 },
+//     },
+//     orc: {
+//       tier1: { hp: 180, minDmg: 7, maxDmg: 13, xp: 210 },
+//       tier2: { hp: 252, minDmg: 10, maxDmg: 18, xp: 235 },
+//       tier3: { hp: 324, minDmg: 13, maxDmg: 23, xp: 280 },
+//     },
+//     elite: {
+//       tier1: { hp: 300, minDmg: 10, maxDmg: 18, xp: 350 },
+//       tier2: { hp: 420, minDmg: 14, maxDmg: 26, xp: 400 },
+//       tier3: { hp: 540, minDmg: 18, maxDmg: 34, xp: 450 },
+//     },
+//     miniboss: {
+//       tier1: { hp: 450, minDmg: 13, maxDmg: 23, xp: 900 },
+//       tier2: { hp: 630, minDmg: 18, maxDmg: 34, xp: 1035 },
+//       tier3: { hp: 810, minDmg: 23, maxDmg: 43, xp: 1170 },
+//     },
+//     boss: {
+//       tier1: { hp: 900, minDmg: 18, maxDmg: 32, xp: 1800 },
+//       tier2: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2070 },
+//       tier3: { hp: 1620, minDmg: 32, maxDmg: 58, xp: 2340 },
+//     },
+//   },
+//   LOCATION_TIER_2: {
+//     goblin: {
+//       tier1: { hp: 70, minDmg: 4, maxDmg: 8, xp: 140 },
+//       tier2: { hp: 98, minDmg: 6, maxDmg: 11, xp: 161 },
+//       tier3: { hp: 126, minDmg: 8, maxDmg: 14, xp: 182 },
+//     },
+//     thief: {
+//       tier1: { hp: 140, minDmg: 7, maxDmg: 13, xp: 280 },
+//       tier2: { hp: 196, minDmg: 10, maxDmg: 18, xp: 322 },
+//       tier3: { hp: 252, minDmg: 13, maxDmg: 23, xp: 364 },
+//     },
+//     troll: {
+//       tier1: { hp: 252, minDmg: 10, maxDmg: 18, xp: 504 },
+//       tier2: { hp: 353, minDmg: 14, maxDmg: 26, xp: 580 },
+//       tier3: { hp: 454, minDmg: 18, maxDmg: 34, xp: 655 },
+//     },
+//     veteran: {
+//       tier1: { hp: 420, minDmg: 14, maxDmg: 26, xp: 840 },
+//       tier2: { hp: 588, minDmg: 20, maxDmg: 36, xp: 966 },
+//       tier3: { hp: 756, minDmg: 26, maxDmg: 46, xp: 1092 },
+//     },
+//     subboss: {
+//       tier1: { hp: 630, minDmg: 18, maxDmg: 34, xp: 1260 },
+//       tier2: { hp: 882, minDmg: 25, maxDmg: 45, xp: 1449 },
+//       tier3: { hp: 1134, minDmg: 32, maxDmg: 58, xp: 1638 },
+//     },
+//     tier2boss: {
+//       tier1: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2520 },
+//       tier2: { hp: 1764, minDmg: 35, maxDmg: 63, xp: 2898 },
+//       tier3: { hp: 2268, minDmg: 45, maxDmg: 81, xp: 3276 },
+//     },
+//   },
+//   LOCATION_TIER_3: {
+//     demon: {
+//       tier1: { hp: 100, minDmg: 6, maxDmg: 12, xp: 200 },
+//       tier2: { hp: 140, minDmg: 9, maxDmg: 17, xp: 230 },
+//       tier3: { hp: 180, minDmg: 12, maxDmg: 22, xp: 260 },
+//     },
+//     assassin: {
+//       tier1: { hp: 200, minDmg: 10, maxDmg: 20, xp: 400 },
+//       tier2: { hp: 280, minDmg: 14, maxDmg: 28, xp: 460 },
+//       tier3: { hp: 360, minDmg: 18, maxDmg: 36, xp: 520 },
+//     },
+//     giant: {
+//       tier1: { hp: 360, minDmg: 14, maxDmg: 28, xp: 720 },
+//       tier2: { hp: 504, minDmg: 20, maxDmg: 40, xp: 828 },
+//       tier3: { hp: 648, minDmg: 26, maxDmg: 52, xp: 936 },
+//     },
+//     champion: {
+//       tier1: { hp: 600, minDmg: 20, maxDmg: 40, xp: 1200 },
+//       tier2: { hp: 840, minDmg: 28, maxDmg: 56, xp: 1380 },
+//       tier3: { hp: 1080, minDmg: 36, maxDmg: 72, xp: 1560 },
+//     },
+//     megaboss: {
+//       tier1: { hp: 900, minDmg: 26, maxDmg: 52, xp: 1800 },
+//       tier2: { hp: 1260, minDmg: 36, maxDmg: 72, xp: 2070 },
+//       tier3: { hp: 1620, minDmg: 46, maxDmg: 92, xp: 2340 },
+//     },
+//     finalboss: {
+//       tier1: { hp: 1800, minDmg: 35, maxDmg: 70, xp: 3600 },
+//       tier2: { hp: 2520, minDmg: 49, maxDmg: 98, xp: 4140 },
+//       tier3: { hp: 3240, minDmg: 63, maxDmg: 126, xp: 4680 },
+//     },
+//   },
+// };
+
 // FIRST TIER AREA
 // rat:       hp 50,  dmg 3
 // bandit:    hp 100, dmg 6

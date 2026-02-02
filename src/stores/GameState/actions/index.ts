@@ -1,5 +1,6 @@
 import { increaseResourcesBagLevel } from "./increaseResourcesBagLevel";
 import { toggleCharacterPanel } from "./toggleCharacterPanel";
+import { handleExitDungeon } from "./handleExitDungeon";
 import { setEconomicBranch } from "./setEconomicBranch";
 import { updateDialogFlags } from "./updateDialogFlags";
 import { setPlayerPosition } from "./setPlayerPosition";
@@ -20,7 +21,7 @@ import { updateBattle } from "./updateBattle";
 import { updateFlags } from "./updateFlags";
 import { setGameOver } from "./setGameOver";
 import { resetBattle } from "./resetBattle";
-import { addResource } from "./addResource";
+import { acquirePerk } from "./acquirePerk";
 import { useAbility } from "./useAbility";
 import { setSliders } from "./setSliders";
 import { setDungeon } from "./setDungeon";
@@ -39,6 +40,7 @@ import { addJunk } from "./addJunk";
 export {
   increaseResourcesBagLevel,
   toggleCharacterPanel,
+  handleExitDungeon,
   setEconomicBranch,
   updateDialogFlags,
   setPlayerPosition,
@@ -59,7 +61,7 @@ export {
   updateFlags,
   setGameOver,
   resetBattle,
-  addResource,
+  acquirePerk,
   useAbility,
   setSliders,
   setDungeon,
