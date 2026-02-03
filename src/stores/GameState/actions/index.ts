@@ -35,6 +35,7 @@ import { setState } from "./setState";
 import { healTeam } from "./healTeam";
 import { sellJunk } from "./sellJunk";
 import { sellItem } from "./sellItem";
+import { buyItem } from "./buyItem";
 import { addJunk } from "./addJunk";
 
 export {
@@ -75,5 +76,6 @@ export {
   healTeam,
   sellJunk,
   sellItem,
+  buyItem,
   addJunk,
 };

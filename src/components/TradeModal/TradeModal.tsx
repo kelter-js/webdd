@@ -17,7 +17,7 @@ export const TradeModal = () => {
         <Button
           variant="text"
           fullWidth
-          sx={{ p: 0, opacity: tab === TRADE_TYPES.BUY ? 0.5 : 1 }}
+          sx={{ p: 0, opacity: tab === TRADE_TYPES.BUY ? 1 : 0.5 }}
           disabled={tab === TRADE_TYPES.BUY}
           onClick={() => setTab(TRADE_TYPES.BUY)}
         >
@@ -40,7 +40,7 @@ export const TradeModal = () => {
         <Button
           variant="text"
           fullWidth
-          sx={{ p: 0, opacity: tab === TRADE_TYPES.SELL ? 0.5 : 1 }}
+          sx={{ p: 0, opacity: tab === TRADE_TYPES.SELL ? 1 : 0.5 }}
           disabled={tab === TRADE_TYPES.SELL}
           onClick={() => setTab(TRADE_TYPES.SELL)}
         >

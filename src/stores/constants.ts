@@ -20,7 +20,7 @@ export const MEDIC_CLASS_DAMAGE_MLTPL = 0.8;
 
 export const HP_PER_ENDURANCE_POINT = 10;
 export const MAX_AMOUNT_OF_POTIONS_TO_SELL = 8;
-export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 8;
+export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 
 // EVADE DAMAGE FORMULA
 // Character.Agility × 0.4

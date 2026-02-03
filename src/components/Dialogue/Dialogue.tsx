@@ -17,6 +17,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     toggleBuyPotionsModal,
     toggleAlmanac,
     toggleTradeModal,
+    toggleCraftMenu,
   } = useAppState();
   const { updateDialogFlags, healTeam, buyCamera, increaseResourcesBagLevel } =
     useGameState();
@@ -63,6 +64,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.BUY_BAG_IMPROVEMENT) {
       increaseResourcesBagLevel();
+    }
+
+    if (id === DIALOGUE_IDS.OPEN_SMITH) {
+      toggleCraftMenu();
     }
 
     if (nextNode === "end") {

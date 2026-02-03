@@ -31,6 +31,7 @@ export const Settlement = () => {
     isBuyPotionsModalOpen,
     isAlmanacOpen,
     isTradeModalOpen,
+    isCraftMenuOpen,
   } = useAppState();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
@@ -77,6 +78,7 @@ export const Settlement = () => {
       {isBuyPotionsModalOpen && <PotionsBuyModal />}
       {isAlmanacOpen && <AlmanacModal />}
       {isTradeModalOpen && <TradeModal />}
+      {isCraftMenuOpen && <></>}
 
       {isEconomicModalOpen && (
         <GameModal onClose={() => toggleEconomicModal()}>

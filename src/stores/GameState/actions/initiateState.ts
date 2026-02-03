@@ -36,8 +36,8 @@ export const initiateState = (set: StoreSet) => () =>
     // MOCK
     // здесь же нужно проинициализировать интентарь покупок если он пуст
     if (!stateCopy.player.itemsToBuy) {
-      // const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
-      const itemsToBuy = generateStoreItems(3);
+      const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
+
       console.log("itemsToBuy in state", itemsToBuy);
 
       stateCopy.sell_inventory = itemsToBuy.map((item) => {

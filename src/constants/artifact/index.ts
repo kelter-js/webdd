@@ -15,7 +15,7 @@ export const HEALTH_ORB_TIER_1 = {
   iconSrc: "",
   type: GEAR_SLOTS.ARTIFACT,
   tier: 1,
-  value: 28,
+  value: 5,
   baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_1,
   price: 2000,
   overAllTier: 1,
@@ -28,8 +28,21 @@ export const BULLET_NECKLACE_TIER_1 = {
   iconSrc: "",
   type: GEAR_SLOTS.ARTIFACT,
   tier: 1,
-  value: 28,
+  value: 5,
   baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_1,
+  price: 2000,
+  overAllTier: 1,
+};
+
+export const LEAD_CLOAK_TIER_1 = {
+  name: "Свинцовая пелена",
+  description:
+    "Эта вещь вобрала в себя боль бесчиленного количества людей, павших за время всех войн. Носящий эту вещь ощущает, что в нем есть силы пережить даже самый сильный удар судьбы",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 1,
+  value: 10,
+  baseId: BASE_ITEMS_ID.LEAD_CLOAK_TIER_1,
   price: 2000,
   overAllTier: 1,
 };

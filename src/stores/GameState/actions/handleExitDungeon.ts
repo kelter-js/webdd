@@ -1,6 +1,9 @@
 import { getPotionByTier } from "../../../constants/items";
 import { DUNGEONS, ECONOMIC_TYPES } from "../../../entities";
 import { POTION_TYPES } from "../../../entities/consumables";
+import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
+import { generateStoreItems } from "../../../utils/generateStoreItems";
+import { getItemPrice } from "../../../utils/getItemPrice";
 import { memoizeItem } from "../../../utils/memoizeItem";
 import { MIN_ENCOUNTER_CHANCE } from "../../constants";
 import { StoreSet } from "./types";
@@ -83,6 +86,22 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     stateCopy.inventory = newInventory ?? stateCopy.inventory;
     stateCopy.player.inventory_memoized =
       newMemoizedInventory ?? stateCopy.player.inventory_memoized;
+
+    // при выходе из подземелья обновляем ассортимент зелий
+    stateCopy.player.potionsToBuy = generatePotionsList(
+      stateCopy.player.currentTier,
+    );
+
+    // при выходе из подземелья обновляем ассортимент предметов
+    const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
+    console.log("itemsToBuy in state", itemsToBuy);
+
+    stateCopy.sell_inventory = itemsToBuy.map((item) => {
+      const itemPrice = getItemPrice(item, stateCopy.player.currentTier);
+      return { ...item, price: itemPrice };
+    });
+
+    stateCopy.player.itemsToBuy = itemsToBuy.map((item) => memoizeItem(item));
 
     return stateCopy;
   });

@@ -33,4 +33,7 @@ export interface AppState {
   reset: VoidFunction;
   selectedEnemy: number;
   setSelectedEnemy: (index: number) => void;
+
+  isCraftMenuOpen: boolean;
+  toggleCraftMenu: VoidFunction;
 }

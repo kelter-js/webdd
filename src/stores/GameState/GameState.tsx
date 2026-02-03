@@ -75,6 +75,7 @@ import {
   sellItem,
   swapItem,
   handleExitDungeon,
+  buyItem,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -320,6 +321,7 @@ export const useGameState = create<StoreState>()(
       sellItem: sellItem(set),
       giveResources: giveResources(set),
       handleExitDungeon: handleExitDungeon(set),
+      buyItem: buyItem(set),
 
       // ф-ии чисто для тестов
       killEnemy: () =>

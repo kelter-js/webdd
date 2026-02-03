@@ -34,6 +34,10 @@ export const useGetDialogue = (npc: string | null) => {
   const dialogue = useMemo(() => {
     switch (npc) {
       case BUILDING_NAMES.SMITH:
+        if (dialogFlags.includes(DIALOGUE_FLAGS.SMITH_WELCOMED)) {
+          smithDialog.startNode = "alreadyWelcomed";
+        }
+
         return smithDialog;
 
       case BUILDING_NAMES.QUEST_DESK:

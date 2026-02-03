@@ -1,19 +1,16 @@
-import { useMemo } from "react";
 import { useGameState } from "../../../../stores";
 import buyBackground from "../../../../assets/static/gun_trader.png";
 import { BackgroundFiller, Container } from "./BuyList.styled";
+import { DEFAULT_SLOTS, GRID_ITEM_COORDINATES } from "./constants";
+import { useState } from "react";
+import { ShopItem } from "./components/ShopItem";
 
 export const BuyList = () => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // MOCK: заменить potionsToBuy на itemToBuy - в listToBuy мы их демемоизируем и выводим список, значения пока не готовы в сторе
-  const {
-    player: { potionsToBuy },
-  } = useGameState();
-
-  const listToBuy = useMemo(() => {
-    // MOCK
-    // return potionsToBuy?.map(item => deMemoize(item));
-    return [];
-  }, [potionsToBuy]);
+  const { sell_inventory } = useGameState();
+  const sellInventory = sell_inventory || [];
+  const handleBlur = () => setHoveredIndex(null);
 
   // на уровне хука инициализации нужно проверять - есть не сгенерирован ассортимент - генерить и класть в itemToBuy в мемоизированном состоянии
   // потом здесь
@@ -21,8 +18,17 @@ export const BuyList = () => {
   return (
     <Container>
       <BackgroundFiller src={buyBackground} />
-      {listToBuy.map((item) => (
-        <div></div>
+
+      {DEFAULT_SLOTS.map((_, index) => (
+        <ShopItem
+          top={GRID_ITEM_COORDINATES[index].y}
+          left={GRID_ITEM_COORDINATES[index].x}
+          key={sellInventory[index]?.gearId ?? index}
+          itemData={sellInventory[index]}
+          isHovered={index === hoveredIndex}
+          onHover={() => setHoveredIndex(index)}
+          onBlur={handleBlur}
+        />
       ))}
     </Container>
   );

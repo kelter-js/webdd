@@ -19,17 +19,41 @@ export const smithDialog: DialogueTree = {
       text: "Добро пожаловать в Темнолесье...",
       options: [
         { text: "Кто ты?", nextNode: "who_are_you" },
-        { text: "Что здесь происходит?", nextNode: "what_happened" },
+        { text: "Можно воспользоваться твоей кузней?", nextNode: "use_smith" },
+        { text: "[Уйти]", nextNode: "end" },
+      ],
+      flags: [DIALOGUE_FLAGS.SMITH_WELCOMED],
+    },
+
+    alreadyWelcomed: {
+      text: "Снова ты?.. Ну привет-привет.",
+      options: [
+        {
+          text: "[открыть меню кузницы]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.OPEN_SMITH,
+        },
+        { text: "Да я так, поздороваться... [уйти]", nextNode: "end" },
       ],
     },
+
     who_are_you: {
       text: "Я страж этих руин. Много лет... [пауза] Но это неважно.",
       options: [{ text: "[Уйти]", nextNode: "end" }],
     },
-    what_happened: {
-      text: "Тьма поглотила этот край... [пауза] Вы должны сражаться.",
-      options: [{ text: "[Уйти]", nextNode: "end" }],
+
+    use_smith: {
+      text: "У меня как раз есть свободное окно, не особо много заказов, можешь воспользоваться кузней",
+      options: [
+        {
+          text: "[открыть меню кузницы]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.OPEN_SMITH,
+        },
+        { text: "[Уйти]", nextNode: "end" },
+      ],
     },
+
     end: {
       text: "Удачи, путник...",
 

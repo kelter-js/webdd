@@ -37,6 +37,11 @@ export const useAppState = create<AppState>((set) => ({
     set((state) => ({
       isBuyPotionsModalOpen: value ?? !state.isBuyPotionsModalOpen,
     })),
+  isCraftMenuOpen: false,
+  toggleCraftMenu: () =>
+    set((state) => ({
+      isCraftMenuOpen: !state.isCraftMenuOpen,
+    })),
   isTradeModalOpen: false,
   toggleTradeModal: () =>
     set((state) => ({

@@ -296,6 +296,7 @@ export interface StoreState {
   increaseResourcesBagLevel: VoidFunction;
   setBattleTurn: (newTurn: TURN_STATES) => void;
   sellItem: (itemId: string) => void;
+  buyItem: (itemId: string) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
   setSliders: (newTurn: string | null) => void;
@@ -365,6 +366,7 @@ export type PersistedState = Omit<
   | "addJunk"
   | "giveResources"
   | "sellItem"
+  | "buyItem"
 
   // ф-ии чисто для тестов
   | "killEnemy"
