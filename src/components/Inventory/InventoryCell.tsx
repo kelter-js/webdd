@@ -57,7 +57,7 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, id, index }) => {
         cursor: "pointer",
       }}
     >
-      <img src={emptySlot} />
+      <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
     </Stack>
   );
 };

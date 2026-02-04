@@ -1,10 +1,10 @@
-import PerfectScrollbar from "react-perfect-scrollbar";
 import * as S from "./Inventory.styled";
 import { MIN_AMOUNT_OF_ITEMS_PER_ROW } from "./constants";
 import { Fragment, RefObject, useMemo } from "react";
 import { InventoryCell } from "./InventoryCell";
 import { useDrop } from "react-dnd";
 import { Stack } from "@mui/material";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 export const InventoryContainer = () => {
   const items = useMemo(
@@ -13,7 +13,7 @@ export const InventoryContainer = () => {
         id: `item-${index}`,
         type: "item",
       })),
-    []
+    [],
   );
 
   const [{ isOver }, drop] = useDrop<
@@ -31,24 +31,54 @@ export const InventoryContainer = () => {
   }));
 
   return (
-    <PerfectScrollbar>
-      <S.InventoryContainer ref={drop as unknown as RefObject<HTMLDivElement>}>
-        {items.map((item, index) => (
-          <Fragment key={index}>
-            <InventoryCell id={item.id} index={index} type={item.type} />
-          </Fragment>
-        ))}
-        {isOver && (
-          <Stack
-            sx={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              background: "white",
-            }}
-          ></Stack>
-        )}
-      </S.InventoryContainer>
-    </PerfectScrollbar>
+    <OverlayScrollbarsComponent
+      options={{
+        overflow: {
+          y: "scroll", // всегда готов к скроллу
+          x: "hidden",
+        },
+        scrollbars: {
+          theme: "os-theme-light",
+          autoHide: "scroll",
+          autoHideDelay: 800,
+          autoHideSuspend: false,
+          clickScroll: true,
+        },
+      }}
+      defer
+      style={{
+        height: "100%", // если родитель имеет высоту
+        width: "100%",
+        minHeight: 0,
+      }}
+    >
+      <div
+        style={{
+          minHeight: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <S.InventoryContainer
+          ref={drop as unknown as RefObject<HTMLDivElement>}
+        >
+          {items.map((item, index) => (
+            <Fragment key={index}>
+              <InventoryCell id={item.id} index={index} type={item.type} />
+            </Fragment>
+          ))}
+          {isOver && (
+            <Stack
+              sx={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                background: "white",
+              }}
+            ></Stack>
+          )}
+        </S.InventoryContainer>
+      </div>
+    </OverlayScrollbarsComponent>
   );
 };

@@ -1,6 +1,7 @@
 import test from "../assets/slides/test.jpg";
-import slide_1 from "../assets/slides/first_slide.png";
-import slide_2 from "../assets/slides/second_slide.png";
+import slide_1 from "../assets/slides/slide_1.png";
+import slide_2 from "../assets/slides/slide_2.png";
+import slide_3 from "../assets/slides/slide_3.png";
 
 const mockSlides = [
   {
@@ -29,8 +30,19 @@ const mockSlides = [
   },
   {
     id: 3,
-    text: "Где-то вдалеке слышится шорох. Кажется, начинается что-то важное...",
-    image: test,
+    text: (
+      <>
+        Дмитрий Александрович расплылся в безумной улыбке, дотянувшись до
+        бейсбольной биты, что стояла прислоненной к стене у балконной двери.
+        <br /> Мужчина покинул пределы инвалидного кресла, конечности
+        предательски затекли от долгого пребывания в нем
+        <br />
+        Профессор подкрадываясь, легкой ступью преодолел зал и одним мощным
+        ударом заставил сознание волонтера покинуть его тело
+        <br />- Ты извини меня, я ведь не со зла, люблю я ее очень...
+      </>
+    ),
+    image: slide_3,
   },
   {
     id: 4,

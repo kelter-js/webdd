@@ -7,7 +7,7 @@ import { InventoryCell } from "./InventoryCell";
 
 import { CharacterCell } from "./CharacterCell";
 import { Fragment, useMemo } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
+
 import { InventoryContainer } from "./InventoryContainer";
 import character from "../../assets/static/character_bg.png";
 import { GEAR_SLOTS } from "../../entities/gear";

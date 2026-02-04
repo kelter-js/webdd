@@ -16,11 +16,12 @@
     "@mui/material": "^6.4.8",
     "framer-motion": "^12.5.0",
     "lodash": "^4.17.21",
+    "overlayscrollbars": "^2.14.0",
+    "overlayscrollbars-react": "^0.5.6",
     "react": "^19.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.0.0",
-    "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "6",
     "uuid": "^13.0.0",
     "zustand": "^5.0.3"

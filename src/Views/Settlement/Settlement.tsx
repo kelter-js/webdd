@@ -15,6 +15,7 @@ import { EconomicCard } from "../../components/EconomicCard";
 import { PotionsBuyModal } from "../../components/PotionsBuyModal";
 import { AlmanacModal } from "../../components/AlmanacModal";
 import { TradeModal } from "../../components/TradeModal";
+import { CraftModal } from "../../components/CraftModal";
 
 export const Settlement = () => {
   const {
@@ -78,7 +79,7 @@ export const Settlement = () => {
       {isBuyPotionsModalOpen && <PotionsBuyModal />}
       {isAlmanacOpen && <AlmanacModal />}
       {isTradeModalOpen && <TradeModal />}
-      {isCraftMenuOpen && <></>}
+      {isCraftMenuOpen && <CraftModal />}
 
       {isEconomicModalOpen && (
         <GameModal onClose={() => toggleEconomicModal()}>

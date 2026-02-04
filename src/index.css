@@ -201,3 +201,21 @@ button {
   overflow: visible;
   filter: drop-shadow(0 0 1px rgba(150, 80, 0, 0.3));
 }
+.os-host {
+  --os-handle-bg: #bbbbbb !important; /* светло-серый ползунок */
+  --os-handle-bg-hover: #dddddd !important; /* при наведении */
+  --os-handle-bg-active: #eeeeee !important; /* при нажатии */
+  --os-track-bg: rgba(180, 180, 180, 0.15) !important; /* лёгкий серый трек */
+  --os-handle-border-radius: 6px !important;
+  --os-size: 10px !important; /* толщина полосы */
+}
+
+/* Чтобы handle не прятался слишком агрессивно */
+.os-scrollbar-handle {
+  opacity: 0.9 !important;
+}
+
+/* Показывать при наведении на весь контейнер */
+.os-host:hover .os-scrollbar-handle {
+  opacity: 1 !important;
+}

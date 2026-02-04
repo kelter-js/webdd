@@ -5,12 +5,10 @@ export const InventoryContainer = styled("div")`
   display: flex;
   flex-wrap: wrap;
   width: calc(100% - 64px);
-  height: 463px;
-  border: 2px solid blue;
+
   margin: 0 32px;
   margin-top: 16px;
   margin-bottom: 32px;
-  overflow: auto;
 `;
 
 export const CharactersView = styled("div")`

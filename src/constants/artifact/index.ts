@@ -46,3 +46,16 @@ export const LEAD_CLOAK_TIER_1 = {
   price: 2000,
   overAllTier: 1,
 };
+
+export const VAMPIRE_RING_TIER_1 = {
+  name: "Кольцо вампира",
+  description:
+    "Каждый кто носит это кольцо ощущает, что отнимая жизни врагов, он забирает часть их жизненной силы себе",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 3,
+  value: 10,
+  baseId: BASE_ITEMS_ID.VAMPIRE_RING_TIER_1,
+  price: 5000,
+  overAllTier: 3,
+};

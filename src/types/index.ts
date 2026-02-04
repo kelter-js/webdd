@@ -3,7 +3,7 @@
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS } from "../constants/perks";
 import { ROOM_TYPES } from "../entities/room";
-import { PERK_ID_DATA } from "./gameState";
+import { GameStateData, PERK_ID_DATA } from "./gameState";
 
 export type Location =
   | "Ruins"
@@ -37,4 +37,13 @@ export interface PerkData {
   id: PERK_ID_DATA;
   description: string;
   isAbility?: boolean;
+}
+
+export interface ReceiptData {
+  isDisabled: (state: GameStateData) => boolean;
+  create: (state: GameStateData) => GameStateData;
+  title: string;
+  sourceItemIcon: string;
+  targetItemIcon: string;
+  goldRequiredToCraft?: number;
 }
