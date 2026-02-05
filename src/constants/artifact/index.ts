@@ -21,6 +21,32 @@ export const HEALTH_ORB_TIER_1 = {
   overAllTier: 1,
 };
 
+export const HEALTH_ORB_TIER_2 = {
+  name: "Кристалл здоровья MKII",
+  description:
+    "Странно пульсирующая сфера, если носить на поясе даёт ощущение тепла, растекающегося по телу, заживляя раны",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 2,
+  value: 10,
+  baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_2,
+  price: 2000,
+  overAllTier: 1,
+};
+
+export const HEALTH_ORB_TIER_3 = {
+  name: "Кристалл здоровья MKIII",
+  description:
+    "Странно пульсирующая сфера, если носить на поясе даёт ощущение тепла, растекающегося по телу, заживляя раны",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 3,
+  value: 15,
+  baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_3,
+  price: 2000,
+  overAllTier: 1,
+};
+
 export const BULLET_NECKLACE_TIER_1 = {
   name: "Ожерелье из патронов",
   description:
@@ -30,6 +56,32 @@ export const BULLET_NECKLACE_TIER_1 = {
   tier: 1,
   value: 5,
   baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_1,
+  price: 2000,
+  overAllTier: 1,
+};
+
+export const BULLET_NECKLACE_TIER_2 = {
+  name: "Ожерелье из патронов",
+  description:
+    "Аккуратно просверленный ряд патронов, в отверстия всталена проволка, вероятно для ношения на шее. После экипировки появляется ощущение, что весь мир у ваших ног",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 2,
+  value: 10,
+  baseId: BASE_ITEMS_ID.BULLET_NECKLACE_TIER_2,
+  price: 2000,
+  overAllTier: 1,
+};
+
+export const BULLET_NECKLACE_TIER_3 = {
+  name: "Ожерелье из патронов",
+  description:
+    "Аккуратно просверленный ряд патронов, в отверстия всталена проволка, вероятно для ношения на шее. После экипировки появляется ощущение, что весь мир у ваших ног",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARTIFACT,
+  tier: 3,
+  value: 15,
+  baseId: BASE_ITEMS_ID.BULLET_NECKLACE_TIER_3,
   price: 2000,
   overAllTier: 1,
 };

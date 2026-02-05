@@ -1,9 +1,10 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Room } from "../../types";
 import { generateDungeon } from "../../utils";
 
 import { ClosePortal, QTEGame, ShootingRange } from "../Minigames";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import {
   RENDER_LOCATIONS,
   QUEST_STATUSES,
@@ -20,6 +21,10 @@ import { usePlayer } from "../../contexts/Player";
 import encunterSFX from "../../assets/audio/encounter.mp3";
 import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
 import { CrazyTrader, ImmortalWarrior, Widow } from "../SpecialEncounters";
+import { useMovement } from "./hooks/useMovement";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import { getDungeonBackgroundByTier } from "./utils";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -41,7 +46,7 @@ const ENCOUNTER_SFX_PLAYER_REF = "encounter";
 
 export const Map = () => {
   const {
-    player: { location, economic, battle },
+    player: { location, economic, battle, currentTier },
     setDungeon,
     setPlayerPosition,
     updateDungeon,
@@ -50,6 +55,9 @@ export const Map = () => {
     handleExitDungeon,
   } = useGameState();
   const { setFading, toggleAutoSave } = useAppState();
+  const [isMapVisible, setMapVisible] = useState(false);
+
+  const handleMapVisibilityChange = () => setMapVisible((state) => !state);
 
   const { handleSetSrc } = usePlayer();
 
@@ -162,18 +170,9 @@ export const Map = () => {
       setFading(true);
       handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encunterSFX);
     });
-
-    //mock
-    // setDungeon((state) => {
-    //   const newDungeon = dungeon.map((row) => [...row]);
-    //   console.log(
-    //     "newDungeon[newPos.y][newPos.x]",
-    //     newDungeon[newPos.y][newPos.x]
-    //   );
-    //   newDungeon[newPos.y][newPos.x].visited = true;
-    //   return newDungeon;
-    // });
   };
+
+  useMovement(movePlayer);
 
   const reward = battle?.reward;
   const renderRoom = (room: Room) => {
@@ -316,8 +315,36 @@ export const Map = () => {
     );
   };
 
+  const currentBackground = useMemo(
+    () => getDungeonBackgroundByTier(currentTier),
+    [position.x, position.y, currentTier],
+  );
+
   return (
-    <div style={{ padding: 20, maxWidth: 600, margin: "0 auto" }}>
+    <div
+      style={{
+        padding: 20,
+        maxWidth: 600,
+        margin: "0 auto",
+        position: "fixed",
+        right: "20px",
+        top: "20px",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        flexDirection: "column",
+      }}
+    >
+      <img
+        src={currentBackground}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
       <button
         style={{
           fontSize: 18,
@@ -332,22 +359,6 @@ export const Map = () => {
       >
         Сгенерировать подземелье
       </button>
-      {isDungeonExit && type === DUNGEONS.STORY && (
-        <button
-          style={{
-            fontSize: 18,
-            padding: "10px 20px",
-            marginBottom: 20,
-            backgroundColor: "#3b82f6",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={handleEscapeFromDungeon}
-        >
-          Выйти из подземелья
-        </button>
-      )}
 
       {dungeon.length > 0 && (
         <div
@@ -355,7 +366,7 @@ export const Map = () => {
             position: "relative",
             width: dungeon[0].length * 64,
             height: dungeon.length * 64,
-            marginBottom: 20,
+            marginBottom: 16,
             backgroundColor: "#111827",
 
             boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)",
@@ -392,115 +403,164 @@ export const Map = () => {
         </div>
       )}
 
+      <Stack
+        direction="row"
+        gap={1}
+        alignItems="center"
+        mb={2}
+        justifyContent="space-between"
+      >
+        {isDungeonExit && type === DUNGEONS.STORY && (
+          <button
+            style={{
+              fontSize: 18,
+              padding: "10px 20px",
+              backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: 5,
+            }}
+            onClick={handleEscapeFromDungeon}
+          >
+            Выйти из подземелья
+          </button>
+        )}
+
+        <Box
+          sx={{
+            backgroundColor: "rgb(51, 65, 85)",
+            color: "white",
+            borderRadius: "50%",
+            display: "inline-flex",
+            p: 1,
+            cursor: "pointer",
+          }}
+          onMouseEnter={handleMapVisibilityChange}
+          onMouseLeave={handleMapVisibilityChange}
+        >
+          <QuestionMarkIcon />
+        </Box>
+      </Stack>
+
       <div
         style={{
-          display: "grid",
-          gridTemplateAreas: `". up ." "left . right" ". down ."`,
-          gap: 10,
+          position: "fixed",
+          bottom: "0",
+          left: "50%",
+          transform: "translate(-50%, 0)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 8,
           marginBottom: 20,
+          width: "100px",
         }}
       >
-        <button
-          style={{
-            gridArea: "up",
-            padding: "12px 20px",
+        <Button
+          sx={{
+            padding: 0,
+            minWidth: "40px !important",
+            width: "40px",
+            height: "40px",
             fontSize: 18,
             backgroundColor: canMove(DIRECTIONS.UP) ? "#4ade80" : "#64748b",
             color: "white",
-            border: "none",
-            borderRadius: 5,
           }}
           onClick={() => movePlayer(DIRECTIONS.UP)}
           disabled={!canMove(DIRECTIONS.UP)}
         >
-          ↑ Вверх
-        </button>
-        <button
-          style={{
-            gridArea: "left",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.LEFT) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.LEFT)}
-          disabled={!canMove(DIRECTIONS.LEFT)}
-        >
-          ← Влево
-        </button>
-        <button
-          style={{
-            gridArea: "right",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.RIGHT) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.RIGHT)}
-          disabled={!canMove(DIRECTIONS.RIGHT)}
-        >
-          Вправо →
-        </button>
-        <button
-          style={{
-            gridArea: "down",
-            padding: "12px 20px",
+          <Typography fontFamily="inherit">↑</Typography>
+        </Button>
+        <Stack direction="row" gap={6}>
+          <Button
+            sx={{
+              padding: 0,
+              minWidth: "40px !important",
+              width: "40px",
+              height: "40px",
+              backgroundColor: canMove(DIRECTIONS.LEFT) ? "#4ade80" : "#64748b",
+              color: "white",
+            }}
+            onClick={() => movePlayer(DIRECTIONS.LEFT)}
+            disabled={!canMove(DIRECTIONS.LEFT)}
+          >
+            <Typography fontFamily="inherit">←</Typography>
+          </Button>
+          <Button
+            sx={{
+              fontSize: 18,
+              backgroundColor: canMove(DIRECTIONS.RIGHT)
+                ? "#4ade80"
+                : "#64748b",
+              color: "white",
+              padding: 0,
+              minWidth: "40px !important",
+              width: "40px",
+              height: "40px",
+            }}
+            onClick={() => movePlayer(DIRECTIONS.RIGHT)}
+            disabled={!canMove(DIRECTIONS.RIGHT)}
+          >
+            <Typography fontFamily="inherit">→</Typography>
+          </Button>
+        </Stack>
+        <Button
+          sx={{
+            padding: 0,
+            minWidth: "40px !important",
+            width: "40px",
+            height: "40px",
             fontSize: 18,
             backgroundColor: canMove(DIRECTIONS.DOWN) ? "#4ade80" : "#64748b",
             color: "white",
-            border: "none",
-            borderRadius: 5,
           }}
           onClick={() => movePlayer(DIRECTIONS.DOWN)}
           disabled={!canMove(DIRECTIONS.DOWN)}
         >
-          ↓ Вниз
-        </button>
+          <Typography fontFamily="inherit">↓</Typography>
+        </Button>
       </div>
 
-      <div
-        style={{
-          backgroundColor: "#1e293b",
-          padding: 15,
-          borderRadius: 5,
-          color: "#e2e8f0",
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>Легенда карты:</h3>
-        <ul style={{ paddingLeft: 20, marginBottom: 0 }}>
-          <li>
-            <span style={{ color: ROOM_STYLES[ROOM_TYPES.START].color }}>
-              🚪
-            </span>{" "}
-            - Старт
-          </li>
-          <li>
-            <span style={{ color: ROOM_STYLES[ROOM_TYPES.END].color }}>🏁</span>{" "}
-            - Выход
-          </li>
-          <li>
-            <span style={{ color: ROOM_STYLES.deadEnd.color }}>
-              ✖ + стрелка
-            </span>{" "}
-            - Тупик (стрелка показывает вход)
-          </li>
-          <li>
-            <span style={{ color: "#4ade80" }}>Зеленые линии</span> - Проходы
-            между комнатами
-          </li>
-          <li>
-            <span style={{ color: "#fbbf24" }}>Золотая рамка</span> - Ваша
-            позиция
-          </li>
-          <li>
-            Стрелка над тупиком всегда указывает, откуда в него можно войти
-          </li>
-        </ul>
-      </div>
+      {isMapVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+          style={{
+            backgroundColor: "#1e293b",
+            padding: 15,
+            borderRadius: 5,
+            color: "#e2e8f0",
+          }}
+        >
+          <h3 style={{ marginTop: 0 }}>Легенда карты:</h3>
+          <ul style={{ paddingLeft: 20, marginBottom: 0 }}>
+            <li>
+              <span style={{ color: ROOM_STYLES[ROOM_TYPES.START].color }}>
+                🚪
+              </span>{" "}
+              - Старт
+            </li>
+            <li>
+              <span style={{ color: ROOM_STYLES[ROOM_TYPES.END].color }}>
+                🏁
+              </span>{" "}
+              - Выход
+            </li>
+            <li>
+              <span style={{ color: ROOM_STYLES.deadEnd.color }}>✖</span> -
+              Тупик (стрелка показывает вход)
+            </li>
+
+            <li>
+              <span style={{ color: "#fbbf24" }}>Золотая рамка</span> - Ваша
+              позиция
+            </li>
+          </ul>
+        </motion.div>
+      )}
 
       {reward && <BattleResult />}
 
