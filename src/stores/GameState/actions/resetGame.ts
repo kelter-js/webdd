@@ -8,6 +8,7 @@ export const resetGame = (set: StoreSet) => () =>
     return {
       player: { ...DEFAULT_GAME_STATE, consumables: [], name: "" },
       effects: null,
+      sell_inventory: null,
       inventory: null,
       statistics: null,
       gear: null,

@@ -33,9 +33,7 @@ export const resetBattle = (set: StoreSet) => () => {
           copyPlayer.currentHealth = battlePlayerModel.currentHealth;
 
           // добавляем полученный опыт
-          if (reward?.experience && reward?.experience[copyPlayer.name]) {
-            copyPlayer.experience += reward?.experience[copyPlayer.name];
-          }
+          copyPlayer.experience += reward!.experience;
         }
 
         return copyPlayer;
@@ -65,11 +63,9 @@ export const resetBattle = (set: StoreSet) => () => {
     if (reward?.junk) {
       const junkMap = Object.fromEntries(copyState.player.junk);
 
-      reward.junk.forEach((incomeJunk) => {
-        junkMap[incomeJunk] = junkMap[incomeJunk]
-          ? String(Number(junkMap[incomeJunk]) + 1)
-          : "1";
-      });
+      junkMap[reward.junk] = junkMap[reward.junk]
+        ? String(Number(junkMap[reward.junk]) + 1)
+        : "1";
 
       copyState.player.junk = Object.entries(junkMap) as [JUNK_TYPES, string][];
     }

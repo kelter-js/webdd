@@ -96,6 +96,7 @@ export interface Creature {
   effects: BattleEffects[];
   isEnhanced?: boolean;
   tier: number;
+  exp: number;
 }
 
 export interface Enemy {
@@ -133,8 +134,6 @@ export interface BattleUpdateState {
   message: Message;
 }
 
-export type ExperienceReceivedData = Record<string, number>;
-
 export interface PotionsReceivedData {
   type: POTION_TYPES;
   amount: number;
@@ -142,11 +141,11 @@ export interface PotionsReceivedData {
 }
 
 export interface Reward {
-  experience: ExperienceReceivedData;
+  experience: number;
   money?: number;
   potions?: PotionsReceivedData[];
   items?: Item[];
-  junk?: JUNK_TYPES[];
+  junk?: JUNK_TYPES;
   resources?: RESOURCES[];
 }
 
@@ -305,7 +304,7 @@ export interface StoreState {
   giveResources: (resourceToGive: RESOURCES) => void;
 
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;
-  sellJunk: (junkToSell: JUNK_TYPES) => void;
+  sellJunk: VoidFunction;
   updateFlags: (flags: FLAGS) => void;
 
   // ф-ии чисто для тестов

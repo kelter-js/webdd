@@ -28,6 +28,10 @@ import { getSliderById } from "./utils/getSliderById";
 import { useSoundtrack } from "./hooks/useSoundtrack";
 import { FLAGS } from "./constants";
 import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
+import {
+  generateGenericItemInCurrentPool,
+  generateItem,
+} from "./utils/generateStoreItems";
 
 //!!!оптимизация localStorage
 // Сжатие данных:
@@ -350,6 +354,8 @@ export const App = () => {
 
   const canShowContent = name && !isFading && loaded;
 
+  console.log("generateItem", generateGenericItemInCurrentPool(currentTier));
+
   return (
     <>
       {loaded && (
@@ -432,6 +438,15 @@ export const App = () => {
 // 11.02
 // добить рецепты зелья здоровья
 // добавить модальное окно с выходом из города в подземелье - добавить просто вход или если есть квест - окно с вопросом - по квесту идём или сюжету?
+// вот такие портянки нужно заменить на одну единую константу - создать константы с пулом и только их экспортить
+//    [...WEAPONS_TIER_1, ...ARMORS_TIER_1, ...HELMETS_TIER_1],
+// enhancedItemChance,
+// [...RARE_ARMORS_TIER_1, ...RARE_WEAPONS_TIER_1, ...RARE_HELMETS_TIER_1],
+// );
+// доработать компонент REWARD- чтобы выводил актуальные значения, переработать иконки факела-денег, иконку шлема и т.д. и маппинг значений
+
+// 11.02
+// нужен компонент распределения ресурсов если их слишком много
 
 // 10.02
 // если ресурсов больше, чем доступно слотов - выводимкак чекбоксы айтемы - в ряд
@@ -448,9 +463,9 @@ export const App = () => {
 
 // 06.02
 // для handleExitDungeon написать утиль функцию генерации брони и оружия в зависимости от текущего тира - спавним только 1 апгрейда вещи
-// вызывай - generateItem, передавай 0 в enhanced и массив вещей
-// нужно проработать установку модели награды за бой - нужен компонент распределения ресурсов
-// у торговца должна быть кнопка продать весь мусор
+// вызывай - generateItem, передавай 0 в enhanced и массив вещей - done
+// нужно проработать установку модели награды за бой - done
+// у торговца должна быть кнопка продать весь мусор - done
 
 // 05.02
 // нужны задники для БОЯ и просто для перемещения по подземельям - задники по тирам разделить нужно, нагенерить и сделать функцию для их выбора - done

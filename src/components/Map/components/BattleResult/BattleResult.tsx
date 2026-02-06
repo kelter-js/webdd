@@ -14,7 +14,7 @@ import { BASE_ITEMS_ID } from "../../../../constants/items";
 import { JUNK_TYPES } from "../../../../entities/junk";
 
 const mockReward: Reward = {
-  experience: { tank: 50, medic: 30, warrior: 20 },
+  experience: 500,
   money: 1500,
   potions: [
     {
@@ -55,7 +55,7 @@ const mockReward: Reward = {
       overAllTier: 1,
     },
   ],
-  junk: [JUNK_TYPES.AXE],
+  junk: JUNK_TYPES.AXE,
 };
 
 export const BattleResult = () => {
@@ -68,8 +68,9 @@ export const BattleResult = () => {
 
   // if (!reward) return null;
 
-  const { money, experience, items, potions, junk } = mockReward;
-  // const { money, experience, items, potions } = reward || mockReward;
+  // const { money, experience, items, potions, junk } = mockReward;
+  const { money, experience, items, potions, junk, resources } =
+    reward || mockReward;
 
   return (
     <GameModal width="500px" height="auto">
@@ -85,33 +86,23 @@ export const BattleResult = () => {
           </Stack>
         )}
 
-        {Object.entries(experience).map(([name, value]) => {
-          return (
-            <Stack
-              alignItems="center"
-              width="100%"
-              direction="row"
-              gap={1}
-              key={name}
-            >
-              <Typography
-                sx={{
-                  color: "#c08040",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                }}
-                fontFamily="inherit"
-                fontSize={30}
-              >
-                EXP
-              </Typography>
-              <Typography fontSize={20} fontFamily="inherit">
-                {name} - {value}
-              </Typography>
-            </Stack>
-          );
-        })}
+        <Stack alignItems="center" width="100%" direction="row" gap={1}>
+          <Typography
+            sx={{
+              color: "#c08040",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+            }}
+            fontFamily="inherit"
+            fontSize={30}
+          >
+            EXP
+          </Typography>
+          <Typography fontSize={20} fontFamily="inherit">
+            {experience}
+          </Typography>
+        </Stack>
 
         {potions?.map(({ type, amount }) => (
           <Stack
@@ -134,14 +125,8 @@ export const BattleResult = () => {
           </Stack>
         ))}
 
-        {junk?.map((junk, index) => (
-          <Stack
-            alignItems="center"
-            width="100%"
-            direction="row"
-            gap={1}
-            key={index}
-          >
+        {junk && (
+          <Stack alignItems="center" width="100%" direction="row" gap={1}>
             <Stack alignItems="center" justifyContent="center" width="55px">
               <Icons.Scrap />
             </Stack>
@@ -150,7 +135,7 @@ export const BattleResult = () => {
               {junk}
             </Typography>
           </Stack>
-        ))}
+        )}
 
         {items?.map(({ type, gunType, tier, gearId }) => (
           <Stack
@@ -170,6 +155,8 @@ export const BattleResult = () => {
           </Stack>
         ))}
       </Stack>
+
+      {resources}
 
       <Button variant="text" fullWidth sx={{ p: 0 }} onClick={resetBattle}>
         <Typography

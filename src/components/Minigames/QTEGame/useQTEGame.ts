@@ -28,6 +28,7 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
   const startInterval = useRef<number>(0);
   const gameActive = useRef<boolean>(false);
   const gameInterval = useRef<number | null>(null);
+  const startTimeRef = useRef(0);
 
   const [sequence, setSequence] = useState<string[]>(generateSequence);
   const [currentIndex, setIndex] = useState(0);
@@ -47,6 +48,8 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
     gameActive.current = true;
     setGameActiveFlag(true);
     startInterval.current = 0;
+
+    startTimeRef.current = performance.now(); // ← ВАЖНО
 
     if (startBtnRef.current) {
       startBtnRef.current.style.display = "none";
@@ -71,12 +74,12 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
   const gameLoop = () => {
     if (!gameActive.current) return;
 
-    startInterval.current += 0.1;
+    const elapsed = (performance.now() - startTimeRef.current) / 1000;
+
+    startInterval.current = elapsed;
 
     if (totalTimeRef.current) {
-      totalTimeRef.current.textContent = `${startInterval.current.toFixed(
-        1
-      )}/3.0s`;
+      totalTimeRef.current.textContent = `${elapsed.toFixed(1)}/3.0s`;
     }
   };
 

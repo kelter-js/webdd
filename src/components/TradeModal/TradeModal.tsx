@@ -3,7 +3,7 @@ import { TRADE_TYPES } from "./constants";
 import { GameModal } from "../GameModal";
 import { TabsContainer } from "./TradeModal.styled";
 import { Button, Stack, Typography } from "@mui/material";
-import { useAppState } from "../../stores";
+import { useAppState, useGameState } from "../../stores";
 import { BuyList } from "./components/BuyList";
 import { SellList } from "./components/SellList";
 
@@ -11,8 +11,42 @@ export const TradeModal = () => {
   const { toggleTradeModal } = useAppState();
   const [tab, setTab] = useState<TRADE_TYPES>(TRADE_TYPES.BUY);
 
+  const {
+    sellJunk,
+    player: { junk },
+  } = useGameState();
+
+  const cantSellJunk = junk.length === 0;
+
   return (
     <GameModal onClose={toggleTradeModal} withoutPadding>
+      <Button
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          zIndex: 9,
+          opacity: cantSellJunk ? 0.3 : 1,
+        }}
+        onClick={sellJunk}
+        disabled={cantSellJunk}
+      >
+        <Typography
+          sx={{
+            width: "100%",
+            color: "#c08040",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            letterSpacing: "1px",
+            padding: (theme) => theme.spacing(1),
+            fontFamily: "Cormorant Unicase",
+          }}
+          variant="h5"
+        >
+          Продать мусор [R]
+        </Typography>
+      </Button>
+
       <TabsContainer>
         <Button
           variant="text"
@@ -37,6 +71,7 @@ export const TradeModal = () => {
             Покупка
           </Typography>
         </Button>
+
         <Button
           variant="text"
           fullWidth

@@ -1,6 +1,7 @@
 import { ENEMIES } from "../entities";
 import { CLASSES } from "../entities/characterClasses";
 import { DUNGEONS } from "../entities/dungeons";
+import { JUNK_TYPES } from "../entities/junk";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
 import { GameStateData, KillCounter } from "../types/gameState";
 
@@ -286,7 +287,10 @@ export const DEFAULT_GAME_STATE: GameStateData = {
     ) as KillCounter,
   },
   hasCamera: false,
-  junk: [],
+  junk: [
+    [JUNK_TYPES.AXE, "3"],
+    [JUNK_TYPES.CRYSTAL_ORB, "2"],
+  ],
   resources: [],
   resourcesBagLevel: 1,
   collected: [],

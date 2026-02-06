@@ -68,7 +68,7 @@ export const Map = () => {
       setDungeon({
         dungeon: [],
         position: { x: 0, y: 0 },
-        type: DUNGEONS.CATCH_GOBLIN,
+        type: DUNGEONS.STORY,
       });
     }
   }, [location, position, dungeon]);
@@ -107,46 +107,8 @@ export const Map = () => {
     toggleAutoSave();
   }, [toggleAutoSave, economic, handleExitDungeon]);
 
-  if (!location || !position || !dungeon) {
-    return null;
-  }
-
-  const handleEscapeFromDungeon = () => {
-    setFading(true);
-    handleExitDungeon();
-    setDungeon(null);
-    toggleAutoSave();
-    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
-  };
-
-  const generateNewDungeon = () => {
-    const newDungeon = generateDungeon(5, 5);
-
-    // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
-    const DEFAULT_ATTEMPS_AMOUNT = 5;
-    // здесь определяется тип подземелья
-    setDungeon({
-      dungeon: newDungeon,
-      type: DUNGEONS.CATCH_GOBLIN,
-      attempts: DEFAULT_ATTEMPS_AMOUNT,
-      position: { x: 0, y: 0 },
-    });
-  };
-
-  const currentCell =
-    position?.y && position?.x && dungeon[position.y]
-      ? dungeon[position.y][position.x]
-      : undefined;
-  const isDungeonExit = currentCell?.type === ROOM_TYPES.END;
-
-  const canMove = (direction: DIRECTIONS) => {
-    const { x, y } = position;
-    const room = dungeon[y]?.[x];
-    return room?.exits[direction] || false;
-  };
-
   const movePlayer = (direction: DIRECTIONS) => {
-    if (!canMove(direction)) return;
+    if (!canMove(direction) || !position) return;
 
     const { x, y } = position;
     const newPos = {
@@ -173,6 +135,49 @@ export const Map = () => {
   };
 
   useMovement(movePlayer);
+
+  const currentBackground = useMemo(
+    () => getDungeonBackgroundByTier(currentTier),
+    [position?.x, position?.y, currentTier],
+  );
+
+  if (!location || !position || !dungeon) {
+    return null;
+  }
+
+  const handleEscapeFromDungeon = () => {
+    setFading(true);
+    handleExitDungeon();
+    setDungeon(null);
+    toggleAutoSave();
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+  };
+
+  const generateNewDungeon = () => {
+    const newDungeon = generateDungeon(5, 5);
+
+    // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
+    const DEFAULT_ATTEMPS_AMOUNT = 5;
+    // здесь определяется тип подземелья
+    setDungeon({
+      dungeon: newDungeon,
+      type: DUNGEONS.STORY,
+      attempts: DEFAULT_ATTEMPS_AMOUNT,
+      position: { x: 0, y: 0 },
+    });
+  };
+
+  const currentCell =
+    position?.y && position?.x && dungeon[position.y]
+      ? dungeon[position.y][position.x]
+      : undefined;
+  const isDungeonExit = currentCell?.type === ROOM_TYPES.END;
+
+  const canMove = (direction: DIRECTIONS) => {
+    const { x, y } = position;
+    const room = dungeon[y]?.[x];
+    return room?.exits[direction] || false;
+  };
 
   const reward = battle?.reward;
   const renderRoom = (room: Room) => {
@@ -315,11 +320,6 @@ export const Map = () => {
     );
   };
 
-  const currentBackground = useMemo(
-    () => getDungeonBackgroundByTier(currentTier),
-    [position.x, position.y, currentTier],
-  );
-
   return (
     <div
       style={{
@@ -343,6 +343,7 @@ export const Map = () => {
           left: 0,
           width: "100vw",
           height: "100vh",
+          zIndex: -1,
         }}
       />
       <button

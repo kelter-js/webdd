@@ -2,7 +2,10 @@ import { getPotionByTier } from "../../../constants/items";
 import { DUNGEONS, ECONOMIC_TYPES } from "../../../entities";
 import { POTION_TYPES } from "../../../entities/consumables";
 import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
-import { generateStoreItems } from "../../../utils/generateStoreItems";
+import {
+  generateGenericItemInCurrentPool,
+  generateStoreItems,
+} from "../../../utils/generateStoreItems";
 import { getItemPrice } from "../../../utils/getItemPrice";
 import { memoizeItem } from "../../../utils/memoizeItem";
 import { MIN_ENCOUNTER_CHANCE } from "../../constants";
@@ -68,15 +71,14 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     if (stateCopy.player.economic === ECONOMIC_TYPES.WEAPONRY) {
       newInventory = stateCopy.inventory ? [...stateCopy.inventory] : [];
 
-      // FIXME: логика генерации оружия или брони - 50% на 50% или броня или оружие, шанс прока второго или 3 тира в зависимости от тира игры
-      // const chanceToSpawnWeapon = getRandom();
-      // let item;
-      // if (chanceToSpawnWeapon < 50) {
-      // item = generateWeapon(stateCopy.player.tier);
-      // } else {
-      // item = generateArmor(stateCopy.player.tier);
-      // }
-      // newInventory.push(item);
+      const newItem = generateGenericItemInCurrentPool(
+        stateCopy.player.currentTier,
+      );
+
+      console.log("newItem", newItem);
+      console.log("newInventory", newInventory);
+
+      newInventory.push(newItem);
 
       newMemoizedInventory = newInventory.map((item) => memoizeItem(item));
     }
@@ -102,6 +104,8 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     });
 
     stateCopy.player.itemsToBuy = itemsToBuy.map((item) => memoizeItem(item));
+
+    console.log("stateCopy", stateCopy);
 
     return stateCopy;
   });

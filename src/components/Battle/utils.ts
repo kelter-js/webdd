@@ -1,4 +1,40 @@
 // каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
+
+import {
+  ARMORS_TIER_1,
+  ARMORS_TIER_2,
+  ARMORS_TIER_3,
+  RARE_ARMORS_TIER_1,
+  RARE_ARMORS_TIER_2,
+  RARE_ARMORS_TIER_3,
+} from "../../constants/armor";
+import {
+  RARE_WEAPONS_TIER_1,
+  RARE_WEAPONS_TIER_2,
+  RARE_WEAPONS_TIER_3,
+  WEAPONS_TIER_1,
+  WEAPONS_TIER_2,
+  WEAPONS_TIER_3,
+} from "../../constants/guns";
+import {
+  HELMETS_TIER_1,
+  HELMETS_TIER_2,
+  HELMETS_TIER_3,
+  RARE_HELMETS_TIER_1,
+  RARE_HELMETS_TIER_2,
+  RARE_HELMETS_TIER_3,
+} from "../../constants/helmets";
+import {
+  FIRST_TIER_JUNK,
+  getPotionByTier,
+  SECOND_TIER_JUNK,
+  THIRD_TIER_JUNK,
+} from "../../constants/items";
+import { POTION_TYPES } from "../../entities/consumables";
+import { RESOURCES } from "../../entities/resources";
+import { getRandom } from "../../utils";
+import { generateItem } from "../../utils/generateStoreItems";
+
 // ключи - айди существа - значение это путь к изображению с существом
 export const CREATURE_ID_TO_IMAGE_MAP = {};
 
@@ -21,5 +57,129 @@ export const CREATURE_ID_TO_AI_PACK_MAP = {};
 // ключи - айди существа - значение это путь к имени с существом
 export const CREATURE_ID_TO_NAME_MAP = {};
 
-// FIXME: нужна имплементация генерации лута и награды за битву
-export const getRandomReward = () => {};
+export const getGoldByTier = (currentTier: number, isSpecial?: boolean) => {
+  if (currentTier === 1) {
+    return getRandom(75, isSpecial ? 200 : 150);
+  }
+
+  if (currentTier === 2) {
+    return getRandom(150, isSpecial ? 275 : 225);
+  }
+
+  return getRandom(225, isSpecial ? 350 : 300);
+};
+
+export const getRandomPotionByTier = (currentTier: number) => {
+  const currentPotionType = getPotionByTier(currentTier);
+
+  const potionsData = [{ type: currentPotionType, amount: getRandom(1, 3) }];
+
+  if (currentTier === 2) {
+    const additionalPotionsRoll = getRandom(0, 100);
+
+    if (additionalPotionsRoll > 75) {
+      potionsData.push({
+        type: POTION_TYPES.SMALL_HEALTH_POTION,
+        amount: getRandom(1, 3),
+      });
+    }
+  }
+
+  if (currentTier === 3) {
+    const additionalPotionsRoll = getRandom(0, 100);
+
+    if (additionalPotionsRoll > 75) {
+      potionsData.push({
+        type: POTION_TYPES.MEDIUM_HEALTH_POTION,
+        amount: getRandom(1, 3),
+      });
+    }
+
+    const additionalPotionsRollLowTier = getRandom(0, 100);
+
+    if (additionalPotionsRollLowTier > 50) {
+      potionsData.push({
+        type: POTION_TYPES.SMALL_HEALTH_POTION,
+        amount: getRandom(1, 3),
+      });
+    }
+
+    const additionalPotionsRollRareTier = getRandom(0, 100);
+
+    if (additionalPotionsRollRareTier > 70) {
+      potionsData.push({
+        type: POTION_TYPES.EXTRA_LARGE_HEALTH_POTION,
+        amount: getRandom(1, 3),
+      });
+    }
+  }
+
+  return potionsData;
+};
+
+export const getRandomJunkByTier = (currentTier: number) => {
+  if (currentTier === 1) {
+    return FIRST_TIER_JUNK[getRandom(0, FIRST_TIER_JUNK.length - 1)];
+  }
+
+  if (currentTier === 1) {
+    return SECOND_TIER_JUNK[getRandom(0, SECOND_TIER_JUNK.length - 1)];
+  }
+
+  return THIRD_TIER_JUNK[getRandom(0, THIRD_TIER_JUNK.length - 1)];
+};
+
+export const getRandomResources = (hasCamera: boolean) => {
+  const resourceTypes = [RESOURCES.ORE, RESOURCES.SOUL];
+
+  if (hasCamera) {
+    resourceTypes.push(RESOURCES.PHOTO);
+  }
+
+  const amountOfResourceTypes = getRandom(1, resourceTypes.length);
+
+  const resourcesPool: RESOURCES[] = [];
+
+  resourceTypes.slice(0, amountOfResourceTypes).forEach((resource) => {
+    const rollForDoubleResources = getRandom(0, 100);
+
+    if (rollForDoubleResources > 50) {
+      // не ошибка, добавляем дважды один и тот же ресурс
+      resourcesPool.push(resource);
+      resourcesPool.push(resource);
+    } else {
+      resourcesPool.push(resource);
+    }
+  });
+
+  return resourcesPool;
+};
+
+export const generateRandomItem = (
+  currentTier: number,
+  isSpecial?: boolean,
+) => {
+  const enhancedItemChance = isSpecial ? 40 : 20;
+
+  if (currentTier === 1) {
+    return generateItem(
+      [...WEAPONS_TIER_1, ...ARMORS_TIER_1, ...HELMETS_TIER_1],
+      enhancedItemChance,
+      [...RARE_ARMORS_TIER_1, ...RARE_WEAPONS_TIER_1, ...RARE_HELMETS_TIER_1],
+    );
+  }
+
+  if (currentTier === 2) {
+    return generateItem(
+      [...WEAPONS_TIER_2, ...ARMORS_TIER_2, ...HELMETS_TIER_2],
+      enhancedItemChance,
+      [...RARE_ARMORS_TIER_2, ...RARE_WEAPONS_TIER_2, ...RARE_HELMETS_TIER_2],
+    );
+  }
+
+  return generateItem(
+    [...WEAPONS_TIER_3, ...ARMORS_TIER_3, ...HELMETS_TIER_3],
+    enhancedItemChance,
+    [...RARE_ARMORS_TIER_3, ...RARE_WEAPONS_TIER_3, ...RARE_HELMETS_TIER_3],
+  );
+};

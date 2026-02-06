@@ -18,6 +18,7 @@ export const useGlobalListeners = () => {
     selectedEnemy,
     setSelectedEnemy,
     isAudioEnabled,
+    isTradeModalOpen,
   } = useAppState();
 
   const {
@@ -25,6 +26,7 @@ export const useGlobalListeners = () => {
     toggleCharacterPanel,
     player: { name, locationState, location, isGameOver, sliderId, battle },
     setState,
+    sellJunk,
   } = useGameState();
 
   const { defaultSave } = useGameSaves();
@@ -154,6 +156,10 @@ export const useGlobalListeners = () => {
           toggleInventory();
         }
 
+        if (event.code === "KeyR" && isTradeModalOpen) {
+          sellJunk();
+        }
+
         if (
           event.code === "KeyC" &&
           locationState !== RENDER_LOCATIONS.BATTLE
@@ -200,5 +206,6 @@ export const useGlobalListeners = () => {
     selectedEnemy,
     isAudioEnabled,
     location?.specialEncounter,
+    isTradeModalOpen,
   ]);
 };

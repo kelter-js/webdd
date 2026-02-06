@@ -9,6 +9,8 @@ import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
 import { useGameState } from "../../stores";
 import * as S from "./Dialogue.styled";
 import { DialogueOption } from "../../types/dialogue";
+import { usePlayer } from "../../contexts/Player";
+import { DIALOGUE_AMBIENT_PLAYER_REF } from "./constants";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const {
@@ -26,13 +28,24 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
   const [currentNode, setCurrentNode] = useState<string>(startNode);
 
+  const { handleSetSrc, getPlayerRef, handleRemoveSrc } = usePlayer();
+
+  const playerRef = getPlayerRef(DIALOGUE_AMBIENT_PLAYER_REF);
+  console.log("playerRef", playerRef);
+
+  const handleEndDialogue = (cb: VoidFunction) => {
+    cb();
+    playerRef?.pause();
+    handleRemoveSrc(DIALOGUE_AMBIENT_PLAYER_REF);
+  };
+
   // const { text, options, flags } = nodes[currentNode];
   const { text, options, flags } = nodes[currentNode];
 
   const handleOptionClick = ({ nextNode, id }: DialogueOption) => {
     if (flags?.length) {
       if (flags.includes(DIALOGUE_FLAGS.ECONOMIC_INTRO)) {
-        toggleEconomicModal();
+        handleEndDialogue(toggleEconomicModal);
       }
 
       if (flags.includes(DIALOGUE_FLAGS.HEAL)) {
@@ -43,7 +56,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     }
 
     if (id === DIALOGUE_IDS.TAVERN_BUY) {
-      toggleBuyPotionsModal();
+      handleEndDialogue(toggleBuyPotionsModal);
     }
 
     if (id === DIALOGUE_IDS.BUY_CAMERA) {
@@ -51,11 +64,11 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     }
 
     if (id === DIALOGUE_IDS.ALMANAC) {
-      toggleAlmanac();
+      handleEndDialogue(toggleAlmanac);
     }
 
     if (id === DIALOGUE_IDS.TRADER_BUY) {
-      toggleTradeModal();
+      handleEndDialogue(toggleTradeModal);
     }
 
     if (id === DIALOGUE_IDS.IMPROVE_BAG_INTRO) {
@@ -67,11 +80,11 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     }
 
     if (id === DIALOGUE_IDS.OPEN_SMITH) {
-      toggleCraftMenu();
+      handleEndDialogue(toggleCraftMenu);
     }
 
     if (nextNode === "end") {
-      setDialogueOpen(null);
+      handleEndDialogue(() => setDialogueOpen(null));
     }
 
     setCurrentNode(nextNode);
@@ -91,6 +104,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
         <S.SpeakerName variant="h5" sx={{ textTransform: "uppercase" }}>
           {name}
         </S.SpeakerName>
+
         <TextHolder text={text} />
 
         <Stack gap={2}>

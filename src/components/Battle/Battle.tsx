@@ -69,15 +69,15 @@ export const Battle = () => {
       setTarget(null);
     };
     setTimeout(() => {
-      // killEnemy();
+      killEnemy();
       setDamage(0);
     }, 5000);
     setTimeout(() => {
-      // killEnemy();
+      killEnemy();
       setDamage(1);
     }, 9000);
     setTimeout(() => {
-      // killEnemy();
+      killEnemy();
       setDamage(2);
     }, 13000);
   }, []);
