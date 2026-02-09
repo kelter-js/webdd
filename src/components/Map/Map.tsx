@@ -68,7 +68,7 @@ export const Map = () => {
       setDungeon({
         dungeon: [],
         position: { x: 0, y: 0 },
-        type: DUNGEONS.STORY,
+        type: DUNGEONS.CLOSE_PORTAL,
       });
     }
   }, [location, position, dungeon]);
@@ -161,7 +161,7 @@ export const Map = () => {
     // здесь определяется тип подземелья
     setDungeon({
       dungeon: newDungeon,
-      type: DUNGEONS.STORY,
+      type: DUNGEONS.CLOSE_PORTAL,
       attempts: DEFAULT_ATTEMPS_AMOUNT,
       position: { x: 0, y: 0 },
     });

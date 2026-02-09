@@ -1,4 +1,5 @@
 import { CLASSES } from "../../../entities/characterClasses";
+import { getRandomName } from "../../../utils/getRandomName";
 import {
   SNIPER_BASE_MODEL,
   MEDIC_BASE_MODEL,
@@ -39,7 +40,7 @@ export const setPlayerName =
           perksList: [],
         },
         {
-          name: "SomeWhatOfTestingName-MEDIC",
+          name: getRandomName(),
           experience: 0,
           level: 15,
           ...firstAvailableClassModel,
@@ -49,7 +50,7 @@ export const setPlayerName =
           perksList: [],
         },
         {
-          name: "SomeWhatOfTestingName-TANK",
+          name: getRandomName(),
           experience: 0,
           level: 12,
           ...lastAvailableClassModel,

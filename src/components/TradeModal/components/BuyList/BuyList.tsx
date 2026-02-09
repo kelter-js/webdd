@@ -21,12 +21,17 @@ export const BuyList = () => {
 
       {DEFAULT_SLOTS.map((_, index) => (
         <ShopItem
+          index={index + 1}
           top={GRID_ITEM_COORDINATES[index].y}
           left={GRID_ITEM_COORDINATES[index].x}
           key={sellInventory[index]?.gearId ?? index}
           itemData={sellInventory[index]}
           isHovered={index === hoveredIndex}
-          onHover={() => setHoveredIndex(index)}
+          onHover={() => {
+            if (sellInventory[index]) {
+              setHoveredIndex(index);
+            }
+          }}
           onBlur={handleBlur}
         />
       ))}

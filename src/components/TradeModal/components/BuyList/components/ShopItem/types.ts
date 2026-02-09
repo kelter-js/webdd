@@ -7,4 +7,5 @@ export interface ShopItemProps {
   itemData?: Item;
   onHover: VoidFunction;
   onBlur: VoidFunction;
+  index: number;
 }

@@ -1,3 +1,7 @@
+import { v4 } from "uuid";
+import { BNTI_TIER_1 } from "../../../constants/armor";
+import { GLOCK_17_TIER_1 } from "../../../constants/guns";
+import { GALVION_TIER_1, HELMETS_TIER_1 } from "../../../constants/helmets";
 import { getPotionByTier } from "../../../constants/items";
 import { DUNGEONS, ECONOMIC_TYPES } from "../../../entities";
 import { POTION_TYPES } from "../../../entities/consumables";
@@ -106,6 +110,26 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     stateCopy.player.itemsToBuy = itemsToBuy.map((item) => memoizeItem(item));
 
     console.log("stateCopy", stateCopy);
+
+    // MOCK
+    const names = stateCopy.player.party.map((item) => item.name);
+    names.forEach((name) => {
+      stateCopy.player.gear_memoized[name] = [
+        GALVION_TIER_1,
+        BNTI_TIER_1,
+        GLOCK_17_TIER_1,
+      ].map((item) => memoizeItem({ ...item, gearId: v4() }));
+
+      if (!stateCopy.gear) {
+        stateCopy.gear = {};
+      }
+
+      stateCopy.gear[name] = [
+        { ...GALVION_TIER_1, gearId: v4() },
+        { ...BNTI_TIER_1, gearId: v4() },
+        { ...GLOCK_17_TIER_1, gearId: v4() },
+      ];
+    });
 
     return stateCopy;
   });

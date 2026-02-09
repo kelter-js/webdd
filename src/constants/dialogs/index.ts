@@ -247,14 +247,7 @@ export const tavernDialog: DialogueTree = {
   nodes: {
     welcome: {
       text: "Чего вылупился? Все рушится, реагентов нет, торговля не идёт, война постоянная. Зелья я продаю, когда есть что продавать конечно.",
-      options: [
-        { text: "Почему перебои с реагентами?", nextNode: "reagents" },
-        {
-          text: "Покажи что есть в наличии",
-          nextNode: "reagents",
-          id: DIALOGUE_IDS.TAVERN_BUY,
-        },
-      ],
+      options: [{ text: "Почему перебои с реагентами?", nextNode: "reagents" }],
     },
 
     alreadyWelcomed: {

@@ -287,6 +287,7 @@ export const App = () => {
     killEnemy,
     cheatGold,
     sell_inventory,
+    handleExitDungeon,
   } = useGameState();
 
   console.log("itemsToBuy", itemsToBuy);
@@ -317,7 +318,7 @@ export const App = () => {
 
   // mock;
   useEffect(() => {
-    setLocationState(RENDER_LOCATIONS.DUNGEON);
+    // setLocationState(RENDER_LOCATIONS.DUNGEON);
   }, []);
   // mock
   // useEffect(() => {
@@ -379,7 +380,7 @@ export const App = () => {
 
       <button
         style={{ position: "absolute", zIndex: 9999999999, top: 0, left: 0 }}
-        onClick={() => cheatGold()}
+        onClick={() => handleExitDungeon()}
       >
         TEST
       </button>
@@ -458,8 +459,8 @@ export const App = () => {
 // после выбора сравниваем - (кол-во слотов инвентаря + кол-во выпавших предметов) - (кол-во выделенных предметов) = оставшихся предметов (конвертируем их в золото 1*25-50 голды)
 
 // 09.02
-// реализовать компонент выводящий предметы инвентаря для продажи
-// реализовать компонент выводящий характеристики выбранного предмета в модалке покупки и умное окно сравнения
+// реализовать компонент выводящий предметы инвентаря для продажи - done
+// реализовать компонент выводящий характеристики выбранного предмета в модалке покупки и умное окно сравнения - done
 
 // 06.02
 // для handleExitDungeon написать утиль функцию генерации брони и оружия в зависимости от текущего тира - спавним только 1 апгрейда вещи

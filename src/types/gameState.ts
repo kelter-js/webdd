@@ -76,6 +76,7 @@ export interface Item {
   // нужно будет типизировать - уникальный айди каждому предмету
   gearId: string;
   description: string;
+  name: string;
   iconSrc: string;
   soundSrc?: string;
   magSize?: number;
