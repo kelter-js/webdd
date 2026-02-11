@@ -36,4 +36,7 @@ export interface AppState {
 
   isCraftMenuOpen: boolean;
   toggleCraftMenu: VoidFunction;
+
+  isDungeonModalOpen: boolean;
+  toggleDungeonModal: VoidFunction;
 }

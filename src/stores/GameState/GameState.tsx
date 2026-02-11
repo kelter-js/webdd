@@ -76,6 +76,7 @@ import {
   swapItem,
   handleExitDungeon,
   buyItem,
+  generateDungeon,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -286,6 +287,7 @@ export const useGameState = create<StoreState>()(
       updateDialogFlags: updateDialogFlags(set),
       setPlayerPosition: setPlayerPosition(set),
       increaseEndurance: increaseEndurance(set),
+      generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),

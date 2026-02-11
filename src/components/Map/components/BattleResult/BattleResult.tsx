@@ -1,76 +1,78 @@
 import { useGameState } from "../../../../stores";
 import { GameModal } from "../../../GameModal";
-import { Button, Stack, Typography } from "@mui/material";
-import { Icons } from "../../../../common";
+import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Icons, Tooltip } from "../../../../common";
 import { getGearIcon } from "./utils";
 import { getPotionIcon } from "../../../../utils/getPotionIcon";
 import { getItemNameByGearId } from "../../../../utils/getItemNameByGearId";
-import { Reward } from "../../../../types/gameState";
-import { GEAR_SLOTS } from "../../../../entities/gear";
-import { POTION_TYPES } from "../../../../entities/consumables";
-import { GUN_TYPES } from "../../../../entities/guns";
-import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
-import { BASE_ITEMS_ID } from "../../../../constants/items";
-import { JUNK_TYPES } from "../../../../entities/junk";
 
-const mockReward: Reward = {
-  experience: 500,
-  money: 1500,
-  potions: [
-    {
-      type: POTION_TYPES.SMALL_HEALTH_POTION,
-      amount: 3,
-    },
-    {
-      type: POTION_TYPES.LARGE_HEALTH_POTION,
-      amount: 1,
-    },
-  ],
-  items: [
-    {
-      type: GEAR_SLOTS.WEAPON,
-      gunType: GUN_TYPES.SNIPER_RIFLE,
-      value: 25,
-      minValue: 10,
-      effect: {}, // пустой эффект, пока интерфейс пустой
-      price: 1200,
-      tier: 2,
-      gearId: "weapon-001",
-      baseId: BASE_ITEMS_ID.SV98_TIER_1,
-      description: "",
-      iconSrc: "",
-      overAllTier: 1,
-    },
-    {
-      type: GEAR_SLOTS.ARTIFACT,
-      value: 15,
-      minValue: 5,
-      effect: {},
-      price: 800,
-      tier: 1,
-      gearId: "armor-003",
-      baseId: BASE_ITEMS_ID.SV98_TIER_1,
-      description: "",
-      iconSrc: "",
-      overAllTier: 1,
-    },
-  ],
-  junk: JUNK_TYPES.AXE,
-};
+import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
+
+import { DEFAULT_BAG_SIZE } from "../../../../constants";
+import { useMemo, useState } from "react";
+import { v4 } from "uuid";
+
+import { getResourceIcon } from "../../../../utils/getResourceIcon";
+import { getResourceDescription } from "../../../../utils/getResourceDescription";
+import { ResourceData } from "../../../../types";
 
 export const BattleResult = () => {
   const {
-    player: { battle },
+    player: { battle, resources: playerResources, resourcesBagLevel },
     resetBattle,
   } = useGameState();
 
   const reward = battle?.reward;
 
-  // if (!reward) return null;
+  const isOverEncumbered = Boolean(
+    reward?.resources &&
+    playerResources.length + reward.resources.length >
+      DEFAULT_BAG_SIZE * resourcesBagLevel,
+  );
 
-  // const { money, experience, items, potions, junk } = mockReward;
-  const { money, experience, items, potions, junk, resources } =
-    reward || mockReward;
+  const resourcesMapping = useMemo(() => {
+    if (!reward?.resources || !isOverEncumbered) {
+      return null;
+    }
+
+    return {
+      inventoryResources: playerResources.map((resource) => ({
+        resource: resource,
+        id: v4(),
+      })),
+
+      rewardResources: reward?.resources.map((resource) => ({
+        resource: resource,
+        id: v4(),
+      })),
+    };
+  }, [isOverEncumbered]);
+
+  const { inventoryResources, rewardResources } = resourcesMapping || {};
+
+  const [selectedResources, setSelectedResources] = useState<ResourceData[]>(
+    isOverEncumbered && inventoryResources ? inventoryResources : [],
+  );
+
+  const handleSelectResources = (
+    resource: ResourceData,
+    isSelected: boolean,
+  ) => {
+    if (isSelected) {
+      setSelectedResources((state) =>
+        state.filter((stateResource) => stateResource.id !== resource.id),
+      );
+    } else {
+      setSelectedResources((state) => [...state, resource]);
+    }
+  };
+
+  const maxResourceBagSize = DEFAULT_BAG_SIZE * resourcesBagLevel;
+  const isResourceBagFull = selectedResources.length === maxResourceBagSize;
+
+  if (!reward) return null;
+
+  const { money, experience, items, potions, junk, resources } = reward;
 
   return (
     <GameModal width="500px" height="auto">
@@ -143,7 +145,7 @@ export const BattleResult = () => {
             width="100%"
             direction="row"
             gap={1}
-            key={type}
+            key={gearId}
           >
             <Stack alignItems="center" justifyContent="center" width="55px">
               {getGearIcon(type, gunType)}
@@ -156,9 +158,132 @@ export const BattleResult = () => {
         ))}
       </Stack>
 
-      {resources}
+      {!isOverEncumbered && (
+        <Stack gap={0.5}>
+          <Typography fontFamily="inherit" textAlign="center">
+            Ресурсы:
+          </Typography>
 
-      <Button variant="text" fullWidth sx={{ p: 0 }} onClick={resetBattle}>
+          <Stack direction="row" flexWrap="wrap" gap={0.5}>
+            {resources?.map((resource, index) => (
+              <Tooltip
+                key={`${resource}-${index}`}
+                title={getResourceDescription(resource)}
+              >
+                <div>{getResourceIcon(resource, 40)}</div>
+              </Tooltip>
+            ))}
+          </Stack>
+        </Stack>
+      )}
+
+      {isOverEncumbered && (
+        <Stack gap={1}>
+          <Typography fontFamily="inherit" textAlign="center">
+            Занято {selectedResources.length}/{maxResourceBagSize}
+          </Typography>
+
+          <Typography fontFamily="inherit" textAlign="center" variant="caption">
+            Нераспределенные ресурсы будут автоматом конвертированы в золото
+          </Typography>
+
+          <Stack gap={1} direction="row" flexWrap="wrap">
+            <Typography fontFamily="inherit" width="100%">
+              Ваши ресурсы:
+            </Typography>
+
+            {inventoryResources!.map((resourceItem) => {
+              const { resource, id } = resourceItem;
+
+              const isSelected = Boolean(
+                selectedResources.find((resource) => resource.id === id),
+              );
+
+              return (
+                <Tooltip title={getResourceDescription(resource)}>
+                  <div>
+                    <Button
+                      disabled={isResourceBagFull && !isSelected}
+                      key={id}
+                      sx={{
+                        minWidth: 40,
+                        border: isSelected ? "1px solid #e0c0a0" : "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handleSelectResources(resourceItem, isSelected)
+                      }
+                    >
+                      {getResourceIcon(resource, 40)}
+                    </Button>
+                  </div>
+                </Tooltip>
+              );
+            })}
+          </Stack>
+
+          <Divider sx={{ bgcolor: "#e0c0a0" }} />
+
+          <Stack gap={1} direction="row" flexWrap="wrap">
+            <Typography fontFamily="inherit" width="100%">
+              Награда:
+            </Typography>
+
+            {rewardResources!.map((resourceItem) => {
+              const { resource, id } = resourceItem;
+
+              const isSelected = Boolean(
+                selectedResources.find((resource) => resource.id === id),
+              );
+
+              return (
+                <Tooltip title={getResourceDescription(resource)}>
+                  <div>
+                    <Button
+                      disabled={isResourceBagFull && !isSelected}
+                      key={id}
+                      sx={{
+                        minWidth: 40,
+                        border: isSelected ? "1px solid #e0c0a0" : "none",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handleSelectResources(resourceItem, isSelected)
+                      }
+                    >
+                      {getResourceIcon(resource, 40)}
+                    </Button>
+                  </div>
+                </Tooltip>
+              );
+            })}
+          </Stack>
+        </Stack>
+      )}
+
+      <Button
+        variant="text"
+        fullWidth
+        sx={{ p: 0 }}
+        onClick={() => {
+          let goldAmount = 0;
+
+          if (isOverEncumbered && inventoryResources && rewardResources) {
+            const allResources = [...inventoryResources, ...rewardResources];
+            const selectedResourcesIds = selectedResources.map(
+              (item) => item.id,
+            );
+
+            const leftOverResources = allResources.filter(
+              ({ id }) => !selectedResourcesIds.includes(id),
+            );
+
+            goldAmount = leftOverResources.length * 50;
+          }
+
+          resetBattle(isOverEncumbered ? selectedResources : null, goldAmount);
+        }}
+      >
         <Typography
           sx={{
             width: "100%",

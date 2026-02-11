@@ -31,5 +31,5 @@ export const getEconomicInfo = (economicType: ECONOMIC_TYPES | null) => {
     return "Оружейное дело даёт вам ежедневный бонус в виде брони или оружия";
   }
 
-  return "Рыболовство даёт вам ежедневный денежный прирост";
+  return "";
 };

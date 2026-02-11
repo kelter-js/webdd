@@ -2,14 +2,8 @@ import {
   ARMORS_TIER_1,
   ARMORS_TIER_2,
   ARMORS_TIER_3,
-  RARE_ARMORS_TIER_1,
-  RARE_ARMORS_TIER_2,
-  RARE_ARMORS_TIER_3,
 } from "../constants/armor";
 import {
-  RARE_WEAPONS_TIER_1,
-  RARE_WEAPONS_TIER_2,
-  RARE_WEAPONS_TIER_3,
   WEAPONS_TIER_1,
   WEAPONS_TIER_2,
   WEAPONS_TIER_3,
@@ -18,10 +12,15 @@ import {
   HELMETS_TIER_1,
   HELMETS_TIER_2,
   HELMETS_TIER_3,
-  RARE_HELMETS_TIER_1,
-  RARE_HELMETS_TIER_2,
-  RARE_HELMETS_TIER_3,
 } from "../constants/helmets";
+import {
+  ALL_ITEMS_RARE_TIER_1,
+  ALL_ITEMS_RARE_TIER_2,
+  ALL_ITEMS_RARE_TIER_3,
+  ALL_ITEMS_TIER_1,
+  ALL_ITEMS_TIER_2,
+  ALL_ITEMS_TIER_3,
+} from "../constants/gear";
 import { MAX_AMOUNT_OF_ITEMS_TO_SELL } from "../stores/constants";
 import { Item } from "../types/gameState";
 import { getRandom } from "./getRandom";
@@ -73,45 +72,25 @@ export const generateStoreItem = (tier: number) => {
 
   if (hasNextTier > rollForItem) {
     if (tier === 1) {
-      return generateItem([...WEAPONS_TIER_2, ...ARMORS_TIER_2], enhanced, [
-        ...RARE_ARMORS_TIER_2,
-        ...RARE_WEAPONS_TIER_2,
-      ]);
+      return generateItem(ALL_ITEMS_TIER_2, enhanced, ALL_ITEMS_RARE_TIER_2);
     }
 
     if (tier === 2) {
-      return generateItem([...WEAPONS_TIER_3, ...ARMORS_TIER_3], enhanced, [
-        ...RARE_ARMORS_TIER_3,
-        ...RARE_WEAPONS_TIER_3,
-      ]);
+      return generateItem(ALL_ITEMS_TIER_3, enhanced, ALL_ITEMS_RARE_TIER_3);
     }
   }
 
   if (currentTier > rollForItem) {
     if (tier === 1) {
       console.log(" SO WE ARE HERE?!?@#?!@");
-      return generateItem(
-        [...WEAPONS_TIER_1, ...ARMORS_TIER_1, ...HELMETS_TIER_1],
-        enhanced,
-        [...RARE_ARMORS_TIER_1, ...RARE_WEAPONS_TIER_1, ...RARE_HELMETS_TIER_1],
-      );
+      return generateItem(ALL_ITEMS_TIER_1, enhanced, ALL_ITEMS_RARE_TIER_1);
     }
 
     if (tier === 2) {
-      return generateItem(
-        [...WEAPONS_TIER_2, ...ARMORS_TIER_2, ...HELMETS_TIER_2],
-        enhanced,
-        [...RARE_ARMORS_TIER_2, ...RARE_WEAPONS_TIER_2, ...RARE_HELMETS_TIER_2],
-      );
+      return generateItem(ALL_ITEMS_TIER_2, enhanced, ALL_ITEMS_RARE_TIER_2);
     }
 
-    if (tier === 3) {
-      return generateItem(
-        [...WEAPONS_TIER_3, ...ARMORS_TIER_3, ...HELMETS_TIER_3],
-        enhanced,
-        [...RARE_ARMORS_TIER_3, ...RARE_WEAPONS_TIER_3, ...RARE_HELMETS_TIER_3],
-      );
-    }
+    return generateItem(ALL_ITEMS_TIER_3, enhanced, ALL_ITEMS_RARE_TIER_3);
   }
 
   return null;

@@ -1,7 +1,7 @@
 import { GEAR_SLOTS } from "../../entities/gear";
 import { BASE_ITEMS_ID } from "../items";
 
-// Идём двумя путями - на каждый тир игры по 2 брони. одна из которых даёт изначально больше брони, другая, которая даёт меньше - при максимальной прокачке даёт больше брони.
+console.log("BASE_ITEMS_ID", BASE_ITEMS_ID);
 
 export const BNTI_TIER_1 = {
   name: "БНТИ",

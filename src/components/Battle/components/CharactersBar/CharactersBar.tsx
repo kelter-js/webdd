@@ -57,7 +57,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
           const isDead = partyMember.currentHealth <= 0;
 
-          const characterStats = statistics![partyMember.name];
+          const characterStats = (statistics || {})[partyMember.name];
 
           return (
             <S.CharacterContainer key={partyMember.name}>

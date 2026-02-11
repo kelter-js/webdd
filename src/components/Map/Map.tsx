@@ -153,19 +153,19 @@ export const Map = () => {
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
   };
 
-  const generateNewDungeon = () => {
-    const newDungeon = generateDungeon(5, 5);
+  // const generateNewDungeon = () => {
+  //   const newDungeon = generateDungeon(5, 5);
 
-    // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
-    const DEFAULT_ATTEMPS_AMOUNT = 5;
-    // здесь определяется тип подземелья
-    setDungeon({
-      dungeon: newDungeon,
-      type: DUNGEONS.CLOSE_PORTAL,
-      attempts: DEFAULT_ATTEMPS_AMOUNT,
-      position: { x: 0, y: 0 },
-    });
-  };
+  //   // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
+  //   const DEFAULT_ATTEMPS_AMOUNT = 5;
+  //   // здесь определяется тип подземелья
+  //   setDungeon({
+  //     dungeon: newDungeon,
+  //     type: DUNGEONS.CLOSE_PORTAL,
+  //     attempts: DEFAULT_ATTEMPS_AMOUNT,
+  //     position: { x: 0, y: 0 },
+  //   });
+  // };
 
   const currentCell =
     position?.y && position?.x && dungeon[position.y]
@@ -346,7 +346,7 @@ export const Map = () => {
           zIndex: -1,
         }}
       />
-      <button
+      {/* <button
         style={{
           fontSize: 18,
           padding: "10px 20px",
@@ -359,7 +359,7 @@ export const Map = () => {
         onClick={generateNewDungeon}
       >
         Сгенерировать подземелье
-      </button>
+      </button> */}
 
       {dungeon.length > 0 && (
         <div
@@ -369,6 +369,7 @@ export const Map = () => {
             height: dungeon.length * 64,
             marginBottom: 16,
             backgroundColor: "#111827",
+            marginTop: 20,
 
             boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)",
             // Добавляем внешние стены
@@ -411,6 +412,7 @@ export const Map = () => {
         mb={2}
         justifyContent="space-between"
       >
+        {/* FIXME: нужна доп проверка на квесты типа найти предмет-убить врага - если цель выполнена - отображать кнопку покинуть подземелье */}
         {isDungeonExit && type === DUNGEONS.STORY && (
           <button
             style={{

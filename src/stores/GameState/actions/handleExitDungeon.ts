@@ -14,6 +14,7 @@ import { getItemPrice } from "../../../utils/getItemPrice";
 import { memoizeItem } from "../../../utils/memoizeItem";
 import { MIN_ENCOUNTER_CHANCE } from "../../constants";
 import { StoreSet } from "./types";
+import { RESOURCES } from "../../../entities/resources";
 
 const MIN_AMOUNT_OF_DAILY_POTIONS = 2;
 const MIN_AMOUNT_OF_DAILY_GOLD = 1500;
@@ -111,25 +112,16 @@ export const handleExitDungeon = (set: StoreSet) => () => {
 
     console.log("stateCopy", stateCopy);
 
-    // MOCK
-    const names = stateCopy.player.party.map((item) => item.name);
-    names.forEach((name) => {
-      stateCopy.player.gear_memoized[name] = [
-        GALVION_TIER_1,
-        BNTI_TIER_1,
-        GLOCK_17_TIER_1,
-      ].map((item) => memoizeItem({ ...item, gearId: v4() }));
-
-      if (!stateCopy.gear) {
-        stateCopy.gear = {};
-      }
-
-      stateCopy.gear[name] = [
-        { ...GALVION_TIER_1, gearId: v4() },
-        { ...BNTI_TIER_1, gearId: v4() },
-        { ...GLOCK_17_TIER_1, gearId: v4() },
-      ];
-    });
+    stateCopy.player.resources = [
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+      RESOURCES.ORE,
+    ];
 
     return stateCopy;
   });

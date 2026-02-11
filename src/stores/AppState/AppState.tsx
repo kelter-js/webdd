@@ -69,4 +69,10 @@ export const useAppState = create<AppState>((set) => ({
     set(() => ({
       selectedEnemy: index,
     })),
+
+  isDungeonModalOpen: false,
+  toggleDungeonModal: () =>
+    set((state) => ({
+      isDungeonModalOpen: !state.isDungeonModalOpen,
+    })),
 }));

@@ -12,6 +12,7 @@ import { MachineGun } from "./MachineGun";
 import { FindItemIcon } from "./FindItem";
 import { Submachine } from "./Submachine";
 import { Artifact } from "./Artifact";
+import { Jewelry } from "./Jewelry";
 import { TorchIcon } from "./Torch";
 import { Shotgun } from "./Shotgun";
 import { Defense } from "./Defense";
@@ -22,7 +23,6 @@ import { Target } from "./Target";
 import { Health } from "./Health";
 import { Attack } from "./Attack";
 import { Armor } from "./Armor";
-import { Photo } from "./Photo";
 import { Scrap } from "./Scrap";
 import { Soul } from "./Soul";
 import { Ore } from "./Ore";
@@ -43,6 +43,7 @@ export {
   Submachine,
   Artifact,
   TorchIcon,
+  Jewelry,
   GoldIcon,
   Shotgun,
   Defense,
@@ -52,7 +53,6 @@ export {
   Health,
   Attack,
   Armor,
-  Photo,
   Scrap,
   Soul,
   Ore,

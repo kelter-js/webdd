@@ -1,37 +1,21 @@
 // каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
 
 import {
-  ARMORS_TIER_1,
-  ARMORS_TIER_2,
-  ARMORS_TIER_3,
-  RARE_ARMORS_TIER_1,
-  RARE_ARMORS_TIER_2,
-  RARE_ARMORS_TIER_3,
-} from "../../constants/armor";
-import {
-  RARE_WEAPONS_TIER_1,
-  RARE_WEAPONS_TIER_2,
-  RARE_WEAPONS_TIER_3,
-  WEAPONS_TIER_1,
-  WEAPONS_TIER_2,
-  WEAPONS_TIER_3,
-} from "../../constants/guns";
-import {
-  HELMETS_TIER_1,
-  HELMETS_TIER_2,
-  HELMETS_TIER_3,
-  RARE_HELMETS_TIER_1,
-  RARE_HELMETS_TIER_2,
-  RARE_HELMETS_TIER_3,
-} from "../../constants/helmets";
-import {
   FIRST_TIER_JUNK,
   getPotionByTier,
   SECOND_TIER_JUNK,
   THIRD_TIER_JUNK,
 } from "../../constants/items";
+import {
+  ALL_ITEMS_RARE_TIER_1,
+  ALL_ITEMS_RARE_TIER_2,
+  ALL_ITEMS_RARE_TIER_3,
+  ALL_ITEMS_TIER_1,
+  ALL_ITEMS_TIER_2,
+  ALL_ITEMS_TIER_3,
+} from "../../constants/gear";
 import { POTION_TYPES } from "../../entities/consumables";
-import { RESOURCES } from "../../entities/resources";
+import { ALL_RESOURCES_TYPE, RESOURCES } from "../../entities/resources";
 import { getRandom } from "../../utils";
 import { generateItem } from "../../utils/generateStoreItems";
 
@@ -129,18 +113,12 @@ export const getRandomJunkByTier = (currentTier: number) => {
   return THIRD_TIER_JUNK[getRandom(0, THIRD_TIER_JUNK.length - 1)];
 };
 
-export const getRandomResources = (hasCamera: boolean) => {
-  const resourceTypes = [RESOURCES.ORE, RESOURCES.SOUL];
-
-  if (hasCamera) {
-    resourceTypes.push(RESOURCES.PHOTO);
-  }
-
-  const amountOfResourceTypes = getRandom(1, resourceTypes.length);
+export const getRandomResources = () => {
+  const amountOfResourceTypes = getRandom(1, ALL_RESOURCES_TYPE.length);
 
   const resourcesPool: RESOURCES[] = [];
 
-  resourceTypes.slice(0, amountOfResourceTypes).forEach((resource) => {
+  ALL_RESOURCES_TYPE.slice(0, amountOfResourceTypes).forEach((resource) => {
     const rollForDoubleResources = getRandom(0, 100);
 
     if (rollForDoubleResources > 50) {
@@ -163,23 +141,23 @@ export const generateRandomItem = (
 
   if (currentTier === 1) {
     return generateItem(
-      [...WEAPONS_TIER_1, ...ARMORS_TIER_1, ...HELMETS_TIER_1],
+      ALL_ITEMS_TIER_1,
       enhancedItemChance,
-      [...RARE_ARMORS_TIER_1, ...RARE_WEAPONS_TIER_1, ...RARE_HELMETS_TIER_1],
+      ALL_ITEMS_RARE_TIER_1,
     );
   }
 
   if (currentTier === 2) {
     return generateItem(
-      [...WEAPONS_TIER_2, ...ARMORS_TIER_2, ...HELMETS_TIER_2],
+      ALL_ITEMS_TIER_2,
       enhancedItemChance,
-      [...RARE_ARMORS_TIER_2, ...RARE_WEAPONS_TIER_2, ...RARE_HELMETS_TIER_2],
+      ALL_ITEMS_RARE_TIER_2,
     );
   }
 
   return generateItem(
-    [...WEAPONS_TIER_3, ...ARMORS_TIER_3, ...HELMETS_TIER_3],
+    ALL_ITEMS_TIER_3,
     enhancedItemChance,
-    [...RARE_ARMORS_TIER_3, ...RARE_WEAPONS_TIER_3, ...RARE_HELMETS_TIER_3],
+    ALL_ITEMS_RARE_TIER_3,
   );
 };

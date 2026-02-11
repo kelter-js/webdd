@@ -1,13 +1,13 @@
 import { Icons } from "../common";
 import { RESOURCES } from "../entities/resources";
 
-export const getResourceIcon = (resourceType: RESOURCES) => {
+export const getResourceIcon = (resourceType: RESOURCES, size?: number) => {
   switch (resourceType) {
     case RESOURCES.ORE:
-      return <Icons.Ore />;
+      return <Icons.Ore size={size} />;
     case RESOURCES.SOUL:
-      return <Icons.Soul />;
+      return <Icons.Soul size={size} />;
     default:
-      return <Icons.Photo />;
+      return <Icons.Jewelry size={size} />;
   }
 };

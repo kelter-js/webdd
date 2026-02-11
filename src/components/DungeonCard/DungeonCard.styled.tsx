@@ -19,7 +19,7 @@ export const QuestCardContainer = styled("div")`
 
 export const QuestCardTitle = styled(QuestCardText)`
   position: absolute;
-  top: 14px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -30,13 +30,3 @@ export const QuestCardDescription = styled(QuestCardText)`
   left: 50%;
   transform: translateX(-50%);
 `;
-
-export const QuestCardReward = styled(QuestCardText)(
-  ({ theme: { spacing } }) => ({
-    position: "absolute",
-    bottom: "8px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    padding: spacing(2),
-  }),
-);

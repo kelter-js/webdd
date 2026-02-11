@@ -2,6 +2,7 @@
 
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS } from "../constants/perks";
+import { RESOURCES } from "../entities/resources";
 import { ROOM_TYPES } from "../entities/room";
 import { GameStateData, PERK_ID_DATA } from "./gameState";
 
@@ -46,4 +47,9 @@ export interface ReceiptData {
   sourceItemIcon: string;
   targetItemIcon: string;
   goldRequiredToCraft?: number;
+}
+
+export interface ResourceData {
+  resource: RESOURCES;
+  id: string;
 }

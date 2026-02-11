@@ -1,5 +1,6 @@
-import { MemoizedItem, Room } from ".";
+import { MemoizedItem, ResourceData, Room } from ".";
 import { POSITIONS } from "../common/TurnIndicator/entities";
+
 import { FLAGS } from "../constants";
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
@@ -286,7 +287,10 @@ export interface StoreState {
   turnOffDices: VoidFunction;
   playersLvlUpNotifications: string[];
   healTeam: VoidFunction;
-  resetBattle: VoidFunction;
+  resetBattle: (
+    newSelectedResources: ResourceData[] | null,
+    gold: number,
+  ) => void;
   buyCamera: VoidFunction;
   swapItem: (
     equipItemId: string,
@@ -299,6 +303,7 @@ export interface StoreState {
   buyItem: (itemId: string) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
+  generateDungeon: (type?: DUNGEONS) => void;
   setSliders: (newTurn: string | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
 
@@ -357,6 +362,7 @@ export type PersistedState = Omit<
   | "setSliders"
   | "acquirePerk"
   | "buyPotion"
+  | "generateDungeon"
   | "initiateState"
   | "updateFlags"
   | "increaseResourcesBagLevel"

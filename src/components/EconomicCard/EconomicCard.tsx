@@ -8,7 +8,10 @@ import * as S from "./EconomicCard.styled";
 // REFACTORING CHECKED ✅
 
 export const EconomicCard: FC<EconomicCardProps> = ({ type }) => {
-  const { setEconomicBranch } = useGameState();
+  const {
+    setEconomicBranch,
+    player: { economic },
+  } = useGameState();
   const { toggleEconomicModal } = useAppState();
 
   const { src, reward, title, description } = getEconomicBranchDataByType(type);
@@ -19,7 +22,10 @@ export const EconomicCard: FC<EconomicCardProps> = ({ type }) => {
   };
 
   return (
-    <S.QuestCardContainer onClick={handleSelectEconomicBranch}>
+    <S.QuestCardContainer
+      onClick={handleSelectEconomicBranch}
+      isSelected={type === economic}
+    >
       <img src={src} width="350px" height="620px" />
 
       <S.QuestCardTitle>{title}</S.QuestCardTitle>

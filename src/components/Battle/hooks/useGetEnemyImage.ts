@@ -7,14 +7,11 @@ export const useGetEnemyImage = () => {
     player: { battle },
   } = useGameState();
 
-  if (battle) {
-    switch (battle.enemy.type) {
-      case ENEMIES.SPIDER:
-        return encounter;
-      default:
-        return encounter;
-    }
-  }
+  const enemyImages = battle?.enemy.party.map((enemy) => {
+    // return getEnemyImageByType(enemy.type)
+  });
+
+  // return enemyImages;
 
   return encounter;
 };

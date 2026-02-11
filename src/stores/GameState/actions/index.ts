@@ -7,6 +7,7 @@ import { setPlayerPosition } from "./setPlayerPosition";
 import { increaseEndurance } from "./increaseEndurance";
 import { setLocationState } from "./setLocationState";
 import { increaseAccuracy } from "./increaseAccuracy";
+import { generateDungeon } from "./generateDungeon";
 import { increaseAgility } from "./increaseAgility";
 import { toggleInventory } from "./toggleInventory";
 import { updateGameTier } from "./updateGameTier";
@@ -49,6 +50,7 @@ export {
   setLocationState,
   increaseAccuracy,
   increaseAgility,
+  generateDungeon,
   toggleInventory,
   updateGameTier,
   changeAttempts,

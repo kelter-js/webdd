@@ -9,6 +9,7 @@ import {
   getRandomResources,
 } from "../utils";
 import { getRandom } from "../../../utils";
+import { RESOURCES } from "../../../entities/resources";
 
 //   items?: Item[];
 
@@ -40,10 +41,18 @@ export const useHandleBattleEnd = () => {
             items.push(generateRandomItem(currentTier, creature.isEnhanced));
           }
 
+          if (hasCamera) {
+            // вызываем ф-ию из стора для обновления счетчика
+          }
+
           return acc;
         },
-        { gold: 0, exp: 0 },
+        { gold: 0, exp: 0, counter: {} },
       );
+
+      if (hasCamera) {
+        // вызываем ф-ию из стора для обновления счетчика
+      }
 
       reward.experience = exp;
       reward.money = gold;
@@ -60,7 +69,7 @@ export const useHandleBattleEnd = () => {
         reward.junk = getRandomJunkByTier(currentTier);
       }
 
-      reward.resources = getRandomResources(hasCamera);
+      reward.resources = getRandomResources();
 
       if (items.length > 0) {
         reward.items = items;

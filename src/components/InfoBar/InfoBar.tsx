@@ -56,13 +56,15 @@ export const InfoBar = () => {
         </S.StatContainer>
       )}
 
-      <S.StatContainer>
-        <Tooltip title={getEconomicInfo(economic)}>
-          <Stack alignItems="center" direction="row">
-            <Icons.EconomyOrnament />
-          </Stack>
-        </Tooltip>
-      </S.StatContainer>
+      {economic && (
+        <S.StatContainer>
+          <Tooltip title={getEconomicInfo(economic)}>
+            <Stack alignItems="center" direction="row">
+              <Icons.EconomyOrnament />
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      )}
 
       {Boolean(charactersWithPointsToSpend.length) &&
         charactersWithPointsToSpend.map((item) => (
@@ -99,7 +101,7 @@ export const InfoBar = () => {
       {/* пока под вопросом как выводить список consumables */}
       {/* <StatContainer></StatContainer> */}
     </S.ModalContent>,
-    document.getElementById("root")! // или document.getElementById('root')
+    document.getElementById("root")!, // или document.getElementById('root')
   );
 
   // return (
