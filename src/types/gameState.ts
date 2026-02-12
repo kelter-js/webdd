@@ -126,6 +126,7 @@ export interface Location {
   roomsVisited?: number;
   movementAmount?: number;
   specialEncounter?: SPECIAL_ENCOUNTERS;
+  isQuestCompleted?: boolean;
 }
 
 export interface BattleUpdateState {

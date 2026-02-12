@@ -61,7 +61,7 @@ export const Map = () => {
 
   const { handleSetSrc } = usePlayer();
 
-  const { dungeon, position, type, ...rest } = location || {};
+  const { dungeon, position, type, isQuestCompleted, ...rest } = location || {};
 
   useEffect(() => {
     if (!location || !position || !dungeon) {
@@ -413,21 +413,23 @@ export const Map = () => {
         justifyContent="space-between"
       >
         {/* FIXME: нужна доп проверка на квесты типа найти предмет-убить врага - если цель выполнена - отображать кнопку покинуть подземелье */}
-        {isDungeonExit && type === DUNGEONS.STORY && (
-          <button
-            style={{
-              fontSize: 18,
-              padding: "10px 20px",
-              backgroundColor: "#3b82f6",
-              color: "white",
-              border: "none",
-              borderRadius: 5,
-            }}
-            onClick={handleEscapeFromDungeon}
-          >
-            Выйти из подземелья
-          </button>
-        )}
+        {isDungeonExit &&
+          (type === DUNGEONS.STORY ||
+            (type === DUNGEONS.FIND && isQuestCompleted)) && (
+            <button
+              style={{
+                fontSize: 18,
+                padding: "10px 20px",
+                backgroundColor: "#3b82f6",
+                color: "white",
+                border: "none",
+                borderRadius: 5,
+              }}
+              onClick={handleEscapeFromDungeon}
+            >
+              Выйти из подземелья
+            </button>
+          )}
 
         <Box
           sx={{

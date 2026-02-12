@@ -2,9 +2,16 @@ import { DIRECTIONS } from "../entities/directions";
 import { DirectionTuple } from "./types";
 import { isDeadEnd } from "./";
 import { Room } from "../types";
+import { getRandom } from "./";
 import { ROOM_TYPES } from "../entities/room";
 
-export const generateDungeon = (width: number, height: number): Room[][] => {
+const MAX_ITERATIONS_COUNTER = 100000;
+
+export const generateDungeon = (
+  width: number,
+  height: number,
+  isQuest?: boolean,
+): Room[][] => {
   // 1. Создаём пустую сетку комнат
   let dungeon: Room[][] = Array(height)
     .fill(null)
@@ -18,7 +25,7 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
           type: ROOM_TYPES.EMPTY,
           visited: false,
           exits: { top: false, right: false, bottom: false, left: false },
-        }))
+        })),
     );
 
   // 2. Начинаем с (0, 0)
@@ -71,8 +78,26 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
       room.visited = rowIndex === 0 && roomIndex === 0 ? true : false;
 
       return { ...room, isDeadEndRoom };
-    })
+    }),
   );
+
+  if (isQuest) {
+    let counter = 0;
+
+    while (counter < MAX_ITERATIONS_COUNTER) {
+      const randomRow = getRandom(0, width);
+      const randomColumn = getRandom(0, height);
+      const cell = dungeon[randomColumn][randomRow];
+
+      if (cell.type === ROOM_TYPES.END || cell.type === ROOM_TYPES.START) {
+        counter++;
+        continue;
+      }
+
+      cell.type = ROOM_TYPES.ENEMY;
+      break;
+    }
+  }
 
   return dungeon;
 };

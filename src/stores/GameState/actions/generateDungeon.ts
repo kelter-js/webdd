@@ -26,7 +26,11 @@ export const generateDungeon =
       const stateCopy = { ...state, player: { ...state.player } };
 
       const dungeonSize = getDungeonSizeByTier(stateCopy.player.currentTier);
-      const newDungeon = generateDungeonUtil(dungeonSize, dungeonSize);
+      const newDungeon = generateDungeonUtil(
+        dungeonSize,
+        dungeonSize,
+        dungeonType === DUNGEONS.FIND,
+      );
 
       stateCopy.player.location = {
         ...state.player.location,

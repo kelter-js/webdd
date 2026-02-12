@@ -112,17 +112,6 @@ export const handleExitDungeon = (set: StoreSet) => () => {
 
     console.log("stateCopy", stateCopy);
 
-    stateCopy.player.resources = [
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-      RESOURCES.ORE,
-    ];
-
     return stateCopy;
   });
 };

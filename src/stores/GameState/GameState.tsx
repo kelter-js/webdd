@@ -277,6 +277,7 @@ export const useGameState = create<StoreState>()(
             }
 
             copyState.player.location.dungeon = newDungeon;
+            copyState.player.location.isQuestCompleted = true;
 
             return copyState;
           }

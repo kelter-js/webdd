@@ -98,6 +98,22 @@ export const resetBattle =
         ][];
       }
 
+      if (copyState.player.hasCamera) {
+        const enemyTypes = battle?.enemy.party.map((enemy) => enemy.type);
+        const newStatistics = {
+          ...copyState.player.playStatistics,
+          kills: { ...copyState.player.playStatistics.kills },
+        };
+
+        enemyTypes?.forEach((enemy) => {
+          newStatistics.kills[enemy] = newStatistics.kills[enemy]
+            ? newStatistics.kills[enemy] + 1
+            : 1;
+        });
+
+        copyState.player.playStatistics = newStatistics;
+      }
+
       return copyState;
     });
   };

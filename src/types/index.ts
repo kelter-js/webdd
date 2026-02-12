@@ -29,6 +29,7 @@ export interface Room {
   };
   isDeadEndRoom?: boolean;
   isLighted?: boolean;
+  isLooted?: boolean;
 }
 
 // BASE_ITEMS_ID - для маппинга на основной предмет

@@ -5,4 +5,5 @@
 export enum ENEMIES {
   SPIDER = "SPIDER",
   TORSO = "TORSO",
+  DANCER = "DANCER",
 }

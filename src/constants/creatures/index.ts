@@ -45,9 +45,26 @@ export const FIRST_TIER_CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {},
   },
+
+  [ENEMIES.DANCER]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: "",
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {},
+  },
 };
 
-export const FIRST_TIER_CREATURES_LIST = [ENEMIES.SPIDER, ENEMIES.TORSO];
+export const FIRST_TIER_CREATURES_LIST = [
+  ENEMIES.SPIDER,
+  ENEMIES.TORSO,
+  ENEMIES.DANCER,
+];
 export const SECOND_TIER_CREATURES_LIST = [];
 export const THIRD_TIER_CREATURES_LIST = [];
 
