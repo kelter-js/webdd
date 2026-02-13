@@ -4,139 +4,117 @@ import { Box } from "@mui/material";
 
 import ornament from "../../assets/effects/lvlup.png";
 import { LevelUpContainer, PlayerLevel, PlayerName } from "./LevelUp.styled";
+import { useAppState } from "../../stores";
+import { LeveledUpData } from "../../types/appState";
 
 export const LevelUp = () => {
-  const [show, setShow] = useState(false);
-  const duration = 2000;
+  const { deleteLeveledUpList, charactersLeveledUp } = useAppState();
 
+  const [current, setCurrent] = useState<LeveledUpData | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Берём следующего персонажа, если ничего не показываем
   useEffect(() => {
-    setShow(true);
+    if (!current && charactersLeveledUp.length > 0) {
+      setCurrent(charactersLeveledUp[0]);
+      setIsVisible(true);
+    }
+  }, [charactersLeveledUp, current]);
 
-    // const timer = setTimeout(() => {
-    //   setShow(false);
-    // }, duration);
+  // Автоматически скрываем через 2.5 секунды
+  useEffect(() => {
+    if (!isVisible) return;
 
-    // return () => clearTimeout(timer);
-  }, [duration]);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, [isVisible]);
+
+  if (!current) return null;
 
   return (
     <LevelUpContainer>
-      {/* в пропе onExitComplete вызываем коллбэк */}
-      {/* анимации о лвл апе показываем через useGameState, это же анимация, поэтому если перезагрузили страницу - это проблема юзера */}
-      {/* после боя высчитываем и зачисляем эксп, всех кто лвлапнулся - помещаем в массив с именами чаров, но это поле не должно мемоизироваться - оно не персистентное */}
-      {/* далее, если массив не пустой - берем первого персонажа - для него показываем анимацию, по завершению анимации - удаляем из массива первое вхождение */}
-      {/* и так пока массив не опустеет, коллбэк для опустошения коллекции получаем через пропсы */}
-      <AnimatePresence onExitComplete={() => {}}>
-        {show && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: "0",
-              left: "50%",
-              transform: "translateX(-50%)",
-              pointerEvents: "none",
-              zIndex: 2000,
-            }}
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => {
+          deleteLeveledUpList(current.id);
+          setCurrent(null);
+        }}
+      >
+        {isVisible && (
+          <motion.div
+            key={current.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
           >
-            <motion.img
-              src={ornament}
-              alt="Level Up Ornament"
-              initial={{
-                opacity: 0,
-                scale: 0.8,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                filter: [
-                  "drop-shadow(0 0 8px #ff0000)",
-                  "drop-shadow(0 0 16px #ff4444)",
-                  "drop-shadow(0 0 8px #ff0000)",
-                ],
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.9,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              transition={{
-                duration: 0.8,
-                ease: "easeOut",
-                filter: {
-                  duration: 2,
-                  repeat: Infinity,
-                },
-              }}
-              style={{
-                maxWidth: "600px",
-              }}
-            />
-            <PlayerName
-              initial={{
-                opacity: 0,
-                scale: 0.1,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                filter: [
-                  "drop-shadow(0 0 8px #ff0000)",
-                  "drop-shadow(0 0 16px #ff4444)",
-                  "drop-shadow(0 0 8px #ff0000)",
-                ],
-                transform: "translate(-50%, 0)",
-              }}
-              exit={{
-                opacity: 0,
-                scale: 1,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              transition={{
-                duration: 0.8,
-                ease: "easeOut",
-                filter: {
-                  duration: 2,
-                  repeat: Infinity,
-                },
+            {/* Центрирование ТОЛЬКО здесь */}
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                pointerEvents: "none",
+                zIndex: 2000,
               }}
             >
-              kelter
-            </PlayerName>
-            <PlayerLevel
-              initial={{
-                opacity: 0,
-                scale: 0.1,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                filter: [
-                  "drop-shadow(0 0 8px #ff0000)",
-                  "drop-shadow(0 0 16px #ff4444)",
-                  "drop-shadow(0 0 8px #ff0000)",
-                ],
-                transform: "translate(-50%, 0)",
-              }}
-              exit={{
-                opacity: 0,
-                scale: 1,
-                filter: "drop-shadow(0 0 0px #ff0000)",
-              }}
-              transition={{
-                duration: 0.8,
-                ease: "easeOut",
-                filter: {
-                  duration: 2,
-                  repeat: Infinity,
-                },
-              }}
-            >
-              42
-            </PlayerLevel>
-          </Box>
+              {/* ВНУТРЕННЯЯ обёртка для scale */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{
+                  scale: 1,
+                  opacity: 1,
+                }}
+                exit={{
+                  scale: 0.9,
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 0.6,
+                  ease: "easeOut",
+                }}
+              >
+                <motion.img
+                  src={ornament}
+                  alt="Level Up Ornament"
+                  animate={{
+                    filter: [
+                      "drop-shadow(0 0 8px #ff0000)",
+                      "drop-shadow(0 0 16px #ff4444)",
+                      "drop-shadow(0 0 8px #ff0000)",
+                    ],
+                  }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: 1,
+                  }}
+                  style={{
+                    maxWidth: "600px",
+                  }}
+                />
+
+                <PlayerName
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {current.name}
+                </PlayerName>
+
+                <PlayerLevel
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.35 }}
+                >
+                  {current.level}
+                </PlayerLevel>
+              </motion.div>
+            </Box>
+          </motion.div>
         )}
       </AnimatePresence>
     </LevelUpContainer>

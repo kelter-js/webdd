@@ -25,6 +25,7 @@ import { useMovement } from "./hooks/useMovement";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { getDungeonBackgroundByTier } from "./utils";
+import { getFlagStoryBossByTier } from "../../utils/getFlagStoryBossByTier";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -46,7 +47,7 @@ const ENCOUNTER_SFX_PLAYER_REF = "encounter";
 
 export const Map = () => {
   const {
-    player: { location, economic, battle, currentTier },
+    player: { location, economic, battle, currentTier, flags },
     setDungeon,
     setPlayerPosition,
     updateDungeon,
@@ -171,7 +172,10 @@ export const Map = () => {
     position?.y && position?.x && dungeon[position.y]
       ? dungeon[position.y][position.x]
       : undefined;
-  const isDungeonExit = currentCell?.type === ROOM_TYPES.END;
+  const isDungeonExit =
+    currentCell?.type === ROOM_TYPES.END ||
+    (currentCell?.type === ROOM_TYPES.STORY_BOSS &&
+      flags.includes(getFlagStoryBossByTier(currentTier)));
 
   const canMove = (direction: DIRECTIONS) => {
     const { x, y } = position;

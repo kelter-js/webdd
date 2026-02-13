@@ -1,6 +1,7 @@
 import { DEFAULT_BAG_SIZE } from "../../../constants";
 import { POTION_TYPES } from "../../../entities/consumables";
 import { JUNK_TYPES } from "../../../entities/junk";
+import { ROOM_TYPES } from "../../../entities/room";
 import { ResourceData } from "../../../types";
 import { PotionsReceivedData } from "../../../types/gameState";
 import { memoizeItem } from "../../../utils/memoizeItem";
@@ -112,6 +113,18 @@ export const resetBattle =
         });
 
         copyState.player.playStatistics = newStatistics;
+      }
+
+      const position = copyState.player.location?.position;
+      const dungeon = copyState.player.location?.dungeon;
+
+      const currentCell =
+        position?.y && position?.x && dungeon && dungeon[position.y]
+          ? dungeon[position.y][position.x]
+          : undefined;
+
+      if (currentCell && currentCell.type === ROOM_TYPES.ENEMY) {
+        copyState.player.location!.isQuestCompleted = true;
       }
 
       return copyState;

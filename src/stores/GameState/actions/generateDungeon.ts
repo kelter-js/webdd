@@ -29,7 +29,8 @@ export const generateDungeon =
       const newDungeon = generateDungeonUtil(
         dungeonSize,
         dungeonSize,
-        dungeonType === DUNGEONS.FIND,
+        stateCopy.player.playStatistics.dungeonCounter,
+        dungeonType,
       );
 
       stateCopy.player.location = {

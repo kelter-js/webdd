@@ -1,5 +1,11 @@
 import { SAVE_MODES } from "../entities/saveModes";
 
+export interface LeveledUpData {
+  name: string;
+  level: number;
+  id: string;
+}
+
 export interface AppState {
   isMenuOpen: boolean;
   toggleMenu: VoidFunction;
@@ -39,4 +45,8 @@ export interface AppState {
 
   isDungeonModalOpen: boolean;
   toggleDungeonModal: VoidFunction;
+
+  charactersLeveledUp: LeveledUpData[];
+  pushLeveledUpList: (characterData: LeveledUpData) => void;
+  deleteLeveledUpList: (characterName: string) => void;
 }

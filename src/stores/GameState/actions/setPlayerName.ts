@@ -28,21 +28,22 @@ export const setPlayerName =
     set((state) => {
       const [firstAvailableClassModel, lastAvailableClassModel] =
         getOtherClassModelsList(characterClass);
+      const [firstRandomName, secondRandomName] = getRandomName(name);
 
       // магические числа заменить на константы рассчета
       const party = [
         {
           name,
           experience: 0,
-          level: 20,
+          level: 1,
           ...getBaseModelBySelectedClass(characterClass),
           points: 5,
           perksList: [],
         },
         {
-          name: getRandomName(),
+          name: firstRandomName,
           experience: 0,
-          level: 15,
+          level: 1,
           ...firstAvailableClassModel,
           points: 5,
           critChance: 0,
@@ -50,9 +51,9 @@ export const setPlayerName =
           perksList: [],
         },
         {
-          name: getRandomName(),
+          name: secondRandomName,
           experience: 0,
-          level: 12,
+          level: 1,
           ...lastAvailableClassModel,
           points: 5,
           critChance: 0,

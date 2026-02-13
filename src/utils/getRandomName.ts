@@ -1,5 +1,3 @@
-import { getRandom } from "./getRandom";
-
 const DEFAULT_NAME_PRESETS = [
   "Александр",
   "Лукас",
@@ -33,7 +31,12 @@ const DEFAULT_NAME_PRESETS = [
   "Хьюго",
 ];
 
-export const getRandomName = () => {
-  const randomIndex = getRandom(0, DEFAULT_NAME_PRESETS.length - 1);
-  return DEFAULT_NAME_PRESETS[randomIndex];
+export const getRandomName = (characterName: string) => {
+  const otherNames = DEFAULT_NAME_PRESETS.filter(
+    (name) => name !== characterName,
+  );
+
+  const shuffled = otherNames.sort(() => Math.random() - 0.5);
+
+  return [shuffled[0], shuffled[1]];
 };

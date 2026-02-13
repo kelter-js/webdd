@@ -1,2 +1,14 @@
 // здесь будут перечислены типы AI
-export enum AI_CATEGORIES {}
+export enum AI_CATEGORIES {
+  DEFAULT = "DEFAULT",
+  TIER_2 = "TIER_2",
+  TIER_3 = "TIER_3",
+
+  MINIBOSS_TIER_1 = "MINIBOSS_TIER_1",
+  MINIBOSS_TIER_2 = "MINIBOSS_TIER_2",
+  MINIBOSS_TIER_3 = "MINIBOSS_TIER_3",
+
+  BOSS_TIER_1 = "BOSS_TIER_1",
+  BOSS_TIER_2 = "BOSS_TIER_2",
+  BOSS_TIER_3 = "BOSS_TIER_3",
+}

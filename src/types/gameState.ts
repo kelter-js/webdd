@@ -304,6 +304,7 @@ export interface StoreState {
   buyItem: (itemId: string) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
+  levelUpCharacter: (name: string, amountOfExp: number) => void;
   generateDungeon: (type?: DUNGEONS) => void;
   setSliders: (newTurn: string | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
@@ -363,6 +364,7 @@ export type PersistedState = Omit<
   | "setSliders"
   | "acquirePerk"
   | "buyPotion"
+  | "levelUpCharacter"
   | "generateDungeon"
   | "initiateState"
   | "updateFlags"

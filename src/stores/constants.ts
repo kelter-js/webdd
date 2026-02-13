@@ -54,9 +54,7 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 //       tier3: { hp: 810, minDmg: 23, maxDmg: 43, xp: 1170 },
 //     },
 //     boss: {
-//       tier1: { hp: 900, minDmg: 18, maxDmg: 32, xp: 1800 },
-//       tier2: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2070 },
-//       tier3: { hp: 1620, minDmg: 32, maxDmg: 58, xp: 2340 },
+//       tier1: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2070 },
 //     },
 //   },
 //   LOCATION_TIER_2: {
@@ -86,9 +84,7 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 //       tier3: { hp: 1134, minDmg: 32, maxDmg: 58, xp: 1638 },
 //     },
 //     tier2boss: {
-//       tier1: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2520 },
-//       tier2: { hp: 1764, minDmg: 35, maxDmg: 63, xp: 2898 },
-//       tier3: { hp: 2268, minDmg: 45, maxDmg: 81, xp: 3276 },
+//       tier1: { hp: 1764, minDmg: 35, maxDmg: 63, xp: 2898 },
 //     },
 //   },
 //   LOCATION_TIER_3: {
@@ -118,9 +114,7 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 //       tier3: { hp: 1620, minDmg: 46, maxDmg: 92, xp: 2340 },
 //     },
 //     finalboss: {
-//       tier1: { hp: 1800, minDmg: 35, maxDmg: 70, xp: 3600 },
-//       tier2: { hp: 2520, minDmg: 49, maxDmg: 98, xp: 4140 },
-//       tier3: { hp: 3240, minDmg: 63, maxDmg: 126, xp: 4680 },
+//       tier1: { hp: 2520, minDmg: 49, maxDmg: 98, xp: 4140 },
 //     },
 //   },
 // };
@@ -304,3 +298,13 @@ export const DEFAULT_GAME_SAVE = {
 };
 
 export const DEFAULT_GAME_SAVES = [DEFAULT_GAME_SAVE];
+
+export const TANK_DEFAULT_XP = 700;
+export const SNIPER_DEFAULT_XP = 1500;
+export const MEDIC_DEFAULT_XP = 1000;
+
+export const DEFAULT_EXP_BY_CLASS_MAP = {
+  [CLASSES.MEDIC]: MEDIC_DEFAULT_XP,
+  [CLASSES.SNIPER]: SNIPER_DEFAULT_XP,
+  [CLASSES.TANK]: TANK_DEFAULT_XP,
+};

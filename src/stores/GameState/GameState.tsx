@@ -77,6 +77,7 @@ import {
   handleExitDungeon,
   buyItem,
   generateDungeon,
+  levelUpCharacter,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -84,6 +85,7 @@ import {
   ENCOUNTER_MAP,
   generateSpecialEncounter,
 } from "../../utils/generateSpecialEncounter";
+import { FLAGS } from "../../constants";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -127,7 +129,8 @@ export const useGameState = create<StoreState>()(
             const isAlreadyVisited = currentCell.visited;
             const isPlayableArea =
               currentCell.type !== ROOM_TYPES.END &&
-              currentCell.type !== ROOM_TYPES.START;
+              currentCell.type !== ROOM_TYPES.START &&
+              currentCell.type !== ROOM_TYPES.STORY_BOSS;
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
 
@@ -276,8 +279,32 @@ export const useGameState = create<StoreState>()(
               }
             }
 
+            if (currentCell.type === ROOM_TYPES.STORY_BOSS) {
+              if (
+                copyState.player.currentTier === 1 &&
+                !copyState.player.flags.includes(FLAGS.FIRST_STORY_BOSS_VICTORY)
+              ) {
+                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
+              }
+
+              if (
+                copyState.player.currentTier === 2 &&
+                !copyState.player.flags.includes(
+                  FLAGS.SECOND_STORY_BOSS_VICTORY,
+                )
+              ) {
+                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
+              }
+
+              if (
+                copyState.player.currentTier === 3 &&
+                !copyState.player.flags.includes(FLAGS.THIRD_STORY_BOSS_VICTORY)
+              ) {
+                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
+              }
+            }
+
             copyState.player.location.dungeon = newDungeon;
-            copyState.player.location.isQuestCompleted = true;
 
             return copyState;
           }
@@ -305,6 +332,7 @@ export const useGameState = create<StoreState>()(
       healTeam: healTeam(set),
       turnOffDices: turnOffDices(set),
       setGameOver: setGameOver(set),
+      levelUpCharacter: levelUpCharacter(set),
       useAbility: useAbility(set),
       initiateState: initiateState(set),
       resetGame: resetGame(set),
@@ -361,6 +389,10 @@ export const useGameState = create<StoreState>()(
           ...state,
           player: {
             ...state.player,
+            party: state.player.party.map((member) => ({
+              ...member,
+              experience: 3000,
+            })),
             gold: state.player.gold + 5000,
           },
         })),

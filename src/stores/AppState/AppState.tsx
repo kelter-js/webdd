@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { AppState } from "../../types/appState";
+import { AppState, LeveledUpData } from "../../types/appState";
 
 export const useAppState = create<AppState>((set) => ({
   isMenuOpen: false,
@@ -74,5 +74,17 @@ export const useAppState = create<AppState>((set) => ({
   toggleDungeonModal: () =>
     set((state) => ({
       isDungeonModalOpen: !state.isDungeonModalOpen,
+    })),
+
+  charactersLeveledUp: [],
+  pushLeveledUpList: (characterData: LeveledUpData) =>
+    set((state) => ({
+      charactersLeveledUp: [...state.charactersLeveledUp, characterData],
+    })),
+  deleteLeveledUpList: (characterId: string) =>
+    set((state) => ({
+      charactersLeveledUp: state.charactersLeveledUp.filter(
+        (character) => character.id !== characterId,
+      ),
     })),
 }));

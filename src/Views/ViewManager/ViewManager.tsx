@@ -14,7 +14,7 @@ export const ViewManager = () => {
     player: { locationState, sliderId },
   } = useGameState();
 
-  // const { isModalOpen, toggleModal } = useAppState();
+  const { pushLeveledUpList } = useAppState();
 
   const isServiceLayoutVisible =
     locationState !== RENDER_LOCATIONS.BATTLE &&
@@ -33,7 +33,7 @@ export const ViewManager = () => {
       {locationState === RENDER_LOCATIONS.DUNGEON && <Map />}
       {isServiceLayoutVisible && <MenuLayout />}
       {isServiceLayoutVisible && <InfoBar />}
-      {/* <LevelUp /> */}
+      {pushLeveledUpList.length !== 0 && <LevelUp />}
     </Shake>
   );
 };

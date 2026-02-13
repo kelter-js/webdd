@@ -4,15 +4,40 @@ import { isDeadEnd } from "./";
 import { Room } from "../types";
 import { getRandom } from "./";
 import { ROOM_TYPES } from "../entities/room";
+import {
+  FIRST_TIER_DUNGEONS_AMOUNT,
+  SECOND_TIER_DUNGEONS_AMOUNT,
+  THIRD_TIER_DUNGEONS_AMOUNT,
+} from "../constants";
+import { DUNGEONS } from "../entities";
 
 const MAX_ITERATIONS_COUNTER = 100000;
+
+const getEndRoomTypeByCounter = (counter: number, isQuest?: boolean) => {
+  if (isQuest) {
+    return ROOM_TYPES.END;
+  }
+
+  if (
+    counter === FIRST_TIER_DUNGEONS_AMOUNT ||
+    counter === SECOND_TIER_DUNGEONS_AMOUNT ||
+    counter === THIRD_TIER_DUNGEONS_AMOUNT
+  ) {
+    return ROOM_TYPES.STORY_BOSS;
+  }
+
+  return ROOM_TYPES.END;
+};
 
 export const generateDungeon = (
   width: number,
   height: number,
-  isQuest?: boolean,
+  dungeonsAmount: number,
+  dungeonType: DUNGEONS,
 ): Room[][] => {
   // 1. Создаём пустую сетку комнат
+  const isQuest = dungeonType !== DUNGEONS.STORY;
+
   let dungeon: Room[][] = Array(height)
     .fill(null)
     .map((_, y) =>
@@ -70,7 +95,10 @@ export const generateDungeon = (
   }
 
   // 9. Делаем последнюю комнату "концом"
-  dungeon[height - 1][width - 1].type = ROOM_TYPES.END;
+  dungeon[height - 1][width - 1].type = getEndRoomTypeByCounter(
+    dungeonsAmount,
+    isQuest,
+  );
 
   dungeon = dungeon.map((row, rowIndex) =>
     row.map((room, roomIndex) => {
@@ -81,7 +109,7 @@ export const generateDungeon = (
     }),
   );
 
-  if (isQuest) {
+  if (dungeonType === DUNGEONS.FIND) {
     let counter = 0;
 
     while (counter < MAX_ITERATIONS_COUNTER) {
