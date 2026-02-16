@@ -11,6 +11,7 @@ import * as S from "./Dialogue.styled";
 import { DialogueOption } from "../../types/dialogue";
 import { usePlayer } from "../../contexts/Player";
 import { DIALOGUE_AMBIENT_PLAYER_REF } from "./constants";
+import { RESOURCES } from "../../entities/resources";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const {
@@ -21,8 +22,13 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     toggleTradeModal,
     toggleCraftMenu,
   } = useAppState();
-  const { updateDialogFlags, healTeam, buyCamera, increaseResourcesBagLevel } =
-    useGameState();
+  const {
+    updateDialogFlags,
+    healTeam,
+    buyCamera,
+    increaseResourcesBagLevel,
+    giveResources,
+  } = useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
 
@@ -81,6 +87,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.OPEN_SMITH) {
       handleEndDialogue(toggleCraftMenu);
+    }
+
+    if (id === DIALOGUE_IDS.RELEASE_ORE) {
+      giveResources(RESOURCES.ORE);
     }
 
     if (nextNode === "end") {

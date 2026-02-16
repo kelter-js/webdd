@@ -30,7 +30,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 50, currentHp: 50, minDmg: 2, maxDmg: 4, xp: 100 },
   },
   [ENEMIES.SPIDER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -42,7 +42,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 70, currentHp: 70, minDmg: 3, maxDmg: 6, xp: 115 },
   },
   [ENEMIES.SPIDER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -54,7 +54,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 90, currentHp: 90, minDmg: 4, maxDmg: 8, xp: 130 },
   },
 
   [ENEMIES.TORSO_TIER_1]: {
@@ -243,18 +243,41 @@ export const FIRST_TIER_QUEST_MINIBOSS = ENEMIES.BIRD_TIER_3;
 
 export const FIRST_TIER_BOSS = ENEMIES.SIN_ICON_TIER_1;
 
-export const SECOND_TIER_CREATURES_LIST = [];
+export const SECOND_TIER_CREATURES_LIST = [
+  ENEMIES.SOLDIER_TIER_1,
+  ENEMIES.SOLDIER_TIER_2,
+  ENEMIES.SOLDIER_TIER_3,
+  ENEMIES.FIREFIGHTER_TIER_1,
+  ENEMIES.FIREFIGHTER_TIER_2,
+  ENEMIES.FIREFIGHTER_TIER_3,
+  ENEMIES.SNEAKER_TIER_1,
+  ENEMIES.SNEAKER_TIER_2,
+  ENEMIES.SNEAKER_TIER_3,
+  ENEMIES.LOST_TIER_1,
+  ENEMIES.LOST_TIER_2,
+  ENEMIES.LOST_TIER_3,
+];
+
+export const SECOND_TIER_MINIBOSS_LIST = [
+  ENEMIES.INVENTOR_TIER_1,
+  ENEMIES.INVENTOR_TIER_2,
+];
+
+export const SECOND_TIER_QUEST_MINIBOSS = ENEMIES.INVENTOR_TIER_3;
+
+export const SECOND_TIER_BOSS = ENEMIES.GENERAL_TIER_1;
+
 export const THIRD_TIER_CREATURES_LIST = [];
 
 export const STORY_BOSSES_LIST = [ENEMIES.SIN_ICON_TIER_1];
 
 export const ALL_CREATURES_LIST = [];
 
-// Пожарник, человек в противогазе, человек с прикипевшим ПНВ, солдат со стулом вбитым в грудь
+// Пожарник, человек в противогазе, человек с прикипевшим ПНВ, человек с вывернутыми ребрами наружу, со спины два костянных крыла, череп оскаленный, кожа натянута везде, всё в тело пробито гвоздями, в руках держит разбитый и поломанный автомат
 // Балерина с длинными клинками и в фате, актер с содранным лицом и наточенной рукой костью копьем, рыцарь с ореолом каменным, через щели шлема сочится кровь,
 //  многоликий с вросшими руками - одна нога длинне другой и вся в шипах
 
-//минибоссы: птица с двумя клинками, профессор - последний, человек - вместо лица просто сплошное пустое место, без глаз, бровей и губ, в руках две электрические дубинки и лабораторный халат,
+//минибоссы: птица с двумя клинками, профессор , человек - вместо лица просто сплошное пустое место, без глаз, бровей и губ, в руках две электрические дубинки и лабораторный халат,
 // третий минибосс - сросшиеся актеры, посетители, певцы, с двумя деформированными длинными костяными копьями руками, ног вообще не видно, в массе перемешаны тела, лиц больше, чем должно быть,
 // они в разных местах расположены, искажены болью, масками, разноцветными нарядами праздничными с кровопоттеками
 

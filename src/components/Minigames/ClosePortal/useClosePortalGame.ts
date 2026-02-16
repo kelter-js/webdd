@@ -88,9 +88,17 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
     }
 
     targetX.current += targetSpeedX.current;
+
     targetX.current = Math.max(20, Math.min(420, targetX.current));
 
     if (targetZoneRef.current) {
+      const hasNegativeMovementCoordinates =
+        Math.abs(targetSpeedX.current) !== targetSpeedX.current;
+
+      targetZoneRef.current.style.transform = hasNegativeMovementCoordinates
+        ? "scale(-1, 1)"
+        : "scale(1, 1)";
+
       targetZoneRef.current.style.left = `${targetX.current}px`;
     }
   };
@@ -120,9 +128,9 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
       playerX.current < targetX.current + 80;
 
     if (playerZoneRef.current) {
-      playerZoneRef.current.style.background = inZone
-        ? "rgba(100, 255, 100, 0.7)"
-        : "rgba(200, 200, 200, 0.7)";
+      playerZoneRef.current.style.transform = inZone
+        ? "rotate(90deg)"
+        : "rotate(0deg)";
     }
 
     if (inZone) {
@@ -135,7 +143,7 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
 
       if (timerRef.current) {
         timerRef.current.textContent = `✅ В зоне: ${currentSuccess.toFixed(
-          1
+          1,
         )}s`;
       }
 
@@ -152,7 +160,7 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
 
     if (totalTimeRef.current) {
       totalTimeRef.current.textContent = `${totalSuccessTime.current.toFixed(
-        1
+        1,
       )}/5.0s`;
     }
 

@@ -11,6 +11,10 @@ export const JUNK_DATA = {
     price: 200,
     title: "Декоративный топорик",
   },
+  [JUNK_TYPES.CHEMICAL_HEATING_PAD]: {
+    price: 200,
+    title: "Химическая горелка",
+  },
   [JUNK_TYPES.CRYSTAL_ORB]: {
     price: 300,
     title: "Кристальный шар",
@@ -21,7 +25,10 @@ export const JUNK_DATA = {
   },
 };
 
-export const FIRST_TIER_JUNK = [JUNK_TYPES.AXE];
+export const FIRST_TIER_JUNK = [
+  JUNK_TYPES.AXE,
+  JUNK_TYPES.CHEMICAL_HEATING_PAD,
+];
 export const SECOND_TIER_JUNK = [JUNK_TYPES.CRYSTAL_ORB];
 export const THIRD_TIER_JUNK = [JUNK_TYPES.GOLDEN_CHAIN];
 

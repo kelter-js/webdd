@@ -38,6 +38,13 @@ export const useGetDialogue = (npc: string | null) => {
           smithDialog.startNode = "alreadyWelcomed";
         }
 
+        // Вот здесь должна быть логика реакции на накопленные ресурсы
+        // нужна логика вычисления-  в зависимости от типа р есурса - сколько его нужно накопить
+        // и устанавливать флаг - что вещь получена для вычисления какой айтем выдавать
+        // здесь мы должны установить, что клик на опцию с айди  DIALOGUE_IDS.RELEASE_ORE - если кол-во сданных ресурсов + на руках ресурсы позволяют апгрейднуть или улучшить айтем
+        // что мы отсюда диалог следующий устанавливаем receiveSmithArtifactFirstTier/receiveSmithArtifactSecondTier/receiveSmithArtifactThirdTier
+        // mock
+
         return smithDialog;
 
       case BUILDING_NAMES.QUEST_DESK:

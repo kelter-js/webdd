@@ -2,6 +2,7 @@
 export enum JUNK_TYPES {
   // 1 тир
   AXE = "AXE",
+  CHEMICAL_HEATING_PAD = "Химическая горелка",
 
   // 2 тир
   CRYSTAL_ORB = "CRYSTAL_ORB",

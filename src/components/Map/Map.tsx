@@ -62,7 +62,13 @@ export const Map = () => {
 
   const { handleSetSrc } = usePlayer();
 
-  const { dungeon, position, type, isQuestCompleted, ...rest } = location || {};
+  const {
+    dungeon: currentDungeon,
+    position,
+    type,
+    isQuestCompleted,
+    ...rest
+  } = location || {};
 
   useEffect(() => {
     if (!location || !position || !dungeon) {
@@ -72,7 +78,7 @@ export const Map = () => {
         type: DUNGEONS.CLOSE_PORTAL,
       });
     }
-  }, [location, position, dungeon]);
+  }, [location, position, currentDungeon]);
 
   const handleWin = useCallback(() => {
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
@@ -135,7 +141,25 @@ export const Map = () => {
     });
   };
 
-  useMovement(movePlayer);
+  const dungeon = currentDungeon || [];
+
+  const currentCell =
+    position?.y && position?.x && dungeon[position.y]
+      ? dungeon[position.y][position.x]
+      : undefined;
+  const isDungeonExit =
+    currentCell?.type === ROOM_TYPES.END ||
+    (currentCell?.type === ROOM_TYPES.STORY_BOSS &&
+      flags.includes(getFlagStoryBossByTier(currentTier)));
+
+  const reward = battle?.reward;
+
+  const hasQuest =
+    (isDungeonExit && type === DUNGEONS.CLOSE_PORTAL) ||
+    (isDungeonExit && type === DUNGEONS.CATCH_GOBLIN) ||
+    Boolean(reward);
+
+  useMovement(movePlayer, hasQuest);
 
   const currentBackground = useMemo(
     () => getDungeonBackgroundByTier(currentTier),
@@ -168,22 +192,12 @@ export const Map = () => {
   //   });
   // };
 
-  const currentCell =
-    position?.y && position?.x && dungeon[position.y]
-      ? dungeon[position.y][position.x]
-      : undefined;
-  const isDungeonExit =
-    currentCell?.type === ROOM_TYPES.END ||
-    (currentCell?.type === ROOM_TYPES.STORY_BOSS &&
-      flags.includes(getFlagStoryBossByTier(currentTier)));
-
   const canMove = (direction: DIRECTIONS) => {
     const { x, y } = position;
     const room = dungeon[y]?.[x];
     return room?.exits[direction] || false;
   };
 
-  const reward = battle?.reward;
   const renderRoom = (room: Room) => {
     const isCurrent = position.x === room.x && position.y === room.y;
 
@@ -573,11 +587,11 @@ export const Map = () => {
 
       {reward && <BattleResult />}
 
-      {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
+      {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
         <ClosePortal onFail={handleFail} onWin={handleWin} />
       )}
 
-      {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
+      {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
         <QTEGame onFail={handleFail} onWin={handleWin} />
       )}
 

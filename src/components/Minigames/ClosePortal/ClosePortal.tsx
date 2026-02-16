@@ -4,6 +4,8 @@ import { Modal } from "@mui/material";
 import { useClosePortalGame } from "./useClosePortalGame";
 import { MiniGameProps } from "../types";
 import { QteContainer } from "../QTEGame/QTEGame.styled";
+import goblin from "../../../assets/minigame/goblin.png";
+import bag from "../../../assets/minigame/bag.png";
 import * as S from "./ClosePortal.styled";
 
 // REFACTORING CHECKED ✅
@@ -32,9 +34,13 @@ export const ClosePortal: FC<MiniGameProps> = (props) => {
       }}
     >
       <QteContainer>
-        <S.PlayerZone ref={playerZoneRef} />
+        <S.PlayerZone ref={playerZoneRef}>
+          <img src={bag} width="80px" height="80px" />
+        </S.PlayerZone>
 
-        <S.TargetZone ref={targetZoneRef} />
+        <S.TargetZone ref={targetZoneRef}>
+          <img src={goblin} width="80px" height="80px" />
+        </S.TargetZone>
 
         <S.StartButton ref={startBtnRef} onClick={startGame}>
           Начать испытание
