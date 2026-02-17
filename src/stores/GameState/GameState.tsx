@@ -78,6 +78,7 @@ import {
   buyItem,
   generateDungeon,
   levelUpCharacter,
+  consumePotion,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -211,6 +212,7 @@ export const useGameState = create<StoreState>()(
                         effects: [],
                         party: copyState.player.party.map((hero) => ({
                           ...hero,
+                          currentHealth: 20,
                           hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
                         })),
                       },
@@ -248,6 +250,7 @@ export const useGameState = create<StoreState>()(
                         effects: [],
                         party: copyState.player.party.map((hero) => ({
                           ...hero,
+                          currentHealth: 20,
                           hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
                         })),
                       },
@@ -315,6 +318,7 @@ export const useGameState = create<StoreState>()(
       updateDialogFlags: updateDialogFlags(set),
       setPlayerPosition: setPlayerPosition(set),
       increaseEndurance: increaseEndurance(set),
+      consumePotion: consumePotion(set),
       generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
       updateFlags: updateFlags(set),

@@ -1,14 +1,19 @@
 import { POTION_TYPES } from "../../entities/consumables";
-import { ReceiptData } from "../../types";
+import { MemoizedItem, RECEIPT_TYPES, ReceiptData } from "../../types";
 import { GameStateData } from "../../types/gameState";
 import SmallPotion from "../../assets/potions/small-potion.svg";
 import LargePotion from "../../assets/potions/large-potion.svg";
 import ExtraLargePotion from "../../assets/potions/extra-large-potion.svg";
 import MediumPotion from "../../assets/potions/medium-potion.svg";
+import { dememoizeItem } from "../../utils/dememoizeItem";
+import { BASE_ITEMS_ID } from "../items";
+import { BNTI_TIER_2 } from "../armor";
+import { v4 } from "uuid";
 
 export const RECEIPTS: ReceiptData[] = [
   // Малое зелье
   {
+    type: RECEIPT_TYPES.CONSUMABLE,
     isDisabled: (state: GameStateData) => {
       const { consumables } = state;
 
@@ -61,6 +66,7 @@ export const RECEIPTS: ReceiptData[] = [
 
   // Среднее зелье
   {
+    type: RECEIPT_TYPES.CONSUMABLE,
     isDisabled: (state: GameStateData) => {
       const { consumables } = state;
 
@@ -113,6 +119,7 @@ export const RECEIPTS: ReceiptData[] = [
 
   // Большое зелье
   {
+    type: RECEIPT_TYPES.CONSUMABLE,
     isDisabled: (state: GameStateData) => {
       const { consumables } = state;
 
@@ -161,5 +168,76 @@ export const RECEIPTS: ReceiptData[] = [
     title: "Ритуальное зелье здоровья",
     sourceItemIcon: LargePotion,
     targetItemIcon: ExtraLargePotion,
+  },
+
+  // Бронежилеты 1 тир
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) => {
+      const { inventory_memoized, gear_memoized } = state;
+      const charactersGear = Object.values(gear_memoized).flat(1);
+
+      const allItems = [...inventory_memoized, ...charactersGear];
+
+      const requiredArmor = allItems.filter(
+        ([baseId]) => baseId === BASE_ITEMS_ID.BNTI_TIER_1,
+      );
+
+      return requiredArmor.length < 3;
+    },
+    create: (state: GameStateData) => {
+      const { inventory_memoized, gear_memoized } = state;
+
+      const copyState: GameStateData = {
+        ...state,
+        gear_memoized: { ...gear_memoized },
+        inventory_memoized: [...inventory_memoized],
+      };
+
+      let removed = 0;
+
+      for (const character of Object.keys(copyState.gear_memoized)) {
+        if (removed === 3) break;
+
+        const gear = copyState.gear_memoized[character];
+        const newGear: MemoizedItem[] = [];
+
+        for (const item of gear) {
+          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_1 && removed < 3) {
+            removed++;
+            continue;
+          }
+
+          newGear.push(item);
+        }
+
+        copyState.gear_memoized[character] = newGear;
+      }
+
+      if (removed < 3) {
+        const newInventory: MemoizedItem[] = [];
+
+        for (const item of copyState.inventory_memoized) {
+          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_1 && removed < 3) {
+            removed++;
+            continue;
+          }
+
+          newInventory.push(item);
+        }
+
+        copyState.inventory_memoized = newInventory;
+      }
+
+      const newItem: MemoizedItem = [BASE_ITEMS_ID.BNTI_TIER_2, v4()];
+
+      return {
+        ...copyState,
+        inventory_memoized: [...copyState.inventory_memoized, newItem],
+      };
+    },
+    title: "БНТИ MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
   },
 ];

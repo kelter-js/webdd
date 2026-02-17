@@ -99,6 +99,7 @@ export interface Creature {
   isEnhanced?: boolean;
   tier: number;
   exp: number;
+  hasTurn?: boolean;
 }
 
 export interface Enemy {
@@ -310,6 +311,11 @@ export interface StoreState {
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
 
   giveResources: (resourceToGive: RESOURCES) => void;
+  consumePotion: (
+    characterName: string,
+    potionType: POTION_TYPES,
+    cb: (data?: Character[]) => void,
+  ) => void;
 
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;
   sellJunk: VoidFunction;
@@ -374,6 +380,7 @@ export type PersistedState = Omit<
   | "sellJunk"
   | "addJunk"
   | "giveResources"
+  | "consumePotion"
   | "sellItem"
   | "buyItem"
 

@@ -21,6 +21,7 @@ import {
 import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
 import { getRandom } from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
+import { POTION_TYPES } from "../entities/consumables";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -350,4 +351,19 @@ export const increaseCharacterStat = (
   }
 
   return state;
+};
+
+export const getPotionHealth = (potion: POTION_TYPES) => {
+  switch (potion) {
+    case POTION_TYPES.EXTRA_LARGE_HEALTH_POTION:
+      return 80;
+    case POTION_TYPES.LARGE_HEALTH_POTION:
+      return 60;
+    case POTION_TYPES.MEDIUM_HEALTH_POTION:
+      return 40;
+    case POTION_TYPES.SMALL_HEALTH_POTION:
+      return 30;
+    default:
+      return 30;
+  }
 };

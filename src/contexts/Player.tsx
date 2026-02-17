@@ -29,7 +29,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleSetSrc = (
     id: string,
     newSrc: string,
-    hasLoop: boolean = false
+    hasLoop: boolean = false,
   ) => {
     setPlayers((prev) => ({
       ...prev,
@@ -41,11 +41,12 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const handleRemoveSrc = (id: string) => {
+    console.log("!!!id", id);
     if (players[id]) {
       const srcCopies = { ...players };
       delete srcCopies[id];
       setPlayers(srcCopies);
-
+      refs.current[id]?.pause();
       delete refs.current[id];
     }
   };
@@ -54,7 +55,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const memoizedValue = useMemo(
     () => ({ players, handleSetSrc, getPlayerRef, handleRemoveSrc }),
-    [players]
+    [players],
   );
   console.log("players", players);
   return (
@@ -76,7 +77,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
               }
             }}
           />
-        ) : null
+        ) : null,
       )}
       {children}
     </PlayerContext.Provider>

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useGameState } from "../../../../stores/GameState/GameState";
 import * as S from "./CharactersBar.styled";
 import { Button, Divider, Stack, Typography } from "@mui/material";
@@ -6,26 +6,34 @@ import { CharactersBarProps } from "./types";
 import { getRandom } from "../../../../utils";
 import { Icons, Tooltip } from "../../../../common";
 import { getUnitAvatarSrc } from "./utils";
+import { POTION_TYPES } from "../../../../entities/consumables";
+import { PotionsList } from "./components/PotionsList";
+import { TURN_STATES } from "../../../../entities";
 
 export const CharactersBar: FC<CharactersBarProps> = ({
   selectedPlayer,
   setSelectedPlayer,
   damageTargetIndex,
+  selectedNextPlayer,
 }) => {
   // нужно написать хук кастомный, принимает массив клавиш и коллбэки на их нажатие и юзать тту для применения атаки
   // импортнуть и загенерить аватары, реализовать разметку и стили для оружия в руках/хп/атака
   const {
     // mock
-    player: { battle, party: mockParty },
+    player: { battle, consumables },
     statistics,
     endTurn,
+    consumePotion,
   } = useGameState();
   // коллбэк открытия и UI для инвентаря предметов для употребления
   // коллбэк открытия и UI для навыков
   // коллбэк для окончания хода
   // коллбэк для атаки
-  const party = battle?.player?.party || mockParty;
+  const party = battle?.player?.party || [];
+  const isEnemyTurn = battle?.turn === TURN_STATES.ENEMY_TURN;
+
   console.log("battle", battle);
+  console.log("statistics", statistics);
 
   if (!party) {
     return null;
@@ -39,10 +47,20 @@ export const CharactersBar: FC<CharactersBarProps> = ({
     endTurn();
   };
 
+  const handleConsumePotion = (potion: POTION_TYPES) => {
+    if (selectedPlayer?.name) {
+      console.log("do we trigger?");
+      consumePotion(selectedPlayer?.name, potion, selectedNextPlayer);
+    }
+  };
+
   return (
     <S.Container>
       <S.CharacterControls>
-        <Button>Инвентарь</Button>
+        <PotionsList
+          onPotionClick={handleConsumePotion}
+          disabled={isEnemyTurn}
+        />
         <Button>Навыки</Button>
       </S.CharacterControls>
 
@@ -63,7 +81,6 @@ export const CharactersBar: FC<CharactersBarProps> = ({
             <S.CharacterContainer key={partyMember.name}>
               <S.Avatar
                 isSelected={partyMember.name === selectedPlayer?.name}
-                onClick={handleChangeSelection}
                 isDamaged={isDamaged}
                 animate={{
                   x: isDamaged ? [0, 5, -5, 5, -5, 0] : 0,

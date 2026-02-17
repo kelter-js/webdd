@@ -59,6 +59,7 @@ export const initiateState = (set: StoreSet) => () =>
 
     // инициализируем хар-ки
     state.player.party.forEach((player) => {
+      console.log("so we are here?");
       stateCopy.statistics![player.name] = calculateStatistics(player);
 
       player.perksList.forEach((perk) => {

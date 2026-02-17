@@ -43,6 +43,10 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
   const MAX_INTERVAL = 3.0;
 
   const startGame = () => {
+    if (gameInterval.current !== null) {
+      clearInterval(gameInterval.current);
+    }
+
     setSequence(generateSequence());
     setIndex(0);
     gameActive.current = true;
@@ -88,7 +92,10 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
     setGameActiveFlag(false);
     startInterval.current = 0;
 
-    if (gameInterval.current) clearInterval(gameInterval.current);
+    if (gameInterval.current !== null) {
+      clearInterval(gameInterval.current);
+      gameInterval.current = null;
+    }
 
     if (resultRef.current) {
       resultRef.current.style.display = "block";
@@ -118,6 +125,7 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
           e.code === `Digit${sequence[currentIndex]}`
         ) {
           setIndex((state) => state + 1);
+          startTimeRef.current = performance.now();
           startInterval.current = 0;
         } else {
           endGame(false);

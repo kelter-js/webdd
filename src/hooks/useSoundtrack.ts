@@ -38,6 +38,7 @@ export const useSoundtrack = (loaded: boolean) => {
     ) {
       console.log("so we are here?");
       handleRemoveSrc(AMBIENT_SETTLEMENT_SOUNDTRACK);
+      handleRemoveSrc(AMBIENT_BATTLE_SOUNDTRACK);
       handleSetSrc(AMBIENT_DUNGEON_SOUNDTRACK, dungeonAmbient, true);
     }
 

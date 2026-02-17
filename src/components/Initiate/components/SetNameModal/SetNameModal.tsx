@@ -30,7 +30,7 @@ export const SetNameModal = () => {
   const [selectedClass, setSelectedClass] = useState<CLASSES>(CLASSES.SNIPER);
 
   const { setPlayerName, setSliders, updateFlags } = useGameState();
-  const { setFading, setNewGame } = useAppState();
+  const { setFading, setNewGame, enableAudio } = useAppState();
 
   const isEmptyName = name.trim().length === 0;
 
@@ -45,6 +45,7 @@ export const SetNameModal = () => {
       setSliders("something");
       updateFlags(FLAGS.GAME_INITIATED);
       setNewGame(true);
+      enableAudio();
     }
   };
 

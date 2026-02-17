@@ -1,33 +1,65 @@
 import { useEffect, useState } from "react";
+
 import { useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 
 export const usePlayerTurnIsOver = (showDices: boolean) => {
-  const [shouldPlayAnimation, setPlayAnimation] = useState(false);
+  const [nextTurn, setNextTurn] = useState<TURN_STATES | null>(null);
 
   const {
     player: { battle },
     setBattleTurn,
   } = useGameState();
 
-  const party = battle?.player?.party;
+  const currentTurn = battle?.turn;
+  const playerParty = battle?.player?.party;
+  const enemyParty = battle?.enemy?.party;
 
   useEffect(() => {
-    if (
-      !showDices &&
-      party &&
-      party.every((partyMember) => !partyMember.hasTurn)
-    ) {
-      setPlayAnimation(true);
+    if (!battle || showDices) return;
 
-      const timerId = setTimeout(() => {
-        setBattleTurn(TURN_STATES.ENEMY_TURN);
-        setPlayAnimation(false);
-      }, 900);
+    // если уже идёт анимация смены хода — не запускаем повторно
+    if (nextTurn !== null) return;
 
-      return () => clearTimeout(timerId);
+    let upcomingTurn: TURN_STATES | null = null;
+
+    if (currentTurn === TURN_STATES.PLAYER_TURN) {
+      const playerHasTurns = playerParty?.some((m) => m.hasTurn) ?? false;
+      console.log("playerHasTurns", playerHasTurns);
+
+      if (!playerHasTurns) {
+        upcomingTurn = TURN_STATES.ENEMY_TURN;
+      }
     }
-  }, [party, showDices]);
 
-  return shouldPlayAnimation;
+    if (currentTurn === TURN_STATES.ENEMY_TURN) {
+      const enemyHasTurns = enemyParty?.some((m) => m.hasTurn) ?? false;
+
+      if (!enemyHasTurns) {
+        upcomingTurn = TURN_STATES.PLAYER_TURN;
+      }
+    }
+
+    console.log("upcomingTurn", upcomingTurn);
+
+    if (!upcomingTurn) return;
+
+    setTimeout(() => {
+      console.log("so does timeout fire?");
+      setBattleTurn(upcomingTurn);
+      setNextTurn(null);
+    }, 900);
+
+    setNextTurn(upcomingTurn);
+  }, [
+    battle,
+    currentTurn,
+    playerParty,
+    enemyParty,
+    showDices,
+    nextTurn,
+    setBattleTurn,
+  ]);
+
+  return nextTurn;
 };

@@ -67,7 +67,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 100, currentHp: 100, minDmg: 4, maxDmg: 8, xp: 150 },
   },
   [ENEMIES.TORSO_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -79,7 +79,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 140, currentHp: 140, minDmg: 6, maxDmg: 10, xp: 170 },
   },
   [ENEMIES.TORSO_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -91,7 +91,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 180, currentHp: 180, minDmg: 8, maxDmg: 12, xp: 200 },
   },
 
   [ENEMIES.WATCHER_TIER_1]: {
@@ -269,7 +269,17 @@ export const SECOND_TIER_BOSS = ENEMIES.GENERAL_TIER_1;
 
 export const THIRD_TIER_CREATURES_LIST = [];
 
-export const STORY_BOSSES_LIST = [ENEMIES.SIN_ICON_TIER_1];
+export const THIRD_TIER_MINIBOSS_LIST = [
+  ENEMIES.MERGED_MASS_TIER_1,
+  ENEMIES.MERGED_MASS_TIER_2,
+];
+
+export const THIRD_TIER_QUEST_MINIBOSS = ENEMIES.MERGED_MASS_TIER_3;
+
+export const STORY_BOSSES_LIST = [
+  ENEMIES.SIN_ICON_TIER_1,
+  ENEMIES.GENERAL_TIER_1,
+];
 
 export const ALL_CREATURES_LIST = [];
 

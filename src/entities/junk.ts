@@ -6,6 +6,7 @@ export enum JUNK_TYPES {
 
   // 2 тир
   CRYSTAL_ORB = "CRYSTAL_ORB",
+  JEWELRY_BOX = "JEWELRY_BOX",
 
   // 3 тир
   GOLDEN_CHAIN = "GOLDEN_CHAIN",

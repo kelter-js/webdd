@@ -41,6 +41,11 @@ export interface PerkData {
   isAbility?: boolean;
 }
 
+export enum RECEIPT_TYPES {
+  CONSUMABLE = "CONSUMABLE",
+  ITEM = "ITEM",
+}
+
 export interface ReceiptData {
   isDisabled: (state: GameStateData) => boolean;
   create: (state: GameStateData) => GameStateData;
@@ -48,6 +53,7 @@ export interface ReceiptData {
   sourceItemIcon: string;
   targetItemIcon: string;
   goldRequiredToCraft?: number;
+  type: RECEIPT_TYPES;
 }
 
 export interface ResourceData {

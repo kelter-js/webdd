@@ -93,6 +93,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       giveResources(RESOURCES.ORE);
     }
 
+    if (id === DIALOGUE_IDS.RELEASE_PARTS) {
+      giveResources(RESOURCES.PARTS);
+    }
+
     if (nextNode === "end") {
       handleEndDialogue(() => setDialogueOpen(null));
     }

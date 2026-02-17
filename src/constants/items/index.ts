@@ -15,10 +15,16 @@ export const JUNK_DATA = {
     price: 200,
     title: "Химическая горелка",
   },
+
   [JUNK_TYPES.CRYSTAL_ORB]: {
     price: 300,
     title: "Кристальный шар",
   },
+  [JUNK_TYPES.JEWELRY_BOX]: {
+    price: 300,
+    title: "Шкатулка с драгоценностями",
+  },
+
   [JUNK_TYPES.GOLDEN_CHAIN]: {
     price: 500,
     title: "Золотая цепочка",
@@ -29,7 +35,10 @@ export const FIRST_TIER_JUNK = [
   JUNK_TYPES.AXE,
   JUNK_TYPES.CHEMICAL_HEATING_PAD,
 ];
-export const SECOND_TIER_JUNK = [JUNK_TYPES.CRYSTAL_ORB];
+export const SECOND_TIER_JUNK = [
+  JUNK_TYPES.CRYSTAL_ORB,
+  JUNK_TYPES.JEWELRY_BOX,
+];
 export const THIRD_TIER_JUNK = [JUNK_TYPES.GOLDEN_CHAIN];
 
 export const POTION_TIERS = {

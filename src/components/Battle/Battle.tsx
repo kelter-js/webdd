@@ -61,25 +61,25 @@ export const Battle = () => {
 
   // MOCK
   useEffect(() => {
-    const setDamage = async (index: number) => {
-      setAttackingEnemyId(index);
-      await wait(300);
-      setTarget(index);
-      await wait(500);
-      setTarget(null);
-    };
-    setTimeout(() => {
-      killEnemy();
-      setDamage(0);
-    }, 5000);
-    setTimeout(() => {
-      killEnemy();
-      setDamage(1);
-    }, 9000);
-    setTimeout(() => {
-      killEnemy();
-      setDamage(2);
-    }, 13000);
+    // const setDamage = async (index: number) => {
+    //   setAttackingEnemyId(index);
+    //   await wait(300);
+    //   setTarget(index);
+    //   await wait(500);
+    //   setTarget(null);
+    // };
+    // setTimeout(() => {
+    //   killEnemy();
+    //   setDamage(0);
+    // }, 5000);
+    // setTimeout(() => {
+    //   killEnemy();
+    //   setDamage(1);
+    // }, 9000);
+    // setTimeout(() => {
+    //   killEnemy();
+    //   setDamage(2);
+    // }, 13000);
   }, []);
 
   const handleAttackEnd = () => setAttackingEnemyId(null);
@@ -99,8 +99,9 @@ export const Battle = () => {
   // }, [battle.turn]);
 
   // отслеживаем ходы игрока - переключает на ход противника
-  const isChangingTurns = usePlayerTurnIsOver(showDices);
-  const { selectedPlayer, setSelectedPlayer } = usePlayerControl();
+  const nextTurn = usePlayerTurnIsOver(showDices);
+  const { selectedPlayer, setSelectedPlayer, handleSelectNextPlayer } =
+    usePlayerControl();
 
   // когда буду писать логику нанесения урона и в принципе действия игрока - нужно учесть что нужны флаг - критический ли урон
   // а также чтобы у нас коллбэк действий возвращал кол-во урона для его отображения
@@ -129,6 +130,8 @@ export const Battle = () => {
     battle?.enemy?.party?.length || ["test", "test", "test"].length,
   );
 
+  console.log("selectedPlayer", selectedPlayer);
+
   return (
     <Stack
       position="relative"
@@ -147,6 +150,7 @@ export const Battle = () => {
         selectedPlayer={selectedPlayer}
         setSelectedPlayer={setSelectedPlayer}
         damageTargetIndex={target}
+        selectedNextPlayer={handleSelectNextPlayer}
       />
 
       {(battle?.enemy?.party || ["test", "test", "test"])?.map(
@@ -170,9 +174,9 @@ export const Battle = () => {
 
       {!showDices && (
         <TurnIndicator
-          show={isChangingTurns}
+          show={nextTurn !== null}
           text={
-            battle?.turn === TURN_STATES.ENEMY_TURN
+            nextTurn === TURN_STATES.ENEMY_TURN
               ? "Ход Противника"
               : "Ход Игрока"
           }

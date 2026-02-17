@@ -13,6 +13,7 @@ import { increaseAgility } from "./increaseAgility";
 import { toggleInventory } from "./toggleInventory";
 import { updateGameTier } from "./updateGameTier";
 import { changeAttempts } from "./changeAttempts";
+import { consumePotion } from "./consumePotion";
 import { initiateState } from "./initiateState";
 import { setPlayerName } from "./setPlayerName";
 import { setBattleTurn } from "./setBattleTurn";
@@ -59,6 +60,7 @@ export {
   setPlayerName,
   setBattleTurn,
   giveResources,
+  consumePotion,
   initiateState,
   turnOffDices,
   setQuestData,

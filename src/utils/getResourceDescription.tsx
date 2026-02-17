@@ -4,8 +4,8 @@ export const getResourceDescription = (resourceType: RESOURCES) => {
   switch (resourceType) {
     case RESOURCES.ORE:
       return "Редкая горная порода";
-    case RESOURCES.SOUL:
-      return "Душа падшего противника";
+    case RESOURCES.PARTS:
+      return "Части тела павшего противника";
     default:
       return "Сокровище реального мира";
   }
