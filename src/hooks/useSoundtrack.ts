@@ -5,6 +5,7 @@ import { RENDER_LOCATIONS } from "../entities";
 import { usePlayer } from "../contexts/Player";
 import dungeonAmbient from "../assets/audio/dungeon_ambient.mp3";
 import battleAmbient from "../assets/audio/battle_ambient.mp3";
+import settlementAmbient from "../assets/audio/settlement.mp3";
 
 const AMBIENT_DUNGEON_SOUNDTRACK = "ambient_dungeon";
 const AMBIENT_SETTLEMENT_SOUNDTRACK = "ambient_settlement";
@@ -49,7 +50,8 @@ export const useSoundtrack = (loaded: boolean) => {
       isAudioEnabled
     ) {
       handleRemoveSrc(AMBIENT_DUNGEON_SOUNDTRACK);
-      // handleSetSrc(AMBIENT_DUNGEON_SOUNDTRACK, track, true);
+      handleRemoveSrc(AMBIENT_BATTLE_SOUNDTRACK);
+      handleSetSrc(AMBIENT_SETTLEMENT_SOUNDTRACK, settlementAmbient, true);
     }
 
     if (locationState === RENDER_LOCATIONS.BATTLE && loaded && isAudioEnabled) {

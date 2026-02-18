@@ -29,6 +29,10 @@ export const JUNK_DATA = {
     price: 500,
     title: "Золотая цепочка",
   },
+  [JUNK_TYPES.BROKEN_RADIOSTATION]: {
+    price: 500,
+    title: "Сломанная радиостанция",
+  },
 };
 
 export const FIRST_TIER_JUNK = [
@@ -39,7 +43,10 @@ export const SECOND_TIER_JUNK = [
   JUNK_TYPES.CRYSTAL_ORB,
   JUNK_TYPES.JEWELRY_BOX,
 ];
-export const THIRD_TIER_JUNK = [JUNK_TYPES.GOLDEN_CHAIN];
+export const THIRD_TIER_JUNK = [
+  JUNK_TYPES.GOLDEN_CHAIN,
+  JUNK_TYPES.BROKEN_RADIOSTATION,
+];
 
 export const POTION_TIERS = {
   [POTION_TYPES.SMALL_HEALTH_POTION]: 1,

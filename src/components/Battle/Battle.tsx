@@ -61,25 +61,25 @@ export const Battle = () => {
 
   // MOCK
   useEffect(() => {
-    // const setDamage = async (index: number) => {
-    //   setAttackingEnemyId(index);
-    //   await wait(300);
-    //   setTarget(index);
-    //   await wait(500);
-    //   setTarget(null);
-    // };
-    // setTimeout(() => {
-    //   killEnemy();
-    //   setDamage(0);
-    // }, 5000);
-    // setTimeout(() => {
-    //   killEnemy();
-    //   setDamage(1);
-    // }, 9000);
-    // setTimeout(() => {
-    //   killEnemy();
-    //   setDamage(2);
-    // }, 13000);
+    const setDamage = async (index: number) => {
+      setAttackingEnemyId(index);
+      await wait(300);
+      setTarget(index);
+      await wait(500);
+      setTarget(null);
+    };
+    setTimeout(() => {
+      killEnemy();
+      setDamage(0);
+    }, 5000);
+    setTimeout(() => {
+      killEnemy();
+      setDamage(1);
+    }, 9000);
+    setTimeout(() => {
+      killEnemy();
+      setDamage(2);
+    }, 13000);
   }, []);
 
   const handleAttackEnd = () => setAttackingEnemyId(null);

@@ -104,7 +104,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 180, currentHp: 180, minDmg: 7, maxDmg: 13, xp: 210 },
   },
   [ENEMIES.WATCHER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -116,7 +116,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 252, currentHp: 252, minDmg: 10, maxDmg: 18, xp: 235 },
   },
   [ENEMIES.WATCHER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -128,7 +128,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 324, currentHp: 324, minDmg: 13, maxDmg: 23, xp: 280 },
   },
   [ENEMIES.SPIRIT_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
