@@ -1,4 +1,11 @@
-import { Box, styled, TextField, Modal, Typography } from "@mui/material";
+import {
+  Box,
+  styled,
+  TextField,
+  Modal,
+  Typography,
+  TextFieldProps,
+} from "@mui/material";
 
 export const ModalContent = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -33,7 +40,7 @@ export const ModalContainer = styled(Modal)(() => ({
 
 export const NameField = styled(TextField, {
   shouldForwardProp: (prop) => prop !== "hasNoAttemptsLeft",
-})<{ hasNoAttemptsLeft: boolean }>(
+})<{ hasNoAttemptsLeft: boolean } & TextFieldProps>(
   ({ theme: { spacing }, hasNoAttemptsLeft }) => ({
     marginBottom: spacing(1),
     fontFamily: "Cormorant Unicase",
@@ -47,15 +54,15 @@ export const NameField = styled(TextField, {
       },
 
       "&:hover fieldset": {
-        borderColor: "#c08040",
+        borderColor: hasNoAttemptsLeft ? "#c08040" : "red",
       },
 
       "&.Mui-focused fieldset": {
-        borderColor: "#c08040",
+        borderColor: hasNoAttemptsLeft ? "#c08040" : "red",
         borderWidth: 2,
       },
     },
-  })
+  }),
 );
 
 export const StartGameText = styled(Typography)(({ theme: { spacing } }) => ({
@@ -67,7 +74,7 @@ export const StartGameText = styled(Typography)(({ theme: { spacing } }) => ({
   padding: spacing(1),
   borderBottom: "1px solid #5a3020",
   borderTop: "1px solid #5a3020",
-  fontFamily: "Cormorant Unicase",
+  fontFamily: "inherit",
 }));
 
 export const ClassDescription = styled(StartGameText)(() => ({

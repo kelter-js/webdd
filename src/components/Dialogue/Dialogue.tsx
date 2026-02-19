@@ -21,6 +21,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     toggleAlmanac,
     toggleTradeModal,
     toggleCraftMenu,
+    toggleTorchBuyMenu,
   } = useAppState();
   const {
     updateDialogFlags,
@@ -99,6 +100,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.RELEASE_TREASURES) {
       giveResources(RESOURCES.OLD_WORLD_TREASURES);
+    }
+
+    if (id === DIALOGUE_IDS.BUY_TORCHES) {
+      handleEndDialogue(toggleTorchBuyMenu);
     }
 
     if (nextNode === "end") {

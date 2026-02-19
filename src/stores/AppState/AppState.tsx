@@ -75,6 +75,11 @@ export const useAppState = create<AppState>((set) => ({
     set((state) => ({
       isDungeonModalOpen: !state.isDungeonModalOpen,
     })),
+  isTorchBuyOpen: false,
+  toggleTorchBuyMenu: () =>
+    set((state) => ({
+      isTorchBuyOpen: !state.isTorchBuyOpen,
+    })),
 
   charactersLeveledUp: [],
   pushLeveledUpList: (characterData: LeveledUpData) =>

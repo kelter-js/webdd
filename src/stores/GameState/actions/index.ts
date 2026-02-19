@@ -25,6 +25,7 @@ import { updateFlags } from "./updateFlags";
 import { setGameOver } from "./setGameOver";
 import { resetBattle } from "./resetBattle";
 import { acquirePerk } from "./acquirePerk";
+import { buyTorches } from "./buyTorches";
 import { useAbility } from "./useAbility";
 import { setSliders } from "./setSliders";
 import { setDungeon } from "./setDungeon";
@@ -69,6 +70,7 @@ export {
   setGameOver,
   resetBattle,
   acquirePerk,
+  buyTorches,
   useAbility,
   setSliders,
   setDungeon,

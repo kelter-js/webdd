@@ -303,6 +303,7 @@ export interface StoreState {
   setBattleTurn: (newTurn: TURN_STATES) => void;
   sellItem: (itemId: string) => void;
   buyItem: (itemId: string) => void;
+  buyTorches: (torchesAmount: number) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
   levelUpCharacter: (name: string, amountOfExp: number) => void;
@@ -383,6 +384,7 @@ export type PersistedState = Omit<
   | "consumePotion"
   | "sellItem"
   | "buyItem"
+  | "buyTorches"
 
   // ф-ии чисто для тестов
   | "killEnemy"

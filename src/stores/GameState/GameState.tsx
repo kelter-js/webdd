@@ -79,6 +79,7 @@ import {
   generateDungeon,
   levelUpCharacter,
   consumePotion,
+  buyTorches,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -340,6 +341,7 @@ export const useGameState = create<StoreState>()(
       useAbility: useAbility(set),
       initiateState: initiateState(set),
       resetGame: resetGame(set),
+      buyTorches: buyTorches(set),
       setBattleTurn: setBattleTurn(set),
       setReward: setReward(set),
       resetBattle: resetBattle(set),

@@ -26,95 +26,151 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 // EVADE DAMAGE FORMULA
 // Character.Agility × 0.4
 
+// Изначально даётся 10 очков - каждый лвл по 3 очка
+// формула рассчета урона исходя из брони на персонаже
+function getFinalDamage(rawDamage: number, armor: number) {
+  const K = 30; // Балансный коэффициент
+  const totalDefense = armor;
+
+  // Рассчитываем множитель (от 1.0 до ~0.35)
+  const multiplier = K / (K + totalDefense);
+
+  // Итоговый урон
+  const damage = rawDamage * multiplier;
+
+  // Округляем до ближайшего целого, минимум 1
+  return Math.max(1, Math.round(damage));
+}
+// формула рассчета шанса уворота
+function getEvasionChance(agility: number) {
+  // Твой текущий расчет рейтинга (Agility * 4)
+  const evasionRating = agility * 4;
+
+  // Коэффициент "мягкого капа".
+  // При рейтинге 60 (15 ловкости) шанс будет 50%.
+  const K = 60;
+
+  // Рассчитываем шанс (от 0 до 1)
+  const chance = evasionRating / (evasionRating + K);
+
+  // Устанавливаем жесткий лимит (Hard Cap),
+  // чтобы даже самый удачливый игрок иногда получал урон (например, макс. 80%)
+  const maxChance = 0.8;
+
+  return Math.min(chance, maxChance);
+}
+
+// пример использования, возвращает ф-ия от 0.1 до 1.0
+// const chance = getEvasionChance(character.agility); // допустим, вернет 0.4
+// if (Math.random() < chance)
+
+function getFinalCritChance(weaponCritChance: number, characterLuck: number) {
+  const K = 50; // Коэффициент затухания
+  // Базовая формула: Шанс от оружия + бонус от удачи, который затухает
+  let luckBonus = characterLuck * 2;
+  let luckFactor = luckBonus / (luckBonus + K); // Стремится к 1
+
+  // Итоговый шанс в процентах (например, 5% + (30% * luckFactor))
+  let totalChance = weaponCritChance + 30 * luckFactor;
+
+  return Math.min(totalChance, 90); // Кап 90%
+}
+function calculateCritDamage(rawDamage: number, critMultiplier: number) {
+  // Просто умножаем урон на множитель
+  return Math.round(rawDamage * critMultiplier);
+}
+
 // export const ENEMY_POOLS = {
 //   LOCATION_TIER_1: {
 //     rat: {
-//       tier1: { hp: 50, minDmg: 2, maxDmg: 4, xp: 100 },
-//       tier2: { hp: 70, minDmg: 3, maxDmg: 6, xp: 115 },
-//       tier3: { hp: 90, minDmg: 4, maxDmg: 8, xp: 130 },
+//       tier1: { hp: 15, maxHp: 15, minDmg: 1, maxDmg: 3, xp: 50 },
+//       tier2: { hp: 25, maxHp: 25, minDmg: 2, maxDmg: 4, xp: 70 },
+//       tier3: { hp: 35, maxHp: 35, minDmg: 3, maxDmg: 5, xp: 100 },
 //     },
 //     bandit: {
-//       tier1: { hp: 100, minDmg: 4, maxDmg: 8, xp: 150 },
-//       tier2: { hp: 140, minDmg: 6, maxDmg: 10, xp: 170 },
-//       tier3: { hp: 180, minDmg: 8, maxDmg: 12, xp: 200 },
+//       tier1: { hp: 40, maxHp: 40, minDmg: 3, maxDmg: 5, xp: 120 },
+//       tier2: { hp: 55, maxHp: 55, minDmg: 4, maxDmg: 7, xp: 150 },
+//       tier3: { hp: 70, maxHp: 70, minDmg: 5, maxDmg: 9, xp: 180 },
 //     },
 //     orc: {
-//       tier1: { hp: 180, minDmg: 7, maxDmg: 13, xp: 210 },
-//       tier2: { hp: 252, minDmg: 10, maxDmg: 18, xp: 235 },
-//       tier3: { hp: 324, minDmg: 13, maxDmg: 23, xp: 280 },
+//       tier1: { hp: 75, maxHp: 75, minDmg: 5, maxDmg: 8, xp: 200 },
+//       tier2: { hp: 100, maxHp: 100, minDmg: 6, maxDmg: 10, xp: 240 },
+//       tier3: { hp: 130, maxHp: 130, minDmg: 8, maxDmg: 12, xp: 300 },
 //     },
 //     elite: {
-//       tier1: { hp: 300, minDmg: 10, maxDmg: 18, xp: 350 },
-//       tier2: { hp: 420, minDmg: 14, maxDmg: 26, xp: 400 },
-//       tier3: { hp: 540, minDmg: 18, maxDmg: 34, xp: 450 },
+//       tier1: { hp: 110, maxHp: 110, minDmg: 6, maxDmg: 9, xp: 350 },
+//       tier2: { hp: 140, maxHp: 140, minDmg: 8, maxDmg: 12, xp: 420 },
+//       tier3: { hp: 180, maxHp: 180, minDmg: 10, maxDmg: 15, xp: 500 },
 //     },
 //     miniboss: {
-//       tier1: { hp: 450, minDmg: 13, maxDmg: 23, xp: 900 },
-//       tier2: { hp: 630, minDmg: 18, maxDmg: 34, xp: 1035 },
-//       tier3: { hp: 810, minDmg: 23, maxDmg: 43, xp: 1170 },
+//       tier1: { hp: 250, maxHp: 250, minDmg: 12, maxDmg: 18, xp: 800 },
+//       tier2: { hp: 350, maxHp: 350, minDmg: 15, maxDmg: 22, xp: 1000 },
+//       tier3: { hp: 450, maxHp: 450, minDmg: 18, maxDmg: 28, xp: 1300 },
 //     },
 //     boss: {
-//       tier1: { hp: 1260, minDmg: 25, maxDmg: 45, xp: 2070 },
+//       tier1: { hp: 750, maxHp: 750, minDmg: 20, maxDmg: 32, xp: 2500 },
 //     },
 //   },
+
 //   LOCATION_TIER_2: {
 //     goblin: {
-//       tier1: { hp: 70, minDmg: 4, maxDmg: 8, xp: 140 },
-//       tier2: { hp: 98, minDmg: 6, maxDmg: 11, xp: 161 },
-//       tier3: { hp: 126, minDmg: 8, maxDmg: 14, xp: 182 },
+//       tier1: { hp: 80, maxHp: 80, minDmg: 7, maxDmg: 12, xp: 200 },
+//       tier2: { hp: 100, maxHp: 100, minDmg: 9, maxDmg: 15, xp: 250 },
+//       tier3: { hp: 130, maxHp: 130, minDmg: 11, maxDmg: 18, xp: 300 },
 //     },
 //     thief: {
-//       tier1: { hp: 140, minDmg: 7, maxDmg: 13, xp: 280 },
-//       tier2: { hp: 196, minDmg: 10, maxDmg: 18, xp: 322 },
-//       tier3: { hp: 252, minDmg: 13, maxDmg: 23, xp: 364 },
+//       tier1: { hp: 150, maxHp: 150, minDmg: 10, maxDmg: 16, xp: 350 },
+//       tier2: { hp: 180, maxHp: 180, minDmg: 12, maxDmg: 20, xp: 400 },
+//       tier3: { hp: 220, maxHp: 220, minDmg: 15, maxDmg: 25, xp: 480 },
 //     },
 //     troll: {
-//       tier1: { hp: 252, minDmg: 10, maxDmg: 18, xp: 504 },
-//       tier2: { hp: 353, minDmg: 14, maxDmg: 26, xp: 580 },
-//       tier3: { hp: 454, minDmg: 18, maxDmg: 34, xp: 655 },
+//       tier1: { hp: 280, maxHp: 280, minDmg: 13, maxDmg: 22, xp: 600 },
+//       tier2: { hp: 350, maxHp: 350, minDmg: 17, maxDmg: 28, xp: 750 },
+//       tier3: { hp: 450, maxHp: 450, minDmg: 22, maxDmg: 35, xp: 900 },
 //     },
 //     veteran: {
-//       tier1: { hp: 420, minDmg: 14, maxDmg: 26, xp: 840 },
-//       tier2: { hp: 588, minDmg: 20, maxDmg: 36, xp: 966 },
-//       tier3: { hp: 756, minDmg: 26, maxDmg: 46, xp: 1092 },
+//       tier1: { hp: 400, maxHp: 400, minDmg: 18, maxDmg: 28, xp: 900 },
+//       tier2: { hp: 500, maxHp: 500, minDmg: 22, maxDmg: 35, xp: 1100 },
+//       tier3: { hp: 650, maxHp: 650, minDmg: 28, maxDmg: 42, xp: 1350 },
 //     },
 //     subboss: {
-//       tier1: { hp: 630, minDmg: 18, maxDmg: 34, xp: 1260 },
-//       tier2: { hp: 882, minDmg: 25, maxDmg: 45, xp: 1449 },
-//       tier3: { hp: 1134, minDmg: 32, maxDmg: 58, xp: 1638 },
+//       tier1: { hp: 650, maxHp: 650, minDmg: 25, maxDmg: 40, xp: 1500 },
+//       tier2: { hp: 850, maxHp: 850, minDmg: 32, maxDmg: 50, xp: 1800 },
+//       tier3: { hp: 1100, maxHp: 1100, minDmg: 40, maxDmg: 65, xp: 2200 },
 //     },
 //     tier2boss: {
-//       tier1: { hp: 1764, minDmg: 35, maxDmg: 63, xp: 2898 },
+//       tier1: { hp: 1800, maxHp: 1800, minDmg: 50, maxDmg: 80, xp: 4000 },
 //     },
 //   },
+
 //   LOCATION_TIER_3: {
 //     demon: {
-//       tier1: { hp: 100, minDmg: 6, maxDmg: 12, xp: 200 },
-//       tier2: { hp: 140, minDmg: 9, maxDmg: 17, xp: 230 },
-//       tier3: { hp: 180, minDmg: 12, maxDmg: 22, xp: 260 },
+//       tier1: { hp: 250, maxHp: 250, minDmg: 18, maxDmg: 28, xp: 500 },
+//       tier2: { hp: 320, maxHp: 320, minDmg: 22, maxDmg: 35, xp: 650 },
+//       tier3: { hp: 400, maxHp: 400, minDmg: 28, maxDmg: 42, xp: 800 },
 //     },
 //     assassin: {
-//       tier1: { hp: 200, minDmg: 10, maxDmg: 20, xp: 400 },
-//       tier2: { hp: 280, minDmg: 14, maxDmg: 28, xp: 460 },
-//       tier3: { hp: 360, minDmg: 18, maxDmg: 36, xp: 520 },
+//       tier1: { hp: 400, maxHp: 400, minDmg: 25, maxDmg: 45, xp: 850 },
+//       tier2: { hp: 500, maxHp: 500, minDmg: 35, maxDmg: 55, xp: 1000 },
+//       tier3: { hp: 650, maxHp: 650, minDmg: 45, maxDmg: 70, xp: 1200 },
 //     },
 //     giant: {
-//       tier1: { hp: 360, minDmg: 14, maxDmg: 28, xp: 720 },
-//       tier2: { hp: 504, minDmg: 20, maxDmg: 40, xp: 828 },
-//       tier3: { hp: 648, minDmg: 26, maxDmg: 52, xp: 936 },
+//       tier1: { hp: 700, maxHp: 700, minDmg: 30, maxDmg: 50, xp: 1500 },
+//       tier2: { hp: 900, maxHp: 900, minDmg: 40, maxDmg: 65, xp: 1800 },
+//       tier3: { hp: 1200, maxHp: 1200, minDmg: 55, maxDmg: 85, xp: 2200 },
 //     },
 //     champion: {
-//       tier1: { hp: 600, minDmg: 20, maxDmg: 40, xp: 1200 },
-//       tier2: { hp: 840, minDmg: 28, maxDmg: 56, xp: 1380 },
-//       tier3: { hp: 1080, minDmg: 36, maxDmg: 72, xp: 1560 },
+//       tier1: { hp: 1000, maxHp: 1000, minDmg: 45, maxDmg: 75, xp: 2500 },
+//       tier2: { hp: 1300, maxHp: 1300, minDmg: 60, maxDmg: 95, xp: 3000 },
+//       tier3: { hp: 1700, maxHp: 1700, minDmg: 75, maxDmg: 120, xp: 3600 },
 //     },
 //     megaboss: {
-//       tier1: { hp: 900, minDmg: 26, maxDmg: 52, xp: 1800 },
-//       tier2: { hp: 1260, minDmg: 36, maxDmg: 72, xp: 2070 },
-//       tier3: { hp: 1620, minDmg: 46, maxDmg: 92, xp: 2340 },
+//       tier1: { hp: 1800, maxHp: 1800, minDmg: 60, maxDmg: 100, xp: 5000 },
+//       tier2: { hp: 2400, maxHp: 2400, minDmg: 80, maxDmg: 130, xp: 6500 },
+//       tier3: { hp: 3200, maxHp: 3200, minDmg: 110, maxDmg: 180, xp: 8000 },
 //     },
 //     finalboss: {
-//       tier1: { hp: 2520, minDmg: 49, maxDmg: 98, xp: 4140 },
+//       tier1: { hp: 5000, maxHp: 5000, minDmg: 130, maxDmg: 220, xp: 15000 },
 //     },
 //   },
 // };

@@ -46,6 +46,9 @@ export interface AppState {
   isDungeonModalOpen: boolean;
   toggleDungeonModal: VoidFunction;
 
+  isTorchBuyOpen: boolean;
+  toggleTorchBuyMenu: VoidFunction;
+
   charactersLeveledUp: LeveledUpData[];
   pushLeveledUpList: (characterData: LeveledUpData) => void;
   deleteLeveledUpList: (characterName: string) => void;

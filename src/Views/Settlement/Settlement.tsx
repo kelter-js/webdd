@@ -21,6 +21,7 @@ import { AlmanacModal } from "../../components/AlmanacModal";
 import { TradeModal } from "../../components/TradeModal";
 import { CraftModal } from "../../components/CraftModal";
 import { DungeonCard } from "../../components/DungeonCard";
+import { BuyTorches } from "../../components/BuyTorches";
 
 export const Settlement = () => {
   const {
@@ -39,6 +40,7 @@ export const Settlement = () => {
     isAlmanacOpen,
     isTradeModalOpen,
     isCraftMenuOpen,
+    isTorchBuyOpen,
     toggleDungeonModal,
     isDungeonModalOpen,
   } = useAppState();
@@ -109,6 +111,7 @@ export const Settlement = () => {
       {isAlmanacOpen && <AlmanacModal />}
       {isTradeModalOpen && <TradeModal />}
       {isCraftMenuOpen && <CraftModal />}
+      {isTorchBuyOpen && <BuyTorches />}
 
       {isEconomicModalOpen && (
         <GameModal onClose={() => toggleEconomicModal()}>

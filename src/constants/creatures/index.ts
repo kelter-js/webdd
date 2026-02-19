@@ -30,7 +30,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 50, currentHp: 50, minDmg: 2, maxDmg: 4, xp: 100 },
+    baseModel: { hp: 15, maxHp: 15, minDmg: 1, maxDmg: 3, xp: 50 },
   },
   [ENEMIES.SPIDER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -42,7 +42,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 70, currentHp: 70, minDmg: 3, maxDmg: 6, xp: 115 },
+    baseModel: { hp: 25, maxHp: 25, minDmg: 2, maxDmg: 4, xp: 70 },
   },
   [ENEMIES.SPIDER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -54,7 +54,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 90, currentHp: 90, minDmg: 4, maxDmg: 8, xp: 130 },
+    baseModel: { hp: 35, maxHp: 35, minDmg: 3, maxDmg: 5, xp: 100 },
   },
 
   [ENEMIES.TORSO_TIER_1]: {
@@ -67,7 +67,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 100, currentHp: 100, minDmg: 4, maxDmg: 8, xp: 150 },
+    baseModel: { hp: 40, maxHp: 40, minDmg: 3, maxDmg: 5, xp: 120 },
   },
   [ENEMIES.TORSO_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -79,7 +79,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 140, currentHp: 140, minDmg: 6, maxDmg: 10, xp: 170 },
+    baseModel: { hp: 55, maxHp: 55, minDmg: 4, maxDmg: 7, xp: 150 },
   },
   [ENEMIES.TORSO_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -91,7 +91,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 180, currentHp: 180, minDmg: 8, maxDmg: 12, xp: 200 },
+    baseModel: { hp: 70, maxHp: 70, minDmg: 5, maxDmg: 9, xp: 180 },
   },
 
   [ENEMIES.WATCHER_TIER_1]: {
@@ -104,7 +104,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 180, currentHp: 180, minDmg: 7, maxDmg: 13, xp: 210 },
+    baseModel: { hp: 75, maxHp: 75, minDmg: 5, maxDmg: 8, xp: 200 },
   },
   [ENEMIES.WATCHER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -116,7 +116,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 252, currentHp: 252, minDmg: 10, maxDmg: 18, xp: 235 },
+    baseModel: { hp: 100, maxHp: 100, minDmg: 6, maxDmg: 10, xp: 240 },
   },
   [ENEMIES.WATCHER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -128,7 +128,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 324, currentHp: 324, minDmg: 13, maxDmg: 23, xp: 280 },
+    baseModel: { hp: 130, maxHp: 130, minDmg: 8, maxDmg: 12, xp: 300 },
   },
   [ENEMIES.SPIRIT_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -140,7 +140,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 110, maxHp: 110, minDmg: 6, maxDmg: 9, xp: 350 },
   },
   [ENEMIES.SPIRIT_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -152,7 +152,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 140, maxHp: 140, minDmg: 8, maxDmg: 12, xp: 420 },
   },
   [ENEMIES.SPIRIT_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -164,7 +164,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 180, maxHp: 180, minDmg: 10, maxDmg: 15, xp: 500 },
   },
   [ENEMIES.BIRD_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -176,7 +176,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 250, maxHp: 250, minDmg: 12, maxDmg: 18, xp: 800 },
   },
   [ENEMIES.BIRD_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -188,7 +188,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 350, maxHp: 350, minDmg: 15, maxDmg: 22, xp: 1000 },
   },
   [ENEMIES.BIRD_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -200,7 +200,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 450, maxHp: 450, minDmg: 18, maxDmg: 28, xp: 1300 },
   },
   [ENEMIES.SIN_ICON_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -212,7 +212,7 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: {},
+    baseModel: { hp: 750, maxHp: 750, minDmg: 20, maxDmg: 32, xp: 2500 },
   },
 };
 
@@ -292,7 +292,7 @@ export const ALL_CREATURES_LIST = [];
 // они в разных местах расположены, искажены болью, масками, разноцветными нарядами праздничными с кровопоттеками
 
 // боссы - первый акт готов, нужно думать про оставшиеся два
-//  третий -  танцовщица - максимально бледный цвет кожи,  вскрытые сухожия, два клинка из костей, в ней самой в животе и руках торчат
-// проткнутые клинки, лицо скрыто за белой маской, лишь видно улыбку из грязных зубов
+// - максимально бледный цвет кожи, черное платье,  вскрытые сухожия, один greatsword костяной, в ней самой в животе и руках торчат
+// проткнутые клинки, всё в красных разводах похожил на кровь, лицо скрыто за белой маской, лишь видно гримасу боли и грязные зубы
 // второй -  генерал  приделавший себе чьи-то руки вместо ног, вокруг шеи ожерелье из пальцев, к лицу прикипел противогаз, одна рука длиннее другой,
 // в груди большое кол-во пулевых отверстий.

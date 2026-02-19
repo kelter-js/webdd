@@ -311,4 +311,74 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 6000,
   },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) => {
+      const { inventory_memoized, gear_memoized } = state;
+      const charactersGear = Object.values(gear_memoized).flat(1);
+
+      const allItems = [...inventory_memoized, ...charactersGear];
+
+      const requiredArmor = allItems.filter(
+        ([baseId]) => baseId === BASE_ITEMS_ID.NPP_TIER_1,
+      );
+
+      return requiredArmor.length < 3;
+    },
+    create: (state: GameStateData) => {
+      const { inventory_memoized, gear_memoized } = state;
+
+      const copyState: GameStateData = {
+        ...state,
+        gear_memoized: { ...gear_memoized },
+        inventory_memoized: [...inventory_memoized],
+      };
+
+      let removed = 0;
+
+      const newInventory: MemoizedItem[] = [];
+
+      for (const item of copyState.inventory_memoized) {
+        if (item[0] === BASE_ITEMS_ID.NPP_TIER_1 && removed < 3) {
+          removed++;
+          continue;
+        }
+
+        newInventory.push(item);
+      }
+
+      copyState.inventory_memoized = newInventory;
+
+      if (removed < 3) {
+        for (const character of Object.keys(copyState.gear_memoized)) {
+          if (removed === 3) break;
+
+          const gear = copyState.gear_memoized[character];
+          const newGear: MemoizedItem[] = [];
+
+          for (const item of gear) {
+            if (item[0] === BASE_ITEMS_ID.NPP_TIER_1 && removed < 3) {
+              removed++;
+              continue;
+            }
+
+            newGear.push(item);
+          }
+
+          copyState.gear_memoized[character] = newGear;
+        }
+      }
+
+      const newItem: MemoizedItem = [BASE_ITEMS_ID.NPP_TIER_2, v4()];
+
+      return {
+        ...copyState,
+        inventory_memoized: [...copyState.inventory_memoized, newItem],
+      };
+    },
+    title: "NPP MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
 ];

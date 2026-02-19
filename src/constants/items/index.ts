@@ -15,6 +15,10 @@ export const JUNK_DATA = {
     price: 200,
     title: "Химическая горелка",
   },
+  [JUNK_TYPES.SLEEPING_BAG]: {
+    price: 200,
+    title: "Спальный мешок",
+  },
 
   [JUNK_TYPES.CRYSTAL_ORB]: {
     price: 300,
@@ -38,6 +42,7 @@ export const JUNK_DATA = {
 export const FIRST_TIER_JUNK = [
   JUNK_TYPES.AXE,
   JUNK_TYPES.CHEMICAL_HEATING_PAD,
+  JUNK_TYPES.SLEEPING_BAG,
 ];
 export const SECOND_TIER_JUNK = [
   JUNK_TYPES.CRYSTAL_ORB,
