@@ -239,6 +239,7 @@ export interface GameStateData {
   collected: [RESOURCES, string][];
   flags: FLAGS[];
   specialEncounterChance: number;
+  volume: number;
 }
 
 export interface GearData {
@@ -303,6 +304,7 @@ export interface StoreState {
   setBattleTurn: (newTurn: TURN_STATES) => void;
   sellItem: (itemId: string) => void;
   buyItem: (itemId: string) => void;
+  updatePlayerState: (model: GameStateData) => void;
   buyTorches: (torchesAmount: number) => void;
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
@@ -321,6 +323,7 @@ export interface StoreState {
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;
   sellJunk: VoidFunction;
   updateFlags: (flags: FLAGS) => void;
+  setVolume: (volume: number) => void;
 
   // ф-ии чисто для тестов
   killEnemy: VoidFunction;
@@ -375,6 +378,7 @@ export type PersistedState = Omit<
   | "generateDungeon"
   | "initiateState"
   | "updateFlags"
+  | "setVolume"
   | "increaseResourcesBagLevel"
   | "turnOffDices"
   | "buyCamera"
@@ -385,6 +389,7 @@ export type PersistedState = Omit<
   | "sellItem"
   | "buyItem"
   | "buyTorches"
+  | "updatePlayerState"
 
   // ф-ии чисто для тестов
   | "killEnemy"

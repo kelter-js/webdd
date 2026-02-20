@@ -80,6 +80,8 @@ import {
   levelUpCharacter,
   consumePotion,
   buyTorches,
+  updatePlayerState,
+  setVolume,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -88,6 +90,7 @@ import {
   generateSpecialEncounter,
 } from "../../utils/generateSpecialEncounter";
 import { FLAGS } from "../../constants";
+import { RESOURCES } from "../../entities/resources";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -320,8 +323,10 @@ export const useGameState = create<StoreState>()(
       setPlayerPosition: setPlayerPosition(set),
       increaseEndurance: increaseEndurance(set),
       consumePotion: consumePotion(set),
+      setVolume: setVolume(set),
       generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
+      updatePlayerState: updatePlayerState(set),
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),
       updateBattle: updateBattle(set),
@@ -400,6 +405,7 @@ export const useGameState = create<StoreState>()(
               experience: 3000,
             })),
             gold: state.player.gold + 5000,
+            collected: [[RESOURCES.ORE, "30"]],
           },
         })),
 

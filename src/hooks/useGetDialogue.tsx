@@ -11,13 +11,27 @@ import {
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
 import { useAppState, useGameState } from "../stores";
-import { BUILDING_NAMES } from "../constants";
+import {
+  BUILDING_NAMES,
+  FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT,
+  FLAGS,
+  SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
+  THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
+} from "../constants";
 import { getImprovementPrice } from "../utils";
 import { useMemo } from "react";
+import { RESOURCES } from "../entities/resources";
 
 export const useGetDialogue = (npc: string | null) => {
   const {
-    player: { dialogFlags, gold, resourcesBagLevel },
+    player: {
+      dialogFlags,
+      gold,
+      resourcesBagLevel,
+      resources,
+      collected,
+      flags,
+    },
   } = useGameState();
   console.log("dialogFlags", dialogFlags);
 
@@ -36,6 +50,60 @@ export const useGetDialogue = (npc: string | null) => {
       case BUILDING_NAMES.SMITH:
         if (dialogFlags.includes(DIALOGUE_FLAGS.SMITH_WELCOMED)) {
           smithDialog.startNode = "alreadyWelcomed";
+        }
+
+        const inventoryResources = resources.filter(
+          (item) => item === RESOURCES.ORE,
+        ).length;
+        const collectedResources = collected.find(
+          (resource) => resource[0] === RESOURCES.ORE,
+        );
+        const collectedResourcesAmount = collectedResources
+          ? Number(collectedResources[1])
+          : 0;
+        const totalAmountOfResources =
+          collectedResourcesAmount + inventoryResources;
+
+        if (
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactFirstTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactSecondTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactThirdTier";
+          }
         }
 
         // Вот здесь должна быть логика реакции на накопленные ресурсы

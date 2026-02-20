@@ -9,11 +9,12 @@ import * as S from "./DungeonCard.styled";
 
 export const DungeonCard: FC<QuestCardProps> = ({ type }) => {
   const { generateDungeon } = useGameState();
-  const { toggleDungeonModal } = useAppState();
+  const { toggleDungeonModal, toggleAutoSave } = useAppState();
 
   const { src, title, description } = getDungeonDataByType(type);
 
   const handleStartQuest = () => {
+    toggleAutoSave();
     generateDungeon(type);
     toggleDungeonModal();
   };

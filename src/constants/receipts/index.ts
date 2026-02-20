@@ -10,6 +10,73 @@ import { BASE_ITEMS_ID } from "../items";
 import { BNTI_TIER_2 } from "../armor";
 import { v4 } from "uuid";
 
+const craftItem = (
+  state: GameStateData,
+  sourceItem: BASE_ITEMS_ID,
+  targetItem: BASE_ITEMS_ID,
+) => {
+  const { inventory_memoized, gear_memoized } = state;
+
+  const copyState: GameStateData = {
+    ...state,
+    gear_memoized: { ...gear_memoized },
+    inventory_memoized: [...inventory_memoized],
+  };
+
+  let removed = 0;
+
+  const newInventory: MemoizedItem[] = [];
+
+  for (const item of copyState.inventory_memoized) {
+    if (item[0] === sourceItem && removed < 3) {
+      removed++;
+      continue;
+    }
+
+    newInventory.push(item);
+  }
+
+  copyState.inventory_memoized = newInventory;
+
+  if (removed < 3) {
+    for (const character of Object.keys(copyState.gear_memoized)) {
+      if (removed === 3) break;
+
+      const gear = copyState.gear_memoized[character];
+      const newGear: MemoizedItem[] = [];
+
+      for (const item of gear) {
+        if (item[0] === sourceItem && removed < 3) {
+          removed++;
+          continue;
+        }
+
+        newGear.push(item);
+      }
+
+      copyState.gear_memoized[character] = newGear;
+    }
+  }
+
+  const newItem: MemoizedItem = [targetItem, v4()];
+
+  return {
+    ...copyState,
+    inventory_memoized: [...copyState.inventory_memoized, newItem],
+  };
+};
+
+const isDisabled = (state: GameStateData, targetItem: BASE_ITEMS_ID) => {
+  const { inventory_memoized, gear_memoized } = state;
+  const charactersGear = Object.values(gear_memoized).flat(1);
+
+  const allItems = [...inventory_memoized, ...charactersGear];
+
+  const requiredArmor = allItems.filter(([baseId]) => baseId === targetItem);
+
+  return requiredArmor.length < 3;
+};
+
 export const RECEIPTS: ReceiptData[] = [
   // Малое зелье
   {
@@ -173,69 +240,10 @@ export const RECEIPTS: ReceiptData[] = [
   // Бронежилеты 1 тир
   {
     type: RECEIPT_TYPES.ITEM,
-    isDisabled: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-      const charactersGear = Object.values(gear_memoized).flat(1);
-
-      const allItems = [...inventory_memoized, ...charactersGear];
-
-      const requiredArmor = allItems.filter(
-        ([baseId]) => baseId === BASE_ITEMS_ID.BNTI_TIER_1,
-      );
-
-      return requiredArmor.length < 3;
-    },
-    create: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-
-      const copyState: GameStateData = {
-        ...state,
-        gear_memoized: { ...gear_memoized },
-        inventory_memoized: [...inventory_memoized],
-      };
-
-      let removed = 0;
-
-      if (removed < 3) {
-        const newInventory: MemoizedItem[] = [];
-
-        for (const item of copyState.inventory_memoized) {
-          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_1 && removed < 3) {
-            removed++;
-            continue;
-          }
-
-          newInventory.push(item);
-        }
-
-        copyState.inventory_memoized = newInventory;
-      }
-
-      for (const character of Object.keys(copyState.gear_memoized)) {
-        if (removed === 3) break;
-
-        const gear = copyState.gear_memoized[character];
-        const newGear: MemoizedItem[] = [];
-
-        for (const item of gear) {
-          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_1 && removed < 3) {
-            removed++;
-            continue;
-          }
-
-          newGear.push(item);
-        }
-
-        copyState.gear_memoized[character] = newGear;
-      }
-
-      const newItem: MemoizedItem = [BASE_ITEMS_ID.BNTI_TIER_2, v4()];
-
-      return {
-        ...copyState,
-        inventory_memoized: [...copyState.inventory_memoized, newItem],
-      };
-    },
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.BNTI_TIER_1, BASE_ITEMS_ID.BNTI_TIER_2),
     title: "БНТИ MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
@@ -243,69 +251,10 @@ export const RECEIPTS: ReceiptData[] = [
   },
   {
     type: RECEIPT_TYPES.ITEM,
-    isDisabled: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-      const charactersGear = Object.values(gear_memoized).flat(1);
-
-      const allItems = [...inventory_memoized, ...charactersGear];
-
-      const requiredArmor = allItems.filter(
-        ([baseId]) => baseId === BASE_ITEMS_ID.BNTI_TIER_2,
-      );
-
-      return requiredArmor.length < 3;
-    },
-    create: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-
-      const copyState: GameStateData = {
-        ...state,
-        gear_memoized: { ...gear_memoized },
-        inventory_memoized: [...inventory_memoized],
-      };
-
-      let removed = 0;
-
-      if (removed < 3) {
-        const newInventory: MemoizedItem[] = [];
-
-        for (const item of copyState.inventory_memoized) {
-          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_2 && removed < 3) {
-            removed++;
-            continue;
-          }
-
-          newInventory.push(item);
-        }
-
-        copyState.inventory_memoized = newInventory;
-      }
-
-      for (const character of Object.keys(copyState.gear_memoized)) {
-        if (removed === 3) break;
-
-        const gear = copyState.gear_memoized[character];
-        const newGear: MemoizedItem[] = [];
-
-        for (const item of gear) {
-          if (item[0] === BASE_ITEMS_ID.BNTI_TIER_2 && removed < 3) {
-            removed++;
-            continue;
-          }
-
-          newGear.push(item);
-        }
-
-        copyState.gear_memoized[character] = newGear;
-      }
-
-      const newItem: MemoizedItem = [BASE_ITEMS_ID.BNTI_TIER_3, v4()];
-
-      return {
-        ...copyState,
-        inventory_memoized: [...copyState.inventory_memoized, newItem],
-      };
-    },
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.BNTI_TIER_2, BASE_ITEMS_ID.BNTI_TIER_3),
     title: "БНТИ MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
@@ -313,69 +262,10 @@ export const RECEIPTS: ReceiptData[] = [
   },
   {
     type: RECEIPT_TYPES.ITEM,
-    isDisabled: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-      const charactersGear = Object.values(gear_memoized).flat(1);
-
-      const allItems = [...inventory_memoized, ...charactersGear];
-
-      const requiredArmor = allItems.filter(
-        ([baseId]) => baseId === BASE_ITEMS_ID.NPP_TIER_1,
-      );
-
-      return requiredArmor.length < 3;
-    },
-    create: (state: GameStateData) => {
-      const { inventory_memoized, gear_memoized } = state;
-
-      const copyState: GameStateData = {
-        ...state,
-        gear_memoized: { ...gear_memoized },
-        inventory_memoized: [...inventory_memoized],
-      };
-
-      let removed = 0;
-
-      const newInventory: MemoizedItem[] = [];
-
-      for (const item of copyState.inventory_memoized) {
-        if (item[0] === BASE_ITEMS_ID.NPP_TIER_1 && removed < 3) {
-          removed++;
-          continue;
-        }
-
-        newInventory.push(item);
-      }
-
-      copyState.inventory_memoized = newInventory;
-
-      if (removed < 3) {
-        for (const character of Object.keys(copyState.gear_memoized)) {
-          if (removed === 3) break;
-
-          const gear = copyState.gear_memoized[character];
-          const newGear: MemoizedItem[] = [];
-
-          for (const item of gear) {
-            if (item[0] === BASE_ITEMS_ID.NPP_TIER_1 && removed < 3) {
-              removed++;
-              continue;
-            }
-
-            newGear.push(item);
-          }
-
-          copyState.gear_memoized[character] = newGear;
-        }
-      }
-
-      const newItem: MemoizedItem = [BASE_ITEMS_ID.NPP_TIER_2, v4()];
-
-      return {
-        ...copyState,
-        inventory_memoized: [...copyState.inventory_memoized, newItem],
-      };
-    },
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.NPP_TIER_1, BASE_ITEMS_ID.NPP_TIER_2),
     title: "NPP MK II",
     sourceItemIcon: "",
     targetItemIcon: "",

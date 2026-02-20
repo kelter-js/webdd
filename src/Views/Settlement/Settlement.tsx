@@ -43,6 +43,7 @@ export const Settlement = () => {
     isTorchBuyOpen,
     toggleDungeonModal,
     isDungeonModalOpen,
+    toggleAutoSave,
   } = useAppState();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
@@ -63,6 +64,7 @@ export const Settlement = () => {
       if (quest) {
         toggleDungeonModal();
       } else {
+        toggleAutoSave();
         generateDungeon();
       }
 

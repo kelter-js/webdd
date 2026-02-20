@@ -500,6 +500,14 @@ export const traderDialog: DialogueTree = {
 
 export const resetDialogs = () => {
   smithDialog.startNode = "welcome";
+  const smithReleaseOption = smithDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+  );
+
+  if (smithReleaseOption) {
+    smithReleaseOption.nextNode = "end";
+  }
+
   priestDialog.startNode = "welcome";
   starCounterDialog.startNode = "welcome";
   citadelDialog.startNode = "welcome";

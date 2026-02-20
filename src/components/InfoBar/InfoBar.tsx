@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Stack } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import { Box, Stack } from "@mui/material";
 
 import { Icons, Tooltip } from "../../common";
 import { useGameState } from "../../stores";
@@ -9,12 +9,39 @@ import { createPortal } from "react-dom";
 import { getPotionIcon } from "../../utils/getPotionIcon";
 import { getPotionDescriptionByType } from "../../utils/getPotionDescriptionByType";
 import { ExclamationBlink } from "../../common/ExclamationBlink/ExclamationBlink";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { StyledSlider } from "../../common/styled.index";
 
 export const InfoBar = () => {
   const {
-    player: { gold, torches, quest, consumables, party, economic },
+    player: {
+      gold,
+      torches,
+      quest,
+      consumables,
+      party,
+      economic,
+      volume: storageVolume,
+    },
     toggleCharacterPanel,
+    setVolume: setVolumeInStorage,
   } = useGameState();
+
+  const [isVolumeVisible, setVolumeVisible] = useState(false);
+
+  const [volume, setVolume] = useState<number | number[]>(storageVolume);
+
+  useEffect(() => {
+    const timerId = setTimeout(
+      () => setVolumeInStorage(Array.isArray(volume) ? volume[0] : volume),
+      900,
+    );
+
+    return () => clearTimeout(timerId);
+  }, [volume]);
+
+  const handleVolumeVisible = () => setVolumeVisible(true);
+  const handleVolumeHide = () => setVolumeVisible(false);
 
   const { title, icon } = getQuestInfo(quest?.type);
   const [player1, player2, player3] = party;
@@ -31,6 +58,47 @@ export const InfoBar = () => {
 
   return createPortal(
     <S.ModalContent>
+      <Box
+        sx={{
+          position: "relative",
+          display: "inline-flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onMouseEnter={handleVolumeVisible}
+        onMouseLeave={handleVolumeHide}
+      >
+        <VolumeUpIcon />
+
+        {isVolumeVisible && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "40px", // Регулируйте отступ под ваши нужды
+              left: "50%",
+              paddingTop: "55px",
+              transform: "translateX(-50%)",
+              height: "210px", // Фиксированная высота для слайдера
+              zIndex: 9999, // Чтобы слайдер был поверх других элементов
+              backgroundColor: "rgba(0,0,0,0.1)", // Для отладки, можно убрать
+              padding: "10px 5px",
+              borderRadius: "20px",
+            }}
+          >
+            <StyledSlider
+              orientation="vertical"
+              value={volume}
+              min={1}
+              max={100}
+              onChange={(_, val) => setVolume(val)}
+              valueLabelDisplay="auto" // или "on" если хотите всегда показывать значение
+              sx={{ height: "100%" }}
+            />
+          </Box>
+        )}
+      </Box>
+
       {consumables?.map((consumable) => {
         const [potionType, amount] = consumable;
 

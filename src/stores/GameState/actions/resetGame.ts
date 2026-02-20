@@ -55,6 +55,7 @@ export const resetGame = (set: StoreSet) => () =>
         collected: [],
         flags: [],
         specialEncounterChance: SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
+        volume: 100,
       },
       effects: null,
       sell_inventory: null,

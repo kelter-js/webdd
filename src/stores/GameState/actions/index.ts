@@ -5,6 +5,7 @@ import { setEconomicBranch } from "./setEconomicBranch";
 import { updateDialogFlags } from "./updateDialogFlags";
 import { setPlayerPosition } from "./setPlayerPosition";
 import { increaseEndurance } from "./increaseEndurance";
+import { updatePlayerState } from "./updatePlayerState";
 import { setLocationState } from "./setLocationState";
 import { increaseAccuracy } from "./increaseAccuracy";
 import { levelUpCharacter } from "./levelUpCharacter";
@@ -29,6 +30,7 @@ import { buyTorches } from "./buyTorches";
 import { useAbility } from "./useAbility";
 import { setSliders } from "./setSliders";
 import { setDungeon } from "./setDungeon";
+import { setVolume } from "./setVolume";
 import { buyPotion } from "./buyPotion";
 import { setReward } from "./setReward";
 import { resetGame } from "./resetGame";
@@ -50,6 +52,7 @@ export {
   updateDialogFlags,
   setPlayerPosition,
   increaseEndurance,
+  updatePlayerState,
   setLocationState,
   increaseAccuracy,
   levelUpCharacter,
@@ -74,6 +77,7 @@ export {
   useAbility,
   setSliders,
   setDungeon,
+  setVolume,
   buyPotion,
   setReward,
   resetGame,

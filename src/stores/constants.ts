@@ -346,6 +346,7 @@ export const DEFAULT_GAME_STATE: GameStateData = {
   collected: [],
   flags: [],
   specialEncounterChance: SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
+  volume: 100,
 };
 
 export const DEFAULT_GAME_SAVE = {

@@ -6,9 +6,11 @@ import {
   PropsWithChildren,
   useRef,
   useMemo,
+  useEffect,
 } from "react";
 
 import { AudioFilesData, PlayerContextData } from "./types";
+import { useGameState } from "../stores";
 
 // REFACTORING CHECKED ✅
 
@@ -25,6 +27,22 @@ export const usePlayer = () => useContext(PlayerContext);
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const [players, setPlayers] = useState<AudioFilesData>({});
   const refs = useRef<Record<string, HTMLAudioElement | null>>({});
+
+  const {
+    player: { volume },
+  } = useGameState();
+
+  useEffect(() => {
+    if (refs.current) {
+      Object.values(refs.current).forEach((player) => {
+        if (player) {
+          const currentVolume = volume / 100;
+
+          player.volume = currentVolume || 1;
+        }
+      });
+    }
+  }, [volume, players]);
 
   const handleSetSrc = (
     id: string,
@@ -58,6 +76,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
     [players],
   );
   console.log("players", players);
+  console.log("refs.current", refs.current);
   return (
     <PlayerContext.Provider value={memoizedValue}>
       {Object.entries(players).map(([id, audioFile]) =>
