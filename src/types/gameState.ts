@@ -295,10 +295,10 @@ export interface StoreState {
     gold: number,
   ) => void;
   buyCamera: VoidFunction;
-  swapItem: (
+  equipItem: (
     equipItemId: string,
-    unequipItemId: string,
     characterName: string,
+    unequipItemId?: string,
   ) => void;
   increaseResourcesBagLevel: VoidFunction;
   setBattleTurn: (newTurn: TURN_STATES) => void;
@@ -312,6 +312,7 @@ export interface StoreState {
   generateDungeon: (type?: DUNGEONS) => void;
   setSliders: (newTurn: string | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
+  removeItemFromGear: (characterName: string, itemId: string) => void;
 
   giveResources: (resourceToGive: RESOURCES) => void;
   consumePotion: (
@@ -347,7 +348,7 @@ export type PersistedState = Omit<
   | "toggleInventory"
   | "updateDungeon"
   | "setEconomicBranch"
-  | "swapItem"
+  | "equipItem"
   | "toggleCharacterPanel"
   | "setQuestData"
   | "healTeam"
@@ -373,6 +374,7 @@ export type PersistedState = Omit<
   | "setReward"
   | "setSliders"
   | "acquirePerk"
+  | "removeItemFromGear"
   | "buyPotion"
   | "levelUpCharacter"
   | "generateDungeon"

@@ -1,5 +1,6 @@
 import { increaseResourcesBagLevel } from "./increaseResourcesBagLevel";
 import { toggleCharacterPanel } from "./toggleCharacterPanel";
+import { removeItemFromGear } from "./removeItemFromGear";
 import { handleExitDungeon } from "./handleExitDungeon";
 import { setEconomicBranch } from "./setEconomicBranch";
 import { updateDialogFlags } from "./updateDialogFlags";
@@ -36,7 +37,7 @@ import { setReward } from "./setReward";
 import { resetGame } from "./resetGame";
 import { setBattle } from "./setBattle";
 import { buyCamera } from "./buyCamera";
-import { swapItem } from "./swapItem";
+import { equipItem } from "./equipItem";
 import { setState } from "./setState";
 import { healTeam } from "./healTeam";
 import { sellJunk } from "./sellJunk";
@@ -47,6 +48,7 @@ import { addJunk } from "./addJunk";
 export {
   increaseResourcesBagLevel,
   toggleCharacterPanel,
+  removeItemFromGear,
   handleExitDungeon,
   setEconomicBranch,
   updateDialogFlags,
@@ -83,7 +85,7 @@ export {
   resetGame,
   setBattle,
   buyCamera,
-  swapItem,
+  equipItem,
   setState,
   healTeam,
   sellJunk,

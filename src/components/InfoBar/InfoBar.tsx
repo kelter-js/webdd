@@ -46,15 +46,32 @@ export const InfoBar = () => {
   const { title, icon } = getQuestInfo(quest?.type);
   const [player1, player2, player3] = party;
 
-  const charactersWithPointsToSpend = useMemo(() => {
-    return party.reduce<string[]>((acc, character) => {
-      if (character.points) {
-        acc.push(character.name);
-      }
+  const { charactersWithPointsToSpend, deadCharacter } = useMemo(() => {
+    return party.reduce<{
+      charactersWithPointsToSpend: string[];
+      deadCharacter: string[];
+    }>(
+      (acc, character) => {
+        if (character.points) {
+          acc.charactersWithPointsToSpend.push(character.name);
+        }
 
-      return acc;
-    }, []);
-  }, [player1?.points, player2?.points, player3?.points]);
+        if (character.currentHealth <= 0) {
+          acc.deadCharacter.push(character.name);
+        }
+
+        return acc;
+      },
+      { charactersWithPointsToSpend: [], deadCharacter: [] },
+    );
+  }, [
+    player1?.points,
+    player2?.points,
+    player3?.points,
+    player1?.currentHealth,
+    player2?.currentHealth,
+    player3?.currentHealth,
+  ]);
 
   return createPortal(
     <S.ModalContent>
@@ -140,6 +157,18 @@ export const InfoBar = () => {
             <S.StatContainer onClick={toggleCharacterPanel}>
               <Icons.LeveledUpCharacter />
             </S.StatContainer>
+          </Tooltip>
+        ))}
+
+      {Boolean(deadCharacter.length) &&
+        deadCharacter.map((character) => (
+          <Tooltip
+            title={`${character} погиб. Стоит посетить целителя.`}
+            key={character}
+          >
+            <div>
+              <Icons.CoffinIcon />
+            </div>
           </Tooltip>
         ))}
 

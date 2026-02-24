@@ -106,19 +106,12 @@ export const useGetDialogue = (npc: string | null) => {
           }
         }
 
-        // Вот здесь должна быть логика реакции на накопленные ресурсы
-        // нужна логика вычисления-  в зависимости от типа р есурса - сколько его нужно накопить
-        // и устанавливать флаг - что вещь получена для вычисления какой айтем выдавать
-        // здесь мы должны установить, что клик на опцию с айди  DIALOGUE_IDS.RELEASE_ORE - если кол-во сданных ресурсов + на руках ресурсы позволяют апгрейднуть или улучшить айтем
-        // что мы отсюда диалог следующий устанавливаем receiveSmithArtifactFirstTier/receiveSmithArtifactSecondTier/receiveSmithArtifactThirdTier
-        // mock
-
         return smithDialog;
 
       case BUILDING_NAMES.QUEST_DESK:
         return questDeskDialog;
 
-      case BUILDING_NAMES.TAVERN:
+      case BUILDING_NAMES.TAVERN: {
         if (dialogFlags.includes(DIALOGUE_FLAGS.BODY_PARTS)) {
           tavernDialog.startNode = "alreadyWelcomed";
         }
@@ -130,7 +123,65 @@ export const useGetDialogue = (npc: string | null) => {
         // что мы отсюда диалог следующий устанавливаем receiveSmithArtifactFirstTier/receiveSmithArtifactSecondTier/receiveSmithArtifactThirdTier
         // mock
 
+        const inventoryResources = resources.filter(
+          (item) => item === RESOURCES.PARTS,
+        ).length;
+
+        const collectedResources = collected.find(
+          (resource) => resource[0] === RESOURCES.PARTS,
+        );
+
+        const collectedResourcesAmount = collectedResources
+          ? Number(collectedResources[1])
+          : 0;
+
+        const totalAmountOfResources =
+          collectedResourcesAmount + inventoryResources;
+
+        if (
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactFirstTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactSecondTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactThirdTier";
+          }
+        }
+
         return tavernDialog;
+      }
 
       case BUILDING_NAMES.SHOP:
         if (dialogFlags.includes(DIALOGUE_FLAGS.IMPROVE_BAG)) {

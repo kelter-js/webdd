@@ -271,4 +271,15 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 3000,
   },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.NPP_TIER_2, BASE_ITEMS_ID.NPP_TIER_3),
+    title: "NPP MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
 ];

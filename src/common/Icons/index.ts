@@ -8,6 +8,7 @@ import { CatchGoblinIcon } from "./CatchGoblin";
 import { ClosePortalIcon } from "./ClosePortal";
 import { AssaultRifle } from "./AssaultRifle";
 import { SniperRifle } from "./SniperRifle";
+import { CoffinIcon } from "./Coffin";
 import { MachineGun } from "./MachineGun";
 import { FindItemIcon } from "./FindItem";
 import { Submachine } from "./Submachine";
@@ -39,6 +40,7 @@ export {
   FindItemIcon,
   AssaultRifle,
   SniperRifle,
+  CoffinIcon,
   MachineGun,
   Submachine,
   Artifact,

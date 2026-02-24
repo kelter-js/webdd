@@ -1,4 +1,3 @@
-import { HP_PER_ENDURANCE_POINT } from "../../constants";
 import { StoreSet } from "./types";
 
 export const healTeam = (set: StoreSet) => () => {
@@ -7,7 +6,10 @@ export const healTeam = (set: StoreSet) => () => {
     player: {
       ...state.player,
       party: state.player.party.map((character) => {
-        character.currentHealth = character.endurance * HP_PER_ENDURANCE_POINT;
+        if (state.statistics) {
+          character.currentHealth = state.statistics[character.name].maxHealth;
+        }
+
         return character;
       }),
     },

@@ -73,7 +73,7 @@ import {
   increaseResourcesBagLevel,
   acquirePerk,
   sellItem,
-  swapItem,
+  equipItem,
   handleExitDungeon,
   buyItem,
   generateDungeon,
@@ -82,6 +82,7 @@ import {
   buyTorches,
   updatePlayerState,
   setVolume,
+  removeItemFromGear,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -327,13 +328,14 @@ export const useGameState = create<StoreState>()(
       generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
       updatePlayerState: updatePlayerState(set),
+      removeItemFromGear: removeItemFromGear(set),
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),
       updateBattle: updateBattle(set),
       setDungeon: setDungeon(set),
       changeAttempts: changeAttempts(set),
       setQuestData: setQuestData(set),
-      swapItem: swapItem(set),
+      equipItem: equipItem(set),
       setState: setState(set),
       setPlayerName: setPlayerName(set),
       setLocationState: setLocationState(set),
@@ -402,10 +404,10 @@ export const useGameState = create<StoreState>()(
             ...state.player,
             party: state.player.party.map((member) => ({
               ...member,
-              experience: 3000,
+              currentHealth: Math.random() > 0.5 ? 0 : member.currentHealth,
             })),
             gold: state.player.gold + 5000,
-            collected: [[RESOURCES.ORE, "30"]],
+            collected: [[RESOURCES.PARTS, "30"]],
           },
         })),
 

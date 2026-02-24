@@ -28,6 +28,10 @@ export const JUNK_DATA = {
     price: 300,
     title: "Шкатулка с драгоценностями",
   },
+  [JUNK_TYPES.GLASSES]: {
+    price: 300,
+    title: "Очки",
+  },
 
   [JUNK_TYPES.GOLDEN_CHAIN]: {
     price: 500,
@@ -47,6 +51,7 @@ export const FIRST_TIER_JUNK = [
 export const SECOND_TIER_JUNK = [
   JUNK_TYPES.CRYSTAL_ORB,
   JUNK_TYPES.JEWELRY_BOX,
+  JUNK_TYPES.GLASSES,
 ];
 export const THIRD_TIER_JUNK = [
   JUNK_TYPES.GOLDEN_CHAIN,

@@ -508,6 +508,14 @@ export const resetDialogs = () => {
     smithReleaseOption.nextNode = "end";
   }
 
+  const tavernReleaseOption = tavernDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+  );
+
+  if (tavernReleaseOption) {
+    tavernReleaseOption.nextNode = "end";
+  }
+
   priestDialog.startNode = "welcome";
   starCounterDialog.startNode = "welcome";
   citadelDialog.startNode = "welcome";

@@ -214,6 +214,43 @@ export const FIRST_TIER_CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: { hp: 750, maxHp: 750, minDmg: 20, maxDmg: 32, xp: 2500 },
   },
+
+  [ENEMIES.SOLDIER_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 80, maxHp: 80, minDmg: 7, maxDmg: 12, xp: 200 },
+  },
+  [ENEMIES.SOLDIER_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 100, maxHp: 100, minDmg: 9, maxDmg: 15, xp: 250 },
+  },
+  [ENEMIES.SOLDIER_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 130, maxHp: 130, minDmg: 11, maxDmg: 18, xp: 300 },
+  },
 };
 
 export const FIRST_TIER_CREATURES_LIST = [
@@ -270,22 +307,26 @@ export const SECOND_TIER_BOSS = ENEMIES.GENERAL_TIER_1;
 export const THIRD_TIER_CREATURES_LIST = [];
 
 export const THIRD_TIER_MINIBOSS_LIST = [
-  ENEMIES.MERGED_MASS_TIER_1,
-  ENEMIES.MERGED_MASS_TIER_2,
+  ENEMIES.BALLERINE_TIER_1,
+  ENEMIES.BALLERINE_TIER_2,
 ];
 
-export const THIRD_TIER_QUEST_MINIBOSS = ENEMIES.MERGED_MASS_TIER_3;
+export const THIRD_TIER_QUEST_MINIBOSS = ENEMIES.BALLERINE_TIER_3;
+
+export const THIRD_TIER_BOSS = ENEMIES.MERGED_MASS_TIER_1;
 
 export const STORY_BOSSES_LIST = [
   ENEMIES.SIN_ICON_TIER_1,
   ENEMIES.GENERAL_TIER_1,
+  ENEMIES.MERGED_MASS_TIER_1,
 ];
 
 export const ALL_CREATURES_LIST = [];
 
 // Пожарник, человек в противогазе, человек с прикипевшим ПНВ, человек с вывернутыми ребрами наружу, со спины два костянных крыла, череп оскаленный, кожа натянута везде, всё в тело пробито гвоздями, в руках держит разбитый и поломанный автомат
-// Балерина с длинными клинками и в фате, актер с содранным лицом и наточенной рукой костью копьем, рыцарь с ореолом каменным, через щели шлема сочится кровь,
-//  многоликий с вросшими руками - одна нога длинне другой и вся в шипах
+// Балерина с длинными клинками и в фате, рыцарь с ореолом каменным, через щели шлема сочится кровь,
+
+// каждая конечность заканчивается шипом,  тело максимально бледное, невысокое, на голове диадема из разноцветных перьев, вокруг тела праздничные ленты, на лице яркая губная помада
 
 //минибоссы: птица с двумя клинками, профессор , человек - вместо лица просто сплошное пустое место, без глаз, бровей и губ, в руках две электрические дубинки и лабораторный халат,
 // третий минибосс - сросшиеся актеры, посетители, певцы, с двумя деформированными длинными костяными копьями руками, ног вообще не видно, в массе перемешаны тела, лиц больше, чем должно быть,
