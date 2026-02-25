@@ -33,8 +33,6 @@ export const initiateState = (set: StoreSet) => () =>
       );
     }
 
-    // MOCK
-    // здесь же нужно проинициализировать интентарь покупок если он пуст
     if (!stateCopy.player.itemsToBuy) {
       const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
 
@@ -59,23 +57,15 @@ export const initiateState = (set: StoreSet) => () =>
 
     // инициализируем хар-ки
     state.player.party.forEach((player) => {
-      console.log("so we are here?");
-      stateCopy.statistics![player.name] = calculateStatistics(player);
+      const characterGear = stateCopy.gear
+        ? stateCopy.gear[CharacterData.name]
+        : [];
 
-      player.perksList.forEach((perk) => {
-        if (perk.isAbility) {
-          // нужна утиль функция возвращающая модель Ability, она имеет тип, внутри стейта будет функция useAbility,
-          //  ей передается тип и она в зависимости от него делает что-то
-          // stateCopy.abilities![player.name] = createAbility(perk);
-        }
-      });
+      stateCopy.statistics![player.name] = calculateStatistics(
+        player,
+        characterGear,
+      );
     });
 
-    return {
-      ...stateCopy,
-      player: { ...stateCopy.player },
-      statistics: { ...(stateCopy.statistics || {}) },
-      gear: { ...(stateCopy.gear || {}) },
-      abilities: { ...(stateCopy.abilities || {}) },
-    };
+    return stateCopy;
   });

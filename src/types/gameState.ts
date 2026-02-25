@@ -43,6 +43,14 @@ export interface Character {
   hasTurn?: boolean;
 }
 
+export interface BattleCharacterModel {
+  name: string;
+  hasTurn?: boolean;
+  perksList: Perk[];
+  currentHealth: number;
+  characterClass: CLASSES;
+}
+
 export type PERK_ID_DATA = MEDIC_PERKS | SNIPER_PERKS | TANK_PERKS;
 
 // храним только айди, по нему всё высчитываем потом
@@ -61,6 +69,16 @@ export interface Statistics {
   maxAttack: number;
   maxHealth: number;
   evasionChance: number;
+  critStrike: number;
+  vampire?: number;
+}
+
+export enum EFFECT_TYPES {
+  HEALTH = "HEALTH",
+  DEFENSE = "DEFENSE",
+  ATTACK = "ATTACK",
+  VAMPIRE = "VAMPIRE",
+  ALL = "ALL",
 }
 
 // интерфейс модели предмета, в свойстве inventory будет массив из таких моделей
@@ -85,6 +103,7 @@ export interface Item {
   criticalStrike?: number;
   bulletsPerTurn?: number;
   overAllTier: number;
+  effectType?: EFFECT_TYPES;
 }
 // интерфейс модели представляющий противника ЛЮБОГО
 export interface Creature {
@@ -108,7 +127,7 @@ export interface Enemy {
 }
 
 export interface Player {
-  party: Character[];
+  party: BattleCharacterModel[];
   effects: BattleEffects[];
 }
 

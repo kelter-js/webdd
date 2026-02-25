@@ -15,9 +15,6 @@ export const DEAD_END_ENEMY_CHANCE = 70;
 // FIXME BATTLE CONSTANTS
 // RAWDAMAGE = WeaponDamage + Character.Accuracy × 0.7
 // FINALDAMAGE = RawDamage × ClassDamageMultiplier
-export const TANK_CLASS_DAMAGE_MLTPL = 0.9;
-export const SNIPER_CLASS_DAMAGE_MLTPL = 1.2;
-export const MEDIC_CLASS_DAMAGE_MLTPL = 0.8;
 
 export const HP_PER_ENDURANCE_POINT = 10;
 export const MAX_AMOUNT_OF_POTIONS_TO_SELL = 8;
@@ -276,29 +273,28 @@ function calculateCritDamage(rawDamage: number, critMultiplier: number) {
 export const TANK_BASE_MODEL = {
   endurance: 10,
   currentHealth: 100,
-  accuracy: 3,
+  maxHealth: 100,
+  accuracy: 4,
   agility: 2,
-  critChance: 1.5,
-  critStrike: 1.1,
+  critChance: 1,
   characterClass: CLASSES.TANK,
 };
 export const SNIPER_BASE_MODEL = {
   endurance: 5,
   currentHealth: 50,
+  maxHealth: 50,
   accuracy: 7,
   agility: 5,
-  // FIXME: CRITICAL CHANCE FORMULA Character.CritChance + Character.Agility × 0.5 + Weapon.CritChance
-  critChance: 5,
-  critStrike: 1.5,
+  critChance: 2.5,
   characterClass: CLASSES.SNIPER,
 };
 export const MEDIC_BASE_MODEL = {
   endurance: 6,
   currentHealth: 60,
+  maxHealth: 60,
   accuracy: 5,
   agility: 4,
-  critChance: 1.5,
-  critStrike: 1.2,
+  critChance: 2,
   characterClass: CLASSES.MEDIC,
 };
 

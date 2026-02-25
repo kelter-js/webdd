@@ -5,9 +5,7 @@ import SmallPotion from "../../assets/potions/small-potion.svg";
 import LargePotion from "../../assets/potions/large-potion.svg";
 import ExtraLargePotion from "../../assets/potions/extra-large-potion.svg";
 import MediumPotion from "../../assets/potions/medium-potion.svg";
-import { dememoizeItem } from "../../utils/dememoizeItem";
 import { BASE_ITEMS_ID } from "../items";
-import { BNTI_TIER_2 } from "../armor";
 import { v4 } from "uuid";
 
 const craftItem = (
@@ -280,6 +278,28 @@ export const RECEIPTS: ReceiptData[] = [
     title: "NPP MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.IOTV_TIER_1, BASE_ITEMS_ID.IOTV_TIER_2),
+    title: "IOTV MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
     goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.IOTV_TIER_2, BASE_ITEMS_ID.IOTV_TIER_3),
+    title: "IOTV MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
   },
 ];

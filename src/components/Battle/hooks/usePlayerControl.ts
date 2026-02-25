@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGameState } from "../../../stores";
-import { Character } from "../../../types/gameState";
+import { BattleCharacterModel } from "../../../types/gameState";
 
 export const usePlayerControl = () => {
   const {
@@ -8,7 +8,9 @@ export const usePlayerControl = () => {
     setGameOver,
   } = useGameState();
 
-  const [selectedPlayer, setSelectedPlayer] = useState<Character | undefined>();
+  const [selectedPlayer, setSelectedPlayer] = useState<
+    BattleCharacterModel | undefined
+  >();
   // !!! убираем возможность игроку выбирать персонажа для хода самостоятельно !!!
   // вместо этого нужно сделать так - если ход игрока - выбираем персонажа - и делаем ход
   // далее после его хода переключаем на другого члена группа
@@ -18,7 +20,7 @@ export const usePlayerControl = () => {
   // baseDamage * stack - сколько стаков эффекта, столько и дмг наносим - duration - сколько раундов-  если эффект можно наложить - накладываем и отнимает раунд от duration
   // если currentDuration - 1 === 0 - то сразу убираем эффекты дебаффа, после нанесения урона
 
-  const handleSelectNextPlayer = (newBattleState?: Character[]) => {
+  const handleSelectNextPlayer = (newBattleState?: BattleCharacterModel[]) => {
     if (!newBattleState) {
       setSelectedPlayer(undefined);
       return;

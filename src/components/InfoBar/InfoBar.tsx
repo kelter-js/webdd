@@ -166,9 +166,9 @@ export const InfoBar = () => {
             title={`${character} погиб. Стоит посетить целителя.`}
             key={character}
           >
-            <div>
+            <Stack>
               <Icons.CoffinIcon />
-            </div>
+            </Stack>
           </Tooltip>
         ))}
 

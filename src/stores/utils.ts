@@ -4,6 +4,7 @@ import {
   BattleEffects,
   Character,
   Creature,
+  EFFECT_TYPES,
   Effects,
   GameStateData,
   GearData,
@@ -223,20 +224,18 @@ export const calculateStatistics = (
     evasionChance: Math.round(character.agility * 4),
     maxHealth: Math.round(character.endurance * 10),
     critChance: Math.round(character.agility * 0.5),
+    critStrike: 0,
+    vampire: 0,
   };
-
-  // character.perksList.forEach((perk) => {
-  //   const [statName, statValue] = getPerkData(perk);
-  //   if (statName && statValue) {
-  //     statistics[statName] += statValue;
-  //   }
-
-  // });
 
   if (gear) {
     gear.forEach((item) => {
       if (item.type === GEAR_SLOTS.ARMOR) {
-        statistics.defense = item.value;
+        statistics.defense += item.value;
+      }
+
+      if (item.type === GEAR_SLOTS.HELMET) {
+        statistics.defense += item.value;
       }
 
       if (item.type === GEAR_SLOTS.WEAPON) {
@@ -245,13 +244,76 @@ export const calculateStatistics = (
         }
 
         statistics.maxAttack += item.value;
+
+        if (item?.criticalStrike) {
+          statistics.critStrike = item?.criticalStrike;
+        }
       }
 
-      // в оружии/шее/броне могут быть доп статы - вычисляем через утиль функцию, ее пока нет
-      // const { statName, statValue } = getStatsFromItem(equipment);
-      //           statistics[statName] += statValue;
+      if (item.type === GEAR_SLOTS.ARTIFACT && item.effectType) {
+        switch (item.effectType) {
+          case EFFECT_TYPES.HEALTH: {
+            statistics.maxHealth += Math.round(
+              (statistics.maxHealth / 100) * item.value,
+            );
+
+            break;
+          }
+
+          case EFFECT_TYPES.DEFENSE: {
+            statistics.defense += Math.round(
+              (statistics.defense / 100) * item.value,
+            );
+
+            break;
+          }
+
+          case EFFECT_TYPES.ATTACK: {
+            statistics.minAttack += Math.round(
+              (statistics.minAttack / 100) * item.value,
+            );
+            statistics.maxAttack += Math.round(
+              (statistics.maxAttack / 100) * item.value,
+            );
+
+            break;
+          }
+
+          case EFFECT_TYPES.VAMPIRE: {
+            statistics.vampire = item.value;
+
+            break;
+          }
+
+          case EFFECT_TYPES.ALL: {
+            statistics.maxHealth += Math.round(
+              (statistics.maxHealth / 100) * item.value,
+            );
+
+            statistics.defense += Math.round(
+              (statistics.defense / 100) * item.value,
+            );
+
+            statistics.minAttack += Math.round(
+              (statistics.minAttack / 100) * item.value,
+            );
+            statistics.maxAttack += Math.round(
+              (statistics.maxAttack / 100) * item.value,
+            );
+
+            break;
+          }
+        }
+      }
     });
   }
+
+  // character.perksList.forEach((perk) => {
+  //   const [statName, statValue] = getPerkData(perk);
+  //   if (statName && statValue) {
+  //     statistics[statName] += statValue;
+  //   }
+  // });
 
   return statistics;
 };

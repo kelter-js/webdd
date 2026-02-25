@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { Character } from "../../../../types/gameState";
+import { BattleCharacterModel } from "../../../../types/gameState";
 
 export interface CharactersBarProps {
-  selectedPlayer?: Character;
-  setSelectedPlayer: Dispatch<SetStateAction<Character | undefined>>;
+  selectedPlayer?: BattleCharacterModel;
+  setSelectedPlayer: Dispatch<SetStateAction<BattleCharacterModel | undefined>>;
   damageTargetIndex: number | null;
   selectedNextPlayer: VoidFunction;
 }

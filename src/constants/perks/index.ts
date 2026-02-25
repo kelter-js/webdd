@@ -24,16 +24,20 @@ export enum TANK_PERKS {
 }
 
 export const TANK_PERKS_DESCRIPTIONS = {
-  [TANK_PERKS.HEALTH]: "Увеличение здоровья",
-  [TANK_PERKS.DODGE]: "Шанс увернуться от атаки",
+  [TANK_PERKS.HEALTH]: "Увеличение здоровья на 10%",
+  [TANK_PERKS.DODGE]: "Шанс увернуться от атаки 10%",
+
   [TANK_PERKS.INSPIRATION]: "Шанс на дополнительную атаку за ход",
   [TANK_PERKS.VAMPIRE]:
     "Шанс восстановить здоровье после атаки на половину нанесенного урона",
-  [TANK_PERKS.HEALTH_V2]: "Увеличение здоровья",
-  [TANK_PERKS.DODGE_V2]: "Шанс увернуться от атаки",
+
+  [TANK_PERKS.HEALTH_V2]: "Увеличение здоровья на 15%",
+  [TANK_PERKS.DODGE_V2]: "Шанс увернуться от атаки 15%",
+
   [TANK_PERKS.CRUSHER]: "Шанс оглушить противника атакой",
   [TANK_PERKS.RECKLESSNESS]:
     "Шанс совершить фронтальную атаку, которая нанесет урон всем врагам на поле",
+
   [TANK_PERKS.LAST_STAND]:
     "Активная способность: снижает весь получаемый урон на 15% на следующие два раунда",
   [TANK_PERKS.SCARLESS]:
@@ -117,20 +121,24 @@ export enum SNIPER_PERKS {
 }
 
 export const SNIPER_PERKS_DESCRIPTIONS = {
-  [SNIPER_PERKS.CRITICAL_CHANCE]: "Увеличение шанса критического урона",
-  [SNIPER_PERKS.CRITICAL_STRIKE]: "Увеличение силы критического удара",
+  [SNIPER_PERKS.CRITICAL_CHANCE]: "Увеличение шанса критического урона 10%",
+  [SNIPER_PERKS.CRITICAL_STRIKE]: "Увеличение силы критического удара 5%",
+
   [SNIPER_PERKS.SHOCKER]:
     "Небольшой шанс, что ваша атака заставит врага пропустить ход",
   [SNIPER_PERKS.LIFE_STEALER]:
     "Небольшой шанс, что ваша атака восстановит ваше здоровье",
-  [SNIPER_PERKS.CRITICAL_CHANCE_V2]: "Увеличение шанса критического урона",
-  [SNIPER_PERKS.CRITICAL_STRIKE_V2]: "Увеличение силы критического удара",
+
+  [SNIPER_PERKS.CRITICAL_CHANCE_V2]: "Увеличение шанса критического урона 15%",
+  [SNIPER_PERKS.CRITICAL_STRIKE_V2]: "Увеличение силы критического удара 10%",
+
   [SNIPER_PERKS.DAMAGE_INSPIRATION]:
     "Небольшой шанс, что ваша атака вдохновит союзников, и в следующий ход они получат дополнительно +5% урона",
   [SNIPER_PERKS.RICOCHETTE]:
     "Небольшой шанс, что ваша атака может вызвать рикошет и нанести половину основного урона другим врагам",
+
   [SNIPER_PERKS.INSTAKILL]:
-    "Активная: с небольшим шансом следующая атака убьет врага с одного удара - перезарядка два хода",
+    "Активная: с небольшим шансом следующая атака убьет врага с одного удара - перезарядка два хода (не действует на боссов)",
   [SNIPER_PERKS.BREACHER]:
     "Пассивная: ваша атака имеет шанс уменьшить сопротивление врага вдвое",
 } as const;
@@ -213,16 +221,20 @@ export enum MEDIC_PERKS {
 
 export const MEDIC_PERKS_DESCRIPTIONS = {
   [MEDIC_PERKS.INCREASE_DAMAGE]: "Увеличение урона на 5%",
-  [MEDIC_PERKS.INCREASE_HEALTH]: "Увеличение здоровья",
+  [MEDIC_PERKS.INCREASE_HEALTH]: "Увеличение здоровья 20%",
+
   [MEDIC_PERKS.BLEED]:
     "Шанс, что следующая атака вызовет у врага кровотечение - 5% урона за ход в течение двух ходов",
   [MEDIC_PERKS.HEAL]: "Шанс, что следующая атака вылечит весь отряд на 10%",
-  [MEDIC_PERKS.INCREASE_DAMAGE_V2]: "Увеличение урона на 5%",
-  [MEDIC_PERKS.INCREASE_HEALTH_V2]: "Увеличение здоровья",
+
+  [MEDIC_PERKS.INCREASE_DAMAGE_V2]: "Увеличение урона на 15%",
+  [MEDIC_PERKS.INCREASE_HEALTH_V2]: "Увеличение здоровья 30%",
+
   [MEDIC_PERKS.CURSED_ATTACK]:
     "Небольшой шанс, что атака уменьшит урон врага вдвое на следующий раунд",
   [MEDIC_PERKS.WEAK_SPOTTER]:
     "Небольшой шанс, что атака уменьшит сопротивление врага на 15%",
+
   [MEDIC_PERKS.HEAL_ALL]:
     "Активная: лечит весь отряд на 30% - перезарядка 2 хода",
   [MEDIC_PERKS.FORTIFICATION]:
@@ -244,10 +256,12 @@ export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {
     {
       id: MEDIC_PERKS.BLEED,
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.BLEED],
+      isAbility: true,
     },
     {
       id: MEDIC_PERKS.HEAL,
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.HEAL],
+      isAbility: true,
     },
   ],
   thirdTier: [

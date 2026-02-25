@@ -1,7 +1,3 @@
-import { v4 } from "uuid";
-import { BNTI_TIER_1 } from "../../../constants/armor";
-import { GLOCK_17_TIER_1 } from "../../../constants/guns";
-import { GALVION_TIER_1, HELMETS_TIER_1 } from "../../../constants/helmets";
 import { getPotionByTier } from "../../../constants/items";
 import { DUNGEONS, ECONOMIC_TYPES } from "../../../entities";
 import { POTION_TYPES } from "../../../entities/consumables";

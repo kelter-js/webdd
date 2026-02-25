@@ -251,6 +251,42 @@ export const FIRST_TIER_CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: { hp: 130, maxHp: 130, minDmg: 11, maxDmg: 18, xp: 300 },
   },
+  [ENEMIES.FIREFIGHTER_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 150, maxHp: 150, minDmg: 10, maxDmg: 16, xp: 350 },
+  },
+  [ENEMIES.FIREFIGHTER_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 180, maxHp: 180, minDmg: 12, maxDmg: 20, xp: 400 },
+  },
+  [ENEMIES.FIREFIGHTER_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 220, maxHp: 220, minDmg: 15, maxDmg: 25, xp: 480 },
+  },
 };
 
 export const FIRST_TIER_CREATURES_LIST = [
@@ -284,12 +320,15 @@ export const SECOND_TIER_CREATURES_LIST = [
   ENEMIES.SOLDIER_TIER_1,
   ENEMIES.SOLDIER_TIER_2,
   ENEMIES.SOLDIER_TIER_3,
+
   ENEMIES.FIREFIGHTER_TIER_1,
   ENEMIES.FIREFIGHTER_TIER_2,
   ENEMIES.FIREFIGHTER_TIER_3,
+
   ENEMIES.SNEAKER_TIER_1,
   ENEMIES.SNEAKER_TIER_2,
   ENEMIES.SNEAKER_TIER_3,
+
   ENEMIES.LOST_TIER_1,
   ENEMIES.LOST_TIER_2,
   ENEMIES.LOST_TIER_3,

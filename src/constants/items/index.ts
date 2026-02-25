@@ -1,11 +1,6 @@
 import { POTION_TYPES } from "../../entities/consumables";
 import { JUNK_TYPES } from "../../entities/junk";
 
-export const CONSUMABLE_ITEMS = {};
-export const FIRST_TIER_ITEMS = [];
-export const SECONDS_TIER_ITEMS = [];
-export const THIRD_TIER_ITEMS = [];
-
 export const JUNK_DATA = {
   [JUNK_TYPES.AXE]: {
     price: 200,
@@ -41,6 +36,10 @@ export const JUNK_DATA = {
     price: 500,
     title: "Сломанная радиостанция",
   },
+  [JUNK_TYPES.BROKEN_PC]: {
+    price: 500,
+    title: "Сломанный компьютер",
+  },
 };
 
 export const FIRST_TIER_JUNK = [
@@ -56,6 +55,7 @@ export const SECOND_TIER_JUNK = [
 export const THIRD_TIER_JUNK = [
   JUNK_TYPES.GOLDEN_CHAIN,
   JUNK_TYPES.BROKEN_RADIOSTATION,
+  JUNK_TYPES.BROKEN_PC,
 ];
 
 export const POTION_TIERS = {
@@ -180,5 +180,8 @@ export enum BASE_ITEMS_ID {
   BULLET_NECKLACE_TIER_2 = "BULLET_NECKLACE_TIER_2",
   BULLET_NECKLACE_TIER_3 = "BULLET_NECKLACE_TIER_3",
   LEAD_CLOAK_TIER_1 = "LEAD_CLOAK_TIER_1",
+  LEAD_CLOAK_TIER_2 = "LEAD_CLOAK_TIER_2",
+  LEAD_CLOAK_TIER_3 = "LEAD_CLOAK_TIER_3",
   VAMPIRE_RING_TIER_1 = "VAMPIRE_RING_TIER_1",
+  CHAOS_CHALICE_TIER_1 = "CHAOS_CHALICE_TIER_1",
 }
