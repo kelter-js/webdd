@@ -103,7 +103,7 @@ export const Enemy: FC<EnemyProps> = ({
         />
       ))}
 
-      {isSelected && (
+      {isSelected && !isEnemyDead && (
         <TargetContainer>
           <Icons.Target />
         </TargetContainer>

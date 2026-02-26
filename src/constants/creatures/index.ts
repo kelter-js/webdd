@@ -287,6 +287,42 @@ export const FIRST_TIER_CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: { hp: 220, maxHp: 220, minDmg: 15, maxDmg: 25, xp: 480 },
   },
+  [ENEMIES.SNEAKER_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 280, maxHp: 280, minDmg: 13, maxDmg: 22, xp: 600 },
+  },
+  [ENEMIES.SNEAKER_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 350, maxHp: 350, minDmg: 17, maxDmg: 28, xp: 750 },
+  },
+  [ENEMIES.SNEAKER_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: { hp: 450, maxHp: 450, minDmg: 22, maxDmg: 35, xp: 900 },
+  },
 };
 
 export const FIRST_TIER_CREATURES_LIST = [

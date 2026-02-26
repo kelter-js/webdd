@@ -289,7 +289,7 @@ export const RECEIPTS: ReceiptData[] = [
     title: "IOTV MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: 6000,
   },
   {
     type: RECEIPT_TYPES.ITEM,
@@ -300,6 +300,72 @@ export const RECEIPTS: ReceiptData[] = [
     title: "IOTV MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.FORT_TIER_1, BASE_ITEMS_ID.FORT_TIER_2),
+    title: "FORT MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
     goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.FORT_TIER_2, BASE_ITEMS_ID.FORT_TIER_3),
+    title: "FORT MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.NFM_TIER_1, BASE_ITEMS_ID.NFM_TIER_2),
+    title: "NFM MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.NFM_TIER_2, BASE_ITEMS_ID.NFM_TIER_3),
+    title: "NFM MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.REDUT_TIER_1, BASE_ITEMS_ID.REDUT_TIER_2),
+    title: "REDUT MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.REDUT_TIER_2, BASE_ITEMS_ID.REDUT_TIER_3),
+    title: "REDUT MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
   },
 ];

@@ -8,7 +8,10 @@ import {
 } from "../../../utils/generateStoreItems";
 import { getItemPrice } from "../../../utils/getItemPrice";
 import { memoizeItem } from "../../../utils/memoizeItem";
-import { MIN_ENCOUNTER_CHANCE } from "../../constants";
+import {
+  MIN_ENCOUNTER_CHANCE,
+  SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
+} from "../../constants";
 import { StoreSet } from "./types";
 import { RESOURCES } from "../../../entities/resources";
 
@@ -105,6 +108,9 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     });
 
     stateCopy.player.itemsToBuy = itemsToBuy.map((item) => memoizeItem(item));
+
+    // Каждый раз когда покидаем данж - увеличиваем шанс на получение спешиал энкаунтера
+    stateCopy.player.specialEncounterChance += SPECIAL_ENCOUNTER_DEFAULT_CHANCE;
 
     console.log("stateCopy", stateCopy);
 

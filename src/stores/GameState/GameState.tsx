@@ -154,6 +154,7 @@ export const useGameState = create<StoreState>()(
                   copyState.player.specialEncounterChance,
                 )
               ) {
+                onFightStart(true);
                 // сбрасываем шанс на спешиал энкаунтер к дефолтному
                 copyState.player.specialEncounterChance =
                   SPECIAL_ENCOUNTER_DEFAULT_CHANCE;
@@ -164,11 +165,13 @@ export const useGameState = create<StoreState>()(
 
                 copyState.player.location.specialEncounter = specialEncounter;
                 copyState.player.flags.push(ENCOUNTER_MAP[specialEncounter]);
+                copyState.player.locationState =
+                  RENDER_LOCATIONS.SPECIAL_ENCOUNTER;
               }
 
               if (!copyState.player.location?.specialEncounter) {
                 // Логика рассчета того, что мы попали в бой
-                const encounterChance = Math.random() * 100;
+                const encounterChance = getRandom(1, 100);
 
                 const currentChance =
                   copyState.player.location?.encounterChance!;

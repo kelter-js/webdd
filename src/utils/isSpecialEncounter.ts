@@ -13,7 +13,7 @@ export const isSpecialEncounter = (
     return false;
   }
 
-  const roll = getRandom(0, 100);
+  const roll = getRandom(1, 100);
 
   return roll < specialEncounterChance;
 };

@@ -51,36 +51,49 @@ export const Battle = () => {
     if (!isFading && isDiceRequiredRoll) {
       setShowDices(true);
       turnOffDices();
-      setTimeout(() => {
+      const fakeTimerId1 = setTimeout(() => {
         setShowDices(false);
       }, 1500);
+
+      return () => {
+        clearTimeout(fakeTimerId1);
+      };
     }
   }, [isFading]);
 
   useHandleBattleEnd();
 
   // MOCK
-  useEffect(() => {
-    const setDamage = async (index: number) => {
-      setAttackingEnemyId(index);
-      await wait(300);
-      setTarget(index);
-      await wait(500);
-      setTarget(null);
-    };
-    setTimeout(() => {
-      killEnemy();
-      setDamage(0);
-    }, 5000);
-    setTimeout(() => {
-      killEnemy();
-      setDamage(1);
-    }, 9000);
-    setTimeout(() => {
-      killEnemy();
-      setDamage(2);
-    }, 13000);
-  }, []);
+  // useEffect(() => {
+  //   const setDamage = async (index: number) => {
+  //     setAttackingEnemyId(index);
+  //     await wait(300);
+  //     setTarget(index);
+  //     await wait(500);
+  //     setTarget(null);
+  //   };
+
+  //   const fakeTimerId1 = setTimeout(() => {
+  //     killEnemy();
+  //     setDamage(0);
+  //   }, 5000);
+
+  //   const fakeTimerId2 = setTimeout(() => {
+  //     killEnemy();
+  //     setDamage(1);
+  //   }, 9000);
+
+  //   const fakeTimerId3 = setTimeout(() => {
+  //     killEnemy();
+  //     setDamage(2);
+  //   }, 13000);
+
+  //   return () => {
+  //     clearTimeout(fakeTimerId1);
+  //     clearTimeout(fakeTimerId2);
+  //     clearTimeout(fakeTimerId3);
+  //   };
+  // }, []);
 
   const handleAttackEnd = () => setAttackingEnemyId(null);
 
@@ -99,7 +112,9 @@ export const Battle = () => {
   // }, [battle.turn]);
 
   // отслеживаем ходы игрока - переключает на ход противника
-  const nextTurn = usePlayerTurnIsOver(showDices);
+  const nextTurn = usePlayerTurnIsOver(showDices || isDiceRequiredRoll);
+  console.log("showDices", showDices || isDiceRequiredRoll);
+  console.log("nextTurn", nextTurn);
   const { selectedPlayer, setSelectedPlayer, handleSelectNextPlayer } =
     usePlayerControl();
 
@@ -117,9 +132,13 @@ export const Battle = () => {
   const resetDamage = () => setDamage(0);
 
   useEffect(() => {
-    setTimeout(() => {
+    const fakeTimerId1 = setTimeout(() => {
       setDamage(125);
     }, 5000);
+
+    return () => {
+      clearTimeout(fakeTimerId1);
+    };
   }, []);
 
   const handleClearDamage = () => setDamage(0);
@@ -129,8 +148,6 @@ export const Battle = () => {
   const enemyLayout = getLayoutCoordinates(
     battle?.enemy?.party?.length || ["test", "test", "test"].length,
   );
-
-  console.log("selectedPlayer", selectedPlayer);
 
   return (
     <Stack

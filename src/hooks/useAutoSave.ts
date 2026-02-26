@@ -6,7 +6,7 @@ import { useSnackbar } from "../contexts/Snackbar";
 // REFACTORING CHECKED ✅
 
 export const useAutoSave = () => {
-  const { isAutoSaveRequired } = useAppState();
+  const { isAutoSaveRequired, toggleAutoSave } = useAppState();
   const { showSnackbar } = useSnackbar();
   const { autoSave } = useGameSaves();
   const { player } = useGameState();
@@ -19,9 +19,11 @@ export const useAutoSave = () => {
 
   useEffect(() => {
     if (isAutoSaveRequired) {
+      console.log("so we triggered autosave??");
+      toggleAutoSave();
       handleAutoSave();
     }
-  }, [isAutoSaveRequired, handleAutoSave]);
+  }, [isAutoSaveRequired, handleAutoSave, toggleAutoSave]);
 
   return handleAutoSave;
 };

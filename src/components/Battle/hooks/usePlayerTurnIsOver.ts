@@ -44,7 +44,7 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
 
     if (!upcomingTurn) return;
 
-    setTimeout(() => {
+    const fakeTimerId1 = setTimeout(() => {
       console.log("so does timeout fire?");
       setBattleTurn(upcomingTurn);
       setNextTurn(null);

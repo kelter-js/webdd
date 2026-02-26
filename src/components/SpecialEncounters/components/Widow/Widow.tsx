@@ -7,6 +7,7 @@ export const Widow = () => {
   const { isDialogueOpen } = useAppState();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
+
   return (
     <div>
       <img alt="задник для локации" />

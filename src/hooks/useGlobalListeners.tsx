@@ -123,6 +123,14 @@ export const useGlobalListeners = () => {
         isAudioEnabled
       ) {
         if (event.key === "Escape") {
+          if (
+            locationState === RENDER_LOCATIONS.BATTLE ||
+            locationState === RENDER_LOCATIONS.SPECIAL_ENCOUNTER ||
+            locationState === RENDER_LOCATIONS.DUNGEON
+          ) {
+            return;
+          }
+
           if (locationState === RENDER_LOCATIONS.LEVELING) {
             toggleCharacterPanel();
             return;

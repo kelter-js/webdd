@@ -74,7 +74,7 @@ function getFinalCritChance(weaponCritChance: number, characterLuck: number) {
 }
 function calculateCritDamage(rawDamage: number, critMultiplier: number) {
   // Просто умножаем урон на множитель
-  return Math.round(rawDamage * critMultiplier);
+  return Math.round(rawDamage * Math.ceil(critMultiplier / 2));
 }
 
 // export const ENEMY_POOLS = {

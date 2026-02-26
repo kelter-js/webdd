@@ -23,6 +23,7 @@ import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
 import { getRandom } from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
 import { POTION_TYPES } from "../entities/consumables";
+import { SNIPER_PERKS } from "../constants/perks";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -248,6 +249,10 @@ export const calculateStatistics = (
         if (item?.criticalStrike) {
           statistics.critStrike = item?.criticalStrike;
         }
+
+        if (item?.critChance) {
+          statistics.critChance += item.critChance;
+        }
       }
 
       if (item.type === GEAR_SLOTS.ARTIFACT && item.effectType) {
@@ -308,12 +313,29 @@ export const calculateStatistics = (
     });
   }
 
-  // character.perksList.forEach((perk) => {
-  //   const [statName, statValue] = getPerkData(perk);
-  //   if (statName && statValue) {
-  //     statistics[statName] += statValue;
-  //   }
-  // });
+  character.perksList.forEach(({ id }) => {
+    switch (id) {
+      case SNIPER_PERKS.CRITICAL_CHANCE: {
+        statistics.critChance += 10;
+        break;
+      }
+
+      case SNIPER_PERKS.CRITICAL_STRIKE: {
+        statistics.critStrike += 5;
+        break;
+      }
+
+      case SNIPER_PERKS.CRITICAL_CHANCE_V2: {
+        statistics.critChance += 15;
+        break;
+      }
+
+      case SNIPER_PERKS.CRITICAL_STRIKE_V2: {
+        statistics.critStrike += 10;
+        break;
+      }
+    }
+  });
 
   return statistics;
 };

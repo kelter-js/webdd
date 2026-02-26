@@ -49,6 +49,8 @@ export interface BattleCharacterModel {
   perksList: Perk[];
   currentHealth: number;
   characterClass: CLASSES;
+  // FIXME: это должно быть обязательным полем!
+  currentAmountOfRounds?: number;
 }
 
 export type PERK_ID_DATA = MEDIC_PERKS | SNIPER_PERKS | TANK_PERKS;
@@ -281,7 +283,7 @@ export interface StoreState {
   setDungeon: (newDungeon: DungeonCreation | null) => void;
   updateDungeon: (
     newDungeon: { position: DungeonCoordinates },
-    onFightStart: VoidFunction,
+    onFightStart: (isSpecialEncounter?: boolean) => void,
   ) => void;
   setState: (gameState: GameStateData) => void;
   setPlayerPosition: (position: DungeonCoordinates) => void;

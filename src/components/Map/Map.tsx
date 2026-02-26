@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Room } from "../../types";
 import { generateDungeon } from "../../utils";
 
-import { ClosePortal, QTEGame, ShootingRange } from "../Minigames";
+import { ClosePortal, QTEGame } from "../Minigames";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import {
   RENDER_LOCATIONS,
@@ -13,14 +13,14 @@ import {
   ECONOMIC_TYPES,
 } from "../../entities";
 
-import { useAppState, useGameState, useGameSaves } from "../../stores";
+import { useAppState, useGameState } from "../../stores";
 import { ROOM_TYPES } from "../../entities/room";
 import { DiceRollModal } from "../../common";
 import { BattleResult } from "./components/BattleResult";
 import { usePlayer } from "../../contexts/Player";
-import encunterSFX from "../../assets/audio/encounter.mp3";
+import encounterSFX from "../../assets/audio/encounter.mp3";
 import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
-import { CrazyTrader, ImmortalWarrior, Widow } from "../SpecialEncounters";
+
 import { useMovement } from "./hooks/useMovement";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
@@ -96,7 +96,7 @@ export const Map = () => {
     });
     handleExitDungeon();
     setDungeon(null);
-    toggleAutoSave();
+
     console.log("we win!");
   }, [toggleAutoSave, economic, handleExitDungeon]);
 
@@ -135,9 +135,12 @@ export const Map = () => {
 
     setPlayerPosition(newPos);
 
-    updateDungeon({ position: newPos }, () => {
+    updateDungeon({ position: newPos }, (isSpecialEncounter = false) => {
       setFading(true);
-      handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encunterSFX);
+
+      if (!isSpecialEncounter) {
+        handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encounterSFX);
+      }
     });
   };
 
@@ -593,16 +596,6 @@ export const Map = () => {
 
       {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
         <QTEGame onFail={handleFail} onWin={handleWin} />
-      )}
-
-      {location.specialEncounter === SPECIAL_ENCOUNTERS.GHOST && <Widow />}
-
-      {location.specialEncounter === SPECIAL_ENCOUNTERS.TRADER && (
-        <CrazyTrader />
-      )}
-
-      {location.specialEncounter === SPECIAL_ENCOUNTERS.SHOOTING && (
-        <ImmortalWarrior />
       )}
 
       {/* <ShootingRange onFail={handleFail} onWin={handleWin} /> */}
