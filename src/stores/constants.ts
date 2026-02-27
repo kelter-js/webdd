@@ -41,7 +41,7 @@ function getFinalDamage(rawDamage: number, armor: number) {
 // формула рассчета шанса уворота
 function getEvasionChance(agility: number) {
   // Твой текущий расчет рейтинга (Agility * 4)
-  const evasionRating = agility * 4;
+  const evasionRating = agility * 0.4;
 
   // Коэффициент "мягкого капа".
   // При рейтинге 60 (15 ловкости) шанс будет 50%.

@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModal } from "../GameModal";
 
 import { useAppState, useGameState } from "../../stores";
 import { GameStateData } from "../../types/gameState";
 import { RECEIPTS } from "../../constants/receipts";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { StartGameText } from "../Initiate/components/SetNameModal/SetNameModal.styled";
+import { HoldProgressButton } from "./components/HoldProgressButton";
+import { Icons } from "../../common";
 
 export const CraftModal = () => {
   const { player } = useGameState();
@@ -46,9 +49,13 @@ export const CraftModal = () => {
 
   const currentCraftData = RECEIPTS[selectedIndex];
 
+  const isCraftButtonDisabled = useMemo(() => {
+    return currentCraftData?.isDisabled(player) || false;
+  }, [player, currentCraftData.isDisabled]);
+
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>
-      <Stack gap={4} direction="row" p={2} height="675px">
+      <Stack gap={2} direction="row" p={2} height="675px">
         <OverlayScrollbarsComponent
           options={{
             overflow: {
@@ -65,7 +72,7 @@ export const CraftModal = () => {
           }}
           defer
           style={{
-            width: "50%",
+            width: "45%",
             height: "100%",
             border: "4px solid rgba(192, 160, 128, 0.3)",
             background: "rgba(0,0,0,0.3)",
@@ -94,6 +101,32 @@ export const CraftModal = () => {
             })}
           </Stack>
         </OverlayScrollbarsComponent>
+
+        <Stack alignItems="center" justifyContent="center" width="100%">
+          <Stack gap={3} mb={8}>
+            <Stack border="1px solid #5a3020"></Stack>
+            <Stack border="1px solid #5a3020"></Stack>
+            <Stack border="1px solid #5a3020"></Stack>
+          </Stack>
+
+          <Stack>
+            <Stack border="1px solid #5a3020"></Stack>
+
+            {currentCraftData?.goldRequiredToCraft && (
+              <Typography display="flex" alignItems="center" gap={1}>
+                {currentCraftData?.goldRequiredToCraft} <Icons.GoldIcon />
+              </Typography>
+            )}
+          </Stack>
+
+          <HoldProgressButton
+            sx={{ mt: "auto" }}
+            onComplete={() => console.log("Action completed!")}
+            disabled={isCraftButtonDisabled}
+          >
+            Создать
+          </HoldProgressButton>
+        </Stack>
       </Stack>
     </GameModal>
   );

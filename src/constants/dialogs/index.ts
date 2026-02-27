@@ -154,7 +154,7 @@ export const priestDialog: DialogueTree = {
       flags: [DIALOGUE_FLAGS.PRIEST_WELCOME],
     },
 
-    greetings: {
+    alreadyWelcomed: {
       text: "Всё ещё ищешь ответы?.. Я вот тоже в поисках.",
       options: [
         {
@@ -514,6 +514,14 @@ export const resetDialogs = () => {
 
   if (tavernReleaseOption) {
     tavernReleaseOption.nextNode = "end";
+  }
+
+  const priestReleaseOption = priestDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+  );
+
+  if (priestReleaseOption) {
+    priestReleaseOption.nextNode = "end";
   }
 
   priestDialog.startNode = "welcome";

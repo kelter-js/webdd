@@ -1,9 +1,11 @@
 import cityImage from "../assets/city.png";
 import city2Image from "../assets/city2.png";
+import city3Image from "../assets/city3.png";
 
 export enum LOCATION_NAMES {
   CITY = "CITY",
   CITY2 = "CITY2",
+  CITY3 = "CITY3",
 }
 
 export enum BUILDING_NAMES {
@@ -103,6 +105,50 @@ export const LOCATIONS = {
       },
     ],
     mapImage: city2Image,
+  },
+
+  [LOCATION_NAMES.CITY3]: {
+    coords: [
+      {
+        coords:
+          "1767,873,1907,803,1906,672,1763,640,1616,614,1517,614,1354,628,1342,818,1443,856",
+        name: BUILDING_NAMES.CITADEL,
+      },
+      {
+        coords: "372,694,359,553,294,453,201,458,33,474,4,531,1,681,120,754",
+
+        name: BUILDING_NAMES.SMITH,
+      },
+      {
+        coords: "388,689,382,562,564,542,566,659",
+
+        name: BUILDING_NAMES.QUEST_DESK,
+      },
+      {
+        coords: "688,350,240,368,223,109,460,34,689,124",
+
+        name: BUILDING_NAMES.GRAVEYARD,
+      },
+      {
+        coords: "1142,255,996,255,998,154,998,115,1059,54,1122,92,1171,126",
+        name: BUILDING_NAMES.TOWER,
+      },
+      {
+        coords:
+          "1020,467,1341,506,1432,467,1422,373,1300,319,1188,319,1122,321,1051,368",
+        name: BUILDING_NAMES.TAVERN,
+      },
+      {
+        coords:
+          "1424,569,1868,621,1919,567,1912,401,1724,380,1575,379,1487,428",
+        name: BUILDING_NAMES.SHOP,
+      },
+      {
+        coords: "294,424,303,536,369,575,689,536,695,416,622,356,349,368",
+        name: BUILDING_NAMES.MEDICAL_STATION,
+      },
+    ],
+    mapImage: city3Image,
   },
 };
 

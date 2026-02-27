@@ -19,6 +19,10 @@ export const equipItem =
         ([_, id]) => id === equipItemId,
       );
 
+      if (!copyState.player.gear_memoized[characterName]) {
+        copyState.player.gear_memoized[characterName] = [];
+      }
+
       if (copyState.player.gear_memoized[characterName] && equipItemData) {
         if (unequipItemId) {
           const unequipItem = copyState.player.gear_memoized[

@@ -280,6 +280,8 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 6000,
   },
+
+  // Бронежилеты 2 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
@@ -324,6 +326,8 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 12000,
   },
+
+  // Бронежилеты 3 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
@@ -364,6 +368,168 @@ export const RECEIPTS: ReceiptData[] = [
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.REDUT_TIER_2, BASE_ITEMS_ID.REDUT_TIER_3),
     title: "REDUT MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+
+  // Шлемы 1 тир
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.GALVION_TIER_1,
+        BASE_ITEMS_ID.GALVION_TIER_2,
+      ),
+    title: "Galvion MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.GALVION_TIER_2,
+        BASE_ITEMS_ID.GALVION_TIER_3,
+      ),
+    title: "Galvion MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.HJELM_TIER_1, BASE_ITEMS_ID.HJELM_TIER_2),
+    title: "HJELM MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.HJELM_TIER_2, BASE_ITEMS_ID.HJELM_TIER_3),
+    title: "HJELM MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+
+  // Шлемы 2 тир
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_1, BASE_ITEMS_ID.ALTYN_TIER_2),
+    title: "Altyn MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_2, BASE_ITEMS_ID.ALTYN_TIER_3),
+    title: "Altyn MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MASKA_TIER_1, BASE_ITEMS_ID.MASKA_TIER_2),
+    title: "Maska MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MASKA_TIER_2, BASE_ITEMS_ID.MASKA_TIER_3),
+    title: "Maska MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+
+  // Шлемы 3 тир
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_1,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_2,
+      ),
+    title: "Ronin MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_2,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_3,
+      ),
+    title: "Ronin MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2,
+      ),
+    title: "Ronin Respirator MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_3,
+      ),
+    title: "Ronin Respirator MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
     goldRequiredToCraft: 24000,

@@ -23,7 +23,7 @@ import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
 import { getRandom } from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
 import { POTION_TYPES } from "../entities/consumables";
-import { SNIPER_PERKS } from "../constants/perks";
+import { SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -222,7 +222,7 @@ export const calculateStatistics = (
     defense: 0,
     minAttack: Math.round(character.accuracy * 0.7),
     maxAttack: Math.round(character.accuracy * 0.7),
-    evasionChance: Math.round(character.agility * 4),
+    evasionChance: Math.round(character.agility * 0.4),
     maxHealth: Math.round(character.endurance * 10),
     critChance: Math.round(character.agility * 0.5),
     critStrike: 0,
@@ -332,6 +332,30 @@ export const calculateStatistics = (
 
       case SNIPER_PERKS.CRITICAL_STRIKE_V2: {
         statistics.critStrike += 10;
+        break;
+      }
+
+      case TANK_PERKS.HEALTH: {
+        statistics.maxHealth += Math.round((statistics.maxHealth / 100) * 10);
+        break;
+      }
+
+      case TANK_PERKS.DODGE: {
+        statistics.evasionChance += Math.round(
+          (statistics.evasionChance / 100) * 10,
+        );
+        break;
+      }
+
+      case TANK_PERKS.HEALTH_V2: {
+        statistics.maxHealth += Math.round((statistics.maxHealth / 100) * 15);
+        break;
+      }
+
+      case TANK_PERKS.DODGE_V2: {
+        statistics.evasionChance += Math.round(
+          (statistics.evasionChance / 100) * 15,
+        );
         break;
       }
     }

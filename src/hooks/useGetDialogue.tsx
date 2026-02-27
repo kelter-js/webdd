@@ -222,9 +222,66 @@ export const useGetDialogue = (npc: string | null) => {
 
         return traderDialog;
 
-      case BUILDING_NAMES.MEDICAL_STATION:
+      case BUILDING_NAMES.MEDICAL_STATION: {
         if (dialogFlags.includes(DIALOGUE_FLAGS.PRIEST_WELCOME)) {
-          priestDialog.startNode = "greetings";
+          priestDialog.startNode = "alreadyWelcomed";
+        }
+
+        const inventoryResources = resources.filter(
+          (item) => item === RESOURCES.OLD_WORLD_TREASURES,
+        ).length;
+
+        const collectedResources = collected.find(
+          (resource) => resource[0] === RESOURCES.OLD_WORLD_TREASURES,
+        );
+
+        const collectedResourcesAmount = collectedResources
+          ? Number(collectedResources[1])
+          : 0;
+
+        const totalAmountOfResources =
+          collectedResourcesAmount + inventoryResources;
+
+        if (
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactFirstTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactSecondTier";
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactThirdTier";
+          }
         }
 
         // Вот здесь должна быть логика реакции на накопленные ресурсы
@@ -235,6 +292,7 @@ export const useGetDialogue = (npc: string | null) => {
         // mock
 
         return priestDialog;
+      }
 
       case BUILDING_NAMES.TOWER:
         if (dialogFlags.includes(DIALOGUE_FLAGS.PHOTO)) {

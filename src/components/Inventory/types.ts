@@ -1,5 +1,10 @@
+import { CLASSES } from "../../entities/characterClasses";
+import { GEAR_SLOTS } from "../../entities/gear";
+import { Item } from "../../types/gameState";
+
 export interface InventoryCellProps {
-  type: any;
-  id: string;
-  index: number;
+  type: GEAR_SLOTS;
+  item?: Item | null;
+  characterClass?: CLASSES;
+  name?: string;
 }

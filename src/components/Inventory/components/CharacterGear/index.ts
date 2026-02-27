@@ -1,0 +1,1 @@
+export { CharacterGear } from "./CharacterGear";

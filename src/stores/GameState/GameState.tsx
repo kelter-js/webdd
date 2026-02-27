@@ -136,7 +136,8 @@ export const useGameState = create<StoreState>()(
             const isPlayableArea =
               currentCell.type !== ROOM_TYPES.END &&
               currentCell.type !== ROOM_TYPES.START &&
-              currentCell.type !== ROOM_TYPES.STORY_BOSS;
+              currentCell.type !== ROOM_TYPES.STORY_BOSS &&
+              currentCell.type !== ROOM_TYPES.ENEMY;
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
 
@@ -313,6 +314,10 @@ export const useGameState = create<StoreState>()(
               ) {
                 // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
               }
+            }
+
+            if (currentCell.type === ROOM_TYPES.ENEMY) {
+              // генерируем квестого противника - одного
             }
 
             copyState.player.location.dungeon = newDungeon;

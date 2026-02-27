@@ -3,32 +3,40 @@ import { MIN_AMOUNT_OF_ITEMS_PER_ROW } from "./constants";
 import { Fragment, RefObject, useMemo } from "react";
 import { InventoryCell } from "./InventoryCell";
 import { useDrop } from "react-dnd";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { useGameState } from "../../stores";
+import { GEAR_SLOTS } from "../../entities/gear";
+import { DragItemWithMeta } from "./CharacterCell";
 
 export const InventoryContainer = () => {
-  const items = useMemo(
-    () =>
-      new Array(MIN_AMOUNT_OF_ITEMS_PER_ROW * 3).fill(null).map((_, index) => ({
-        id: `item-${index}`,
-        type: "item",
-      })),
-    [],
-  );
+  const { inventory = [], removeItemFromGear } = useGameState();
 
   const [{ isOver }, drop] = useDrop<
-    { id: string; fromIndex: number },
+    DragItemWithMeta,
     unknown,
     { isOver: boolean }
   >(() => ({
-    accept: "INVENTORY_ITEM_EQUIPED",
-    drop: (draggedItem: any) => {
-      console.log("we are dropped item", draggedItem);
+    accept: [
+      GEAR_SLOTS.ARMOR,
+      GEAR_SLOTS.ARTIFACT,
+      GEAR_SLOTS.HELMET,
+      GEAR_SLOTS.WEAPON,
+    ],
+    drop: (draggedItem) => {
+      const { item, characterName } = draggedItem;
+
+      if (characterName && item) {
+        removeItemFromGear(characterName, item?.gearId);
+      }
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
+
+  const inventoryList = inventory || [];
+  const isEmptyInventory = inventoryList.length === 0;
 
   return (
     <OverlayScrollbarsComponent
@@ -57,27 +65,36 @@ export const InventoryContainer = () => {
           minHeight: "100%",
           display: "flex",
           flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <S.InventoryContainer
-          ref={drop as unknown as RefObject<HTMLDivElement>}
-        >
-          {items.map((item, index) => (
-            <Fragment key={index}>
-              <InventoryCell id={item.id} index={index} type={item.type} />
-            </Fragment>
-          ))}
-          {isOver && (
-            <Stack
-              sx={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                background: "white",
-              }}
-            ></Stack>
-          )}
-        </S.InventoryContainer>
+        {isEmptyInventory && (
+          <Typography variant="h4">Пустой инвентарь</Typography>
+        )}
+
+        {!isEmptyInventory && (
+          <S.InventoryContainer
+            ref={drop as unknown as RefObject<HTMLDivElement>}
+          >
+            {inventoryList.map((item, index) => (
+              <Fragment key={index}>
+                <InventoryCell item={item} type={item.type} />
+              </Fragment>
+            ))}
+
+            {isOver && (
+              <Stack
+                sx={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  background: "white",
+                }}
+              ></Stack>
+            )}
+          </S.InventoryContainer>
+        )}
       </div>
     </OverlayScrollbarsComponent>
   );
