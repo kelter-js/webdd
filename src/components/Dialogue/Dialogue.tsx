@@ -12,6 +12,9 @@ import { DialogueOption } from "../../types/dialogue";
 import { usePlayer } from "../../contexts/Player";
 import { DIALOGUE_AMBIENT_PLAYER_REF } from "./constants";
 import { RESOURCES } from "../../entities/resources";
+import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
+import { BASE_ITEMS_ID } from "../../constants/items";
+import { LEGENDARY_ARMOR_PRICE } from "../../constants";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const {
@@ -29,6 +32,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     buyCamera,
     increaseResourcesBagLevel,
     giveResources,
+    handleExitSpecialEncounter,
   } = useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
@@ -104,6 +108,22 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.BUY_TORCHES) {
       handleEndDialogue(toggleTorchBuyMenu);
+    }
+
+    if (id === DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_TRADER) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(SPECIAL_ENCOUNTERS.TRADER),
+      );
+    }
+
+    if (id === DIALOGUE_IDS.BUY_LEGENDARY_ARMOR) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.TRADER,
+          BASE_ITEMS_ID.OSPREY_TIER_1,
+          LEGENDARY_ARMOR_PRICE,
+        ),
+      );
     }
 
     if (nextNode === "end") {

@@ -37,7 +37,7 @@ export const InventoryContainer = () => {
 
   const inventoryList = inventory || [];
   const isEmptyInventory = inventoryList.length === 0;
-
+  console.log("inventoryList", inventoryList);
   return (
     <OverlayScrollbarsComponent
       options={{
@@ -79,7 +79,7 @@ export const InventoryContainer = () => {
           >
             {inventoryList.map((item, index) => (
               <Fragment key={index}>
-                <InventoryCell item={item} type={item.type} />
+                <InventoryCell item={item} type={item.type || ""} />
               </Fragment>
             ))}
 

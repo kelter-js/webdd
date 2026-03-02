@@ -219,6 +219,18 @@ export const REDUT_TIER_3 = {
   overAllTier: 3,
 };
 
+export const OSPREY_TIER_1 = {
+  name: "Osprey",
+  description: "Простой бронежилет",
+  iconSrc: "",
+  type: GEAR_SLOTS.ARMOR,
+  tier: 3,
+  value: 35,
+  baseId: BASE_ITEMS_ID.OSPREY_TIER_1,
+  price: 30000,
+  overAllTier: 3,
+};
+
 export const ARMORS_TIER_1 = [BNTI_TIER_1, NPP_TIER_1];
 export const ARMORS_TIER_2 = [IOTV_TIER_1, FORT_TIER_1];
 export const ARMORS_TIER_3 = [NFM_TIER_1, REDUT_TIER_1];

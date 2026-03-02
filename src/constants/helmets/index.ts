@@ -227,6 +227,18 @@ export const RONIN_RESPIRATOR_TIER_3 = {
   overAllTier: 3,
 };
 
+export const CQCM_DEFENSE_ATOMIC_TIER_1 = {
+  name: "REDUT",
+  description: "Простой бронежилет",
+  iconSrc: "",
+  type: GEAR_SLOTS.HELMET,
+  tier: 3,
+  value: 20, // слабый T3 > сильный T3
+  baseId: BASE_ITEMS_ID.CQCM_DEFENSE_ATOMIC_TIER_1,
+  price: 30000,
+  overAllTier: 3,
+};
+
 export const HELMETS_TIER_1 = [GALVION_TIER_1, HJELM_TIER_1];
 export const HELMETS_TIER_2 = [ALTYN_TIER_1, MASKA_TIER_1];
 export const HELMETS_TIER_3 = [RONIN_HELMET_TIER_1, RONIN_RESPIRATOR_TIER_1];

@@ -133,6 +133,7 @@ export const LEAD_CLOAK_TIER_3 = {
   effectType: EFFECT_TYPES.DEFENSE,
 };
 
+// АРТЕФАКТ ЧТО ДАЁТ ЗВЕЗДОЧЁТ ЗА ФУЛЛ ОТКРЫТИЕ АЛЬМОНАХА
 export const CHAOS_CHALICE_TIER_1 = {
   name: "Чаша хаоса",
   description:

@@ -23,7 +23,14 @@ import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
 import { getRandom } from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
 import { POTION_TYPES } from "../entities/consumables";
-import { SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
+import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
+import {
+  generateRandomItem,
+  getGoldByTier,
+  getRandomJunkByTier,
+} from "../components/Battle/utils";
+import { RewardTypes } from "../types";
+import { generatePotion } from "../utils/generatePotionsToBuy";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -85,6 +92,67 @@ export const reviver = (_: string, value: any) => {
   }
 
   return value;
+};
+
+const WITHOUT_FIGHT_ITEM_CHANCE = 20;
+const WITHOUT_FIGHT_POTION_CHANCE = 40;
+const WITHOUT_FIGHT_GOLD_CHANCE = 60;
+const WITHOUT_FIGHT_JUNK_CHANCE = 80;
+const SPECIAL_ITEM_CHANCE_WITHOUT_FIGHT = 50;
+
+export const getRandomRewardWithoutFight = (currentTier: number) => {
+  const roll = getRandom(1, 100);
+
+  if (roll < WITHOUT_FIGHT_ITEM_CHANCE) {
+    const isSpecial = getRandom(1, 100);
+
+    const result = generateRandomItem(
+      currentTier,
+      isSpecial > SPECIAL_ITEM_CHANCE_WITHOUT_FIGHT,
+    );
+
+    return {
+      result,
+      type: RewardTypes.ITEM,
+      message: `Вы получили: ${result.name}`,
+    };
+  }
+
+  if (roll < WITHOUT_FIGHT_POTION_CHANCE) {
+    const result = generatePotion(currentTier);
+
+    return {
+      result,
+      type: RewardTypes.POTION,
+      message: `Вы получили: ${result?.amount || 1} ${result?.type}`,
+    };
+  }
+
+  if (roll > WITHOUT_FIGHT_GOLD_CHANCE) {
+    const result = getGoldByTier(currentTier, true);
+
+    return {
+      result,
+      type: RewardTypes.GOLD,
+      message: `Вы получили: ${result} золота`,
+    };
+  }
+
+  if (roll > WITHOUT_FIGHT_JUNK_CHANCE) {
+    const result = getRandomJunkByTier(currentTier);
+
+    return {
+      result,
+      type: RewardTypes.JUNK,
+      message: `Вы получили: ${result}`,
+    };
+  }
+
+  return {
+    result: null,
+    type: RewardTypes.JUNK,
+    message: `Неудача: пустая сокровищница`,
+  };
 };
 
 const generateTierCreature = (
@@ -358,6 +426,32 @@ export const calculateStatistics = (
         );
         break;
       }
+
+      case MEDIC_PERKS.INCREASE_DAMAGE: {
+        statistics.minAttack += Math.round((statistics.minAttack / 100) * 10);
+        statistics.maxAttack += Math.round((statistics.maxAttack / 100) * 10);
+
+        break;
+      }
+
+      case MEDIC_PERKS.INCREASE_HEALTH: {
+        statistics.maxHealth += Math.round((statistics.maxHealth / 100) * 20);
+
+        break;
+      }
+
+      case MEDIC_PERKS.INCREASE_HEALTH_V2: {
+        statistics.maxHealth += Math.round((statistics.maxHealth / 100) * 30);
+
+        break;
+      }
+
+      case MEDIC_PERKS.INCREASE_DAMAGE_V2: {
+        statistics.minAttack += Math.round((statistics.minAttack / 100) * 15);
+        statistics.maxAttack += Math.round((statistics.maxAttack / 100) * 15);
+
+        break;
+      }
     }
   });
 
@@ -376,25 +470,119 @@ export const getBattleState = (enemy: Creature, party: Character[]) => {
   return BATTLE_STATES.STILL_FIGHTING;
 };
 
-type EffectKey = keyof Effects;
+export interface BattleGenerationProps {
+  tier: number;
+  turn: TURN_STATES;
+  party: Character[];
+  isSpecial?: boolean;
+  characterGear: GearData | null;
+  isBoss?: boolean;
+  isQuest?: boolean;
+}
 
-export const generateBattle = (
-  tier: number,
-  turn: TURN_STATES,
-  party: Character[],
-  isSpecial?: boolean,
-) => {
+export const generateBattle = ({
+  tier,
+  turn,
+  party,
+  isSpecial,
+  isBoss,
+  isQuest,
+  characterGear,
+}: BattleGenerationProps) => {
   // формируем battle model
   const model: Battle = {
-    player: { effects: [], party },
+    player: {
+      effects: [],
+      party: party.map((character) => {
+        const currentCharacterGear = characterGear
+          ? characterGear[character.name]
+          : null;
+        let currentAmountOfRounds = 0;
+
+        if (currentCharacterGear) {
+          const equippedWeapon = currentCharacterGear.find(
+            (item) => item.type === GEAR_SLOTS.WEAPON,
+          );
+
+          if (equippedWeapon) {
+            currentAmountOfRounds = equippedWeapon.magSize || 0;
+          }
+        }
+
+        return {
+          name: character.name,
+          hasTurn: turn === TURN_STATES.PLAYER_TURN,
+          perksList: character.perksList,
+          currentHealth: character.currentHealth,
+          characterClass: character.characterClass,
+          currentAmountOfRounds,
+        };
+      }),
+    },
     // MOCK
     // нужна реальная функция генерации противников в зависимости от тира и ситуации
     // enemy: { effects: [], party: generateEnemy(tier, isSpecial) },
     enemy: { effects: [], party: [] },
     turn,
-    messages: [],
+    messages: [
+      `${turn === TURN_STATES.PLAYER_TURN ? "Игрок" : "Противник"} ходит первым`,
+    ],
     reward: null,
   };
+
+  if (isQuest) {
+    // MOCK
+    // const questEnemyByTier = tier === 1 ?
+    // model.enemy.party.push(questEnemyByTier);
+    return model;
+  }
+
+  if (isBoss) {
+    // MOCK
+    // const bossByTier = tier === 1 ?
+    // model.enemy.party.push(bossByTier);
+    return model;
+  }
+
+  if (isSpecial) {
+    const hasTwoEnemies = getRandom(1, 100);
+    const DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE = 50;
+
+    if (hasTwoEnemies > DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE) {
+      // const currentTypeOfSpecialEnemies = логика вычисления массива противников
+
+      // model.enemy.party.push(currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)], currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)])
+      return model;
+    } else {
+      // const currentTypeOfSpecialEnemies = логика вычисления массива противников
+      // model.enemy.party.push(currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)]);
+      return model;
+    }
+  } else {
+    const roll = getRandom(1, 100);
+
+    const CHANCE_OF_TWO_ENEMIES = 50;
+    const CHANCE_OF_THREE_ENEMIES = 30;
+
+    if (roll < CHANCE_OF_THREE_ENEMIES) {
+      // const currentEnemyPool = логика вычисления массива противников
+      // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
+      // currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
+      // currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
+      // );
+      return model;
+    }
+
+    if (roll < CHANCE_OF_TWO_ENEMIES) {
+      // const currentEnemyPool = логика вычисления массива противников
+      // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)]);
+      return model;
+    }
+
+    // const currentEnemyPool = логика вычисления массива противников
+    // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)]);
+    return model;
+  }
 
   // enemy: Enemy;
   // player: Player;
@@ -402,7 +590,6 @@ export const generateBattle = (
   // messages: Message[];
   // reward: null | Reward;
   // mock
-  return {};
 };
 
 const CHANCE_TO_FULL_ENEMY_PARTY = 50;

@@ -3,10 +3,11 @@ import blacksmith from "../../assets/npc/smith.png";
 import questDesk from "../../assets/npc/quest_desk.png";
 import potionTrader from "../../assets/npc/potion-trader.png";
 import accountant from "../../assets/npc/accountant.png";
+import crazyTrader from "../../assets/npc/crazy_trader.png";
 import priest from "../../assets/npc/priest.png";
 import starcounter from "../../assets/npc/starcounter.png";
 import watchmen from "../../assets/npc/watchmen.png";
-import { BUILDING_NAMES } from "..";
+import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
 
 export const smithDialog: DialogueTree = {
@@ -358,6 +359,60 @@ export const citadelDialog: DialogueTree = {
         { text: "[Перейти к распределению ресурсов]", nextNode: "end" },
       ],
       flags: [DIALOGUE_FLAGS.ECONOMIC_INTRO],
+    },
+  },
+};
+
+export const crazyTraderDialog: DialogueTree = {
+  id: BUILDING_NAMES.CRAZY_TRADER,
+  src: crazyTrader,
+  name: "Безумный торговец",
+  startNode: "welcome",
+  nodes: {
+    welcome: {
+      text: "Тише, Пигель, Тише, кто-то идёт... А, путники! Рад поприветствовать вас на ежегодной распродаже рук! Ну как... не только рук, быт старого мира, дохлые крысы и сверчки, ну посмотрите только! Да что я говорю, вы сами взгляните только!",
+      options: [
+        {
+          text: "Эм... И тебе не хворать! А может есть что-нибудь, более толковое?",
+          nextNode: "who_are_you",
+        },
+        {
+          text: "[молча пройти мимо]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_TRADER,
+        },
+      ],
+    },
+
+    who_are_you: {
+      text: "Толковое? А я думал в вас есть искра, что вы человек искусства. А тут судя по всему только простолюдины и обитают, снобы... Да, Пигель? [У вас складывается ощущение, что он разговаривает с чьей-то оторванной рукой на столе]",
+      options: [
+        {
+          text: "Простолюдины? Оглянись, ты хоть понимаешь где ты вообще?..",
+          nextNode: "elaborate",
+        },
+        {
+          text: "[Оставить его одного]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_TRADER,
+        },
+      ],
+    },
+
+    elaborate: {
+      text: `Я - прекрасно осведомлен, чего не скажешь о вас. Толковое, это значится, только пушки да... Кхм, броня? Я знаете ли совершенно против насилия! [Его передергивает, он искоса смотрит на руку, и переводит взгляд на вас]. Броня, дааа... есть. НО будет дорого! И я не уличный торгаш, никаких попыток мне тут выторговать подешевле! ${LEGENDARY_ARMOR_PRICE} золотых и эта чудесная броня ваша! Чуток отмыть от крови и как новая...`,
+      options: [
+        {
+          text: `Скряга... [купить броню - отдать ${LEGENDARY_ARMOR_PRICE} золотых]`,
+          nextNode: "end",
+          id: DIALOGUE_IDS.BUY_LEGENDARY_ARMOR,
+        },
+        {
+          text: "Да ты с ума сошёл? Оставь ее себе, больной...",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_TRADER,
+        },
+      ],
     },
   },
 };

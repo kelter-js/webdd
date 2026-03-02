@@ -7,8 +7,6 @@ import emptySlot from "../../assets/static/empty_slot.png";
 import { Item } from "../../types/gameState";
 import { GEAR_SLOTS } from "../../entities/gear";
 
-const ITEM_TYPE = "INVENTORY_ITEM";
-
 export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
   const [{ isDragging }, drag] = useDrag<
     Item | null | undefined,

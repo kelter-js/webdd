@@ -26,6 +26,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { getDungeonBackgroundByTier } from "./utils";
 import { getFlagStoryBossByTier } from "../../utils/getFlagStoryBossByTier";
+import { useSnackbar } from "../../contexts/Snackbar";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -57,6 +58,7 @@ export const Map = () => {
   } = useGameState();
   const { setFading, toggleAutoSave } = useAppState();
   const [isMapVisible, setMapVisible] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
   const handleMapVisibilityChange = () => setMapVisible((state) => !state);
 
@@ -135,13 +137,17 @@ export const Map = () => {
 
     setPlayerPosition(newPos);
 
-    updateDungeon({ position: newPos }, (isSpecialEncounter = false) => {
-      setFading(true);
+    updateDungeon(
+      { position: newPos },
+      (isSpecialEncounter = false) => {
+        setFading(true);
 
-      if (!isSpecialEncounter) {
-        handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encounterSFX);
-      }
-    });
+        if (!isSpecialEncounter) {
+          handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encounterSFX);
+        }
+      },
+      (result) => showSnackbar(result),
+    );
   };
 
   const dungeon = currentDungeon || [];

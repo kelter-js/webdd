@@ -48,9 +48,6 @@ export const equipItem =
           ...copyState.player.gear_memoized[characterName],
           equipItemData,
         ];
-
-        // MOCK
-        // ТУТ НУЖНА ЛОГИКА ПЕРЕСЧЕТА ХАРАКТЕРИСТИК ПЕРСОНАЖА И УСТАНОВКА ИХ В STORE
       }
 
       return rebuildDerivedState(copyState, characterName);

@@ -1,3 +1,4 @@
+import { handleExitSpecialEncounter } from "./handleExitSpecialEncounter";
 import { increaseResourcesBagLevel } from "./increaseResourcesBagLevel";
 import { toggleCharacterPanel } from "./toggleCharacterPanel";
 import { removeItemFromGear } from "./removeItemFromGear";
@@ -46,6 +47,7 @@ import { buyItem } from "./buyItem";
 import { addJunk } from "./addJunk";
 
 export {
+  handleExitSpecialEncounter,
   increaseResourcesBagLevel,
   toggleCharacterPanel,
   removeItemFromGear,

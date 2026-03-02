@@ -7,6 +7,7 @@ import {
   traderDialog,
   starCounterDialog,
   DEFAULT_TAVERN_WELCOME_OPTIONS,
+  crazyTraderDialog,
 } from "../constants/dialogs";
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
@@ -15,6 +16,7 @@ import {
   BUILDING_NAMES,
   FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT,
   FLAGS,
+  LEGENDARY_ARMOR_PRICE,
   SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
   THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
 } from "../constants";
@@ -321,6 +323,18 @@ export const useGetDialogue = (npc: string | null) => {
         }
 
         return citadelDialog;
+      }
+
+      case BUILDING_NAMES.CRAZY_TRADER: {
+        const optionToBuy = crazyTraderDialog.nodes.elaborate.options.find(
+          (option) => option.id === DIALOGUE_IDS.BUY_LEGENDARY_ARMOR,
+        );
+
+        if (optionToBuy) {
+          optionToBuy.isDisabled = gold < LEGENDARY_ARMOR_PRICE;
+        }
+
+        return crazyTraderDialog;
       }
 
       default:

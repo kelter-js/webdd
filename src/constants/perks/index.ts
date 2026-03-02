@@ -220,7 +220,7 @@ export enum MEDIC_PERKS {
 }
 
 export const MEDIC_PERKS_DESCRIPTIONS = {
-  [MEDIC_PERKS.INCREASE_DAMAGE]: "Увеличение урона на 5%",
+  [MEDIC_PERKS.INCREASE_DAMAGE]: "Увеличение урона на 10%",
   [MEDIC_PERKS.INCREASE_HEALTH]: "Увеличение здоровья 20%",
 
   [MEDIC_PERKS.BLEED]:
@@ -238,7 +238,7 @@ export const MEDIC_PERKS_DESCRIPTIONS = {
   [MEDIC_PERKS.HEAL_ALL]:
     "Активная: лечит весь отряд на 30% - перезарядка 2 хода",
   [MEDIC_PERKS.FORTIFICATION]:
-    "Пассивная: увеличивает здоровье всех членов команды на 20%",
+    "Пассивная: Все употребляемые командой зелья дополнительно восстанавливают 15% здоровья",
 } as const;
 
 export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {

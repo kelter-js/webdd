@@ -14,6 +14,7 @@ import {
   BATTLE_TARGET,
   ECONOMIC_TYPES,
 } from "../entities";
+import { AI_CATEGORIES } from "../entities/ai";
 import { CLASSES } from "../entities/characterClasses";
 import { POTION_TYPES } from "../entities/consumables";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
@@ -116,9 +117,7 @@ export interface Creature {
   minAttack: number;
   maxAttack: number;
   evasionChance: number;
-  effects: BattleEffects[];
-  isEnhanced?: boolean;
-  tier: number;
+  aiPackage: AI_CATEGORIES;
   exp: number;
   hasTurn?: boolean;
 }
@@ -178,7 +177,7 @@ export interface Battle {
   enemy: Enemy;
   player: Player;
   turn: TURN_STATES;
-  messages: Message[];
+  messages: Array<Message | string>;
   reward: null | Reward;
 }
 
@@ -284,6 +283,7 @@ export interface StoreState {
   updateDungeon: (
     newDungeon: { position: DungeonCoordinates },
     onFightStart: (isSpecialEncounter?: boolean) => void,
+    onReward: (reward: string) => void,
   ) => void;
   setState: (gameState: GameStateData) => void;
   setPlayerPosition: (position: DungeonCoordinates) => void;
@@ -325,6 +325,11 @@ export interface StoreState {
   setBattleTurn: (newTurn: TURN_STATES) => void;
   sellItem: (itemId: string) => void;
   buyItem: (itemId: string) => void;
+  handleExitSpecialEncounter: (
+    specialEncounter: SPECIAL_ENCOUNTERS,
+    itemAcquiredId?: BASE_ITEMS_ID,
+    goldRequired?: number,
+  ) => void;
   updatePlayerState: (model: GameStateData) => void;
   buyTorches: (torchesAmount: number) => void;
   setReward: (newTurn: Reward) => void;
@@ -382,6 +387,7 @@ export type PersistedState = Omit<
   | "gear"
   | "playersLvlUpNotifications"
   | "statistics"
+  | "handleExitSpecialEncounter"
   | "isDiceRequiredRoll"
   | "isAutoSaveRequired"
   | "abilities"

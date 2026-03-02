@@ -380,6 +380,25 @@ export const SAIGA_TIER_3 = {
   overAllTier: 3,
 };
 
+export const AA12_TIER_1 = {
+  name: "AA-12",
+  description: "Полуавтоматический дробовик на базе АК",
+  iconSrc: "",
+  soundSrc: "",
+  gunType: GUN_TYPES.SHOTGUN,
+  type: GEAR_SLOTS.WEAPON,
+  magSize: 20,
+  critChance: 20,
+  tier: 3,
+  criticalStrike: 3,
+  bulletsPerTurn: 5,
+  minValue: 120,
+  value: 155,
+  baseId: BASE_ITEMS_ID.AA12_TIER_1,
+  price: 45000,
+  overAllTier: 3,
+};
+
 export const AK_12_TIER_1 = {
   name: "AK-12",
   description: "Калашников",
@@ -551,6 +570,25 @@ export const SA58_TIER_3 = {
   overAllTier: 3,
   price: 7000,
   baseId: BASE_ITEMS_ID.SA58_TIER_3,
+};
+
+export const SWORD_MK18_TIER_1 = {
+  name: "Sword MK-18",
+  description: "Полуавтоматический дробовик на базе АК",
+  iconSrc: "",
+  soundSrc: "",
+  gunType: GUN_TYPES.SNIPER_RIFLE,
+  type: GEAR_SLOTS.WEAPON,
+  magSize: 10,
+  critChance: 25,
+  tier: 3,
+  criticalStrike: 5,
+  bulletsPerTurn: 1,
+  minValue: 170,
+  value: 200,
+  baseId: BASE_ITEMS_ID.SWORD_MK18_TIER_1,
+  price: 45000,
+  overAllTier: 3,
 };
 
 // !!! ПИСТОЛЕТЫ-ПУЛЕМЕТЫ
@@ -726,6 +764,25 @@ export const KRISS_VECTOR_TIER_3 = {
   overAllTier: 3,
   price: 8500,
   baseId: BASE_ITEMS_ID.KRISS_VECTOR_TIER_3,
+};
+
+export const VERESK_TIER_1 = {
+  name: "Вереск",
+  description: "ПП с уникальной системой отдачи",
+  iconSrc: "",
+  soundSrc: "",
+  gunType: GUN_TYPES.SMG,
+  type: GEAR_SLOTS.WEAPON,
+  magSize: 25,
+  critChance: 38, // Каждый третий выстрел - критический
+  criticalStrike: 2.5,
+  bulletsPerTurn: 5,
+  minValue: 70,
+  value: 90,
+  tier: 3,
+  overAllTier: 3,
+  price: 45000,
+  baseId: BASE_ITEMS_ID.VERESK_TIER_1,
 };
 
 // !!! ПИСТОЛЕТЫ

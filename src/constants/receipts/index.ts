@@ -534,4 +534,78 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 24000,
   },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MP155_TIER_1, BASE_ITEMS_ID.MP155_TIER_2),
+    title: "MP-155 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MP155_TIER_2, BASE_ITEMS_ID.MP155_TIER_3),
+    title: "MP-155 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_1,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_2,
+      ),
+    title: "Remington 870 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_2,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_3,
+      ),
+    title: "Remington 870 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_1, BASE_ITEMS_ID.SAIGA_TIER_2),
+    title: "Saiga-12 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_2, BASE_ITEMS_ID.SAIGA_TIER_3),
+    title: "Saiga-12 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
 ];

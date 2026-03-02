@@ -60,3 +60,10 @@ export interface ResourceData {
   resource: RESOURCES;
   id: string;
 }
+
+export enum RewardTypes {
+  ITEM = "ITEM",
+  JUNK = "JUNK",
+  POTION = "POTION",
+  GOLD = "GOLD",
+}

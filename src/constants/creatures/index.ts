@@ -19,7 +19,7 @@ import { AI_CATEGORIES } from "../../entities/ai";
 // 3 босс режет макс хп на 15%, увеличивает шанс промаха по себе, рандомно вешает на всех бомбы, которые
 // взрываются через несколько ходов взрываются и отнимают ход у персонажа на котором была бомба
 
-export const FIRST_TIER_CREATURES = {
+export const CREATURES = {
   [ENEMIES.SPIDER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,
@@ -30,7 +30,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 15, maxHp: 15, minDmg: 1, maxDmg: 3, xp: 50 },
+    baseModel: {
+      hp: 15,
+      maxHp: 15,
+      minDmg: 1,
+      maxDmg: 3,
+      xp: 50,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SPIDER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -42,7 +49,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 25, maxHp: 25, minDmg: 2, maxDmg: 4, xp: 70 },
+    baseModel: {
+      hp: 25,
+      maxHp: 25,
+      minDmg: 2,
+      maxDmg: 4,
+      xp: 70,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SPIDER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -54,7 +68,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 35, maxHp: 35, minDmg: 3, maxDmg: 5, xp: 100 },
+    baseModel: {
+      hp: 35,
+      maxHp: 35,
+      minDmg: 3,
+      maxDmg: 5,
+      xp: 100,
+      evasionChance: 5,
+    },
   },
 
   [ENEMIES.TORSO_TIER_1]: {
@@ -67,7 +88,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 40, maxHp: 40, minDmg: 3, maxDmg: 5, xp: 120 },
+    baseModel: {
+      hp: 40,
+      maxHp: 40,
+      minDmg: 3,
+      maxDmg: 5,
+      xp: 120,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.TORSO_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -79,7 +107,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 55, maxHp: 55, minDmg: 4, maxDmg: 7, xp: 150 },
+    baseModel: {
+      hp: 55,
+      maxHp: 55,
+      minDmg: 4,
+      maxDmg: 7,
+      xp: 150,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.TORSO_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -91,7 +126,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 70, maxHp: 70, minDmg: 5, maxDmg: 9, xp: 180 },
+    baseModel: {
+      hp: 70,
+      maxHp: 70,
+      minDmg: 5,
+      maxDmg: 9,
+      xp: 180,
+      evasionChance: 5,
+    },
   },
 
   [ENEMIES.WATCHER_TIER_1]: {
@@ -104,7 +146,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 75, maxHp: 75, minDmg: 5, maxDmg: 8, xp: 200 },
+    baseModel: {
+      hp: 75,
+      maxHp: 75,
+      minDmg: 5,
+      maxDmg: 8,
+      xp: 200,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.WATCHER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -116,7 +165,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 100, maxHp: 100, minDmg: 6, maxDmg: 10, xp: 240 },
+    baseModel: {
+      hp: 100,
+      maxHp: 100,
+      minDmg: 6,
+      maxDmg: 10,
+      xp: 240,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.WATCHER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -128,7 +184,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 130, maxHp: 130, minDmg: 8, maxDmg: 12, xp: 300 },
+    baseModel: {
+      hp: 130,
+      maxHp: 130,
+      minDmg: 8,
+      maxDmg: 12,
+      xp: 300,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SPIRIT_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -140,7 +203,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 110, maxHp: 110, minDmg: 6, maxDmg: 9, xp: 350 },
+    baseModel: {
+      hp: 110,
+      maxHp: 110,
+      minDmg: 6,
+      maxDmg: 9,
+      xp: 350,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SPIRIT_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -152,7 +222,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 140, maxHp: 140, minDmg: 8, maxDmg: 12, xp: 420 },
+    baseModel: {
+      hp: 140,
+      maxHp: 140,
+      minDmg: 8,
+      maxDmg: 12,
+      xp: 420,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SPIRIT_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -164,7 +241,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 180, maxHp: 180, minDmg: 10, maxDmg: 15, xp: 500 },
+    baseModel: {
+      hp: 180,
+      maxHp: 180,
+      minDmg: 10,
+      maxDmg: 15,
+      xp: 500,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.BIRD_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -176,7 +260,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 250, maxHp: 250, minDmg: 12, maxDmg: 18, xp: 800 },
+    baseModel: {
+      hp: 250,
+      maxHp: 250,
+      minDmg: 12,
+      maxDmg: 18,
+      xp: 800,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.BIRD_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -188,7 +279,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 350, maxHp: 350, minDmg: 15, maxDmg: 22, xp: 1000 },
+    baseModel: {
+      hp: 350,
+      maxHp: 350,
+      minDmg: 15,
+      maxDmg: 22,
+      xp: 1000,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.BIRD_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -200,7 +298,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 450, maxHp: 450, minDmg: 18, maxDmg: 28, xp: 1300 },
+    baseModel: {
+      hp: 450,
+      maxHp: 450,
+      minDmg: 18,
+      maxDmg: 28,
+      xp: 1300,
+      evasionChance: 5,
+    },
   },
   [ENEMIES.SIN_ICON_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -212,7 +317,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 750, maxHp: 750, minDmg: 20, maxDmg: 32, xp: 2500 },
+    baseModel: {
+      hp: 750,
+      maxHp: 750,
+      minDmg: 20,
+      maxDmg: 32,
+      xp: 2500,
+      evasionChance: 5,
+    },
   },
 
   [ENEMIES.SOLDIER_TIER_1]: {
@@ -225,7 +337,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 80, maxHp: 80, minDmg: 7, maxDmg: 12, xp: 200 },
+    baseModel: {
+      hp: 80,
+      maxHp: 80,
+      minDmg: 7,
+      maxDmg: 12,
+      xp: 200,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.SOLDIER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -237,7 +356,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 100, maxHp: 100, minDmg: 9, maxDmg: 15, xp: 250 },
+    baseModel: {
+      hp: 100,
+      maxHp: 100,
+      minDmg: 9,
+      maxDmg: 15,
+      xp: 250,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.SOLDIER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -249,7 +375,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 130, maxHp: 130, minDmg: 11, maxDmg: 18, xp: 300 },
+    baseModel: {
+      hp: 130,
+      maxHp: 130,
+      minDmg: 11,
+      maxDmg: 18,
+      xp: 300,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.FIREFIGHTER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -261,7 +394,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 150, maxHp: 150, minDmg: 10, maxDmg: 16, xp: 350 },
+    baseModel: {
+      hp: 150,
+      maxHp: 150,
+      minDmg: 10,
+      maxDmg: 16,
+      xp: 350,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.FIREFIGHTER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -273,7 +413,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 180, maxHp: 180, minDmg: 12, maxDmg: 20, xp: 400 },
+    baseModel: {
+      hp: 180,
+      maxHp: 180,
+      minDmg: 12,
+      maxDmg: 20,
+      xp: 400,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.FIREFIGHTER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -285,7 +432,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 220, maxHp: 220, minDmg: 15, maxDmg: 25, xp: 480 },
+    baseModel: {
+      hp: 220,
+      maxHp: 220,
+      minDmg: 15,
+      maxDmg: 25,
+      xp: 480,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.SNEAKER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -297,7 +451,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 280, maxHp: 280, minDmg: 13, maxDmg: 22, xp: 600 },
+    baseModel: {
+      hp: 280,
+      maxHp: 280,
+      minDmg: 13,
+      maxDmg: 22,
+      xp: 600,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.SNEAKER_TIER_2]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -309,7 +470,14 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 350, maxHp: 350, minDmg: 17, maxDmg: 28, xp: 750 },
+    baseModel: {
+      hp: 350,
+      maxHp: 350,
+      minDmg: 17,
+      maxDmg: 28,
+      xp: 750,
+      evasionChance: 10,
+    },
   },
   [ENEMIES.SNEAKER_TIER_3]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -321,7 +489,134 @@ export const FIRST_TIER_CREATURES = {
     audioSrc: "",
 
     // другие данные по типу хп и прочего
-    baseModel: { hp: 450, maxHp: 450, minDmg: 22, maxDmg: 35, xp: 900 },
+    baseModel: {
+      hp: 450,
+      maxHp: 450,
+      minDmg: 22,
+      maxDmg: 35,
+      xp: 900,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.LOST_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 400,
+      maxHp: 400,
+      minDmg: 18,
+      maxDmg: 28,
+      xp: 900,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.LOST_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 500,
+      maxHp: 500,
+      minDmg: 22,
+      maxDmg: 35,
+      xp: 1100,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.LOST_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 650,
+      maxHp: 650,
+      minDmg: 28,
+      maxDmg: 42,
+      xp: 1350,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.INVENTOR_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 650,
+      maxHp: 650,
+      minDmg: 25,
+      maxDmg: 40,
+      xp: 1500,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.INVENTOR_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 850,
+      maxHp: 850,
+      minDmg: 32,
+      maxDmg: 50,
+      xp: 1800,
+      evasionChance: 10,
+    },
+  },
+
+  [ENEMIES.INVENTOR_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1100,
+      maxHp: 1100,
+      minDmg: 40,
+      maxDmg: 65,
+      xp: 2200,
+      evasionChance: 10,
+    },
   },
 };
 
@@ -348,9 +643,9 @@ export const FIRST_TIER_MINIBOSS_LIST = [
   ENEMIES.BIRD_TIER_2,
 ];
 
-export const FIRST_TIER_QUEST_MINIBOSS = ENEMIES.BIRD_TIER_3;
+export const FIRST_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.BIRD_TIER_3];
 
-export const FIRST_TIER_BOSS = ENEMIES.SIN_ICON_TIER_1;
+export const FIRST_TIER_BOSS = CREATURES[ENEMIES.SIN_ICON_TIER_1];
 
 export const SECOND_TIER_CREATURES_LIST = [
   ENEMIES.SOLDIER_TIER_1,
@@ -375,9 +670,10 @@ export const SECOND_TIER_MINIBOSS_LIST = [
   ENEMIES.INVENTOR_TIER_2,
 ];
 
-export const SECOND_TIER_QUEST_MINIBOSS = ENEMIES.INVENTOR_TIER_3;
+export const SECOND_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
 
-export const SECOND_TIER_BOSS = ENEMIES.GENERAL_TIER_1;
+// MOCK
+export const SECOND_TIER_BOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
 
 export const THIRD_TIER_CREATURES_LIST = [];
 

@@ -5,4 +5,5 @@ export enum ROOM_TYPES {
   TREASURE = "TREASURE",
   EMPTY = "EMPTY",
   STORY_BOSS = "STORY_BOSS",
+  CLEARED = "CLEARED",
 }

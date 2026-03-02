@@ -24,12 +24,14 @@ import {
   getBattleState,
   getEncounterRoll,
   getFirstTurn,
+  getRandomRewardWithoutFight,
   increaseCharacterStat,
 } from "../utils";
 import {
   Battle,
   Creature,
   Enemy,
+  Item,
   Player,
   StoreState,
 } from "../../types/gameState";
@@ -83,6 +85,7 @@ import {
   updatePlayerState,
   setVolume,
   removeItemFromGear,
+  handleExitSpecialEncounter,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -92,6 +95,9 @@ import {
 } from "../../utils/generateSpecialEncounter";
 import { FLAGS } from "../../constants";
 import { RESOURCES } from "../../entities/resources";
+import { RewardTypes } from "../../types";
+import { JUNK_TYPES } from "../../entities/junk";
+import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -111,7 +117,7 @@ export const useGameState = create<StoreState>()(
 
       // Methods
 
-      updateDungeon: ({ position }, onFightStart) =>
+      updateDungeon: ({ position }, onFightStart, onReward) =>
         set((state) => {
           const copyState = {
             ...state,
@@ -137,6 +143,7 @@ export const useGameState = create<StoreState>()(
               currentCell.type !== ROOM_TYPES.END &&
               currentCell.type !== ROOM_TYPES.START &&
               currentCell.type !== ROOM_TYPES.STORY_BOSS &&
+              currentCell.type !== ROOM_TYPES.CLEARED &&
               currentCell.type !== ROOM_TYPES.ENEMY;
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
@@ -165,7 +172,7 @@ export const useGameState = create<StoreState>()(
                 );
 
                 copyState.player.location.specialEncounter = specialEncounter;
-                copyState.player.flags.push(ENCOUNTER_MAP[specialEncounter]);
+
                 copyState.player.locationState =
                   RENDER_LOCATIONS.SPECIAL_ENCOUNTER;
               }
@@ -184,14 +191,15 @@ export const useGameState = create<StoreState>()(
                   Boolean(currentCell.isLighted),
                   Boolean(isDeadEnd),
                 );
+
                 const hasEncounter = encounterChance < roll;
 
                 if (hasEncounter) {
                   onFightStart();
 
-                  console.log("do we reach that place?");
-
                   if (isDeadEnd) {
+                    currentCell.type === ROOM_TYPES.CLEARED;
+
                     const firstTurn = getFirstTurn(
                       copyState.player.currentTier,
                       copyState.effects,
@@ -199,12 +207,13 @@ export const useGameState = create<StoreState>()(
                       true,
                     );
 
-                    const battle = generateBattle(
-                      copyState.player.currentTier,
-                      firstTurn,
-                      copyState.player.party,
-                      true,
-                    );
+                    const battle = generateBattle({
+                      tier: copyState.player.currentTier,
+                      turn: firstTurn,
+                      party: copyState.player.party,
+                      isSpecial: true,
+                      characterGear: copyState.gear,
+                    });
                     // state.player.battle = battle;
                     // MOCK - убрать коммент для начала битвы
                     copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
@@ -238,11 +247,12 @@ export const useGameState = create<StoreState>()(
                       copyState.player.party,
                     );
                     // нужно передавать реальый тир вместо 1
-                    const battle = generateBattle(
-                      copyState.player.currentTier,
-                      firstTurn,
-                      copyState.player.party,
-                    );
+                    const battle = generateBattle({
+                      tier: copyState.player.currentTier,
+                      turn: firstTurn,
+                      party: copyState.player.party,
+                      characterGear: copyState.gear,
+                    });
                     // state.player.battle = battle;
                     // MOCK - убрать коммент для начала битвы
                     copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
@@ -285,17 +295,117 @@ export const useGameState = create<StoreState>()(
                   }
 
                   if (isDeadEnd) {
-                    // если не прокнул противник и мы в тупике - значит нужно сгенерировать событие получения награды!
+                    currentCell.type === ROOM_TYPES.CLEARED;
+                    const reward = getRandomRewardWithoutFight(
+                      copyState.player.currentTier,
+                    );
+
+                    onReward(reward.message);
+
+                    if (reward.result) {
+                      switch (reward.type) {
+                        case RewardTypes.GOLD: {
+                          if (typeof reward.result === "number") {
+                            copyState.player.gold += reward.result;
+                          }
+
+                          break;
+                        }
+
+                        case RewardTypes.JUNK: {
+                          const junkToAdd = reward.result as JUNK_TYPES;
+
+                          const junkItem = copyState.player.junk.find(
+                            (item) => item[0] === junkToAdd,
+                          );
+
+                          if (junkItem) {
+                            copyState.player.junk = copyState.player.junk.map(
+                              (item) =>
+                                item[0] === junkToAdd
+                                  ? [item[0], String(Number(item[1]) + 1)]
+                                  : item,
+                            );
+                          } else {
+                            copyState.player.junk.push([junkToAdd, String(1)]);
+                          }
+
+                          break;
+                        }
+
+                        case RewardTypes.POTION: {
+                          const rewardPotion = reward.result as {
+                            type: POTION_TYPES;
+                          };
+
+                          const hasSamePotions =
+                            copyState.player.consumables.find((potion) => {
+                              const [potionType] = potion;
+                              return potionType === rewardPotion.type;
+                            });
+
+                          if (hasSamePotions) {
+                            copyState.player.consumables =
+                              copyState.player.consumables.map((potion) => {
+                                const [potionType, amount] = potion;
+
+                                if (potionType === rewardPotion.type) {
+                                  console.log(Number(amount) + 1);
+                                  return [potionType, `${Number(amount) + 1}`];
+                                }
+
+                                return potion;
+                              });
+                          } else {
+                            copyState.player.consumables.push([
+                              rewardPotion.type,
+                              "1",
+                            ]);
+                          }
+
+                          break;
+                        }
+
+                        case RewardTypes.ITEM: {
+                          const rewardItem = reward.result as Item;
+
+                          if (!copyState.inventory) {
+                            copyState.inventory = [];
+                          }
+
+                          copyState.inventory.push(rewardItem);
+                          copyState.player.inventory_memoized.push([
+                            rewardItem.baseId,
+                            rewardItem.gearId,
+                          ]);
+
+                          break;
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
 
             if (currentCell.type === ROOM_TYPES.STORY_BOSS) {
+              const firstTurn = getFirstTurn(
+                copyState.player.currentTier,
+                copyState.effects,
+                copyState.player.party,
+              );
+
               if (
                 copyState.player.currentTier === 1 &&
                 !copyState.player.flags.includes(FLAGS.FIRST_STORY_BOSS_VICTORY)
               ) {
+                const battle = generateBattle({
+                  tier: copyState.player.currentTier,
+                  turn: firstTurn,
+                  party: copyState.player.party,
+                  characterGear: copyState.gear,
+                  isBoss: true,
+                });
                 // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
               }
 
@@ -305,6 +415,13 @@ export const useGameState = create<StoreState>()(
                   FLAGS.SECOND_STORY_BOSS_VICTORY,
                 )
               ) {
+                const battle = generateBattle({
+                  tier: copyState.player.currentTier,
+                  turn: firstTurn,
+                  party: copyState.player.party,
+                  characterGear: copyState.gear,
+                  isBoss: true,
+                });
                 // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
               }
 
@@ -312,11 +429,31 @@ export const useGameState = create<StoreState>()(
                 copyState.player.currentTier === 3 &&
                 !copyState.player.flags.includes(FLAGS.THIRD_STORY_BOSS_VICTORY)
               ) {
+                const battle = generateBattle({
+                  tier: copyState.player.currentTier,
+                  turn: firstTurn,
+                  party: copyState.player.party,
+                  characterGear: copyState.gear,
+                  isBoss: true,
+                });
                 // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
               }
             }
 
             if (currentCell.type === ROOM_TYPES.ENEMY) {
+              const firstTurn = getFirstTurn(
+                copyState.player.currentTier,
+                copyState.effects,
+                copyState.player.party,
+              );
+
+              const battle = generateBattle({
+                tier: copyState.player.currentTier,
+                turn: firstTurn,
+                party: copyState.player.party,
+                characterGear: copyState.gear,
+                isQuest: true,
+              });
               // генерируем квестого противника - одного
             }
 
@@ -339,6 +476,7 @@ export const useGameState = create<StoreState>()(
       removeItemFromGear: removeItemFromGear(set),
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),
+      handleExitSpecialEncounter: handleExitSpecialEncounter(set),
       updateBattle: updateBattle(set),
       setDungeon: setDungeon(set),
       changeAttempts: changeAttempts(set),
@@ -410,11 +548,8 @@ export const useGameState = create<StoreState>()(
           ...state,
           player: {
             ...state.player,
-            party: state.player.party.map((member) => ({
-              ...member,
-              currentHealth: Math.random() > 0.5 ? 0 : member.currentHealth,
-            })),
-            gold: state.player.gold + 5000,
+
+            gold: state.player.gold + 50000,
             collected: [[RESOURCES.PARTS, "30"]],
           },
         })),
