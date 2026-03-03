@@ -25,6 +25,7 @@ export const InventoryContainer = () => {
     ],
     drop: (draggedItem) => {
       const { item, characterName } = draggedItem;
+      console.log("item !!!", item);
 
       if (characterName && item) {
         removeItemFromGear(characterName, item?.gearId);
@@ -68,31 +69,29 @@ export const InventoryContainer = () => {
           justifyContent: "center",
           alignItems: "center",
         }}
+        ref={drop as unknown as RefObject<HTMLDivElement>}
       >
+        {isOver && (
+          <Stack
+            sx={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              background: "white",
+            }}
+          ></Stack>
+        )}
         {isEmptyInventory && (
           <Typography variant="h4">Пустой инвентарь</Typography>
         )}
 
         {!isEmptyInventory && (
-          <S.InventoryContainer
-            ref={drop as unknown as RefObject<HTMLDivElement>}
-          >
+          <S.InventoryContainer>
             {inventoryList.map((item, index) => (
               <Fragment key={index}>
                 <InventoryCell item={item} type={item.type || ""} />
               </Fragment>
             ))}
-
-            {isOver && (
-              <Stack
-                sx={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  background: "white",
-                }}
-              ></Stack>
-            )}
           </S.InventoryContainer>
         )}
       </div>

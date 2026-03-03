@@ -24,6 +24,8 @@ export const setDungeon =
               attempts,
               position,
               roomsVisited: 0,
+              dungeonLevel:
+                state.player.location?.dungeonLevel ?? state.player.currentTier,
             },
           },
         };

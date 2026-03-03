@@ -14,6 +14,9 @@ export const CharacterGear: FC<CharacterGearProps> = ({
   const { gear } = useGameState();
 
   const characterGear = gear ? gear[name] : null;
+  console.log("characterGear", characterGear);
+  console.log("name", name);
+  console.log("gear", gear);
 
   const equippedHelmet = characterGear
     ? characterGear.find((item) => item.type === GEAR_SLOTS.HELMET)

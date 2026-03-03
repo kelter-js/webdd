@@ -33,6 +33,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     increaseResourcesBagLevel,
     giveResources,
     handleExitSpecialEncounter,
+    acquireArtifact,
   } = useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
@@ -114,6 +115,18 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       handleEndDialogue(() =>
         handleExitSpecialEncounter(SPECIAL_ENCOUNTERS.TRADER),
       );
+    }
+
+    if (id === DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT) {
+      acquireArtifact(RESOURCES.ORE);
+    }
+
+    if (id === DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT) {
+      acquireArtifact(RESOURCES.PARTS);
+    }
+
+    if (id === DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT) {
+      acquireArtifact(RESOURCES.OLD_WORLD_TREASURES);
     }
 
     if (id === DIALOGUE_IDS.BUY_LEGENDARY_ARMOR) {

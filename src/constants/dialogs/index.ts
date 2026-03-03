@@ -556,26 +556,35 @@ export const traderDialog: DialogueTree = {
 export const resetDialogs = () => {
   smithDialog.startNode = "welcome";
   const smithReleaseOption = smithDialog.nodes.alreadyWelcomed.options.find(
-    (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+    (option) =>
+      option.id === DIALOGUE_IDS.RELEASE_ORE ||
+      option.id === DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT,
   );
 
   if (smithReleaseOption) {
     smithReleaseOption.nextNode = "end";
+    smithReleaseOption.id = DIALOGUE_IDS.RELEASE_ORE;
   }
 
   const tavernReleaseOption = tavernDialog.nodes.alreadyWelcomed.options.find(
-    (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+    (option) =>
+      option.id === DIALOGUE_IDS.RELEASE_PARTS ||
+      option.id === DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT,
   );
 
   if (tavernReleaseOption) {
     tavernReleaseOption.nextNode = "end";
+    tavernReleaseOption.id = DIALOGUE_IDS.RELEASE_PARTS;
   }
 
   const priestReleaseOption = priestDialog.nodes.alreadyWelcomed.options.find(
-    (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+    (option) =>
+      option.id === DIALOGUE_IDS.RELEASE_TREASURES ||
+      option.id === DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT,
   );
 
   if (priestReleaseOption) {
+    priestReleaseOption.id = DIALOGUE_IDS.RELEASE_TREASURES;
     priestReleaseOption.nextNode = "end";
   }
 
@@ -585,4 +594,30 @@ export const resetDialogs = () => {
   tavernDialog.startNode = "welcome";
   traderDialog.startNode = "welcome";
   traderDialog.nodes.welcome.options = DEFAULT_TAVERN_WELCOME_OPTIONS;
+};
+
+export const resetReleaseOptions = () => {
+  const smithReleaseOption = smithDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT,
+  );
+
+  if (smithReleaseOption) {
+    smithReleaseOption.id = DIALOGUE_IDS.RELEASE_ORE;
+  }
+
+  const tavernReleaseOption = tavernDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT,
+  );
+
+  if (tavernReleaseOption) {
+    tavernReleaseOption.id = DIALOGUE_IDS.RELEASE_PARTS;
+  }
+
+  const priestReleaseOption = priestDialog.nodes.alreadyWelcomed.options.find(
+    (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT,
+  );
+
+  if (priestReleaseOption) {
+    priestReleaseOption.id = DIALOGUE_IDS.RELEASE_TREASURES;
+  }
 };

@@ -3,6 +3,7 @@ import { MIN_ENCOUNTER_CHANCE } from "../../constants";
 import { generateDungeon as generateDungeonUtil } from "../../../utils";
 
 import { StoreSet } from "./types";
+import { DungeonCreationData } from "../../../types";
 
 const DEFAULT_ATTEMPS_AMOUNT = 5;
 
@@ -21,7 +22,7 @@ const getDungeonSizeByTier = (currentTier: number) => {
 // FIXME типизация
 export const generateDungeon =
   (set: StoreSet) =>
-  (dungeonType: DUNGEONS = DUNGEONS.STORY) => {
+  ({ dungeonType = DUNGEONS.STORY, dungeonLevel }: DungeonCreationData) => {
     set((state) => {
       const stateCopy = { ...state, player: { ...state.player } };
 
@@ -41,6 +42,7 @@ export const generateDungeon =
         position: { x: 0, y: 0 },
         roomsVisited: 0,
         encounterChance: MIN_ENCOUNTER_CHANCE,
+        dungeonLevel: dungeonLevel ?? stateCopy.player.currentTier,
       };
 
       stateCopy.player.locationState = RENDER_LOCATIONS.DUNGEON;

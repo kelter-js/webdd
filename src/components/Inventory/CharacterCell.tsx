@@ -19,6 +19,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
   name,
 }) => {
   const { equipItem } = useGameState();
+  console.log("item", item);
 
   const [{ canDrop }, drop] = useDrop<
     Item | undefined | null,

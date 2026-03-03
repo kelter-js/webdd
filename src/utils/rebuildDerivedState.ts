@@ -4,17 +4,27 @@ import { dememoizeItem } from "./dememoizeItem";
 
 export const rebuildDerivedState = (
   state: StoreState,
-  characterName: string,
+  characterName?: string,
 ) => {
   const copyState = {
     ...state,
-    gear: {
+    inventory: state.player.inventory_memoized.map(dememoizeItem),
+  };
+
+  if (characterName) {
+    copyState.gear = {
       ...(state.gear ?? {}),
       [characterName]:
         state.player.gear_memoized[characterName].map(dememoizeItem),
-    },
-    inventory: state.player.inventory_memoized.map(dememoizeItem),
-  };
+    };
+  } else {
+    copyState.gear = Object.fromEntries(
+      Object.entries(copyState.player.gear_memoized).map((item) => {
+        const [playerName, gear] = item;
+        return [playerName, gear.map(dememoizeItem)];
+      }),
+    );
+  }
 
   if (!copyState.statistics) {
     copyState.statistics = {};

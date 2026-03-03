@@ -1,4 +1,4 @@
-import { MemoizedItem, ResourceData, Room } from ".";
+import { DungeonCreationData, MemoizedItem, ResourceData, Room } from ".";
 import { POSITIONS } from "../common/TurnIndicator/entities";
 
 import { FLAGS } from "../constants";
@@ -18,6 +18,7 @@ import { AI_CATEGORIES } from "../entities/ai";
 import { CLASSES } from "../entities/characterClasses";
 import { POTION_TYPES } from "../entities/consumables";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
 import { GEAR_SLOTS } from "../entities/gear";
 import { GUN_TYPES } from "../entities/guns";
 import { JUNK_TYPES } from "../entities/junk";
@@ -120,6 +121,7 @@ export interface Creature {
   aiPackage: AI_CATEGORIES;
   exp: number;
   hasTurn?: boolean;
+  subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
 }
 
 export interface Enemy {
@@ -148,6 +150,7 @@ export interface Location {
   movementAmount?: number;
   specialEncounter?: SPECIAL_ENCOUNTERS;
   isQuestCompleted?: boolean;
+  dungeonLevel?: number;
 }
 
 export interface BattleUpdateState {
@@ -222,7 +225,7 @@ export interface DungeonCreation {
   position: DungeonCoordinates;
 }
 
-export type KillCounter = Record<ENEMIES, number>;
+export type KillCounter = Record<ALMANAC_ENEMIES_GENERIC_TYPES, number>;
 
 export interface PlayStatistics {
   // кол-во пройденных подземелий
@@ -335,11 +338,11 @@ export interface StoreState {
   setReward: (newTurn: Reward) => void;
   buyPotion: (index: number) => void;
   levelUpCharacter: (name: string, amountOfExp: number) => void;
-  generateDungeon: (type?: DUNGEONS) => void;
+  generateDungeon: (data: DungeonCreationData) => void;
   setSliders: (newTurn: string | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
   removeItemFromGear: (characterName: string, itemId: string) => void;
-
+  acquireArtifact: (resourceType: RESOURCES) => void;
   giveResources: (resourceToGive: RESOURCES) => void;
   consumePotion: (
     characterName: string,
@@ -419,6 +422,7 @@ export type PersistedState = Omit<
   | "buyItem"
   | "buyTorches"
   | "updatePlayerState"
+  | "acquireArtifact"
 
   // ф-ии чисто для тестов
   | "killEnemy"

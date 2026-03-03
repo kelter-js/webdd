@@ -11,6 +11,7 @@ import { updatePlayerState } from "./updatePlayerState";
 import { setLocationState } from "./setLocationState";
 import { increaseAccuracy } from "./increaseAccuracy";
 import { levelUpCharacter } from "./levelUpCharacter";
+import { acquireArtifact } from "./acquireArtifact";
 import { generateDungeon } from "./generateDungeon";
 import { increaseAgility } from "./increaseAgility";
 import { toggleInventory } from "./toggleInventory";
@@ -60,6 +61,7 @@ export {
   setLocationState,
   increaseAccuracy,
   levelUpCharacter,
+  acquireArtifact,
   increaseAgility,
   generateDungeon,
   toggleInventory,

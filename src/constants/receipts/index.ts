@@ -534,6 +534,7 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 24000,
   },
+  // ДРОБОВИКИ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
@@ -604,6 +605,73 @@ export const RECEIPTS: ReceiptData[] = [
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_2, BASE_ITEMS_ID.SAIGA_TIER_3),
     title: "Saiga-12 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+  // СНАЙПЕРСКИЕ ВИНТОВКИ
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SV98_TIER_1, BASE_ITEMS_ID.SV98_TIER_2),
+    title: "СВ-98 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SV98_TIER_2, BASE_ITEMS_ID.SV98_TIER_3),
+    title: "СВ-98 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.DLV10_TIER_1, BASE_ITEMS_ID.DLV10_TIER_2),
+    title: "ДВЛ-10 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.DLV10_TIER_2, BASE_ITEMS_ID.DLV10_TIER_3),
+    title: "ДВЛ-10 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_1),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.AXMC_TIER_1, BASE_ITEMS_ID.AXMC_TIER_2),
+    title: "AXMC MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_2),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.AXMC_TIER_2, BASE_ITEMS_ID.AXMC_TIER_3),
+    title: "AXMC MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
     goldRequiredToCraft: 24000,

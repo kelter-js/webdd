@@ -34,7 +34,10 @@ export const handleExitDungeon = (set: StoreSet) => () => {
       stateCopy.player.location.specialEncounter = undefined;
     }
 
-    if (stateCopy.player.location?.type === DUNGEONS.STORY) {
+    if (
+      stateCopy.player.location?.type === DUNGEONS.STORY &&
+      stateCopy.player.location.dungeonLevel === stateCopy.player.currentTier
+    ) {
       stateCopy.player.playStatistics.dungeonCounter += 1;
     }
 

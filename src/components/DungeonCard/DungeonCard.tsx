@@ -15,7 +15,7 @@ export const DungeonCard: FC<QuestCardProps> = ({ type }) => {
 
   const handleStartQuest = () => {
     toggleAutoSave();
-    generateDungeon(type);
+    generateDungeon({ dungeonType: type });
     toggleDungeonModal();
   };
 

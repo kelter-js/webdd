@@ -1,6 +1,7 @@
 import { ENEMIES } from "../entities";
 import { CLASSES } from "../entities/characterClasses";
 import { DUNGEONS } from "../entities/dungeons";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
 import { JUNK_TYPES } from "../entities/junk";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
 import { GameStateData, KillCounter } from "../types/gameState";
@@ -329,7 +330,7 @@ export const DEFAULT_GAME_STATE: GameStateData = {
   playStatistics: {
     dungeonCounter: 0,
     kills: Object.fromEntries(
-      Object.keys(ENEMIES).map((item) => [item, 0]),
+      Object.keys(ALMANAC_ENEMIES_GENERIC_TYPES).map((item) => [item, 0]),
     ) as KillCounter,
   },
   hasCamera: false,

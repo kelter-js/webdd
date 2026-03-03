@@ -86,6 +86,7 @@ import {
   setVolume,
   removeItemFromGear,
   handleExitSpecialEncounter,
+  acquireArtifact,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -469,6 +470,7 @@ export const useGameState = create<StoreState>()(
       setPlayerPosition: setPlayerPosition(set),
       increaseEndurance: increaseEndurance(set),
       consumePotion: consumePotion(set),
+      acquireArtifact: acquireArtifact(set),
       setVolume: setVolume(set),
       generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
@@ -550,7 +552,7 @@ export const useGameState = create<StoreState>()(
             ...state.player,
 
             gold: state.player.gold + 50000,
-            collected: [[RESOURCES.PARTS, "30"]],
+            collected: [[RESOURCES.ORE, "30"]],
           },
         })),
 

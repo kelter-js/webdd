@@ -23,6 +23,7 @@ import {
 import { getImprovementPrice } from "../utils";
 import { useMemo } from "react";
 import { RESOURCES } from "../entities/resources";
+import { getTotalAmountOfResourceByType } from "../utils/getTotalAmountOfResourceByType";
 
 export const useGetDialogue = (npc: string | null) => {
   const {
@@ -54,17 +55,11 @@ export const useGetDialogue = (npc: string | null) => {
           smithDialog.startNode = "alreadyWelcomed";
         }
 
-        const inventoryResources = resources.filter(
-          (item) => item === RESOURCES.ORE,
-        ).length;
-        const collectedResources = collected.find(
-          (resource) => resource[0] === RESOURCES.ORE,
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.ORE,
         );
-        const collectedResourcesAmount = collectedResources
-          ? Number(collectedResources[1])
-          : 0;
-        const totalAmountOfResources =
-          collectedResourcesAmount + inventoryResources;
 
         if (
           !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
@@ -76,6 +71,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveSmithArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
           }
         }
 
@@ -90,6 +86,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveSmithArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
           }
         }
 
@@ -105,6 +102,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveSmithArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
           }
         }
 
@@ -118,27 +116,11 @@ export const useGetDialogue = (npc: string | null) => {
           tavernDialog.startNode = "alreadyWelcomed";
         }
 
-        // Вот здесь должна быть логика реакции на накопленные ресурсы
-        // нужна логика вычисления-  в зависимости от типа р есурса - сколько его нужно накопить
-        // и устанавливать флаг - что вещь получена для вычисления какой айтем выдавать
-        // здесь мы должны установить, что клик на опцию с айди  DIALOGUE_IDS.RELEASE_ORE - если кол-во сданных ресурсов + на руках ресурсы позволяют апгрейднуть или улучшить айтем
-        // что мы отсюда диалог следующий устанавливаем receiveSmithArtifactFirstTier/receiveSmithArtifactSecondTier/receiveSmithArtifactThirdTier
-        // mock
-
-        const inventoryResources = resources.filter(
-          (item) => item === RESOURCES.PARTS,
-        ).length;
-
-        const collectedResources = collected.find(
-          (resource) => resource[0] === RESOURCES.PARTS,
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.PARTS,
         );
-
-        const collectedResourcesAmount = collectedResources
-          ? Number(collectedResources[1])
-          : 0;
-
-        const totalAmountOfResources =
-          collectedResourcesAmount + inventoryResources;
 
         if (
           !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
@@ -150,6 +132,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveAlchemistryArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
           }
         }
 
@@ -164,6 +147,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveAlchemistryArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
           }
         }
 
@@ -179,6 +163,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receiveAlchemistryArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
           }
         }
 
@@ -229,20 +214,11 @@ export const useGetDialogue = (npc: string | null) => {
           priestDialog.startNode = "alreadyWelcomed";
         }
 
-        const inventoryResources = resources.filter(
-          (item) => item === RESOURCES.OLD_WORLD_TREASURES,
-        ).length;
-
-        const collectedResources = collected.find(
-          (resource) => resource[0] === RESOURCES.OLD_WORLD_TREASURES,
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.OLD_WORLD_TREASURES,
         );
-
-        const collectedResourcesAmount = collectedResources
-          ? Number(collectedResources[1])
-          : 0;
-
-        const totalAmountOfResources =
-          collectedResourcesAmount + inventoryResources;
 
         if (
           !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
@@ -254,6 +230,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receivePriestArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
           }
         }
 
@@ -268,6 +245,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receivePriestArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
           }
         }
 
@@ -283,6 +261,7 @@ export const useGetDialogue = (npc: string | null) => {
 
           if (dialogNode) {
             dialogNode.nextNode = "receivePriestArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
           }
         }
 
@@ -340,7 +319,7 @@ export const useGetDialogue = (npc: string | null) => {
       default:
         return null;
     }
-  }, [npc, dialogFlags, resourcesBagLevel, gold]);
+  }, [npc, dialogFlags.length, resourcesBagLevel, gold, resources, collected]);
 
   return dialogue;
 };

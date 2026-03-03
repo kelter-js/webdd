@@ -1,5 +1,6 @@
 import { ENEMIES } from "../../entities";
 import { AI_CATEGORIES } from "../../entities/ai";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 
 // Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
 // также здесь
@@ -37,6 +38,8 @@ export const CREATURES = {
       maxDmg: 3,
       xp: 50,
       evasionChance: 5,
+      type: ENEMIES.SPIDER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
   [ENEMIES.SPIDER_TIER_2]: {
@@ -56,6 +59,8 @@ export const CREATURES = {
       maxDmg: 4,
       xp: 70,
       evasionChance: 5,
+      type: ENEMIES.SPIDER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
   [ENEMIES.SPIDER_TIER_3]: {
@@ -75,6 +80,8 @@ export const CREATURES = {
       maxDmg: 5,
       xp: 100,
       evasionChance: 5,
+      type: ENEMIES.SPIDER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
 
@@ -95,6 +102,8 @@ export const CREATURES = {
       maxDmg: 5,
       xp: 120,
       evasionChance: 5,
+      type: ENEMIES.TORSO_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
   [ENEMIES.TORSO_TIER_2]: {
@@ -114,6 +123,8 @@ export const CREATURES = {
       maxDmg: 7,
       xp: 150,
       evasionChance: 5,
+      type: ENEMIES.TORSO_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
   [ENEMIES.TORSO_TIER_3]: {
@@ -133,6 +144,8 @@ export const CREATURES = {
       maxDmg: 9,
       xp: 180,
       evasionChance: 5,
+      type: ENEMIES.TORSO_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
 
@@ -153,6 +166,8 @@ export const CREATURES = {
       maxDmg: 8,
       xp: 200,
       evasionChance: 5,
+      type: ENEMIES.WATCHER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
   [ENEMIES.WATCHER_TIER_2]: {
@@ -172,6 +187,8 @@ export const CREATURES = {
       maxDmg: 10,
       xp: 240,
       evasionChance: 5,
+      type: ENEMIES.WATCHER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
   [ENEMIES.WATCHER_TIER_3]: {
@@ -191,6 +208,8 @@ export const CREATURES = {
       maxDmg: 12,
       xp: 300,
       evasionChance: 5,
+      type: ENEMIES.WATCHER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
   [ENEMIES.SPIRIT_TIER_1]: {
@@ -210,6 +229,8 @@ export const CREATURES = {
       maxDmg: 9,
       xp: 350,
       evasionChance: 5,
+      type: ENEMIES.SPIRIT_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
   [ENEMIES.SPIRIT_TIER_2]: {
@@ -229,6 +250,8 @@ export const CREATURES = {
       maxDmg: 12,
       xp: 420,
       evasionChance: 5,
+      type: ENEMIES.SPIRIT_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
   [ENEMIES.SPIRIT_TIER_3]: {
@@ -248,6 +271,8 @@ export const CREATURES = {
       maxDmg: 15,
       xp: 500,
       evasionChance: 5,
+      type: ENEMIES.SPIRIT_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
   [ENEMIES.BIRD_TIER_1]: {
@@ -267,6 +292,8 @@ export const CREATURES = {
       maxDmg: 18,
       xp: 800,
       evasionChance: 5,
+      type: ENEMIES.BIRD_TIER_1,
+      subType: null,
     },
   },
   [ENEMIES.BIRD_TIER_2]: {
@@ -286,6 +313,8 @@ export const CREATURES = {
       maxDmg: 22,
       xp: 1000,
       evasionChance: 5,
+      type: ENEMIES.BIRD_TIER_2,
+      subType: null,
     },
   },
   [ENEMIES.BIRD_TIER_3]: {
@@ -305,6 +334,8 @@ export const CREATURES = {
       maxDmg: 28,
       xp: 1300,
       evasionChance: 5,
+      type: ENEMIES.BIRD_TIER_3,
+      subType: null,
     },
   },
   [ENEMIES.SIN_ICON_TIER_1]: {
@@ -324,6 +355,8 @@ export const CREATURES = {
       maxDmg: 32,
       xp: 2500,
       evasionChance: 5,
+      type: ENEMIES.SIN_ICON_TIER_1,
+      subType: null,
     },
   },
 
@@ -344,6 +377,8 @@ export const CREATURES = {
       maxDmg: 12,
       xp: 200,
       evasionChance: 10,
+      type: ENEMIES.SOLDIER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
   [ENEMIES.SOLDIER_TIER_2]: {
@@ -363,6 +398,8 @@ export const CREATURES = {
       maxDmg: 15,
       xp: 250,
       evasionChance: 10,
+      type: ENEMIES.SOLDIER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
   [ENEMIES.SOLDIER_TIER_3]: {
@@ -382,6 +419,8 @@ export const CREATURES = {
       maxDmg: 18,
       xp: 300,
       evasionChance: 10,
+      type: ENEMIES.SOLDIER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
   [ENEMIES.FIREFIGHTER_TIER_1]: {
@@ -401,6 +440,8 @@ export const CREATURES = {
       maxDmg: 16,
       xp: 350,
       evasionChance: 10,
+      type: ENEMIES.FIREFIGHTER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
   [ENEMIES.FIREFIGHTER_TIER_2]: {
@@ -420,6 +461,8 @@ export const CREATURES = {
       maxDmg: 20,
       xp: 400,
       evasionChance: 10,
+      type: ENEMIES.FIREFIGHTER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
   [ENEMIES.FIREFIGHTER_TIER_3]: {
@@ -439,6 +482,8 @@ export const CREATURES = {
       maxDmg: 25,
       xp: 480,
       evasionChance: 10,
+      type: ENEMIES.FIREFIGHTER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
   [ENEMIES.SNEAKER_TIER_1]: {
@@ -458,6 +503,8 @@ export const CREATURES = {
       maxDmg: 22,
       xp: 600,
       evasionChance: 10,
+      type: ENEMIES.SNEAKER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
   [ENEMIES.SNEAKER_TIER_2]: {
@@ -477,6 +524,8 @@ export const CREATURES = {
       maxDmg: 28,
       xp: 750,
       evasionChance: 10,
+      type: ENEMIES.SNEAKER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
   [ENEMIES.SNEAKER_TIER_3]: {
@@ -496,6 +545,8 @@ export const CREATURES = {
       maxDmg: 35,
       xp: 900,
       evasionChance: 10,
+      type: ENEMIES.SNEAKER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
 
@@ -516,6 +567,8 @@ export const CREATURES = {
       maxDmg: 28,
       xp: 900,
       evasionChance: 10,
+      type: ENEMIES.LOST_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
 
@@ -536,6 +589,8 @@ export const CREATURES = {
       maxDmg: 35,
       xp: 1100,
       evasionChance: 10,
+      type: ENEMIES.LOST_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
 
@@ -556,6 +611,8 @@ export const CREATURES = {
       maxDmg: 42,
       xp: 1350,
       evasionChance: 10,
+      type: ENEMIES.LOST_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
 
@@ -576,6 +633,8 @@ export const CREATURES = {
       maxDmg: 40,
       xp: 1500,
       evasionChance: 10,
+      type: ENEMIES.INVENTOR_TIER_1,
+      subType: null,
     },
   },
 
@@ -596,6 +655,8 @@ export const CREATURES = {
       maxDmg: 50,
       xp: 1800,
       evasionChance: 10,
+      type: ENEMIES.INVENTOR_TIER_2,
+      subType: null,
     },
   },
 
@@ -616,6 +677,367 @@ export const CREATURES = {
       maxDmg: 65,
       xp: 2200,
       evasionChance: 10,
+      type: ENEMIES.INVENTOR_TIER_3,
+      subType: null,
+    },
+  },
+
+  [ENEMIES.GENERAL_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.BOSS_TIER_2,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1800,
+      maxHp: 1800,
+      minDmg: 50,
+      maxDmg: 80,
+      xp: 4000,
+      evasionChance: 10,
+      type: ENEMIES.GENERAL_TIER_1,
+      subType: null,
+    },
+  },
+
+  [ENEMIES.ALL_SEEING_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 250,
+      maxHp: 250,
+      minDmg: 18,
+      maxDmg: 28,
+      xp: 500,
+      evasionChance: 15,
+      type: ENEMIES.ALL_SEEING_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
+    },
+  },
+  [ENEMIES.ALL_SEEING_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 320,
+      maxHp: 320,
+      minDmg: 22,
+      maxDmg: 35,
+      xp: 650,
+      evasionChance: 15,
+      type: ENEMIES.ALL_SEEING_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
+    },
+  },
+  [ENEMIES.ALL_SEEING_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 400,
+      maxHp: 400,
+      minDmg: 28,
+      maxDmg: 42,
+      xp: 800,
+      evasionChance: 15,
+      type: ENEMIES.ALL_SEEING_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
+    },
+  },
+  [ENEMIES.KNIGHT_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 400,
+      maxHp: 400,
+      minDmg: 25,
+      maxDmg: 45,
+      xp: 850,
+      evasionChance: 15,
+      type: ENEMIES.KNIGHT_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
+    },
+  },
+  [ENEMIES.KNIGHT_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 500,
+      maxHp: 500,
+      minDmg: 35,
+      maxDmg: 55,
+      xp: 1000,
+      evasionChance: 15,
+      type: ENEMIES.KNIGHT_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
+    },
+  },
+  [ENEMIES.KNIGHT_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 650,
+      maxHp: 650,
+      minDmg: 45,
+      maxDmg: 70,
+      xp: 1200,
+      evasionChance: 15,
+      type: ENEMIES.KNIGHT_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
+    },
+  },
+  [ENEMIES.ACTRESS_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 700,
+      maxHp: 700,
+      minDmg: 30,
+      maxDmg: 50,
+      xp: 1500,
+      evasionChance: 15,
+      type: ENEMIES.ACTRESS_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
+    },
+  },
+  [ENEMIES.ACTRESS_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 900,
+      maxHp: 900,
+      minDmg: 40,
+      maxDmg: 65,
+      xp: 1800,
+      evasionChance: 15,
+      type: ENEMIES.ACTRESS_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
+    },
+  },
+  [ENEMIES.ACTRESS_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1200,
+      maxHp: 1200,
+      minDmg: 55,
+      maxDmg: 85,
+      xp: 2200,
+      evasionChance: 15,
+      type: ENEMIES.ACTRESS_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
+    },
+  },
+  [ENEMIES.SINGER_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1000,
+      maxHp: 1000,
+      minDmg: 45,
+      maxDmg: 75,
+      xp: 2500,
+      evasionChance: 15,
+      type: ENEMIES.SINGER_TIER_1,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
+    },
+  },
+  [ENEMIES.SINGER_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1300,
+      maxHp: 1300,
+      minDmg: 60,
+      maxDmg: 95,
+      xp: 3000,
+      evasionChance: 15,
+      type: ENEMIES.SINGER_TIER_2,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
+    },
+  },
+  [ENEMIES.SINGER_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1700,
+      maxHp: 1700,
+      minDmg: 75,
+      maxDmg: 120,
+      xp: 3600,
+      evasionChance: 15,
+      type: ENEMIES.SINGER_TIER_3,
+      subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
+    },
+  },
+  [ENEMIES.BALLERINE_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 1800,
+      maxHp: 1800,
+      minDmg: 60,
+      maxDmg: 100,
+      xp: 5000,
+      evasionChance: 15,
+      type: ENEMIES.BALLERINE_TIER_1,
+      subType: null,
+    },
+  },
+  [ENEMIES.BALLERINE_TIER_2]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 2400,
+      maxHp: 2400,
+      minDmg: 80,
+      maxDmg: 130,
+      xp: 6500,
+      evasionChance: 15,
+      type: ENEMIES.BALLERINE_TIER_2,
+      subType: null,
+    },
+  },
+  [ENEMIES.BALLERINE_TIER_3]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 3200,
+      maxHp: 3200,
+      minDmg: 110,
+      maxDmg: 180,
+      xp: 8000,
+      evasionChance: 15,
+      type: ENEMIES.BALLERINE_TIER_3,
+      subType: null,
+    },
+  },
+  [ENEMIES.MERGED_MASS_TIER_1]: {
+    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
+    // aiPackage: AI_CATEGORIES.DEFAULT,
+
+    // mock
+    aiPackage: AI_CATEGORIES.BOSS_TIER_3,
+    pictureSrc: "",
+    audioSrc: "",
+
+    // другие данные по типу хп и прочего
+    baseModel: {
+      hp: 5000,
+      maxHp: 5000,
+      minDmg: 130,
+      maxDmg: 220,
+      xp: 15000,
+      evasionChance: 15,
+      type: ENEMIES.MERGED_MASS_TIER_1,
+      subType: null,
     },
   },
 };
@@ -673,18 +1095,34 @@ export const SECOND_TIER_MINIBOSS_LIST = [
 export const SECOND_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
 
 // MOCK
-export const SECOND_TIER_BOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
+export const SECOND_TIER_BOSS = CREATURES[ENEMIES.GENERAL_TIER_1];
 
-export const THIRD_TIER_CREATURES_LIST = [];
+export const THIRD_TIER_CREATURES_LIST = [
+  ENEMIES.ALL_SEEING_TIER_1,
+  ENEMIES.ALL_SEEING_TIER_2,
+  ENEMIES.ALL_SEEING_TIER_3,
+
+  ENEMIES.KNIGHT_TIER_1,
+  ENEMIES.KNIGHT_TIER_2,
+  ENEMIES.KNIGHT_TIER_3,
+
+  ENEMIES.ACTRESS_TIER_1,
+  ENEMIES.ACTRESS_TIER_2,
+  ENEMIES.ACTRESS_TIER_3,
+
+  ENEMIES.SINGER_TIER_1,
+  ENEMIES.SINGER_TIER_2,
+  ENEMIES.SINGER_TIER_3,
+];
 
 export const THIRD_TIER_MINIBOSS_LIST = [
   ENEMIES.BALLERINE_TIER_1,
   ENEMIES.BALLERINE_TIER_2,
 ];
 
-export const THIRD_TIER_QUEST_MINIBOSS = ENEMIES.BALLERINE_TIER_3;
+export const THIRD_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.BALLERINE_TIER_3];
 
-export const THIRD_TIER_BOSS = ENEMIES.MERGED_MASS_TIER_1;
+export const THIRD_TIER_BOSS = CREATURES[ENEMIES.MERGED_MASS_TIER_1];
 
 export const STORY_BOSSES_LIST = [
   ENEMIES.SIN_ICON_TIER_1,
@@ -693,18 +1131,3 @@ export const STORY_BOSSES_LIST = [
 ];
 
 export const ALL_CREATURES_LIST = [];
-
-// Пожарник, человек в противогазе, человек с прикипевшим ПНВ, человек с вывернутыми ребрами наружу, со спины два костянных крыла, череп оскаленный, кожа натянута везде, всё в тело пробито гвоздями, в руках держит разбитый и поломанный автомат
-// Балерина с длинными клинками и в фате, рыцарь с ореолом каменным, через щели шлема сочится кровь,
-
-// каждая конечность заканчивается шипом,  тело максимально бледное, невысокое, на голове диадема из разноцветных перьев, вокруг тела праздничные ленты, на лице яркая губная помада
-
-//минибоссы: птица с двумя клинками, профессор , человек - вместо лица просто сплошное пустое место, без глаз, бровей и губ, в руках две электрические дубинки и лабораторный халат,
-// третий минибосс - сросшиеся актеры, посетители, певцы, с двумя деформированными длинными костяными копьями руками, ног вообще не видно, в массе перемешаны тела, лиц больше, чем должно быть,
-// они в разных местах расположены, искажены болью, масками, разноцветными нарядами праздничными с кровопоттеками
-
-// боссы - первый акт готов, нужно думать про оставшиеся два
-// - максимально бледный цвет кожи, черное платье,  вскрытые сухожия, один greatsword костяной, в ней самой в животе и руках торчат
-// проткнутые клинки, всё в красных разводах похожил на кровь, лицо скрыто за белой маской, лишь видно гримасу боли и грязные зубы
-// второй -  генерал  приделавший себе чьи-то руки вместо ног, вокруг шеи ожерелье из пальцев, к лицу прикипел противогаз, одна рука длиннее другой,
-// в груди большое кол-во пулевых отверстий.
