@@ -10,6 +10,16 @@ import bird from "../../assets/enemies/first_tier/bird.png";
 import sinIcon from "../../assets/enemies/first_tier/sin-icon.png";
 import soldier from "../../assets/enemies/second_tier/soldier.png";
 import firefighter from "../../assets/enemies/second_tier/firefighter.png";
+import sneaker from "../../assets/enemies/second_tier/sneaker.png";
+import lost from "../../assets/enemies/second_tier/lost_one.png";
+import inventor from "../../assets/enemies/second_tier/inventor.png";
+import general from "../../assets/enemies/second_tier/general.png";
+import allSeeing from "../../assets/enemies/third_tier/all_seeing.png";
+import knight from "../../assets/enemies/third_tier/knight.png";
+import actress from "../../assets/enemies/third_tier/actress.png";
+import singer from "../../assets/enemies/third_tier/singer.png";
+import ballerine from "../../assets/enemies/third_tier/ballerina_boss.png";
+import mergedMass from "../../assets/enemies/third_tier/mergemass.png";
 
 // Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
 // также здесь
@@ -59,6 +69,42 @@ export const CREATURE_TO_IMG_MAP = {
   [ENEMIES.FIREFIGHTER_TIER_1]: firefighter,
   [ENEMIES.FIREFIGHTER_TIER_2]: firefighter,
   [ENEMIES.FIREFIGHTER_TIER_3]: firefighter,
+
+  [ENEMIES.SNEAKER_TIER_1]: sneaker,
+  [ENEMIES.SNEAKER_TIER_2]: sneaker,
+  [ENEMIES.SNEAKER_TIER_3]: sneaker,
+
+  [ENEMIES.LOST_TIER_1]: lost,
+  [ENEMIES.LOST_TIER_2]: lost,
+  [ENEMIES.LOST_TIER_3]: lost,
+
+  [ENEMIES.INVENTOR_TIER_1]: inventor,
+  [ENEMIES.INVENTOR_TIER_2]: inventor,
+  [ENEMIES.INVENTOR_TIER_3]: inventor,
+
+  [ENEMIES.GENERAL_TIER_1]: general,
+
+  [ENEMIES.ALL_SEEING_TIER_1]: allSeeing,
+  [ENEMIES.ALL_SEEING_TIER_2]: allSeeing,
+  [ENEMIES.ALL_SEEING_TIER_3]: allSeeing,
+
+  [ENEMIES.KNIGHT_TIER_1]: knight,
+  [ENEMIES.KNIGHT_TIER_2]: knight,
+  [ENEMIES.KNIGHT_TIER_3]: knight,
+
+  [ENEMIES.ACTRESS_TIER_1]: actress,
+  [ENEMIES.ACTRESS_TIER_2]: actress,
+  [ENEMIES.ACTRESS_TIER_3]: actress,
+
+  [ENEMIES.SINGER_TIER_1]: singer,
+  [ENEMIES.SINGER_TIER_2]: singer,
+  [ENEMIES.SINGER_TIER_3]: singer,
+
+  [ENEMIES.BALLERINE_TIER_1]: ballerine,
+  [ENEMIES.BALLERINE_TIER_2]: ballerine,
+  [ENEMIES.BALLERINE_TIER_3]: ballerine,
+
+  [ENEMIES.MERGED_MASS_TIER_1]: mergedMass,
 };
 
 export const CREATURES = {
@@ -553,6 +599,7 @@ export const CREATURES = {
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
+
   [ENEMIES.SNEAKER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,

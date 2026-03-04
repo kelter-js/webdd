@@ -7,7 +7,12 @@ import { useMemo, useState } from "react";
 import ForwardIcon from "@mui/icons-material/Forward";
 import { ControlsContainer } from "./AlmanacModal.styled";
 import { Tooltip } from "../../common";
-import { ENEMY_DESCRIPTIONS, ENEMY_IMAGES, getEnemiesByTier } from "./utils";
+import {
+  ENEMY_DESCRIPTIONS,
+  ENEMY_IMAGES,
+  getEnemiesByTier,
+  isEnemyUnlocked,
+} from "./utils";
 
 const DISABLE_TEXT = "Эта страница пока что недоступна";
 const DEFAULT_PAGE_DISPLAY_AMOUNT = 2;
@@ -40,11 +45,11 @@ export const AlmanacModal = () => {
       )
       .map((enemy) => {
         // const { locked, unlocked } = ENEMY_IMAGES[enemy];
-        // const isEnemyUnlocked = isEnemyUnlocked(player, enemy);
+        // const isUnlocked = isEnemyUnlocked(player, enemy);
 
         // return {
         //   description: ENEMY_DESCRIPTIONS[enemy],
-        //   src: isEnemyUnlocked ? unlocked : locked,
+        //   src: isUnlocked ? unlocked : locked,
         // };
 
         return enemy;
