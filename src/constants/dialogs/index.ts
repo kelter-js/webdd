@@ -145,6 +145,7 @@ export const priestDialog: DialogueTree = {
         {
           text: "Мне нужна твоя помощь... [вылечиться]",
           nextNode: "heal",
+          id: DIALOGUE_IDS.HEAL,
         },
         {
           text: "На входе вывеска что продаёте самодельные факела. Можно мне парочку?..",
@@ -166,6 +167,7 @@ export const priestDialog: DialogueTree = {
         {
           text: "Мне нужна твоя помощь... [вылечиться]",
           nextNode: "heal",
+          id: DIALOGUE_IDS.HEAL,
         },
         {
           text: "[купить факела]",
@@ -226,7 +228,7 @@ export const priestDialog: DialogueTree = {
         {
           text: "Вылечи мою группу",
           nextNode: "end",
-          flags: [DIALOGUE_FLAGS.HEAL],
+          id: DIALOGUE_IDS.HEAL,
         },
         {
           text: "Загляну, как соберу что-нибудь",
@@ -238,7 +240,6 @@ export const priestDialog: DialogueTree = {
     heal: {
       text: "Ого... Давно не видел столько крови.",
       options: [{ text: "[Уйти]", nextNode: "end" }],
-      flags: [DIALOGUE_FLAGS.HEAL],
     },
     end: {
       text: "Удачи, путник...",

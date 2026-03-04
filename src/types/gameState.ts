@@ -112,16 +112,16 @@ export interface Item {
 // интерфейс модели представляющий противника ЛЮБОГО
 export interface Creature {
   type: ENEMIES;
-  health: number;
-  maxHealth: number;
-  defense: number;
-  minAttack: number;
-  maxAttack: number;
+  hp: number;
+  maxHP: number;
+  minDmg: number;
+  maxDmg: number;
   evasionChance: number;
   aiPackage: AI_CATEGORIES;
   exp: number;
   hasTurn?: boolean;
   subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
+  isEnhanced: boolean;
 }
 
 export interface Enemy {

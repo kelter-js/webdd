@@ -2,6 +2,15 @@ import { ENEMIES } from "../../entities";
 import { AI_CATEGORIES } from "../../entities/ai";
 import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 
+import spider from "../../assets/enemies/first_tier/spider.png";
+import torso from "../../assets/enemies/first_tier/torso.png";
+import watcher from "../../assets/enemies/first_tier/watcher.png";
+import spirit from "../../assets/enemies/first_tier/spirit.png";
+import bird from "../../assets/enemies/first_tier/bird.png";
+import sinIcon from "../../assets/enemies/first_tier/sin-icon.png";
+import soldier from "../../assets/enemies/second_tier/soldier.png";
+import firefighter from "../../assets/enemies/second_tier/firefighter.png";
+
 // Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
 // также здесь
 
@@ -20,6 +29,38 @@ import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 // 3 босс режет макс хп на 15%, увеличивает шанс промаха по себе, рандомно вешает на всех бомбы, которые
 // взрываются через несколько ходов взрываются и отнимают ход у персонажа на котором была бомба
 
+export const CREATURE_TO_IMG_MAP = {
+  [ENEMIES.SPIDER_TIER_1]: spider,
+  [ENEMIES.SPIDER_TIER_2]: spider,
+  [ENEMIES.SPIDER_TIER_3]: spider,
+
+  [ENEMIES.TORSO_TIER_1]: torso,
+  [ENEMIES.TORSO_TIER_2]: torso,
+  [ENEMIES.TORSO_TIER_3]: torso,
+
+  [ENEMIES.WATCHER_TIER_1]: watcher,
+  [ENEMIES.WATCHER_TIER_2]: watcher,
+  [ENEMIES.WATCHER_TIER_3]: watcher,
+
+  [ENEMIES.SPIRIT_TIER_1]: spirit,
+  [ENEMIES.SPIRIT_TIER_2]: spirit,
+  [ENEMIES.SPIRIT_TIER_3]: spirit,
+
+  [ENEMIES.BIRD_TIER_1]: bird,
+  [ENEMIES.BIRD_TIER_2]: bird,
+  [ENEMIES.BIRD_TIER_3]: bird,
+
+  [ENEMIES.SIN_ICON_TIER_1]: sinIcon,
+
+  [ENEMIES.SOLDIER_TIER_1]: soldier,
+  [ENEMIES.SOLDIER_TIER_2]: soldier,
+  [ENEMIES.SOLDIER_TIER_3]: soldier,
+
+  [ENEMIES.FIREFIGHTER_TIER_1]: firefighter,
+  [ENEMIES.FIREFIGHTER_TIER_2]: firefighter,
+  [ENEMIES.FIREFIGHTER_TIER_3]: firefighter,
+};
+
 export const CREATURES = {
   [ENEMIES.SPIDER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
@@ -33,12 +74,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 15,
-      maxHp: 15,
+      maxHP: 15,
       minDmg: 1,
       maxDmg: 3,
-      xp: 50,
+      exp: 50,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
@@ -54,12 +96,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 25,
-      maxHp: 25,
+      maxHP: 25,
       minDmg: 2,
       maxDmg: 4,
-      xp: 70,
+      exp: 70,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
@@ -75,12 +118,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 35,
-      maxHp: 35,
+      maxHP: 35,
       minDmg: 3,
       maxDmg: 5,
-      xp: 100,
+      exp: 100,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIDER,
     },
   },
@@ -97,12 +141,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 40,
-      maxHp: 40,
+      maxHP: 40,
       minDmg: 3,
       maxDmg: 5,
-      xp: 120,
+      exp: 120,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
@@ -118,12 +163,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 55,
-      maxHp: 55,
+      maxHP: 55,
       minDmg: 4,
       maxDmg: 7,
-      xp: 150,
+      exp: 150,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
@@ -139,12 +185,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 70,
-      maxHp: 70,
+      maxHP: 70,
       minDmg: 5,
       maxDmg: 9,
-      xp: 180,
+      exp: 180,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.TORSO,
     },
   },
@@ -161,12 +208,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 75,
-      maxHp: 75,
+      maxHP: 75,
       minDmg: 5,
       maxDmg: 8,
-      xp: 200,
+      exp: 200,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
@@ -182,12 +230,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 100,
-      maxHp: 100,
+      maxHP: 100,
       minDmg: 6,
       maxDmg: 10,
-      xp: 240,
+      exp: 240,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
@@ -203,15 +252,17 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 130,
-      maxHp: 130,
+      maxHP: 130,
       minDmg: 8,
       maxDmg: 12,
-      xp: 300,
+      exp: 300,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.WATCHER,
     },
   },
+
   [ENEMIES.SPIRIT_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,
@@ -224,12 +275,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 110,
-      maxHp: 110,
+      maxHP: 110,
       minDmg: 6,
       maxDmg: 9,
-      xp: 350,
+      exp: 350,
       evasionChance: 5,
       type: ENEMIES.SPIRIT_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
@@ -245,12 +297,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 140,
-      maxHp: 140,
+      maxHP: 140,
       minDmg: 8,
       maxDmg: 12,
-      xp: 420,
+      exp: 420,
       evasionChance: 5,
       type: ENEMIES.SPIRIT_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
@@ -266,15 +319,17 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 180,
-      maxHp: 180,
+      maxHP: 180,
       minDmg: 10,
       maxDmg: 15,
-      xp: 500,
+      exp: 500,
       evasionChance: 5,
       type: ENEMIES.SPIRIT_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SPIRIT,
     },
   },
+
   [ENEMIES.BIRD_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,
@@ -287,12 +342,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 250,
-      maxHp: 250,
+      maxHP: 250,
       minDmg: 12,
       maxDmg: 18,
-      xp: 800,
+      exp: 800,
       evasionChance: 5,
       type: ENEMIES.BIRD_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -308,12 +364,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 350,
-      maxHp: 350,
+      maxHP: 350,
       minDmg: 15,
       maxDmg: 22,
-      xp: 1000,
+      exp: 1000,
       evasionChance: 5,
       type: ENEMIES.BIRD_TIER_2,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -329,15 +386,17 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 450,
-      maxHp: 450,
+      maxHP: 450,
       minDmg: 18,
       maxDmg: 28,
-      xp: 1300,
+      exp: 1300,
       evasionChance: 5,
       type: ENEMIES.BIRD_TIER_3,
+      isEnhanced: true,
       subType: null,
     },
   },
+
   [ENEMIES.SIN_ICON_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,
@@ -350,12 +409,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 750,
-      maxHp: 750,
+      maxHP: 750,
       minDmg: 20,
       maxDmg: 32,
-      xp: 2500,
+      exp: 2500,
       evasionChance: 5,
       type: ENEMIES.SIN_ICON_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -372,12 +432,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 80,
-      maxHp: 80,
+      maxHP: 80,
       minDmg: 7,
       maxDmg: 12,
-      xp: 200,
+      exp: 200,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
@@ -393,12 +454,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 100,
-      maxHp: 100,
+      maxHP: 100,
       minDmg: 9,
       maxDmg: 15,
-      xp: 250,
+      exp: 250,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
@@ -414,15 +476,17 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 130,
-      maxHp: 130,
+      maxHP: 130,
       minDmg: 11,
       maxDmg: 18,
-      xp: 300,
+      exp: 300,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SOLDIER,
     },
   },
+
   [ENEMIES.FIREFIGHTER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,
@@ -435,12 +499,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 150,
-      maxHp: 150,
+      maxHP: 150,
       minDmg: 10,
       maxDmg: 16,
-      xp: 350,
+      exp: 350,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
@@ -456,12 +521,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 180,
-      maxHp: 180,
+      maxHP: 180,
       minDmg: 12,
       maxDmg: 20,
-      xp: 400,
+      exp: 400,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
@@ -477,12 +543,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 220,
-      maxHp: 220,
+      maxHP: 220,
       minDmg: 15,
       maxDmg: 25,
-      xp: 480,
+      exp: 480,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.FIREFIGHTER,
     },
   },
@@ -498,12 +565,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 280,
-      maxHp: 280,
+      maxHP: 280,
       minDmg: 13,
       maxDmg: 22,
-      xp: 600,
+      exp: 600,
       evasionChance: 10,
       type: ENEMIES.SNEAKER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
@@ -519,12 +587,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 350,
-      maxHp: 350,
+      maxHP: 350,
       minDmg: 17,
       maxDmg: 28,
-      xp: 750,
+      exp: 750,
       evasionChance: 10,
       type: ENEMIES.SNEAKER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
@@ -540,12 +609,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 450,
-      maxHp: 450,
+      maxHP: 450,
       minDmg: 22,
       maxDmg: 35,
-      xp: 900,
+      exp: 900,
       evasionChance: 10,
       type: ENEMIES.SNEAKER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SNEAKER,
     },
   },
@@ -562,12 +632,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 400,
-      maxHp: 400,
+      maxHP: 400,
       minDmg: 18,
       maxDmg: 28,
-      xp: 900,
+      exp: 900,
       evasionChance: 10,
       type: ENEMIES.LOST_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
@@ -584,12 +655,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 500,
-      maxHp: 500,
+      maxHP: 500,
       minDmg: 22,
       maxDmg: 35,
-      xp: 1100,
+      exp: 1100,
       evasionChance: 10,
       type: ENEMIES.LOST_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
@@ -606,12 +678,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 650,
-      maxHp: 650,
+      maxHP: 650,
       minDmg: 28,
       maxDmg: 42,
-      xp: 1350,
+      exp: 1350,
       evasionChance: 10,
       type: ENEMIES.LOST_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.LOST,
     },
   },
@@ -628,12 +701,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 650,
-      maxHp: 650,
+      maxHP: 650,
       minDmg: 25,
       maxDmg: 40,
-      xp: 1500,
+      exp: 1500,
       evasionChance: 10,
       type: ENEMIES.INVENTOR_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -650,12 +724,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 850,
-      maxHp: 850,
+      maxHP: 850,
       minDmg: 32,
       maxDmg: 50,
-      xp: 1800,
+      exp: 1800,
       evasionChance: 10,
       type: ENEMIES.INVENTOR_TIER_2,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -672,12 +747,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1100,
-      maxHp: 1100,
+      maxHP: 1100,
       minDmg: 40,
       maxDmg: 65,
-      xp: 2200,
+      exp: 2200,
       evasionChance: 10,
       type: ENEMIES.INVENTOR_TIER_3,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -694,12 +770,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1800,
-      maxHp: 1800,
+      maxHP: 1800,
       minDmg: 50,
       maxDmg: 80,
-      xp: 4000,
+      exp: 4000,
       evasionChance: 10,
       type: ENEMIES.GENERAL_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -716,12 +793,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 250,
-      maxHp: 250,
+      maxHP: 250,
       minDmg: 18,
       maxDmg: 28,
-      xp: 500,
+      exp: 500,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
     },
   },
@@ -737,12 +815,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 320,
-      maxHp: 320,
+      maxHP: 320,
       minDmg: 22,
       maxDmg: 35,
-      xp: 650,
+      exp: 650,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
     },
   },
@@ -758,12 +837,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 400,
-      maxHp: 400,
+      maxHP: 400,
       minDmg: 28,
       maxDmg: 42,
-      xp: 800,
+      exp: 800,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ALL_SEEING,
     },
   },
@@ -779,12 +859,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 400,
-      maxHp: 400,
+      maxHP: 400,
       minDmg: 25,
       maxDmg: 45,
-      xp: 850,
+      exp: 850,
       evasionChance: 15,
       type: ENEMIES.KNIGHT_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
     },
   },
@@ -800,12 +881,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 500,
-      maxHp: 500,
+      maxHP: 500,
       minDmg: 35,
       maxDmg: 55,
-      xp: 1000,
+      exp: 1000,
       evasionChance: 15,
       type: ENEMIES.KNIGHT_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
     },
   },
@@ -821,12 +903,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 650,
-      maxHp: 650,
+      maxHP: 650,
       minDmg: 45,
       maxDmg: 70,
-      xp: 1200,
+      exp: 1200,
       evasionChance: 15,
       type: ENEMIES.KNIGHT_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.KNIGHT,
     },
   },
@@ -842,12 +925,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 700,
-      maxHp: 700,
+      maxHP: 700,
       minDmg: 30,
       maxDmg: 50,
-      xp: 1500,
+      exp: 1500,
       evasionChance: 15,
       type: ENEMIES.ACTRESS_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
     },
   },
@@ -863,12 +947,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 900,
-      maxHp: 900,
+      maxHP: 900,
       minDmg: 40,
       maxDmg: 65,
-      xp: 1800,
+      exp: 1800,
       evasionChance: 15,
       type: ENEMIES.ACTRESS_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
     },
   },
@@ -884,12 +969,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1200,
-      maxHp: 1200,
+      maxHP: 1200,
       minDmg: 55,
       maxDmg: 85,
-      xp: 2200,
+      exp: 2200,
       evasionChance: 15,
       type: ENEMIES.ACTRESS_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.ACTRESS,
     },
   },
@@ -905,12 +991,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1000,
-      maxHp: 1000,
+      maxHP: 1000,
       minDmg: 45,
       maxDmg: 75,
-      xp: 2500,
+      exp: 2500,
       evasionChance: 15,
       type: ENEMIES.SINGER_TIER_1,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
     },
   },
@@ -926,12 +1013,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1300,
-      maxHp: 1300,
+      maxHP: 1300,
       minDmg: 60,
       maxDmg: 95,
-      xp: 3000,
+      exp: 3000,
       evasionChance: 15,
       type: ENEMIES.SINGER_TIER_2,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
     },
   },
@@ -947,12 +1035,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1700,
-      maxHp: 1700,
+      maxHP: 1700,
       minDmg: 75,
       maxDmg: 120,
-      xp: 3600,
+      exp: 3600,
       evasionChance: 15,
       type: ENEMIES.SINGER_TIER_3,
+      isEnhanced: false,
       subType: ALMANAC_ENEMIES_GENERIC_TYPES.SINGER,
     },
   },
@@ -968,12 +1057,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 1800,
-      maxHp: 1800,
+      maxHP: 1800,
       minDmg: 60,
       maxDmg: 100,
-      xp: 5000,
+      exp: 5000,
       evasionChance: 15,
       type: ENEMIES.BALLERINE_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -989,12 +1079,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 2400,
-      maxHp: 2400,
+      maxHP: 2400,
       minDmg: 80,
       maxDmg: 130,
-      xp: 6500,
+      exp: 6500,
       evasionChance: 15,
       type: ENEMIES.BALLERINE_TIER_2,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -1010,12 +1101,13 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 3200,
-      maxHp: 3200,
+      maxHP: 3200,
       minDmg: 110,
       maxDmg: 180,
-      xp: 8000,
+      exp: 8000,
       evasionChance: 15,
       type: ENEMIES.BALLERINE_TIER_3,
+      isEnhanced: true,
       subType: null,
     },
   },
@@ -1031,38 +1123,39 @@ export const CREATURES = {
     // другие данные по типу хп и прочего
     baseModel: {
       hp: 5000,
-      maxHp: 5000,
+      maxHP: 5000,
       minDmg: 130,
       maxDmg: 220,
-      xp: 15000,
+      exp: 15000,
       evasionChance: 15,
       type: ENEMIES.MERGED_MASS_TIER_1,
+      isEnhanced: true,
       subType: null,
     },
   },
 };
 
 export const FIRST_TIER_CREATURES_LIST = [
-  ENEMIES.SPIDER_TIER_1,
-  ENEMIES.SPIDER_TIER_2,
-  ENEMIES.SPIDER_TIER_3,
+  CREATURES[ENEMIES.SPIDER_TIER_1],
+  CREATURES[ENEMIES.SPIDER_TIER_2],
+  CREATURES[ENEMIES.SPIDER_TIER_3],
 
-  ENEMIES.TORSO_TIER_1,
-  ENEMIES.TORSO_TIER_2,
-  ENEMIES.TORSO_TIER_3,
+  CREATURES[ENEMIES.TORSO_TIER_1],
+  CREATURES[ENEMIES.TORSO_TIER_2],
+  CREATURES[ENEMIES.TORSO_TIER_3],
 
-  ENEMIES.WATCHER_TIER_1,
-  ENEMIES.WATCHER_TIER_2,
-  ENEMIES.WATCHER_TIER_3,
+  CREATURES[ENEMIES.WATCHER_TIER_1],
+  CREATURES[ENEMIES.WATCHER_TIER_2],
+  CREATURES[ENEMIES.WATCHER_TIER_3],
 
-  ENEMIES.SPIRIT_TIER_1,
-  ENEMIES.SPIRIT_TIER_2,
-  ENEMIES.SPIRIT_TIER_3,
+  CREATURES[ENEMIES.SPIRIT_TIER_1],
+  CREATURES[ENEMIES.SPIRIT_TIER_2],
+  CREATURES[ENEMIES.SPIRIT_TIER_3],
 ];
 
 export const FIRST_TIER_MINIBOSS_LIST = [
-  ENEMIES.BIRD_TIER_1,
-  ENEMIES.BIRD_TIER_2,
+  CREATURES[ENEMIES.BIRD_TIER_1],
+  CREATURES[ENEMIES.BIRD_TIER_2],
 ];
 
 export const FIRST_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.BIRD_TIER_3];
@@ -1070,26 +1163,26 @@ export const FIRST_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.BIRD_TIER_3];
 export const FIRST_TIER_BOSS = CREATURES[ENEMIES.SIN_ICON_TIER_1];
 
 export const SECOND_TIER_CREATURES_LIST = [
-  ENEMIES.SOLDIER_TIER_1,
-  ENEMIES.SOLDIER_TIER_2,
-  ENEMIES.SOLDIER_TIER_3,
+  CREATURES[ENEMIES.SOLDIER_TIER_1],
+  CREATURES[ENEMIES.SOLDIER_TIER_2],
+  CREATURES[ENEMIES.SOLDIER_TIER_3],
 
-  ENEMIES.FIREFIGHTER_TIER_1,
-  ENEMIES.FIREFIGHTER_TIER_2,
-  ENEMIES.FIREFIGHTER_TIER_3,
+  CREATURES[ENEMIES.FIREFIGHTER_TIER_1],
+  CREATURES[ENEMIES.FIREFIGHTER_TIER_2],
+  CREATURES[ENEMIES.FIREFIGHTER_TIER_3],
 
-  ENEMIES.SNEAKER_TIER_1,
-  ENEMIES.SNEAKER_TIER_2,
-  ENEMIES.SNEAKER_TIER_3,
+  CREATURES[ENEMIES.SNEAKER_TIER_1],
+  CREATURES[ENEMIES.SNEAKER_TIER_2],
+  CREATURES[ENEMIES.SNEAKER_TIER_3],
 
-  ENEMIES.LOST_TIER_1,
-  ENEMIES.LOST_TIER_2,
-  ENEMIES.LOST_TIER_3,
+  CREATURES[ENEMIES.LOST_TIER_1],
+  CREATURES[ENEMIES.LOST_TIER_2],
+  CREATURES[ENEMIES.LOST_TIER_3],
 ];
 
 export const SECOND_TIER_MINIBOSS_LIST = [
-  ENEMIES.INVENTOR_TIER_1,
-  ENEMIES.INVENTOR_TIER_2,
+  CREATURES[ENEMIES.INVENTOR_TIER_1],
+  CREATURES[ENEMIES.INVENTOR_TIER_2],
 ];
 
 export const SECOND_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
@@ -1098,26 +1191,26 @@ export const SECOND_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
 export const SECOND_TIER_BOSS = CREATURES[ENEMIES.GENERAL_TIER_1];
 
 export const THIRD_TIER_CREATURES_LIST = [
-  ENEMIES.ALL_SEEING_TIER_1,
-  ENEMIES.ALL_SEEING_TIER_2,
-  ENEMIES.ALL_SEEING_TIER_3,
+  CREATURES[ENEMIES.ALL_SEEING_TIER_1],
+  CREATURES[ENEMIES.ALL_SEEING_TIER_2],
+  CREATURES[ENEMIES.ALL_SEEING_TIER_3],
 
-  ENEMIES.KNIGHT_TIER_1,
-  ENEMIES.KNIGHT_TIER_2,
-  ENEMIES.KNIGHT_TIER_3,
+  CREATURES[ENEMIES.KNIGHT_TIER_1],
+  CREATURES[ENEMIES.KNIGHT_TIER_2],
+  CREATURES[ENEMIES.KNIGHT_TIER_3],
 
-  ENEMIES.ACTRESS_TIER_1,
-  ENEMIES.ACTRESS_TIER_2,
-  ENEMIES.ACTRESS_TIER_3,
+  CREATURES[ENEMIES.ACTRESS_TIER_1],
+  CREATURES[ENEMIES.ACTRESS_TIER_2],
+  CREATURES[ENEMIES.ACTRESS_TIER_3],
 
-  ENEMIES.SINGER_TIER_1,
-  ENEMIES.SINGER_TIER_2,
-  ENEMIES.SINGER_TIER_3,
+  CREATURES[ENEMIES.SINGER_TIER_1],
+  CREATURES[ENEMIES.SINGER_TIER_2],
+  CREATURES[ENEMIES.SINGER_TIER_3],
 ];
 
 export const THIRD_TIER_MINIBOSS_LIST = [
-  ENEMIES.BALLERINE_TIER_1,
-  ENEMIES.BALLERINE_TIER_2,
+  CREATURES[ENEMIES.BALLERINE_TIER_1],
+  CREATURES[ENEMIES.BALLERINE_TIER_2],
 ];
 
 export const THIRD_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.BALLERINE_TIER_3];

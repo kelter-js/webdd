@@ -15,6 +15,10 @@ import { RESOURCES } from "../../entities/resources";
 import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
 import { BASE_ITEMS_ID } from "../../constants/items";
 import { LEGENDARY_ARMOR_PRICE } from "../../constants";
+import healSfx from "../../assets/audio/heal.mp3";
+import sellSfx from "../../assets/audio/sell.mp3";
+
+const HEAL_SFX_ID = "healSfx";
 
 export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const {
@@ -44,6 +48,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
   const playerRef = getPlayerRef(DIALOGUE_AMBIENT_PLAYER_REF);
   console.log("playerRef", playerRef);
+  console.log("handleSetSrc", handleSetSrc);
 
   const handleEndDialogue = (cb: VoidFunction) => {
     cb();
@@ -60,15 +65,17 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
         handleEndDialogue(toggleEconomicModal);
       }
 
-      if (flags.includes(DIALOGUE_FLAGS.HEAL)) {
-        healTeam();
-      }
-
       updateDialogFlags(flags);
     }
 
     if (id === DIALOGUE_IDS.TAVERN_BUY) {
       handleEndDialogue(toggleBuyPotionsModal);
+    }
+
+    if (id === DIALOGUE_IDS.HEAL) {
+      console.log("but we r here?");
+      handleSetSrc(HEAL_SFX_ID, healSfx);
+      healTeam();
     }
 
     if (id === DIALOGUE_IDS.BUY_CAMERA) {

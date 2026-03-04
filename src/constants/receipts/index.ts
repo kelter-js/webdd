@@ -64,15 +64,19 @@ const craftItem = (
   };
 };
 
-const isDisabled = (state: GameStateData, targetItem: BASE_ITEMS_ID) => {
-  const { inventory_memoized, gear_memoized } = state;
+const isDisabled = (
+  state: GameStateData,
+  targetItem: BASE_ITEMS_ID,
+  requiredGold?: number,
+) => {
+  const { inventory_memoized, gear_memoized, gold } = state;
   const charactersGear = Object.values(gear_memoized).flat(1);
 
   const allItems = [...inventory_memoized, ...charactersGear];
 
-  const requiredArmor = allItems.filter(([baseId]) => baseId === targetItem);
+  const requiredItems = allItems.filter(([baseId]) => baseId === targetItem);
 
-  return requiredArmor.length < 3;
+  return requiredItems.length < 3 || gold < (requiredGold ?? 0);
 };
 
 export const RECEIPTS: ReceiptData[] = [
@@ -239,7 +243,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.BNTI_TIER_1, BASE_ITEMS_ID.BNTI_TIER_2),
     title: "БНТИ MK II",
@@ -250,7 +254,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.BNTI_TIER_2, BASE_ITEMS_ID.BNTI_TIER_3),
     title: "БНТИ MK III",
@@ -261,7 +265,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.NPP_TIER_1, BASE_ITEMS_ID.NPP_TIER_2),
     title: "NPP MK II",
@@ -272,7 +276,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.NPP_TIER_2, BASE_ITEMS_ID.NPP_TIER_3),
     title: "NPP MK III",
@@ -285,7 +289,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.IOTV_TIER_1, BASE_ITEMS_ID.IOTV_TIER_2),
     title: "IOTV MK II",
@@ -296,7 +300,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.IOTV_TIER_2, BASE_ITEMS_ID.IOTV_TIER_3),
     title: "IOTV MK III",
@@ -307,7 +311,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.FORT_TIER_1, BASE_ITEMS_ID.FORT_TIER_2),
     title: "FORT MK II",
@@ -318,7 +322,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.FORT_TIER_2, BASE_ITEMS_ID.FORT_TIER_3),
     title: "FORT MK III",
@@ -331,7 +335,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.NFM_TIER_1, BASE_ITEMS_ID.NFM_TIER_2),
     title: "NFM MK II",
@@ -342,7 +346,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.NFM_TIER_2, BASE_ITEMS_ID.NFM_TIER_3),
     title: "NFM MK III",
@@ -353,7 +357,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.REDUT_TIER_1, BASE_ITEMS_ID.REDUT_TIER_2),
     title: "REDUT MK II",
@@ -364,7 +368,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.REDUT_TIER_2, BASE_ITEMS_ID.REDUT_TIER_3),
     title: "REDUT MK III",
@@ -377,7 +381,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -392,7 +396,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -407,7 +411,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.HJELM_TIER_1, BASE_ITEMS_ID.HJELM_TIER_2),
     title: "HJELM MK II",
@@ -418,7 +422,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.HJELM_TIER_2, BASE_ITEMS_ID.HJELM_TIER_3),
     title: "HJELM MK III",
@@ -431,7 +435,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_1, BASE_ITEMS_ID.ALTYN_TIER_2),
     title: "Altyn MK II",
@@ -442,7 +446,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_2, BASE_ITEMS_ID.ALTYN_TIER_3),
     title: "Altyn MK III",
@@ -453,7 +457,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.MASKA_TIER_1, BASE_ITEMS_ID.MASKA_TIER_2),
     title: "Maska MK II",
@@ -464,7 +468,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.MASKA_TIER_2, BASE_ITEMS_ID.MASKA_TIER_3),
     title: "Maska MK III",
@@ -477,7 +481,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -492,7 +496,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -507,7 +511,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -522,7 +526,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -538,7 +542,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.MP155_TIER_1, BASE_ITEMS_ID.MP155_TIER_2),
     title: "MP-155 MK II",
@@ -549,7 +553,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.MP155_TIER_2, BASE_ITEMS_ID.MP155_TIER_3),
     title: "MP-155 MK III",
@@ -560,7 +564,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -575,7 +579,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(
         state,
@@ -590,7 +594,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_1, BASE_ITEMS_ID.SAIGA_TIER_2),
     title: "Saiga-12 MK II",
@@ -601,7 +605,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_2, BASE_ITEMS_ID.SAIGA_TIER_3),
     title: "Saiga-12 MK III",
@@ -613,7 +617,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_1, 3000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.SV98_TIER_1, BASE_ITEMS_ID.SV98_TIER_2),
     title: "СВ-98 MK II",
@@ -624,7 +628,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_2, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.SV98_TIER_2, BASE_ITEMS_ID.SV98_TIER_3),
     title: "СВ-98 MK III",
@@ -635,7 +639,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_1, 6000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.DLV10_TIER_1, BASE_ITEMS_ID.DLV10_TIER_2),
     title: "ДВЛ-10 MK II",
@@ -646,7 +650,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_2, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.DLV10_TIER_2, BASE_ITEMS_ID.DLV10_TIER_3),
     title: "ДВЛ-10 MK III",
@@ -657,7 +661,7 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_1),
+      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_1, 12000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.AXMC_TIER_1, BASE_ITEMS_ID.AXMC_TIER_2),
     title: "AXMC MK II",
@@ -668,10 +672,76 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_2),
+      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_2, 24000),
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.AXMC_TIER_2, BASE_ITEMS_ID.AXMC_TIER_3),
     title: "AXMC MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RPD_TIER_1, 3000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.RPD_TIER_1, BASE_ITEMS_ID.RPD_TIER_2),
+    title: "РПД MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.RPD_TIER_2, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.RPD_TIER_2, BASE_ITEMS_ID.RPD_TIER_3),
+    title: "РПД MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.M60_TIER_1, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.M60_TIER_1, BASE_ITEMS_ID.M60_TIER_2),
+    title: "M60 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.M60_TIER_2, 12000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.M60_TIER_2, BASE_ITEMS_ID.M60_TIER_3),
+    title: "M60 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.PKM_TIER_1, 12000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.PKM_TIER_1, BASE_ITEMS_ID.PKM_TIER_2),
+    title: "ПКМ MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.PKM_TIER_2, 24000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.PKM_TIER_2, BASE_ITEMS_ID.PKM_TIER_3),
+    title: "ПКМ MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
     goldRequiredToCraft: 24000,

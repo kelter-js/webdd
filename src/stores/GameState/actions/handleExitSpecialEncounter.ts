@@ -58,6 +58,8 @@ export const handleExitSpecialEncounter =
           copyState.player.inventory_memoized.map(dememoizeItem);
       }
 
+      copyState.player.location!.specialEncounter = undefined;
+
       copyState.player.locationState = RENDER_LOCATIONS.DUNGEON;
 
       return copyState;

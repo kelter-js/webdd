@@ -25,7 +25,7 @@ import { BuyTorches } from "../../components/BuyTorches";
 
 export const Settlement = () => {
   const {
-    player: { quest, economic },
+    player: { quest, economic, currentTier },
     generateDungeon,
   } = useGameState();
 
@@ -65,7 +65,7 @@ export const Settlement = () => {
         toggleDungeonModal();
       } else {
         toggleAutoSave();
-        generateDungeon();
+        generateDungeon({ dungeonLevel: currentTier });
       }
 
       return;

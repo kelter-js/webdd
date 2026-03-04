@@ -24,9 +24,11 @@ export const useHandleBattleEnd = () => {
   } = useGameState();
 
   const enemyHealth = battle?.enemy?.party?.reduce(
-    (acc, enemy) => acc + enemy.health,
+    (acc, enemy) => acc + enemy.hp,
     0,
   );
+  console.log("enemyHealth", enemyHealth);
+  console.log("battle?.enemy?.party", battle?.enemy?.party);
 
   useEffect(() => {
     if (battle && enemyHealth !== undefined && enemyHealth <= 0) {
@@ -59,10 +61,6 @@ export const useHandleBattleEnd = () => {
         },
         { gold: 0, exp: 0, counter: {} },
       );
-
-      if (hasCamera) {
-        // вызываем ф-ию из стора для обновления счетчика
-      }
 
       reward.experience = exp;
       reward.money = gold;

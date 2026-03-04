@@ -4,6 +4,9 @@ import { useAppState, useGameState, useGameSaves } from "../stores/";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
 import { ROOM_TYPES } from "../entities/room";
 import { useSnackbar } from "../contexts/Snackbar";
+import { usePlayer } from "../contexts/Player";
+import { SELL_SFX_ID } from "../constants";
+import sellSfx from "../assets/audio/sell.mp3";
 
 // REFACTORING CHECKED ✅
 
@@ -29,6 +32,13 @@ export const useGlobalListeners = () => {
     sellJunk,
   } = useGameState();
 
+  const { handleSetSrc } = usePlayer();
+
+  const handleSellJunk = () => {
+    sellJunk();
+    handleSetSrc(SELL_SFX_ID, sellSfx);
+  };
+
   const { defaultSave } = useGameSaves();
 
   const isGameInitiated = Boolean(name);
@@ -43,7 +53,7 @@ export const useGlobalListeners = () => {
 
   const getNextTargetIndex = () => {
     const aliveEnemies =
-      battle?.enemy?.party?.filter((enemy) => enemy.health > 0)?.length || 0;
+      battle?.enemy?.party?.filter((enemy) => enemy.hp > 0)?.length || 0;
 
     console.log("aliveEnemies", aliveEnemies);
     if (aliveEnemies <= 1) {
@@ -79,7 +89,7 @@ export const useGlobalListeners = () => {
 
   const getPreviousTargetIndex = () => {
     const aliveEnemies =
-      battle?.enemy?.party?.filter((enemy) => enemy.health > 0)?.length || 0;
+      battle?.enemy?.party?.filter((enemy) => enemy.hp > 0)?.length || 0;
 
     console.log("aliveEnemies", aliveEnemies);
     if (aliveEnemies <= 1) {
@@ -165,7 +175,7 @@ export const useGlobalListeners = () => {
         }
 
         if (event.code === "KeyR" && isTradeModalOpen) {
-          sellJunk();
+          handleSellJunk();
         }
 
         if (

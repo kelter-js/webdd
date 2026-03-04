@@ -27,7 +27,7 @@ export const usePlayer = () => useContext(PlayerContext);
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const [players, setPlayers] = useState<AudioFilesData>({});
   const refs = useRef<Record<string, HTMLAudioElement | null>>({});
-
+  console.log("players", players);
   const {
     player: { volume },
   } = useGameState();
@@ -44,29 +44,33 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [volume, players]);
 
-  const handleSetSrc = (
-    id: string,
-    newSrc: string,
-    hasLoop: boolean = false,
-  ) => {
-    setPlayers((prev) => ({
-      ...prev,
-      [id]: {
-        src: newSrc,
-        hasLoop,
-      },
-    }));
+  const handleSetSrc = (id: string, newSrc: string, hasLoop = false) => {
+    console.log("ADDING", id, newSrc);
+
+    setPlayers((prev) => {
+      console.log("PREV", prev);
+
+      return {
+        ...prev,
+        [id]: {
+          src: newSrc,
+          hasLoop,
+        },
+      };
+    });
   };
 
   const handleRemoveSrc = (id: string) => {
-    console.log("!!!id", id);
-    if (players[id]) {
-      const srcCopies = { ...players };
-      delete srcCopies[id];
-      setPlayers(srcCopies);
-      refs.current[id]?.pause();
-      delete refs.current[id];
-    }
+    setPlayers((prev) => {
+      if (!prev[id]) return prev;
+
+      const newState = { ...prev };
+      delete newState[id];
+      return newState;
+    });
+
+    refs.current[id]?.pause();
+    delete refs.current[id];
   };
 
   const getPlayerRef = (id: string) => refs.current[id];

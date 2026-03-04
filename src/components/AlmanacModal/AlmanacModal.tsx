@@ -3,22 +3,23 @@ import { useAppState, useGameState } from "../../stores";
 import almanacCover from "../../assets/traders/almanac.png";
 import { Button, Stack, Typography } from "@mui/material";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ForwardIcon from "@mui/icons-material/Forward";
 import { ControlsContainer } from "./AlmanacModal.styled";
 import { Tooltip } from "../../common";
+import { ENEMY_DESCRIPTIONS, ENEMY_IMAGES, getEnemiesByTier } from "./utils";
 
 const DISABLE_TEXT = "Эта страница пока что недоступна";
 const DEFAULT_PAGE_DISPLAY_AMOUNT = 2;
+const MAX_PAGE_COUNTER = 2;
 // DEFAULT_DATA_ARRAY.slice(page *DEFAULT_PAGE_DISPLAY_AMOUNT , page * DEFAULT_PAGE_DISPLAY_AMOUNT  + DEFAULT_PAGE_DISPLAY_AMOUNT  );
 // сначала - 0,2
 // потом 2,4
 // потом 4,6
 
 export const AlmanacModal = () => {
-  const {
-    player: { currentTier },
-  } = useGameState();
+  const { player } = useGameState();
+  const { currentTier } = player;
 
   const [pageHeader, setPageHeader] = useState(currentTier);
   const [page, setPage] = useState(0);
@@ -28,6 +29,31 @@ export const AlmanacModal = () => {
   const handleForward = () => setPage((state) => state + 1);
   const handleBackward = () => setPage((state) => state - 1);
   const isBackwardButtonAvailable = page !== 0;
+
+  const creaturesToRender = useMemo(() => {
+    const list = getEnemiesByTier(pageHeader);
+
+    return list
+      .slice(
+        page * DEFAULT_PAGE_DISPLAY_AMOUNT,
+        page * DEFAULT_PAGE_DISPLAY_AMOUNT + DEFAULT_PAGE_DISPLAY_AMOUNT,
+      )
+      .map((enemy) => {
+        // const { locked, unlocked } = ENEMY_IMAGES[enemy];
+        // const isEnemyUnlocked = isEnemyUnlocked(player, enemy);
+
+        // return {
+        //   description: ENEMY_DESCRIPTIONS[enemy],
+        //   src: isEnemyUnlocked ? unlocked : locked,
+        // };
+
+        return enemy;
+      });
+    // здесь нужно добавить маппинг - для изображений unlocked или locked
+  }, [pageHeader, page, player]);
+
+  console.log("creaturesToRender", creaturesToRender);
+  console.log("page", page);
 
   return (
     <GameModal onClose={toggleAlmanac} withoutPadding>
@@ -58,32 +84,34 @@ export const AlmanacModal = () => {
             />
           </Button>
         )}
-
-        <Button
-          sx={{
-            position: "absolute",
-            top: 17,
-            right: 85,
-            "&:active": {
-              boxShadow: "none", // убирает эффект нажатия
-            },
-            "& .MuiTouchRipple-root": {
-              display: "none",
-            },
-          }}
-          onClick={handleForward}
-        >
-          <ForwardIcon
+        {page + 1 < MAX_PAGE_COUNTER && (
+          <Button
             sx={{
-              fontSize: 60,
-              color: "#e0c0a0",
+              position: "absolute",
+              top: 17,
+              right: 85,
+              "&:active": {
+                boxShadow: "none", // убирает эффект нажатия
+              },
+              "& .MuiTouchRipple-root": {
+                display: "none",
+              },
             }}
-          />
-        </Button>
+            onClick={handleForward}
+            disabled={page + 1 === MAX_PAGE_COUNTER}
+          >
+            <ForwardIcon
+              sx={{
+                fontSize: 60,
+                color: "#e0c0a0",
+              }}
+            />
+          </Button>
+        )}
 
-        {/* <Stack position="absolute"></Stack>
+        <Stack position="absolute"></Stack>
 
-        <Stack position="absolute"></Stack> */}
+        <Stack position="absolute"></Stack>
 
         <ControlsContainer>
           <Button

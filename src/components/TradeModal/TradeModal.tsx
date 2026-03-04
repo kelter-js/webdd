@@ -6,6 +6,9 @@ import { Button, Stack, Typography } from "@mui/material";
 import { useAppState, useGameState } from "../../stores";
 import { BuyList } from "./components/BuyList";
 import { SellList } from "./components/SellList";
+import sellSfx from "../../assets/audio/sell.mp3";
+import { usePlayer } from "../../contexts/Player";
+import { SELL_SFX_ID } from "../../constants";
 
 export const TradeModal = () => {
   const { toggleTradeModal } = useAppState();
@@ -15,6 +18,13 @@ export const TradeModal = () => {
     sellJunk,
     player: { junk },
   } = useGameState();
+
+  const { handleSetSrc } = usePlayer();
+
+  const handleSellJunk = () => {
+    sellJunk();
+    handleSetSrc(SELL_SFX_ID, sellSfx);
+  };
 
   const cantSellJunk = junk.length === 0;
 
@@ -28,7 +38,7 @@ export const TradeModal = () => {
           zIndex: 9,
           opacity: cantSellJunk ? 0.3 : 1,
         }}
-        onClick={sellJunk}
+        onClick={handleSellJunk}
         disabled={cantSellJunk}
       >
         <Typography

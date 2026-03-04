@@ -3,6 +3,9 @@ import { useGameState } from "../../../../stores";
 import emptySlot from "../../../../assets/static/empty_slot.png";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useEffect, useRef, useState } from "react";
+import { SELL_SFX_ID } from "../../../../constants";
+import sellSfx from "../../../../assets/audio/sell.mp3";
+import { usePlayer } from "../../../../contexts/Player";
 
 export const SellList = () => {
   const { inventory, sellItem } = useGameState();
@@ -11,10 +14,12 @@ export const SellList = () => {
   console.log("inventory", inventory);
 
   const currentItemToSellData = (inventory || [])[selectedIndex];
+  const { handleSetSrc } = usePlayer();
 
   const handleSellItem = () => {
     sellItem(currentItemToSellData.gearId);
     setSelectedIndex(0);
+    handleSetSrc(SELL_SFX_ID, sellSfx);
     setTimeout(() => {
       const osInstance = scrollListElement.current?.osInstance();
       if (!osInstance) {
@@ -23,6 +28,7 @@ export const SellList = () => {
       }
 
       const viewport = osInstance.elements().viewport;
+
       if (viewport) {
         viewport.scrollTo({ top: 0, behavior: "smooth" });
       }

@@ -20,7 +20,7 @@ const SnackbarContext = createContext<SnackbarContextType>({
 
 export const useSnackbar = () => useContext(SnackbarContext);
 
-const SNACKBAR_HIDE_DURATION = 300000;
+const SNACKBAR_HIDE_DURATION = 3000;
 
 export const SnackbarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = useState(false);

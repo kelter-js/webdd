@@ -19,6 +19,7 @@ import {
   SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 } from "../constants";
 import {
+  BattleGenerationProps,
   calculateStatistics,
   generateBattle,
   getBattleState,
@@ -148,14 +149,42 @@ export const useGameState = create<StoreState>()(
               currentCell.type !== ROOM_TYPES.ENEMY;
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
+            console.log("currentCell", currentCell);
+
+            const startBattle = (
+              params?: Pick<
+                BattleGenerationProps,
+                "isBoss" | "isQuest" | "isSpecial"
+              >,
+            ) => {
+              const { isSpecial } = params || {};
+
+              const firstTurn = getFirstTurn(
+                copyState.player.currentTier,
+                copyState.effects,
+                copyState.player.party,
+                isSpecial,
+              );
+
+              copyState.player.battle = generateBattle({
+                tier: copyState.player.currentTier,
+                turn: firstTurn,
+                party: copyState.player.party,
+                characterGear: copyState.gear,
+                ...params, // здесь прокинутся isBoss, isQuest, isSpecial и т.д.
+              });
+
+              copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
+              copyState.isDiceRequiredRoll = true;
+
+              if (copyState.player.location) {
+                copyState.player.location.encounterChance =
+                  MIN_ENCOUNTER_CHANCE;
+              }
+            };
 
             // если это не начало и не конец - подземелья
             if (isPlayableArea) {
-              // сюда нужно вписать логику уменьшения кол-ва факелов в инвентаре
-              if (copyState.player?.torches && !currentCell.isLighted) {
-                currentCell.isLighted = true;
-              }
-
               // Логика рассчета того, что это спешиал энкаунтер
               if (
                 isSpecialEncounter(
@@ -176,211 +205,132 @@ export const useGameState = create<StoreState>()(
 
                 copyState.player.locationState =
                   RENDER_LOCATIONS.SPECIAL_ENCOUNTER;
-              }
+              } else {
+                {
+                  // Логика рассчета того, что мы попали в бой
+                  const encounterChance = getRandom(1, 100);
 
-              if (!copyState.player.location?.specialEncounter) {
-                // Логика рассчета того, что мы попали в бой
-                const encounterChance = getRandom(1, 100);
+                  const currentChance =
+                    copyState.player.location?.encounterChance!;
 
-                const currentChance =
-                  copyState.player.location?.encounterChance!;
+                  const roll = getEncounterRoll(
+                    currentChance!,
+                    copyState.effects,
+                    isAlreadyVisited,
+                    Boolean(currentCell.isLighted),
+                    Boolean(isDeadEnd),
+                  );
 
-                const roll = getEncounterRoll(
-                  currentChance!,
-                  copyState.effects,
-                  isAlreadyVisited,
-                  Boolean(currentCell.isLighted),
-                  Boolean(isDeadEnd),
-                );
+                  const hasEncounter = encounterChance < roll;
 
-                const hasEncounter = encounterChance < roll;
+                  if (hasEncounter) {
+                    onFightStart();
 
-                if (hasEncounter) {
-                  onFightStart();
-
-                  if (isDeadEnd) {
-                    currentCell.type === ROOM_TYPES.CLEARED;
-
-                    const firstTurn = getFirstTurn(
-                      copyState.player.currentTier,
-                      copyState.effects,
-                      copyState.player.party,
-                      true,
-                    );
-
-                    const battle = generateBattle({
-                      tier: copyState.player.currentTier,
-                      turn: firstTurn,
-                      party: copyState.player.party,
-                      isSpecial: true,
-                      characterGear: copyState.gear,
-                    });
-                    // state.player.battle = battle;
-                    // MOCK - убрать коммент для начала битвы
-                    copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
-                    copyState.player.battle = {
-                      enemy: {
-                        effects: [],
-                        party: [
-                          { health: 150 } as Creature,
-                          { health: 150 } as Creature,
-                          { health: 150 } as Creature,
-                        ],
-                      },
-                      player: {
-                        effects: [],
-                        party: copyState.player.party.map((hero) => ({
-                          ...hero,
-                          currentHealth: 20,
-                          hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
-                        })),
-                      },
-                      turn: firstTurn,
-                      messages: [],
-                      reward: null,
-                    };
-
-                    // генерируем особого моба т.к. dead end
+                    if (isDeadEnd) {
+                      currentCell.type = ROOM_TYPES.CLEARED;
+                      startBattle({ isSpecial: true });
+                    } else {
+                      startBattle();
+                    }
                   } else {
-                    const firstTurn = getFirstTurn(
-                      copyState.player.currentTier,
-                      copyState.effects,
-                      copyState.player.party,
-                    );
-                    // нужно передавать реальый тир вместо 1
-                    const battle = generateBattle({
-                      tier: copyState.player.currentTier,
-                      turn: firstTurn,
-                      party: copyState.player.party,
-                      characterGear: copyState.gear,
-                    });
-                    // state.player.battle = battle;
-                    // MOCK - убрать коммент для начала битвы
-                    copyState.player.locationState = RENDER_LOCATIONS.BATTLE;
-                    copyState.player.battle = {
-                      enemy: {
-                        effects: [],
-                        party: [
-                          { health: 150 } as Creature,
-                          { health: 150 } as Creature,
-                          { health: 150 } as Creature,
-                        ],
-                      },
-                      player: {
-                        effects: [],
-                        party: copyState.player.party.map((hero) => ({
-                          ...hero,
-                          currentHealth: 20,
-                          hasTurn: firstTurn === TURN_STATES.PLAYER_TURN,
-                        })),
-                      },
-                      turn: firstTurn,
-                      messages: [],
-                      reward: null,
-                    };
-                    //сбрасываем шанс на встречу с энкаунтером
-                  }
-                  // тут нужжен код генерации битвы/противника и т.д.
+                    if (copyState.player.location && !isDeadEnd) {
+                      copyState.player.location.encounterChance = Math.min(
+                        currentChance + MIN_ENCOUNTER_CHANCE,
+                        MAX_ENCOUNTER_CHANCE,
+                      );
+                    }
 
-                  if (copyState.player.location) {
-                    copyState.player.location.encounterChance =
-                      MIN_ENCOUNTER_CHANCE;
-                  }
-                  copyState.isDiceRequiredRoll = true;
-                } else {
-                  if (copyState.player.location && !isDeadEnd) {
-                    copyState.player.location.encounterChance = Math.min(
-                      currentChance + MIN_ENCOUNTER_CHANCE,
-                      MAX_ENCOUNTER_CHANCE,
-                    );
-                  }
+                    if (isDeadEnd) {
+                      currentCell.type = ROOM_TYPES.CLEARED;
+                      const reward = getRandomRewardWithoutFight(
+                        copyState.player.currentTier,
+                      );
 
-                  if (isDeadEnd) {
-                    currentCell.type === ROOM_TYPES.CLEARED;
-                    const reward = getRandomRewardWithoutFight(
-                      copyState.player.currentTier,
-                    );
+                      onReward(reward.message);
 
-                    onReward(reward.message);
+                      if (reward.result) {
+                        switch (reward.type) {
+                          case RewardTypes.GOLD: {
+                            copyState.player.gold += reward.result as number;
 
-                    if (reward.result) {
-                      switch (reward.type) {
-                        case RewardTypes.GOLD: {
-                          if (typeof reward.result === "number") {
-                            copyState.player.gold += reward.result;
+                            break;
                           }
 
-                          break;
-                        }
+                          case RewardTypes.JUNK: {
+                            const junkToAdd = reward.result as JUNK_TYPES;
 
-                        case RewardTypes.JUNK: {
-                          const junkToAdd = reward.result as JUNK_TYPES;
-
-                          const junkItem = copyState.player.junk.find(
-                            (item) => item[0] === junkToAdd,
-                          );
-
-                          if (junkItem) {
-                            copyState.player.junk = copyState.player.junk.map(
-                              (item) =>
-                                item[0] === junkToAdd
-                                  ? [item[0], String(Number(item[1]) + 1)]
-                                  : item,
+                            const junkItem = copyState.player.junk.find(
+                              (item) => item[0] === junkToAdd,
                             );
-                          } else {
-                            copyState.player.junk.push([junkToAdd, String(1)]);
+
+                            if (junkItem) {
+                              copyState.player.junk = copyState.player.junk.map(
+                                (item) =>
+                                  item[0] === junkToAdd
+                                    ? [item[0], String(Number(item[1]) + 1)]
+                                    : item,
+                              );
+                            } else {
+                              copyState.player.junk.push([
+                                junkToAdd,
+                                String(1),
+                              ]);
+                            }
+
+                            break;
                           }
 
-                          break;
-                        }
+                          case RewardTypes.POTION: {
+                            const rewardPotion = reward.result as {
+                              type: POTION_TYPES;
+                            };
 
-                        case RewardTypes.POTION: {
-                          const rewardPotion = reward.result as {
-                            type: POTION_TYPES;
-                          };
-
-                          const hasSamePotions =
-                            copyState.player.consumables.find((potion) => {
-                              const [potionType] = potion;
-                              return potionType === rewardPotion.type;
-                            });
-
-                          if (hasSamePotions) {
-                            copyState.player.consumables =
-                              copyState.player.consumables.map((potion) => {
-                                const [potionType, amount] = potion;
-
-                                if (potionType === rewardPotion.type) {
-                                  console.log(Number(amount) + 1);
-                                  return [potionType, `${Number(amount) + 1}`];
-                                }
-
-                                return potion;
+                            const hasSamePotions =
+                              copyState.player.consumables.find((potion) => {
+                                const [potionType] = potion;
+                                return potionType === rewardPotion.type;
                               });
-                          } else {
-                            copyState.player.consumables.push([
-                              rewardPotion.type,
-                              "1",
+
+                            if (hasSamePotions) {
+                              copyState.player.consumables =
+                                copyState.player.consumables.map((potion) => {
+                                  const [potionType, amount] = potion;
+
+                                  if (potionType === rewardPotion.type) {
+                                    console.log(Number(amount) + 1);
+                                    return [
+                                      potionType,
+                                      `${Number(amount) + 1}`,
+                                    ];
+                                  }
+
+                                  return potion;
+                                });
+                            } else {
+                              copyState.player.consumables.push([
+                                rewardPotion.type,
+                                "1",
+                              ]);
+                            }
+
+                            break;
+                          }
+
+                          case RewardTypes.ITEM: {
+                            const rewardItem = reward.result as Item;
+
+                            if (!copyState.inventory) {
+                              copyState.inventory = [];
+                            }
+
+                            copyState.inventory.push(rewardItem);
+                            copyState.player.inventory_memoized.push([
+                              rewardItem.baseId,
+                              rewardItem.gearId,
                             ]);
+
+                            break;
                           }
-
-                          break;
-                        }
-
-                        case RewardTypes.ITEM: {
-                          const rewardItem = reward.result as Item;
-
-                          if (!copyState.inventory) {
-                            copyState.inventory = [];
-                          }
-
-                          copyState.inventory.push(rewardItem);
-                          copyState.player.inventory_memoized.push([
-                            rewardItem.baseId,
-                            rewardItem.gearId,
-                          ]);
-
-                          break;
                         }
                       }
                     }
@@ -389,73 +339,24 @@ export const useGameState = create<StoreState>()(
               }
             }
 
+            // сюда нужно вписать логику уменьшения кол-ва факелов в инвентаре
+            if (copyState.player?.torches && !currentCell.isLighted) {
+              currentCell.isLighted = true;
+              copyState.player.torches -= 1;
+            }
+
             if (currentCell.type === ROOM_TYPES.STORY_BOSS) {
-              const firstTurn = getFirstTurn(
-                copyState.player.currentTier,
-                copyState.effects,
-                copyState.player.party,
-              );
+              onFightStart();
+              startBattle({ isBoss: true });
 
-              if (
-                copyState.player.currentTier === 1 &&
-                !copyState.player.flags.includes(FLAGS.FIRST_STORY_BOSS_VICTORY)
-              ) {
-                const battle = generateBattle({
-                  tier: copyState.player.currentTier,
-                  turn: firstTurn,
-                  party: copyState.player.party,
-                  characterGear: copyState.gear,
-                  isBoss: true,
-                });
-                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
-              }
-
-              if (
-                copyState.player.currentTier === 2 &&
-                !copyState.player.flags.includes(
-                  FLAGS.SECOND_STORY_BOSS_VICTORY,
-                )
-              ) {
-                const battle = generateBattle({
-                  tier: copyState.player.currentTier,
-                  turn: firstTurn,
-                  party: copyState.player.party,
-                  characterGear: copyState.gear,
-                  isBoss: true,
-                });
-                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
-              }
-
-              if (
-                copyState.player.currentTier === 3 &&
-                !copyState.player.flags.includes(FLAGS.THIRD_STORY_BOSS_VICTORY)
-              ) {
-                const battle = generateBattle({
-                  tier: copyState.player.currentTier,
-                  turn: firstTurn,
-                  party: copyState.player.party,
-                  characterGear: copyState.gear,
-                  isBoss: true,
-                });
-                // меняем локацию, генерим модель боя, устанавливаем константой противника босса первого тира
-              }
+              currentCell.type = ROOM_TYPES.END;
             }
 
             if (currentCell.type === ROOM_TYPES.ENEMY) {
-              const firstTurn = getFirstTurn(
-                copyState.player.currentTier,
-                copyState.effects,
-                copyState.player.party,
-              );
+              onFightStart();
+              startBattle({ isQuest: true });
 
-              const battle = generateBattle({
-                tier: copyState.player.currentTier,
-                turn: firstTurn,
-                party: copyState.player.party,
-                characterGear: copyState.gear,
-                isQuest: true,
-              });
-              // генерируем квестого противника - одного
+              currentCell.type = ROOM_TYPES.CLEARED;
             }
 
             copyState.player.location.dungeon = newDungeon;
@@ -527,7 +428,7 @@ export const useGameState = create<StoreState>()(
               enemy: {
                 ...(state.player.battle?.enemy || ({} as Enemy)),
                 party: (state.player.battle?.enemy?.party || []).map(
-                  (enemy) => ({ ...enemy, health: 0 }),
+                  (enemy) => ({ ...enemy, hp: 0 }),
                 ),
               },
             },

@@ -29,8 +29,22 @@ import {
   getGoldByTier,
   getRandomJunkByTier,
 } from "../components/Battle/utils";
-import { RewardTypes } from "../types";
+import { CreatureBaseModel, RewardTypes } from "../types";
 import { generatePotion } from "../utils/generatePotionsToBuy";
+import {
+  FIRST_TIER_BOSS,
+  FIRST_TIER_CREATURES_LIST,
+  FIRST_TIER_MINIBOSS_LIST,
+  FIRST_TIER_QUEST_MINIBOSS,
+  SECOND_TIER_BOSS,
+  SECOND_TIER_CREATURES_LIST,
+  SECOND_TIER_MINIBOSS_LIST,
+  SECOND_TIER_QUEST_MINIBOSS,
+  THIRD_TIER_BOSS,
+  THIRD_TIER_CREATURES_LIST,
+  THIRD_TIER_MINIBOSS_LIST,
+  THIRD_TIER_QUEST_MINIBOSS,
+} from "../constants/creatures";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -459,7 +473,7 @@ export const calculateStatistics = (
 };
 
 export const getBattleState = (enemy: Creature, party: Character[]) => {
-  if (enemy.health <= 0) {
+  if (enemy.hp <= 0) {
     return BATTLE_STATES.PLAYER_WIN;
   }
 
@@ -479,6 +493,33 @@ export interface BattleGenerationProps {
   isBoss?: boolean;
   isQuest?: boolean;
 }
+
+const getDeadEndEnemyByTier = (currentTier: number) => {
+  if (currentTier === 1) {
+    return FIRST_TIER_MINIBOSS_LIST;
+  }
+
+  if (currentTier === 2) {
+    return SECOND_TIER_MINIBOSS_LIST;
+  }
+
+  return THIRD_TIER_MINIBOSS_LIST;
+};
+
+const getRandomEnemyFromList = (list: CreatureBaseModel[]) =>
+  list[getRandom(0, list.length - 1)];
+
+const getEnemyByLocationTier = (currentTier: number) => {
+  if (currentTier === 1) {
+    return FIRST_TIER_CREATURES_LIST;
+  }
+
+  if (currentTier === 2) {
+    return SECOND_TIER_CREATURES_LIST;
+  }
+
+  return THIRD_TIER_CREATURES_LIST;
+};
 
 export const generateBattle = ({
   tier,
@@ -519,9 +560,6 @@ export const generateBattle = ({
         };
       }),
     },
-    // MOCK
-    // нужна реальная функция генерации противников в зависимости от тира и ситуации
-    // enemy: { effects: [], party: generateEnemy(tier, isSpecial) },
     enemy: { effects: [], party: [] },
     turn,
     messages: [
@@ -531,16 +569,52 @@ export const generateBattle = ({
   };
 
   if (isQuest) {
-    // MOCK
-    // const questEnemyByTier = tier === 1 ?
-    // model.enemy.party.push(questEnemyByTier);
+    if (tier === 1) {
+      model.enemy.party.push({
+        ...FIRST_TIER_QUEST_MINIBOSS.baseModel,
+        aiPackage: FIRST_TIER_QUEST_MINIBOSS.aiPackage,
+      });
+    }
+
+    if (tier === 2) {
+      model.enemy.party.push({
+        ...SECOND_TIER_QUEST_MINIBOSS.baseModel,
+        aiPackage: SECOND_TIER_QUEST_MINIBOSS.aiPackage,
+      });
+    }
+
+    if (tier === 3) {
+      model.enemy.party.push({
+        ...THIRD_TIER_QUEST_MINIBOSS.baseModel,
+        aiPackage: THIRD_TIER_QUEST_MINIBOSS.aiPackage,
+      });
+    }
+
     return model;
   }
 
   if (isBoss) {
-    // MOCK
-    // const bossByTier = tier === 1 ?
-    // model.enemy.party.push(bossByTier);
+    if (tier === 1) {
+      model.enemy.party.push({
+        ...FIRST_TIER_BOSS.baseModel,
+        aiPackage: FIRST_TIER_BOSS.aiPackage,
+      });
+    }
+
+    if (tier === 2) {
+      model.enemy.party.push({
+        ...SECOND_TIER_BOSS.baseModel,
+        aiPackage: SECOND_TIER_BOSS.aiPackage,
+      });
+    }
+
+    if (tier === 3) {
+      model.enemy.party.push({
+        ...THIRD_TIER_BOSS.baseModel,
+        aiPackage: THIRD_TIER_BOSS.aiPackage,
+      });
+    }
+
     return model;
   }
 
@@ -548,14 +622,28 @@ export const generateBattle = ({
     const hasTwoEnemies = getRandom(1, 100);
     const DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE = 50;
 
-    if (hasTwoEnemies > DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE) {
-      // const currentTypeOfSpecialEnemies = логика вычисления массива противников
+    const targetList = getDeadEndEnemyByTier(tier);
 
-      // model.enemy.party.push(currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)], currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)])
+    if (hasTwoEnemies > DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE) {
+      const enemiesList = [
+        getRandomEnemyFromList(targetList),
+        getRandomEnemyFromList(targetList),
+      ].map((item) => ({
+        ...item.baseModel,
+        aiPackage: item.aiPackage,
+      }));
+
+      model.enemy.party.push(...enemiesList);
+
       return model;
     } else {
-      // const currentTypeOfSpecialEnemies = логика вычисления массива противников
-      // model.enemy.party.push(currentTypeOfSpecialEnemies[getRandom(0, currentTypeOfSpecialEnemies.length - 1)]);
+      const enemy = getRandomEnemyFromList(targetList);
+
+      model.enemy.party.push({
+        ...enemy.baseModel,
+        aiPackage: enemy.aiPackage,
+      });
+
       return model;
     }
   } else {
@@ -564,32 +652,42 @@ export const generateBattle = ({
     const CHANCE_OF_TWO_ENEMIES = 50;
     const CHANCE_OF_THREE_ENEMIES = 30;
 
+    const targetList = getEnemyByLocationTier(tier);
+
     if (roll < CHANCE_OF_THREE_ENEMIES) {
-      // const currentEnemyPool = логика вычисления массива противников
-      // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
-      // currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
-      // currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],
-      // );
+      const enemiesList = [
+        getRandomEnemyFromList(targetList),
+        getRandomEnemyFromList(targetList),
+        getRandomEnemyFromList(targetList),
+      ].map((item) => ({
+        ...item.baseModel,
+        aiPackage: item.aiPackage,
+      }));
+
+      model.enemy.party.push(...enemiesList);
+
       return model;
     }
 
     if (roll < CHANCE_OF_TWO_ENEMIES) {
-      // const currentEnemyPool = логика вычисления массива противников
-      // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)],currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)]);
+      const enemiesList = [
+        getRandomEnemyFromList(targetList),
+        getRandomEnemyFromList(targetList),
+      ].map((item) => ({
+        ...item.baseModel,
+        aiPackage: item.aiPackage,
+      }));
+
+      model.enemy.party.push(...enemiesList);
+
       return model;
     }
+    const enemy = getRandomEnemyFromList(targetList);
 
-    // const currentEnemyPool = логика вычисления массива противников
-    // model.enemy.party.push(currentEnemyPool[getRandom(0, currentEnemyPool.length - 1)]);
+    model.enemy.party.push({ ...enemy.baseModel, aiPackage: enemy.aiPackage });
+
     return model;
   }
-
-  // enemy: Enemy;
-  // player: Player;
-  // turn: TURN_STATES;
-  // messages: Message[];
-  // reward: null | Reward;
-  // mock
 };
 
 const CHANCE_TO_FULL_ENEMY_PARTY = 50;

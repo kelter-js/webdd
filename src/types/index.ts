@@ -2,7 +2,9 @@
 
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS } from "../constants/perks";
-import { DUNGEONS } from "../entities";
+import { DUNGEONS, ENEMIES } from "../entities";
+import { AI_CATEGORIES } from "../entities/ai";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
 import { RESOURCES } from "../entities/resources";
 import { ROOM_TYPES } from "../entities/room";
 import { GameStateData, PERK_ID_DATA } from "./gameState";
@@ -72,4 +74,21 @@ export enum RewardTypes {
 export interface DungeonCreationData {
   dungeonType?: DUNGEONS;
   dungeonLevel?: number;
+}
+
+export interface CreatureBaseModel {
+  aiPackage: AI_CATEGORIES;
+  pictureSrc: string;
+  audioSrc: string;
+  baseModel: {
+    hp: number;
+    maxHP: number;
+    minDmg: number;
+    maxDmg: number;
+    exp: number;
+    evasionChance: number;
+    type: ENEMIES;
+    isEnhanced: boolean;
+    subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
+  };
 }
