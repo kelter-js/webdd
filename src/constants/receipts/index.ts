@@ -680,6 +680,7 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 24000,
   },
+  // ПУЛЕМЕТЫ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
@@ -742,6 +743,73 @@ export const RECEIPTS: ReceiptData[] = [
     create: (state: GameStateData) =>
       craftItem(state, BASE_ITEMS_ID.PKM_TIER_2, BASE_ITEMS_ID.PKM_TIER_3),
     title: "ПКМ MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
+  // ШТУРМОВЫЕ ВИНТОВКИ
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.AK_12_TIER_1, 3000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.AK_12_TIER_1, BASE_ITEMS_ID.AK_12_TIER_2),
+    title: "АК-12 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.AK_12_TIER_2, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.AK_12_TIER_2, BASE_ITEMS_ID.AK_12_TIER_3),
+    title: "АК-12 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.M4A1_TIER_1, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.M4A1_TIER_1, BASE_ITEMS_ID.M4A1_TIER_2),
+    title: "M4A1 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.M4A1_TIER_2, 12000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.M4A1_TIER_2, BASE_ITEMS_ID.M4A1_TIER_3),
+    title: "M4A1 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SA58_TIER_1, 12000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SA58_TIER_1, BASE_ITEMS_ID.SA58_TIER_2),
+    title: "SA-58 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.SA58_TIER_2, 24000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.SA58_TIER_2, BASE_ITEMS_ID.SA58_TIER_3),
+    title: "SA-58 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
     goldRequiredToCraft: 24000,

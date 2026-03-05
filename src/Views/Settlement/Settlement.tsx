@@ -48,7 +48,7 @@ export const Settlement = () => {
 
   const dialogTree = useGetDialogue(isDialogueOpen);
 
-  const { coords, mapImage } = useGetLocation(LOCATION_NAMES.CITY3);
+  const { coords, mapImage } = useGetLocation(currentTier);
 
   const handleInteractWithBuilding = (building: string) => {
     if (building === BUILDING_NAMES.QUEST_DESK) {

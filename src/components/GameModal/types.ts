@@ -6,4 +6,5 @@ export interface GameModalProps {
   width?: string;
   height?: string;
   withoutPadding?: boolean;
+  withoutScrolls?: boolean;
 }

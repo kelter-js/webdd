@@ -1,4 +1,5 @@
+import { SlideData } from "../../types";
+
 export interface StorySlideProps {
-  // FIXME: подвезти типизацию когда определимся со структурой слайда
-  slides: any[];
+  slides: SlideData[];
 }

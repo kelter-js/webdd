@@ -11,6 +11,7 @@ export const GameModal: FC<GameModalProps> = ({
   width = "75%",
   height = "75%",
   withoutPadding = false,
+  withoutScrolls = false,
 }) => (
   <S.StyledModal open onClose={onClose}>
     <S.ModalContainer width={width} height={height}>
@@ -20,7 +21,12 @@ export const GameModal: FC<GameModalProps> = ({
         <S.Sparkles style={{ bottom: 4, left: 4, animationDelay: "0.6s" }} />
         <S.Sparkles style={{ bottom: 4, right: 4, animationDelay: "0.9s" }} />
 
-        <S.ModalInner withoutPadding={withoutPadding}>{children}</S.ModalInner>
+        <S.ModalInner
+          withoutScrolls={withoutScrolls}
+          withoutPadding={withoutPadding}
+        >
+          {children}
+        </S.ModalInner>
       </S.ModalBorder>
     </S.ModalContainer>
   </S.StyledModal>

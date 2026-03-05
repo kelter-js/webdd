@@ -8,6 +8,7 @@ import {
   starCounterDialog,
   DEFAULT_TAVERN_WELCOME_OPTIONS,
   crazyTraderDialog,
+  ACQUIRE_ALMANAC_ARTIFACT_OPTION,
 } from "../constants/dialogs";
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
@@ -24,18 +25,14 @@ import { getImprovementPrice } from "../utils";
 import { useMemo } from "react";
 import { RESOURCES } from "../entities/resources";
 import { getTotalAmountOfResourceByType } from "../utils/getTotalAmountOfResourceByType";
+import { isEveryEnemyUnlocked } from "../components/AlmanacModal/utils";
 
 export const useGetDialogue = (npc: string | null) => {
-  const {
-    player: {
-      dialogFlags,
-      gold,
-      resourcesBagLevel,
-      resources,
-      collected,
-      flags,
-    },
-  } = useGameState();
+  const { player } = useGameState();
+
+  const { dialogFlags, gold, resourcesBagLevel, resources, collected, flags } =
+    player;
+
   console.log("dialogFlags", dialogFlags);
 
   // через флаги - определяем какие диалоги могут быть как должны начинаться
@@ -289,6 +286,22 @@ export const useGetDialogue = (npc: string | null) => {
         }
 
         if (dialogFlags.includes(DIALOGUE_FLAGS.CAMERA)) {
+          const isAlmanacFullyUnlocked = isEveryEnemyUnlocked(player);
+
+          if (isAlmanacFullyUnlocked) {
+            const isOptionIncluded =
+              starCounterDialog.nodes.almanac.options.find(
+                (option) => option.id === DIALOGUE_IDS.ACQUIRE_ALMANAC_ARTIFACT,
+              );
+
+            if (!isOptionIncluded) {
+              starCounterDialog.nodes.almanac.options = [
+                ...starCounterDialog.nodes.almanac.options,
+                ACQUIRE_ALMANAC_ARTIFACT_OPTION,
+              ];
+            }
+          }
+
           starCounterDialog.startNode = "almanac";
         }
 
@@ -319,7 +332,15 @@ export const useGetDialogue = (npc: string | null) => {
       default:
         return null;
     }
-  }, [npc, dialogFlags.length, resourcesBagLevel, gold, resources, collected]);
+  }, [
+    npc,
+    dialogFlags.length,
+    resourcesBagLevel,
+    gold,
+    resources,
+    collected,
+    player,
+  ]);
 
   return dialogue;
 };

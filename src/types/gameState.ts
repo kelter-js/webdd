@@ -23,6 +23,7 @@ import { GEAR_SLOTS } from "../entities/gear";
 import { GUN_TYPES } from "../entities/guns";
 import { JUNK_TYPES } from "../entities/junk";
 import { RESOURCES } from "../entities/resources";
+import { SLIDERS } from "../entities/sliders";
 import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
 
 // интерфейс модели игрока, в свойстве party будет массив из трех таких моделей
@@ -151,6 +152,8 @@ export interface Location {
   specialEncounter?: SPECIAL_ENCOUNTERS;
   isQuestCompleted?: boolean;
   dungeonLevel?: number;
+  node?: string;
+  success?: number;
 }
 
 export interface BattleUpdateState {
@@ -174,6 +177,7 @@ export interface Reward {
   items?: Item[];
   junk?: JUNK_TYPES;
   resources?: RESOURCES[];
+  flags?: FLAGS;
 }
 
 export interface Battle {
@@ -253,7 +257,7 @@ export interface GameStateData {
   economic: ECONOMIC_TYPES | null;
   potionsToBuy: PotionsReceivedData[] | null;
   itemsToBuy: MemoizedItem[] | null;
-  sliderId: string | null;
+  sliderId: SLIDERS | null;
   playStatistics: PlayStatistics;
   hasCamera: boolean;
   junk: [JUNK_TYPES, string][];
@@ -342,7 +346,10 @@ export interface StoreState {
   setSliders: (newTurn: string | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
   removeItemFromGear: (characterName: string, itemId: string) => void;
-  acquireArtifact: (resourceType: RESOURCES) => void;
+  acquireArtifact: (
+    resourceType: RESOURCES | null,
+    baseId?: BASE_ITEMS_ID,
+  ) => void;
   giveResources: (resourceToGive: RESOURCES) => void;
   consumePotion: (
     characterName: string,
@@ -354,6 +361,12 @@ export interface StoreState {
   sellJunk: VoidFunction;
   updateFlags: (flags: FLAGS) => void;
   setVolume: (volume: number) => void;
+  startSpecialEncounterGame: (node?: string) => void;
+  updateSpecialEncounter: (data: {
+    node?: string;
+    reset?: boolean;
+    isSuccessful?: boolean;
+  }) => void;
 
   // ф-ии чисто для тестов
   killEnemy: VoidFunction;
@@ -411,6 +424,8 @@ export type PersistedState = Omit<
   | "initiateState"
   | "updateFlags"
   | "setVolume"
+  | "startSpecialEncounterGame"
+  | "updateSpecialEncounter"
   | "increaseResourcesBagLevel"
   | "turnOffDices"
   | "buyCamera"

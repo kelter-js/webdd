@@ -88,6 +88,8 @@ import {
   removeItemFromGear,
   handleExitSpecialEncounter,
   acquireArtifact,
+  startSpecialEncounterGame,
+  updateSpecialEncounter,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -100,6 +102,7 @@ import { RESOURCES } from "../../entities/resources";
 import { RewardTypes } from "../../types";
 import { JUNK_TYPES } from "../../entities/junk";
 import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -380,6 +383,8 @@ export const useGameState = create<StoreState>()(
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),
       handleExitSpecialEncounter: handleExitSpecialEncounter(set),
+      updateSpecialEncounter: updateSpecialEncounter(set),
+      startSpecialEncounterGame: startSpecialEncounterGame(set),
       updateBattle: updateBattle(set),
       setDungeon: setDungeon(set),
       changeAttempts: changeAttempts(set),
@@ -454,6 +459,17 @@ export const useGameState = create<StoreState>()(
 
             gold: state.player.gold + 50000,
             collected: [[RESOURCES.ORE, "30"]],
+            currentTier: 3,
+            playStatistics: {
+              ...state.player.playStatistics,
+              kills: Object.values(ALMANAC_ENEMIES_GENERIC_TYPES).reduce(
+                (acc, type) => {
+                  acc[type] = 30;
+                  return acc;
+                },
+                {} as Record<ALMANAC_ENEMIES_GENERIC_TYPES, number>,
+              ),
+            },
           },
         })),
 

@@ -1,12 +1,12 @@
 import { LOCATION_NAMES, LOCATIONS } from "../constants";
 
-export const useGetLocation = (location: LOCATION_NAMES) => {
-  switch (location) {
-    case LOCATION_NAMES.CITY:
+export const useGetLocation = (tier: number) => {
+  switch (tier) {
+    case 1:
       return LOCATIONS[LOCATION_NAMES.CITY];
-    case LOCATION_NAMES.CITY2:
+    case 2:
       return LOCATIONS[LOCATION_NAMES.CITY2];
-    case LOCATION_NAMES.CITY3:
+    case 3:
       return LOCATIONS[LOCATION_NAMES.CITY3];
 
     default: {

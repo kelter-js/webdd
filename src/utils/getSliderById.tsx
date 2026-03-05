@@ -1,9 +1,11 @@
-import test from "../assets/slides/test.jpg";
 import slide_1 from "../assets/slides/slide_1.png";
 import slide_2 from "../assets/slides/slide_2.png";
 import slide_3 from "../assets/slides/slide_3.png";
+import slide_4 from "../assets/slides/slide_4.png";
+import { SLIDERS } from "../entities/sliders";
+import { SlideData } from "../types";
 
-const mockSlides = [
+const INTRO_SLIDERS: SlideData[] = [
   {
     id: 1,
     text: "Двое людей передвигались через улицу. Один на своих двоих - второго везли на коляске. Накрапывал дождь. Приближаясь к подъезду, один из них наклонился к другому: - Дмитрий Александрович, мы уже почти к дому подъехали. Пора просыпаться.",
@@ -33,7 +35,7 @@ const mockSlides = [
     text: (
       <>
         Дмитрий Александрович расплылся в безумной улыбке, дотянувшись до
-        бейсбольной биты, что стояла прислоненной к стене у балконной двери.
+        кочерги у камина.
         <br /> Мужчина покинул пределы инвалидного кресла, конечности
         предательски затекли от долгого пребывания в нем
         <br />
@@ -46,12 +48,35 @@ const mockSlides = [
   },
   {
     id: 4,
-    text: "Продолжение следует…",
-    image: test,
+    text: (
+      <>
+        - Я не злодей, мне эта роль досталась по сценарию.
+        <br />
+        Мужчина грустно улыбнулся, прилагая немалые усилия для того, чтобы
+        затащить тело в пристройку.
+        <br />
+        - Мы уже близки к решению как никогда ранее! И ты...
+        <br />
+        Он заглянул в лицо внеочередной жертве.
+        <br />- Ты мне в этом поможешь! Скоро я снова встречусь с ней, и мы
+        будем вместе, навсегда, как раньше...
+        <br />
+        Одним движением профессор одел на студента плотный шлем состоящий из
+        трубок, кабелей и колб на голову, окончательно лишив того сознания и
+        шанса на побег
+      </>
+    ),
+    image: slide_4,
   },
 ];
 
 //FIXME: IDшники все буду в enum и будем через свич возвращать, реализации сейчас нет
-export const getSliderById = (id: any) => {
-  return mockSlides;
+export const getSliderById = (id: SLIDERS | null) => {
+  switch (id) {
+    case SLIDERS.INTRO:
+      return INTRO_SLIDERS;
+
+    default:
+      return INTRO_SLIDERS;
+  }
 };

@@ -1,5 +1,7 @@
 import { handleExitSpecialEncounter } from "./handleExitSpecialEncounter";
 import { increaseResourcesBagLevel } from "./increaseResourcesBagLevel";
+import { startSpecialEncounterGame } from "./startSpecialEncounterGame";
+import { updateSpecialEncounter } from "./updateSpecialEncounter";
 import { toggleCharacterPanel } from "./toggleCharacterPanel";
 import { removeItemFromGear } from "./removeItemFromGear";
 import { handleExitDungeon } from "./handleExitDungeon";
@@ -50,6 +52,8 @@ import { addJunk } from "./addJunk";
 export {
   handleExitSpecialEncounter,
   increaseResourcesBagLevel,
+  startSpecialEncounterGame,
+  updateSpecialEncounter,
   toggleCharacterPanel,
   removeItemFromGear,
   handleExitDungeon,

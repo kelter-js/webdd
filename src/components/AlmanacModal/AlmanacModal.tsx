@@ -9,10 +9,12 @@ import { ControlsContainer } from "./AlmanacModal.styled";
 import { Tooltip } from "../../common";
 import {
   ENEMY_DESCRIPTIONS,
+  ENEMY_DESCRIPTIONS_LOCKED,
   ENEMY_IMAGES,
   getEnemiesByTier,
   isEnemyUnlocked,
 } from "./utils";
+import { AlmanacCreature } from "./components/AlmanacCreature";
 
 const DISABLE_TEXT = "Эта страница пока что недоступна";
 const DEFAULT_PAGE_DISPLAY_AMOUNT = 2;
@@ -44,15 +46,15 @@ export const AlmanacModal = () => {
         page * DEFAULT_PAGE_DISPLAY_AMOUNT + DEFAULT_PAGE_DISPLAY_AMOUNT,
       )
       .map((enemy) => {
-        // const { locked, unlocked } = ENEMY_IMAGES[enemy];
-        // const isUnlocked = isEnemyUnlocked(player, enemy);
+        const { locked, unlocked } = ENEMY_IMAGES[enemy];
+        const lockedDescription = ENEMY_DESCRIPTIONS_LOCKED[enemy];
+        const description = ENEMY_DESCRIPTIONS[enemy];
+        const isUnlocked = isEnemyUnlocked(player, enemy);
 
-        // return {
-        //   description: ENEMY_DESCRIPTIONS[enemy],
-        //   src: isUnlocked ? unlocked : locked,
-        // };
-
-        return enemy;
+        return {
+          description: isUnlocked ? description : lockedDescription,
+          src: isUnlocked ? unlocked : locked,
+        };
       });
     // здесь нужно добавить маппинг - для изображений unlocked или locked
   }, [pageHeader, page, player]);
@@ -61,7 +63,7 @@ export const AlmanacModal = () => {
   console.log("page", page);
 
   return (
-    <GameModal onClose={toggleAlmanac} withoutPadding>
+    <GameModal onClose={toggleAlmanac} withoutPadding withoutScrolls>
       <Stack position="relative">
         <img style={{ width: "1180px", height: "675px" }} src={almanacCover} />
 
@@ -73,6 +75,7 @@ export const AlmanacModal = () => {
               top: 17,
               left: 85,
               transform: "rotate(180deg)",
+              zIndex: 500,
               "&:active": {
                 boxShadow: "none", // убирает эффект нажатия
               },
@@ -95,6 +98,7 @@ export const AlmanacModal = () => {
               position: "absolute",
               top: 17,
               right: 85,
+              zIndex: 500,
               "&:active": {
                 boxShadow: "none", // убирает эффект нажатия
               },
@@ -114,9 +118,9 @@ export const AlmanacModal = () => {
           </Button>
         )}
 
-        <Stack position="absolute"></Stack>
-
-        <Stack position="absolute"></Stack>
+        {creaturesToRender.map((creature, index) => (
+          <AlmanacCreature index={index} key={creature.src} {...creature} />
+        ))}
 
         <ControlsContainer>
           <Button
@@ -130,7 +134,10 @@ export const AlmanacModal = () => {
               })`,
               fontFamily: "inherit",
             }}
-            onClick={() => setPageHeader(1)}
+            onClick={() => {
+              setPageHeader(1);
+              setPage(0);
+            }}
           >
             <Typography
               variant="h6"
@@ -156,7 +163,10 @@ export const AlmanacModal = () => {
                   })`,
                   fontFamily: "inherit",
                 }}
-                onClick={() => setPageHeader(2)}
+                onClick={() => {
+                  setPageHeader(2);
+                  setPage(0);
+                }}
               >
                 <Typography
                   variant="h6"
@@ -184,7 +194,10 @@ export const AlmanacModal = () => {
                   })`,
                   fontFamily: "inherit",
                 }}
-                onClick={() => setPageHeader(3)}
+                onClick={() => {
+                  setPageHeader(3);
+                  setPage(0);
+                }}
               >
                 <Typography
                   variant="h6"

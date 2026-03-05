@@ -1,7 +1,8 @@
-import { DEFAULT_BAG_SIZE } from "../../../constants";
+import { DEFAULT_BAG_SIZE, FLAGS } from "../../../constants";
 import { POTION_TYPES } from "../../../entities/consumables";
 import { JUNK_TYPES } from "../../../entities/junk";
 import { ROOM_TYPES } from "../../../entities/room";
+import { SLIDERS } from "../../../entities/sliders";
 import { ResourceData } from "../../../types";
 import { PotionsReceivedData } from "../../../types/gameState";
 import { memoizeItem } from "../../../utils/memoizeItem";
@@ -127,6 +128,22 @@ export const resetBattle =
 
       if (currentCell && currentCell.type === ROOM_TYPES.ENEMY) {
         copyState.player.location!.isQuestCompleted = true;
+      }
+
+      if (reward?.flags) {
+        copyState.player.flags.push(reward.flags);
+
+        if (reward.flags === FLAGS.FIRST_STORY_BOSS_VICTORY) {
+          copyState.player.sliderId = SLIDERS.FIRST_ACT;
+        }
+
+        if (reward.flags === FLAGS.SECOND_STORY_BOSS_VICTORY) {
+          copyState.player.sliderId = SLIDERS.SECOND_ACT;
+        }
+
+        if (reward.flags === FLAGS.THIRD_STORY_BOSS_VICTORY) {
+          copyState.player.sliderId = SLIDERS.FINAL_ACT;
+        }
       }
 
       return copyState;

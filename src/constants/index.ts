@@ -18,6 +18,7 @@ export enum BUILDING_NAMES {
   SHOP = "shop",
   CITADEL = "citadel",
   CRAZY_TRADER = "CRAZY_TRADER",
+  GHOST = "GHOST",
 }
 
 export const LOCATIONS = {

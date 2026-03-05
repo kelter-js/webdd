@@ -38,6 +38,8 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     giveResources,
     handleExitSpecialEncounter,
     acquireArtifact,
+    startSpecialEncounterGame,
+    updateSpecialEncounter,
   } = useGameState();
 
   const { startNode, nodes, name, src } = dialogueTree;
@@ -124,6 +126,45 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       );
     }
 
+    if (id === DIALOGUE_IDS.START_GHOST_GAME) {
+      startSpecialEncounterGame(nextNode);
+    }
+
+    if (id === DIALOGUE_IDS.GHOST_CORRECT_ANSWER) {
+      updateSpecialEncounter({ node: nextNode, isSuccessful: true });
+    }
+
+    if (id === DIALOGUE_IDS.GHOST_INCORRECT_ANSWER) {
+      updateSpecialEncounter({ node: nextNode });
+    }
+
+    if (id === DIALOGUE_IDS.GHOST_RESET_GAME) {
+      updateSpecialEncounter({ node: nextNode, reset: true });
+    }
+
+    if (id === DIALOGUE_IDS.GHOST_RECEIVE_HELMET) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.GHOST,
+          BASE_ITEMS_ID.CQCM_DEFENSE_ATOMIC_TIER_1,
+        ),
+      );
+    }
+    if (id === DIALOGUE_IDS.GHOST_RECEIVE_ARTIFACT) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.GHOST,
+          BASE_ITEMS_ID.VAMPIRE_RING_TIER_1,
+        ),
+      );
+    }
+
+    if (id === DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_GHOST) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(SPECIAL_ENCOUNTERS.GHOST),
+      );
+    }
+
     if (id === DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT) {
       acquireArtifact(RESOURCES.ORE);
     }
@@ -134,6 +175,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT) {
       acquireArtifact(RESOURCES.OLD_WORLD_TREASURES);
+    }
+
+    if (id === DIALOGUE_IDS.ACQUIRE_ALMANAC_ARTIFACT) {
+      acquireArtifact(null, BASE_ITEMS_ID.CHAOS_CHALICE_TIER_1);
     }
 
     if (id === DIALOGUE_IDS.BUY_LEGENDARY_ARMOR) {

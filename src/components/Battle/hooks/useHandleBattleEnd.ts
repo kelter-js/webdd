@@ -9,9 +9,7 @@ import {
   getRandomResources,
 } from "../utils";
 import { getRandom } from "../../../utils";
-import { RESOURCES } from "../../../entities/resources";
 import { STORY_BOSSES_LIST } from "../../../constants/creatures";
-import { FLAGS } from "../../../constants";
 import { getFlagStoryBossByTier } from "../../../utils/getFlagStoryBossByTier";
 
 //   items?: Item[];
@@ -20,7 +18,6 @@ export const useHandleBattleEnd = () => {
   const {
     player: { battle, currentTier, hasCamera },
     setReward,
-    updateFlags,
   } = useGameState();
 
   const enemyHealth = battle?.enemy?.party?.reduce(
@@ -34,11 +31,11 @@ export const useHandleBattleEnd = () => {
     if (battle && enemyHealth !== undefined && enemyHealth <= 0) {
       const enemy = battle.enemy.party;
 
-      if (enemy.length === 1 && STORY_BOSSES_LIST.includes(enemy[0].type)) {
-        updateFlags(getFlagStoryBossByTier(currentTier));
-      }
-
       const reward = {} as Reward;
+
+      if (enemy.length === 1 && STORY_BOSSES_LIST.includes(enemy[0].type)) {
+        reward.flags = getFlagStoryBossByTier(currentTier);
+      }
 
       const items: Item[] = [];
 

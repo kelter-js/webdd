@@ -48,6 +48,15 @@ export const handleExitSpecialEncounter =
         copyState.player.flags.push(FLAGS.SPECIAL_ENCOUNTER_TRADER_ITEM_BOUGHT);
       }
 
+      if (
+        specialEncounter !== SPECIAL_ENCOUNTERS.TRADER &&
+        copyState.player.location
+      ) {
+        copyState.player.location.attempts = 5;
+        copyState.player.location.node = undefined;
+        copyState.player.location.success = 0;
+      }
+
       if (goldRequired) {
         copyState.player.gold -= goldRequired;
       }

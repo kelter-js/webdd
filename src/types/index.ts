@@ -1,5 +1,6 @@
 // types.ts
 
+import { ReactNode } from "react";
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS } from "../constants/perks";
 import { DUNGEONS, ENEMIES } from "../entities";
@@ -91,4 +92,10 @@ export interface CreatureBaseModel {
     isEnhanced: boolean;
     subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
   };
+}
+
+export interface SlideData {
+  id: number;
+  text: string | ReactNode;
+  image: string;
 }

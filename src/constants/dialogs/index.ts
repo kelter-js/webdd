@@ -4,6 +4,7 @@ import questDesk from "../../assets/npc/quest_desk.png";
 import potionTrader from "../../assets/npc/potion-trader.png";
 import accountant from "../../assets/npc/accountant.png";
 import crazyTrader from "../../assets/npc/crazy_trader.png";
+import ghost from "../../assets/npc/ghost.png";
 import priest from "../../assets/npc/priest.png";
 import starcounter from "../../assets/npc/starcounter.png";
 import watchmen from "../../assets/npc/watchmen.png";
@@ -249,6 +250,24 @@ export const priestDialog: DialogueTree = {
   },
 };
 
+const DEFAULT_ALMANAC_OPTIONS = [
+  {
+    text: "[открыть альманах]",
+    nextNode: "end",
+    id: DIALOGUE_IDS.ALMANAC,
+  },
+  {
+    text: "[Уйти]",
+    nextNode: "end",
+  },
+];
+
+export const ACQUIRE_ALMANAC_ARTIFACT_OPTION = {
+  text: "[получить артефакт]",
+  nextNode: "congratulations",
+  id: DIALOGUE_IDS.ACQUIRE_ALMANAC_ARTIFACT,
+};
+
 export const starCounterDialog: DialogueTree = {
   id: BUILDING_NAMES.TOWER,
   src: starcounter,
@@ -264,6 +283,16 @@ export const starCounterDialog: DialogueTree = {
         },
         {
           text: "[Уйти]",
+          nextNode: "end",
+        },
+      ],
+    },
+
+    congratulations: {
+      text: "Поздравляю! Вот и финишная черта, ты заполнил весь альмонах! Конечно, есть существа более редкие, я не стал их описывать только потому, что сам я их не встречал, и в моей личной истории их не существует, так что оставь свои личные кошмары при себе. Это мой подарок, когда-то я сам этим артефактом пользовался, но теперь нет в этом необходимости.",
+      options: [
+        {
+          text: "Спасибо тебе! [покинуть здание]",
           nextNode: "end",
         },
       ],
@@ -311,17 +340,7 @@ export const starCounterDialog: DialogueTree = {
 
     almanac: {
       text: "Хочешь посмотреть на плод нашего совместного труда, помощник?",
-      options: [
-        {
-          text: "[открыть альманах]",
-          nextNode: "end",
-          id: DIALOGUE_IDS.ALMANAC,
-        },
-        {
-          text: "[Уйти]",
-          nextNode: "end",
-        },
-      ],
+      options: DEFAULT_ALMANAC_OPTIONS,
     },
 
     end: {
@@ -360,6 +379,104 @@ export const citadelDialog: DialogueTree = {
         { text: "[Перейти к распределению ресурсов]", nextNode: "end" },
       ],
       flags: [DIALOGUE_FLAGS.ECONOMIC_INTRO],
+    },
+  },
+};
+
+const SECOND_QUESTION_OPTIONS = [
+  {
+    text: "То есть, вот такой скачек по сложности? 2+2 и теперь это?",
+    nextNode: "incorrect_question_3",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+
+  {
+    text: "IV",
+    nextNode: "incorrect_question_3",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+  {
+    text: "I",
+    nextNode: "incorrect_question_3",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+  {
+    text: "II",
+    nextNode: "correct_question_3",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+  },
+];
+
+export const ghostDialog: DialogueTree = {
+  id: BUILDING_NAMES.GHOST,
+  src: ghost,
+  name: "Призрак",
+  startNode: "welcome",
+  nodes: {
+    welcome: {
+      text: "О, привет, путешественники. Присаживайтесь, у меня здесь немного грязно, но не обращайте внимания, люди здесь редко бывают, надеюсь вам понравится. Так что привело вас сюда, красавчики, золото? Слава? Ответы на вопросы?",
+      options: [
+        {
+          text: "[Так, мы пожалуй пойдём, знаешь, спасибо конечно за щедрое предложение]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_GHOST,
+        },
+        {
+          text: "У нас здесь свои цели. То, что вокруг, твоих рук дело?",
+          nextNode: "what_did_you_do",
+        },
+      ],
+    },
+    what_did_you_do: {
+      text: "А, вы про них?.. Скажем так, они сами проявили недюжий интерес и поплатились за него. Сыграем в игру?.. Дам пять попыток. Ответишь правильно на большую часть вопросов дам артефакт. Если на все - то даже... [она указывает на какой-то из трупов], дам вот например его шлем. Просто скучно здесь немного, развлекаюсь как могу, и как видите вполне успешно.",
+      options: [
+        {
+          text: "[Так, мы пожалуй пойдём, знаешь, спасибо конечно за щедрое предложение]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_GHOST,
+        },
+        {
+          text: "А давай и сыграем!",
+          nextNode: "game_started",
+          id: DIALOGUE_IDS.START_GHOST_GAME,
+        },
+      ],
+    },
+
+    game_started: {
+      text: "Начинаем... 2+2?",
+      options: [
+        {
+          text: "Ты издеваешься? Какой 2+2?",
+          nextNode: "incorrect_question_2",
+          id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+        },
+        {
+          text: "4",
+          nextNode: "correct_question_2",
+          id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+        },
+        {
+          text: "5",
+          nextNode: "incorrect_question_2",
+          id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+        },
+        {
+          text: "3",
+          nextNode: "incorrect_question_2",
+          id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+        },
+      ],
+    },
+
+    incorrect_question_2: {
+      text: "Если это и был ответ, то вы ошиблись. Следующий вопрос: Чему равна валентность стронция?",
+      options: SECOND_QUESTION_OPTIONS,
+    },
+
+    correct_question_2: {
+      text: "А по вам и не скажешь, лица интеллектом не обезображены. Двигаемся дальше: Чему равна валентность стронция?",
+      options: SECOND_QUESTION_OPTIONS,
     },
   },
 };
@@ -591,6 +708,7 @@ export const resetDialogs = () => {
 
   priestDialog.startNode = "welcome";
   starCounterDialog.startNode = "welcome";
+  starCounterDialog.nodes.almanac.options = DEFAULT_ALMANAC_OPTIONS;
   citadelDialog.startNode = "welcome";
   tavernDialog.startNode = "welcome";
   traderDialog.startNode = "welcome";
@@ -621,4 +739,6 @@ export const resetReleaseOptions = () => {
   if (priestReleaseOption) {
     priestReleaseOption.id = DIALOGUE_IDS.RELEASE_TREASURES;
   }
+
+  starCounterDialog.nodes.almanac.options = DEFAULT_ALMANAC_OPTIONS;
 };

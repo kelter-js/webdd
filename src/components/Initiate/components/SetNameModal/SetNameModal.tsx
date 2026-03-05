@@ -12,6 +12,7 @@ import medic from "../../../../assets/classIcons/medical.svg";
 import sniper from "../../../../assets/classIcons/sniper.svg";
 import tank from "../../../../assets/classIcons/soldier.svg";
 import { FLAGS } from "../../../../constants";
+import { SLIDERS } from "../../../../entities/sliders";
 
 // REFACTORING CHECKED ✅
 
@@ -41,8 +42,7 @@ export const SetNameModal = () => {
       setFading(true);
       setPlayerName(name, selectedClass);
       // FIXME: передавать нужно реальный объект слайдеров
-      // setSliders(INTRO_SLIDES);
-      setSliders("something");
+      setSliders(SLIDERS.INTRO);
       updateFlags(FLAGS.GAME_INITIATED);
       setNewGame(true);
       enableAudio();

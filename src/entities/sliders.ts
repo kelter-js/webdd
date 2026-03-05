@@ -1,0 +1,6 @@
+export enum SLIDERS {
+  INTRO = "INTRO",
+  FIRST_ACT = "FIRST_ACT",
+  SECOND_ACT = "SECOND_ACT",
+  FINAL_ACT = "FINAL_ACT",
+}

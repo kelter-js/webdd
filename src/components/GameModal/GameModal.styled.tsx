@@ -13,22 +13,26 @@ export const StyledModal = styled(Modal)(() => ({
 }));
 
 export const ModalInner = styled("div", {
-  shouldForwardProp: (prop) => prop !== "height" && prop !== "height",
-})<{ withoutPadding?: boolean }>(({ withoutPadding }) => ({
-  flex: 1,
-  width: "100%",
-  height: "100%",
-  padding: withoutPadding ? "0px" : "24px",
-  borderRadius: "8px",
-  background: `linear-gradient(
+  shouldForwardProp: (prop) =>
+    prop !== "withoutPadding" && prop !== "withoutScrolls",
+})<{ withoutPadding?: boolean; withoutScrolls?: boolean }>(
+  ({ withoutPadding, withoutScrolls }) => ({
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    padding: withoutPadding ? "0px" : "24px",
+    borderRadius: "8px",
+    background: `linear-gradient(
     rgba(25, 15, 10, 0.95),
     rgba(50, 35, 20, 0.95)
   )`,
-  color: "#e0c0a0",
-  fontFamily: "Cormorant Unicase, serif",
-  overflowY: "auto",
-  boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
-}));
+    color: "#e0c0a0",
+    fontFamily: "Cormorant Unicase, serif",
+    overflowY: "auto",
+    boxShadow: "inset 0 0 10px rgba(0,0,0,0.6)",
+    overflow: withoutScrolls ? "hidden" : "auto",
+  }),
+);
 
 export const Sparkles = styled("div")({
   position: "absolute",
