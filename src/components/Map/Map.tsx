@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 import { getDungeonBackgroundByTier } from "./utils";
 import { getFlagStoryBossByTier } from "../../utils/getFlagStoryBossByTier";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { getRandomRewardByQuest } from "../../stores/utils";
 
 // Текстура каменной стены в base64
 const COBBLESTONE_TEXTURE = `
@@ -83,38 +84,51 @@ export const Map = () => {
   }, [location, position, currentDungeon]);
 
   const handleWin = useCallback(() => {
+    if (!location?.type) return;
+
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
-    // здесь нужна функция рандомизации сколько золота получено
-    // в зависимости от типа квеста награда - передаем type, чтобы потом рассчитать кол-во шанса на айтем -
-    // награда item только за закрытие портала и поиск предмета
-    // портал - 20%, поиск предмета - 65%
-    // item нужно генерить в зависимости от открытого тира игроком подземелья
-    // разделить оружие на тиры
+    const reward = getRandomRewardByQuest(
+      currentTier,
+      location.type,
+      QUEST_STATUSES.SUCCESS,
+    );
+    console.log("reward", reward);
     setFading(true);
-    setQuestData({
-      money: 150,
-      exp: 150,
-      status: QUEST_STATUSES.SUCCESS,
-    });
+    setQuestData(reward);
     handleExitDungeon();
     setDungeon(null);
 
     console.log("we win!");
-  }, [toggleAutoSave, economic, handleExitDungeon]);
+  }, [
+    toggleAutoSave,
+    economic,
+    handleExitDungeon,
+    location?.type,
+    currentTier,
+  ]);
 
   const handleFail = useCallback(() => {
+    if (!location?.type) return;
+
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
     setFading(true);
-    // здесь нужна функция рандомизации сколько золота потеряно
-    setQuestData({
-      money: 150,
-      status: QUEST_STATUSES.FAILED,
-    });
+    const reward = getRandomRewardByQuest(
+      currentTier,
+      location.type,
+      QUEST_STATUSES.FAILED,
+    );
+    setQuestData(reward);
 
     handleExitDungeon();
     setDungeon(null);
     toggleAutoSave();
-  }, [toggleAutoSave, economic, handleExitDungeon]);
+  }, [
+    toggleAutoSave,
+    economic,
+    handleExitDungeon,
+    location?.type,
+    currentTier,
+  ]);
 
   const movePlayer = (direction: DIRECTIONS) => {
     if (!canMove(direction) || !position) return;
@@ -171,7 +185,7 @@ export const Map = () => {
   useMovement(movePlayer, hasQuest);
 
   const currentBackground = useMemo(
-    () => getDungeonBackgroundByTier(currentTier),
+    () => getDungeonBackgroundByTier(location?.dungeonLevel || currentTier),
     [position?.x, position?.y, currentTier],
   );
 
@@ -185,6 +199,22 @@ export const Map = () => {
     setDungeon(null);
     toggleAutoSave();
     setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+
+    if (location.type === DUNGEONS.FIND) {
+      // здесь нужна функция рандомизации сколько золота получено
+      // в зависимости от типа квеста награда - передаем type, чтобы потом рассчитать кол-во шанса на айтем -
+      // награда item только за закрытие портала и поиск предмета
+      // портал - 20%, поиск предмета - 65%
+      // item нужно генерить в зависимости от открытого тира игроком подземелья
+      // разделить оружие на тиры
+      const reward = getRandomRewardByQuest(
+        currentTier,
+        location.type,
+        QUEST_STATUSES.SUCCESS,
+      );
+
+      setQuestData(reward);
+    }
   };
 
   // const generateNewDungeon = () => {

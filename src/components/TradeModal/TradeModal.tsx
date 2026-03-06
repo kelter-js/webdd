@@ -29,7 +29,7 @@ export const TradeModal = () => {
   const cantSellJunk = junk.length === 0;
 
   return (
-    <GameModal onClose={toggleTradeModal} withoutPadding>
+    <GameModal onClose={toggleTradeModal} withoutPadding withoutScrolls>
       <Button
         sx={{
           position: "absolute",

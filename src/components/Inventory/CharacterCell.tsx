@@ -18,8 +18,8 @@ export const CharacterCell: FC<InventoryCellProps> = ({
   characterClass,
   name,
 }) => {
+  console.log("OUTSIDE ITEM", item);
   const { equipItem } = useGameState();
-  console.log("item", item);
 
   const [{ canDrop }, drop] = useDrop<
     Item | undefined | null,
@@ -48,11 +48,10 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       return false;
     },
     drop: (draggedItem: Item | undefined | null) => {
+      console.log("are we here/???");
       if (draggedItem && name) {
-        equipItem(draggedItem.gearId, name, item?.gearId);
+        equipItem(draggedItem.gearId, name, type);
       }
-
-      console.log("we are dropped item", draggedItem);
     },
     collect: (monitor) => ({
       canDrop: monitor.canDrop(), // результат canDrop
@@ -69,7 +68,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       item,
       characterName: name,
     },
-    canDrag: true,
+    canDrag: !!item,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

@@ -2,12 +2,13 @@ import { styled } from "@mui/material";
 import { motion } from "framer-motion";
 
 export const LevelUpContainer = styled("div")(() => ({
-  position: "absolute",
+  position: "fixed",
   top: -77,
   left: "50%",
   transform: "translate(-50%, 0)",
   width: 600,
   height: 400,
+  zIndex: 9999999999999,
 
   "& img": {
     width: 400,

@@ -8,7 +8,15 @@ import {
   starCounterDialog,
   DEFAULT_TAVERN_WELCOME_OPTIONS,
   crazyTraderDialog,
+  ghostDialog,
   ACQUIRE_ALMANAC_ARTIFACT_OPTION,
+  LEAVE_OPTION,
+  FINAL_DEFAULT_OPTIONS,
+  REWARD_HELMET_OPTION,
+  REWARD_ARTIFACT_OPTION,
+  FINAL_FULL_FAIL_TEXT,
+  FINAL_FAIL_TEXT,
+  FINAL_TEXT,
 } from "../constants/dialogs";
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
@@ -30,8 +38,15 @@ import { isEveryEnemyUnlocked } from "../components/AlmanacModal/utils";
 export const useGetDialogue = (npc: string | null) => {
   const { player } = useGameState();
 
-  const { dialogFlags, gold, resourcesBagLevel, resources, collected, flags } =
-    player;
+  const {
+    dialogFlags,
+    gold,
+    resourcesBagLevel,
+    resources,
+    collected,
+    flags,
+    location,
+  } = player;
 
   console.log("dialogFlags", dialogFlags);
 
@@ -329,6 +344,28 @@ export const useGetDialogue = (npc: string | null) => {
         return crazyTraderDialog;
       }
 
+      case BUILDING_NAMES.GHOST: {
+        ghostDialog.startNode = location?.node ?? "welcome";
+        ghostDialog.nodes.final.options = [...FINAL_DEFAULT_OPTIONS];
+        ghostDialog.nodes.final.text = FINAL_FAIL_TEXT;
+
+        if (location?.attempts === 0) {
+          ghostDialog.nodes.final.options = [LEAVE_OPTION];
+          ghostDialog.nodes.final.text = FINAL_FULL_FAIL_TEXT;
+        }
+
+        if (Number(location?.success) >= 3) {
+          ghostDialog.nodes.final.text = `${FINAL_TEXT}. Ответов: ${location?.success ?? 0}/5`;
+          ghostDialog.nodes.final.options.push(REWARD_ARTIFACT_OPTION);
+        }
+
+        if (Number(location?.success) === 5) {
+          ghostDialog.nodes.final.options.push(REWARD_HELMET_OPTION);
+        }
+
+        return ghostDialog;
+      }
+
       default:
         return null;
     }
@@ -340,6 +377,9 @@ export const useGetDialogue = (npc: string | null) => {
     resources,
     collected,
     player,
+    location?.attempts,
+    location?.success,
+    location?.node,
   ]);
 
   return dialogue;

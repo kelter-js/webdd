@@ -231,6 +231,7 @@ export const CharacterCard: FC<CharacterCardProps> = ({
                     height: 40,
                     padding: 0,
                     textAlign: "center",
+                    userSelect: "none",
                   }}
                 >
                   +
@@ -271,6 +272,7 @@ export const CharacterCard: FC<CharacterCardProps> = ({
                     height: 40,
                     padding: 0,
                     textAlign: "center",
+                    userSelect: "none",
                   }}
                 >
                   +
@@ -311,6 +313,8 @@ export const CharacterCard: FC<CharacterCardProps> = ({
                     height: 40,
                     padding: 0,
                     textAlign: "center",
+
+                    userSelect: "none",
                   }}
                 >
                   +

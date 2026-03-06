@@ -1,25 +1,20 @@
 import { QUEST_STATUSES } from "../../entities/questStatuses";
 import { useGameState } from "../../stores/GameState/GameState";
-import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 import * as S from "./QuestResults.styled";
+import { Icons } from "../../common";
+import { getGearIcon } from "../Map/components/BattleResult/utils";
+import { getItemNameByGearId } from "../../utils/getItemNameByGearId";
 
 // NOT FULLY IMPLEMENTED YET 🟥
 
 export const QuestResults = () => {
   const {
     player: { quest },
-    setQuestData,
+    resetQuest,
   } = useGameState();
 
-  const { money, exp, status, type } = quest || {};
-  const handleCloseResults = () => {
-    setQuestData(null);
-    // исходя из данных о квесте и его статусе - делаем рассчеты - добавляем или убавляем деньги
-    // распределяем равномерно полученный опыт между всеми персонажами
-    // в зависимости от типа квеста - генерируем предмет и кладем в инвентарь
-    // предмет генерится исходя из текущего тира игрока
-    // все предметы распределить по тирам
-  };
+  const { gold, exp, status, item } = quest || {};
 
   if (!quest) return null;
 
@@ -27,7 +22,7 @@ export const QuestResults = () => {
 
   return (
     <Modal
-      onClose={handleCloseResults}
+      onClose={resetQuest}
       open={!!quest}
       sx={{
         display: "flex",
@@ -42,50 +37,64 @@ export const QuestResults = () => {
         </S.ResultHeader>
 
         <Box sx={{ mt: 3 }}>
-          {typeof money === "number" && (
-            <S.RewardItem>
-              <Typography variant="h5" color="#c08040">
-                ▸
-              </Typography>
-              <S.RewardText>
-                {isQuestSucceeded
-                  ? `Золото: +${money}`
-                  : `Потери: ${Math.floor(money * 0.3)} золота`}
-              </S.RewardText>
-            </S.RewardItem>
-          )}
+          <Stack alignItems="center" width="100%" direction="row" gap={1}>
+            <Stack alignItems="center" justifyContent="center" width="55px">
+              <Icons.GoldIcon />
+            </Stack>
 
-          {typeof exp === "number" && (
-            <S.RewardItem>
-              <Typography variant="h5" color="#c08040">
-                ▸
-              </Typography>
-              <S.RewardText>
-                {isQuestSucceeded
-                  ? `Опыт: +${exp}`
-                  : `Опыт: +${Math.floor(exp * 0.5)}`}
-              </S.RewardText>
-            </S.RewardItem>
-          )}
+            <Typography fontSize={20} fontFamily="inherit">
+              {gold}
+            </Typography>
+          </Stack>
 
-          {/* {isQuestSucceeded && type && (
-            <>
-              <Divider sx={{ borderColor: "#5a3020", my: 2 }} />
-              <S.RewardItem>
-                <Typography variant="h5" sx={{ color: "#c08040" }}>
-                  ▸
-                </Typography>
-                <S.RewardText>
-                  Добыча: {type === "combat" ? "Оружие" : "Артефакт"}
-                </S.RewardText>
-              </S.RewardItem>
-            </>
-          )} */}
+          <Stack alignItems="center" width="100%" direction="row" gap={1}>
+            <Typography
+              sx={{
+                color: "#c08040",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+              }}
+              fontFamily="inherit"
+              fontSize={30}
+            >
+              EXP
+            </Typography>
+            <Typography fontSize={20} fontFamily="inherit">
+              {exp}
+            </Typography>
+          </Stack>
+
+          {item && (
+            <Stack alignItems="center" width="100%" direction="row" gap={1}>
+              <Stack alignItems="center" justifyContent="center" width="55px">
+                {getGearIcon(item.type, item?.gunType)}
+              </Stack>
+
+              <Typography fontFamily="inherit" fontSize={20}>
+                {getItemNameByGearId(item.gearId)} MK{item.tier}
+              </Typography>
+            </Stack>
+          )}
         </Box>
 
         <Box display="flex" justifyContent="flex-end" mt={3}>
-          <S.StyledButton onClick={handleCloseResults}>
-            <S.EndQuestText variant="h5">Принять</S.EndQuestText>
+          <S.StyledButton onClick={resetQuest}>
+            <Typography
+              sx={{
+                width: "100%",
+                color: "#c08040",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                padding: (theme) => theme.spacing(1),
+                borderBottom: "1px solid #5a3020",
+                fontFamily: "Cormorant Unicase",
+              }}
+              variant="h5"
+            >
+              ПРИНЯТЬ
+            </Typography>
           </S.StyledButton>
         </Box>
       </S.ModalContent>

@@ -3,12 +3,12 @@
 import { ReactNode } from "react";
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS } from "../constants/perks";
-import { DUNGEONS, ENEMIES } from "../entities";
+import { DUNGEONS, ENEMIES, QUEST_STATUSES } from "../entities";
 import { AI_CATEGORIES } from "../entities/ai";
 import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
 import { RESOURCES } from "../entities/resources";
 import { ROOM_TYPES } from "../entities/room";
-import { GameStateData, PERK_ID_DATA } from "./gameState";
+import { GameStateData, Item, PERK_ID_DATA } from "./gameState";
 
 export type Location =
   | "Ruins"
@@ -98,4 +98,12 @@ export interface SlideData {
   id: number;
   text: string | ReactNode;
   image: string;
+}
+
+export interface QuestReward {
+  gold: number;
+  exp: number;
+  item?: Item;
+  status: QUEST_STATUSES;
+  type: DUNGEONS;
 }

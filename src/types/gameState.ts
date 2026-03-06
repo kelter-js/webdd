@@ -1,4 +1,10 @@
-import { DungeonCreationData, MemoizedItem, ResourceData, Room } from ".";
+import {
+  DungeonCreationData,
+  MemoizedItem,
+  QuestReward,
+  ResourceData,
+  Room,
+} from ".";
 import { POSITIONS } from "../common/TurnIndicator/entities";
 
 import { FLAGS } from "../constants";
@@ -188,13 +194,6 @@ export interface Battle {
   reward: null | Reward;
 }
 
-export interface Quest {
-  status: QUEST_STATUSES;
-  money?: number;
-  exp?: number;
-  type?: DUNGEONS;
-}
-
 type EffectValue = null | number;
 
 export interface Effects {
@@ -246,7 +245,7 @@ export interface GameStateData {
   locationState: RENDER_LOCATIONS;
   prevLocationState: null | RENDER_LOCATIONS;
   battle: null | Battle;
-  quest: null | Quest;
+  quest: null | QuestReward;
   inventory_memoized: MemoizedItem[];
   gold: number;
   isGameOver: boolean;
@@ -308,7 +307,8 @@ export interface StoreState {
   toggleInventory: VoidFunction;
   handleExitDungeon: VoidFunction;
   toggleCharacterPanel: VoidFunction;
-  setQuestData: (data: Quest | null) => void;
+  setQuestData: (data: QuestReward | null) => void;
+  resetQuest: () => void;
   updateDialogFlags: (flags: DIALOGUE_FLAGS[]) => void;
   setGameOver: VoidFunction;
   resetGame: VoidFunction;
@@ -326,7 +326,7 @@ export interface StoreState {
   equipItem: (
     equipItemId: string,
     characterName: string,
-    unequipItemId?: string,
+    type: GEAR_SLOTS,
   ) => void;
   increaseResourcesBagLevel: VoidFunction;
   setBattleTurn: (newTurn: TURN_STATES) => void;
@@ -393,6 +393,7 @@ export type PersistedState = Omit<
   | "equipItem"
   | "toggleCharacterPanel"
   | "setQuestData"
+  | "resetQuest"
   | "healTeam"
   | "resetBattle"
   | "setGameOver"

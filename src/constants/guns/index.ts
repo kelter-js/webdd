@@ -574,7 +574,7 @@ export const SA58_TIER_3 = {
 
 export const SWORD_MK18_TIER_1 = {
   name: "Sword MK-18",
-  description: "Полуавтоматический дробовик на базе АК",
+  description: "Легендарная марксманская винтовка",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SNIPER_RIFLE,

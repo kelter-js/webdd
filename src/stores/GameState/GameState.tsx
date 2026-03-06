@@ -90,6 +90,7 @@ import {
   acquireArtifact,
   startSpecialEncounterGame,
   updateSpecialEncounter,
+  resetQuest,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -163,14 +164,17 @@ export const useGameState = create<StoreState>()(
               const { isSpecial } = params || {};
 
               const firstTurn = getFirstTurn(
-                copyState.player.currentTier,
+                copyState.player.location.dungeonLevel ||
+                  copyState.player.currentTier,
                 copyState.effects,
                 copyState.player.party,
                 isSpecial,
               );
 
               copyState.player.battle = generateBattle({
-                tier: copyState.player.currentTier,
+                tier:
+                  copyState.player.location.dungeonLevel ||
+                  copyState.player.currentTier,
                 turn: firstTurn,
                 party: copyState.player.party,
                 characterGear: copyState.gear,
@@ -186,6 +190,7 @@ export const useGameState = create<StoreState>()(
               }
             };
 
+            // MOCK
             // если это не начало и не конец - подземелья
             if (isPlayableArea) {
               // Логика рассчета того, что это спешиал энкаунтер
@@ -246,7 +251,8 @@ export const useGameState = create<StoreState>()(
                     if (isDeadEnd) {
                       currentCell.type = ROOM_TYPES.CLEARED;
                       const reward = getRandomRewardWithoutFight(
-                        copyState.player.currentTier,
+                        copyState.player.location?.dungeonLevel ||
+                          copyState.player.currentTier,
                       );
 
                       onReward(reward.message);
@@ -376,6 +382,7 @@ export const useGameState = create<StoreState>()(
       consumePotion: consumePotion(set),
       acquireArtifact: acquireArtifact(set),
       setVolume: setVolume(set),
+      resetQuest: resetQuest(set),
       generateDungeon: generateDungeon(set),
       increaseAccuracy: increaseAccuracy(set),
       updatePlayerState: updatePlayerState(set),
@@ -459,7 +466,7 @@ export const useGameState = create<StoreState>()(
 
             gold: state.player.gold + 50000,
             collected: [[RESOURCES.ORE, "30"]],
-            currentTier: 3,
+            // currentTier: 3,
             playStatistics: {
               ...state.player.playStatistics,
               kills: Object.values(ALMANAC_ENEMIES_GENERIC_TYPES).reduce(

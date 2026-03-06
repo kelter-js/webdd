@@ -46,7 +46,9 @@ export const handleExitDungeon = (set: StoreSet) => () => {
       newConsumables = [...stateCopy.player.consumables];
       // FIXME определиться с фиксированным вознаграждением и названиями эликсиров, заменить стринги на енамы
       // проверяем, есть ли у игрока вообще уже такие зелья
-      const currentTierElixir = getPotionByTier(stateCopy.player.currentTier);
+      const currentTierElixir = getPotionByTier(
+        stateCopy.player.location?.dungeonLevel || stateCopy.player.currentTier,
+      );
 
       const elixirIndex = newConsumables.findIndex(
         (item) => item[0] === currentTierElixir,
@@ -79,7 +81,7 @@ export const handleExitDungeon = (set: StoreSet) => () => {
       newInventory = stateCopy.inventory ? [...stateCopy.inventory] : [];
 
       const newItem = generateGenericItemInCurrentPool(
-        stateCopy.player.currentTier,
+        stateCopy.player.location?.dungeonLevel || stateCopy.player.currentTier,
       );
 
       console.log("newItem", newItem);

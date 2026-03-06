@@ -383,27 +383,114 @@ export const citadelDialog: DialogueTree = {
   },
 };
 
+// 3 вопрос - кол-во колёс  у машины(правильный ответ - возразить, какая машина, по-разному бывает, плохой вопрос)
+// 4 вопрос - носит ли кузнец шляпу
+// 5 вопрос - как зову того, кто живёт в башне - звездочёт, звездосчёт, звездомёт, звездолёт
 const SECOND_QUESTION_OPTIONS = [
   {
     text: "То есть, вот такой скачек по сложности? 2+2 и теперь это?",
-    nextNode: "incorrect_question_3",
-    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+    nextNode: "correct_question_3",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
   },
 
   {
     text: "IV",
-    nextNode: "incorrect_question_3",
-    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+    nextNode: "correct_question_3",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
   },
   {
     text: "I",
-    nextNode: "incorrect_question_3",
-    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+    nextNode: "correct_question_3",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
   },
   {
     text: "II",
     nextNode: "correct_question_3",
     id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+  },
+];
+const FOURTH_QUESTION_OPTIONS = [
+  {
+    text: "Два колеса",
+    nextNode: "incorrect_question_5",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+
+  {
+    text: "Три колеса",
+    nextNode: "incorrect_question_5",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+  {
+    text: "Это же полный идиотизм... Сколько колёс у машины? Смотря какая машина. Два, три, четыре, есть машины без колес - на гусеницах. Да и ты ведь призрак, да и в вашем мире нет машин. Зачем тебе вообще эта информация?",
+    nextNode: "correct_question_5",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+  },
+  {
+    text: "Одно колесо",
+    nextNode: "incorrect_question_5",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+];
+const FIFTH_QUESTION_OPTIONS = [
+  {
+    text: "Острие",
+    nextNode: "incorrect_question_6",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+
+  {
+    text: "Дол",
+    nextNode: "incorrect_question_6",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+  {
+    text: "Навершие",
+    nextNode: "incorrect_question_6",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+  {
+    text: "Рукоять",
+    nextNode: "correct_question_6",
+    id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+  },
+];
+
+const FINAL_OPTIONS = [
+  {
+    text: "[проверить результаты]",
+    nextNode: "final",
+    id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+  },
+];
+
+export const FINAL_FAIL_TEXT =
+  "Ну что же вы так?.. Даже на артефакт не отгадали, скучные! Попробуем ещё раз?";
+export const FINAL_FULL_FAIL_TEXT =
+  "Мне надоело! Вы абсолютно глупы! Покиньте мою обитель пока не разорвала вас!";
+export const FINAL_TEXT =
+  "Отлично! Выбирай награду по вкусу - но помни, только одну вещь могу отдать, смотря на сколько вопросов ответил";
+export const REWARD_ARTIFACT_OPTION = {
+  text: "[получить артефакт]",
+  nextNode: "end",
+  id: DIALOGUE_IDS.GHOST_RECEIVE_ARTIFACT,
+};
+export const REWARD_HELMET_OPTION = {
+  text: "[получить легендарный шлем]",
+  nextNode: "end",
+  id: DIALOGUE_IDS.GHOST_RECEIVE_HELMET,
+};
+export const LEAVE_OPTION = {
+  text: "[покинуть]",
+  nextNode: "end",
+  id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_GHOST,
+};
+export const FINAL_DEFAULT_OPTIONS = [
+  LEAVE_OPTION,
+  {
+    text: "[попробовать ещё раз]",
+    nextNode: "game_started",
+    id: DIALOGUE_IDS.GHOST_RESET_GAME,
   },
 ];
 
@@ -477,6 +564,65 @@ export const ghostDialog: DialogueTree = {
     correct_question_2: {
       text: "А по вам и не скажешь, лица интеллектом не обезображены. Двигаемся дальше: Чему равна валентность стронция?",
       options: SECOND_QUESTION_OPTIONS,
+    },
+
+    correct_question_3: {
+      text: "Хм... да и сама в общем-то забыла, поэтому зачтем так. Следующий: Кузнец, который большой такой, всё ещё носит шляпу?..",
+      options: [
+        {
+          text: "Нет",
+          nextNode: "correct_question_4",
+          id: DIALOGUE_IDS.GHOST_CORRECT_ANSWER,
+        },
+        {
+          text: "Да что за вопросы-то такие?..",
+          nextNode: "incorrect_question_4",
+          id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+        },
+        {
+          text: "Да",
+          nextNode: "incorrect_question_4",
+          id: DIALOGUE_IDS.GHOST_INCORRECT_ANSWER,
+        },
+      ],
+    },
+    incorrect_question_4: {
+      text: "А ведь я его частенько вижу... Не носит он шляпы. Следующий: сколько колёс у машины?",
+      options: FOURTH_QUESTION_OPTIONS,
+    },
+    correct_question_4: {
+      text: "А ты внимательный... Следующий вопрос: сколько колёс у машины?",
+      options: FOURTH_QUESTION_OPTIONS,
+    },
+
+    incorrect_question_5: {
+      text: "А я думаю - что у машины 8 колёс и не засчитываю ответ. Следующий вопрос: как называется та часть меча, за которую держатся?..",
+      options: FIFTH_QUESTION_OPTIONS,
+    },
+    correct_question_5: {
+      text: "Ведь и правда, вопрос некорректный... так и быть, зачту корректным ответом. Следующий вопрос: как называется та часть меча, за которую держатся?..",
+      options: FIFTH_QUESTION_OPTIONS,
+    },
+
+    correct_question_6: {
+      text: "Ответ верный, а вы старомодны, раз даже на это знаете ответ. Сверимся с результатами?",
+      options: FINAL_OPTIONS,
+    },
+    incorrect_question_6: {
+      text: "Даже интересно как ты тут выжил... Ах да, у вас же новомодное огнестрельное. В любом случае, ответ некорректный. Сверимся с результатами?",
+      options: FINAL_OPTIONS,
+    },
+
+    final: {
+      text: FINAL_TEXT,
+      options: [
+        LEAVE_OPTION,
+        {
+          text: "[попробовать ещё раз]",
+          nextNode: "game_started",
+          id: DIALOGUE_IDS.GHOST_RESET_GAME,
+        },
+      ],
     },
   },
 };
@@ -712,6 +858,7 @@ export const resetDialogs = () => {
   citadelDialog.startNode = "welcome";
   tavernDialog.startNode = "welcome";
   traderDialog.startNode = "welcome";
+  ghostDialog.startNode = "welcome";
   traderDialog.nodes.welcome.options = DEFAULT_TAVERN_WELCOME_OPTIONS;
 };
 
@@ -741,4 +888,5 @@ export const resetReleaseOptions = () => {
   }
 
   starCounterDialog.nodes.almanac.options = DEFAULT_ALMANAC_OPTIONS;
+  ghostDialog.startNode = "welcome";
 };

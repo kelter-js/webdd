@@ -16,7 +16,7 @@ import { getFlagStoryBossByTier } from "../../../utils/getFlagStoryBossByTier";
 
 export const useHandleBattleEnd = () => {
   const {
-    player: { battle, currentTier, hasCamera },
+    player: { battle, currentTier, hasCamera, location },
     setReward,
   } = useGameState();
 
@@ -34,7 +34,9 @@ export const useHandleBattleEnd = () => {
       const reward = {} as Reward;
 
       if (enemy.length === 1 && STORY_BOSSES_LIST.includes(enemy[0].type)) {
-        reward.flags = getFlagStoryBossByTier(currentTier);
+        reward.flags = getFlagStoryBossByTier(
+          location?.dungeonLevel || currentTier,
+        );
       }
 
       const items: Item[] = [];
@@ -43,11 +45,19 @@ export const useHandleBattleEnd = () => {
         (acc, creature) => {
           // mock ?? 20 - убрать
           acc.exp += creature.exp ?? 20;
-          acc.gold += getGoldByTier(currentTier, creature?.isEnhanced);
+          acc.gold += getGoldByTier(
+            location?.dungeonLevel || currentTier,
+            creature?.isEnhanced,
+          );
           const itemRoll = getRandom(1, 100);
 
           if (itemRoll > 20) {
-            items.push(generateRandomItem(currentTier, creature.isEnhanced));
+            items.push(
+              generateRandomItem(
+                location?.dungeonLevel || currentTier,
+                creature.isEnhanced,
+              ),
+            );
           }
 
           if (hasCamera) {
@@ -65,13 +75,17 @@ export const useHandleBattleEnd = () => {
       const potionRoll = getRandom(0, 100);
 
       if (potionRoll > 50) {
-        reward.potions = getRandomPotionByTier(currentTier);
+        reward.potions = getRandomPotionByTier(
+          location?.dungeonLevel || currentTier,
+        );
       }
 
       const junkRoll = getRandom(0, 100);
 
       if (junkRoll < 80) {
-        reward.junk = getRandomJunkByTier(currentTier);
+        reward.junk = getRandomJunkByTier(
+          location?.dungeonLevel || currentTier,
+        );
       }
 
       reward.resources = getRandomResources();

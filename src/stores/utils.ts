@@ -29,7 +29,7 @@ import {
   getGoldByTier,
   getRandomJunkByTier,
 } from "../components/Battle/utils";
-import { CreatureBaseModel, RewardTypes } from "../types";
+import { CreatureBaseModel, QuestReward, RewardTypes } from "../types";
 import { generatePotion } from "../utils/generatePotionsToBuy";
 import {
   FIRST_TIER_BOSS,
@@ -45,6 +45,7 @@ import {
   THIRD_TIER_MINIBOSS_LIST,
   THIRD_TIER_QUEST_MINIBOSS,
 } from "../constants/creatures";
+import { DUNGEONS, QUEST_STATUSES } from "../entities";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -169,74 +170,68 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
   };
 };
 
-const generateTierCreature = (
-  locationTier: number,
-  isDeadEnd?: boolean,
-  isComingBackWithoutTorchlight?: boolean,
-) => {
-  switch (locationTier) {
-    case 1:
-      //  FIRST_TIER_CREATIONS - массив противников первого тира
-      // const strongEnemyChance = getRandom(1, 100);
-      // if (isComingBackWithoutTorchlight) {
-      //  if (strongEnemyChance > 10) buffSomehowCreatureFromTier;
-      // }
-
-      // const strongEnemyChance = getRandom(1, 100);
-      // if (strongEnemyChance > 75 && isDeadEnd) buffSomehowCreatureFromTier;
-      // return FIRST_TIER_CREATIONS[getRandom(0, FIRST_TIER_CREATIONS.length)]
-
-      return {};
-    case 2:
-      return {};
-    case 3:
-      return {};
-    default:
-      return {};
+export const getExpByQuest = (currentTier: number) => {
+  if (currentTier === 1) {
+    return 800;
   }
+
+  if (currentTier === 2) {
+    return 1500;
+  }
+
+  return 8000;
 };
 
-export const getCreatureByLocationTier = ({
-  isBoss,
-  locationTier,
-  isDeadEnd,
-  // FIXME: нейминг
-  isComingBackWithoutTorchlight,
-}: {
-  locationTier: number;
-  isBoss?: boolean;
-  isDeadEnd?: boolean;
-  isComingBackWithoutTorchlight?: boolean;
-}) => {
-  if (isBoss) {
-    switch (locationTier) {
-      case 1:
-        // return boss from constant file, shallow copy it { ...FIRST_TIER_BOSS }
-        return {};
-      case 2:
-        // return boss from constant file, shallow copy it { ...SECOND_TIER_BOSS }
-        return {};
-      case 3:
-        // return boss from constant file, shallow copy it { ...THIRD_TIER_BOSS }
-        return {};
-      default: // return boss from constant file, shallow copy it { ...FIRST_TIER_BOSS }
-        return {};
-    }
+export const getGoldByQuest = (currentTier: number) => {
+  if (currentTier === 1) {
+    return 1000;
   }
 
-  switch (locationTier) {
-    case 1:
-      //  generateTierCreature(locationTier, isDeadEnd);
-      return {};
-    case 2:
-      //  generateTierCreature(locationTier, isDeadEnd);
-      return {};
-    case 3:
-      //  generateTierCreature(locationTier, isDeadEnd);
-      return {};
-      //  generateTierCreature(locationTier, isDeadEnd);
-      return {};
+  if (currentTier === 2) {
+    return 3000;
   }
+
+  return 4000;
+};
+
+const CHANCE_TO_SPAWN_ITEM_AS_REWARD = 50;
+
+export const getRandomRewardByQuest = (
+  currentTier: number,
+  quest: DUNGEONS,
+  status: QUEST_STATUSES,
+) => {
+  console.log("status", status);
+  const isQuestFailed = status === QUEST_STATUSES.FAILED;
+
+  const exp = getExpByQuest(currentTier);
+  const gold = getGoldByQuest(currentTier);
+
+  const reward: QuestReward = {
+    exp: isQuestFailed ? exp / 2 : exp,
+    gold: isQuestFailed ? gold / 2 : gold,
+    status,
+    type: quest,
+  };
+
+  if (isQuestFailed) {
+    return reward;
+  }
+
+  const isEnhancedItem = quest === DUNGEONS.FIND;
+
+  const roll = getRandom(1, 100);
+
+  const item =
+    isEnhancedItem || roll < CHANCE_TO_SPAWN_ITEM_AS_REWARD
+      ? generateRandomItem(currentTier, isEnhancedItem)
+      : null;
+
+  if (item) {
+    reward.item = item;
+  }
+
+  return reward;
 };
 
 const DEFAULT_ENEMY_START_FIRST_CHANCE = 50;
@@ -688,26 +683,6 @@ export const generateBattle = ({
 
     return model;
   }
-};
-
-const CHANCE_TO_FULL_ENEMY_PARTY = 50;
-const CHANCE_TO_HALF_ENEMY_PARTY = 75;
-
-export const generateEnemy = (isSpecial: boolean, tier: number) => {
-  if (isSpecial) {
-    // здесь только 3 тира врагов спавним
-  }
-
-  // здесь спавним от 1 до 3 врагов, тир врагов от 1-2
-  const amountOfEnemiesRoll = getRandom(0, 100);
-
-  if (amountOfEnemiesRoll < CHANCE_TO_FULL_ENEMY_PARTY) {
-  }
-
-  if (amountOfEnemiesRoll < CHANCE_TO_HALF_ENEMY_PARTY) {
-  }
-
-  return [];
 };
 
 export const increaseCharacterStat = (

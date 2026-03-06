@@ -48,7 +48,8 @@ export const StorySlide: FC<StorySlideProps> = ({ slides }) => {
             position: "absolute",
             inset: 0,
             backgroundImage: `url(${current.image})`,
-            backgroundSize: "100% 100%", // Изменено с "cover"
+            // backgroundSize: "100% 100%", // Изменено с "cover"
+            backgroundSize: "cover", // Изменено с "cover"
             backgroundPosition: "center",
           }}
         />

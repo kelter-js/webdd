@@ -35,6 +35,7 @@ import { buyTorches } from "./buyTorches";
 import { useAbility } from "./useAbility";
 import { setSliders } from "./setSliders";
 import { setDungeon } from "./setDungeon";
+import { resetQuest } from "./resetQuest";
 import { setVolume } from "./setVolume";
 import { buyPotion } from "./buyPotion";
 import { setReward } from "./setReward";
@@ -87,6 +88,7 @@ export {
   useAbility,
   setSliders,
   setDungeon,
+  resetQuest,
   setVolume,
   buyPotion,
   setReward,

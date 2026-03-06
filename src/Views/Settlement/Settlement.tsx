@@ -20,7 +20,7 @@ import { PotionsBuyModal } from "../../components/PotionsBuyModal";
 import { AlmanacModal } from "../../components/AlmanacModal";
 import { TradeModal } from "../../components/TradeModal";
 import { CraftModal } from "../../components/CraftModal";
-import { DungeonCard } from "../../components/DungeonCard";
+import { DungeonCard, DungeonContainer } from "../../components/DungeonCard";
 import { BuyTorches } from "../../components/BuyTorches";
 
 export const Settlement = () => {
@@ -61,12 +61,7 @@ export const Settlement = () => {
     }
 
     if (building === BUILDING_NAMES.GRAVEYARD) {
-      if (quest) {
-        toggleDungeonModal();
-      } else {
-        toggleAutoSave();
-        generateDungeon({ dungeonLevel: currentTier });
-      }
+      toggleDungeonModal();
 
       return;
     }
@@ -75,6 +70,8 @@ export const Settlement = () => {
   };
 
   const hasQuestResults = quest && quest.status !== QUEST_STATUSES.INITIATED;
+
+  console.log("isDungeonModalOpen", isDungeonModalOpen);
 
   return (
     <>
@@ -99,15 +96,7 @@ export const Settlement = () => {
         </GameModal>
       )}
 
-      {isDungeonModalOpen && quest?.type && (
-        <GameModal onClose={toggleDungeonModal} width="875px">
-          <Stack direction="row" justifyContent="center" gap={5}>
-            {[...DUNGEON_TYPES, quest?.type].map((type) => (
-              <DungeonCard type={type} key={type} />
-            ))}
-          </Stack>
-        </GameModal>
-      )}
+      {isDungeonModalOpen && <DungeonContainer />}
 
       {isBuyPotionsModalOpen && <PotionsBuyModal />}
       {isAlmanacOpen && <AlmanacModal />}

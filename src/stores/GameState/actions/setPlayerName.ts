@@ -39,6 +39,7 @@ export const setPlayerName =
           ...getBaseModelBySelectedClass(characterClass),
           points: 5,
           perksList: [],
+          critStrike: 0,
         },
         {
           name: firstRandomName,

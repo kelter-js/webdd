@@ -814,4 +814,86 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 24000,
   },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MP5SD_TIER_1, 3000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MP5SD_TIER_1, BASE_ITEMS_ID.MP5SD_TIER_2),
+    title: "MP5SD MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.MP5SD_TIER_2, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.MP5SD_TIER_2, BASE_ITEMS_ID.MP5SD_TIER_3),
+    title: "MP5SD MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FN_P90S_TIER_1, 6000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FN_P90S_TIER_1,
+        BASE_ITEMS_ID.FN_P90S_TIER_2,
+      ),
+    title: "FN P90S MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FN_P90S_TIER_2, 12000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FN_P90S_TIER_2,
+        BASE_ITEMS_ID.FN_P90S_TIER_3,
+      ),
+    title: "FN P90S MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.KRISS_VECTOR_TIER_1, 12000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_1,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
+      ),
+    title: "KRISS VECTOR MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.KRISS_VECTOR_TIER_2, 24000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_3,
+      ),
+    title: "KRISS VECTOR MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
 ];

@@ -1,7 +1,7 @@
-import { Quest } from "../../../types/gameState";
+import { QuestReward } from "../../../types";
 import { StoreSet } from "./types";
 // FIXME типизация
-export const setQuestData = (set: StoreSet) => (data: Quest | null) => {
+export const setQuestData = (set: StoreSet) => (data: QuestReward | null) => {
   set((state) => {
     // Закрытие квеста, обнуляем его состояние
     if (data === null) {

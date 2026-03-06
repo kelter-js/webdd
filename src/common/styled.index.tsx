@@ -1,4 +1,11 @@
-import { Slider, Typography, sliderClasses, styled } from "@mui/material";
+import {
+  Select,
+  SelectProps,
+  Slider,
+  Typography,
+  sliderClasses,
+  styled,
+} from "@mui/material";
 
 export const Text = styled(Typography)(({ theme: { spacing } }) => ({
   width: "100%",
@@ -138,5 +145,28 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
         zIndex: -1,
       },
     },
+  },
+}));
+
+export const StyledSelect = styled(Select)(() => ({
+  backgroundColor: "rgba(30, 20, 10, 0.9)",
+  color: "#e0c0a0",
+  border: "1px solid #c0a080",
+  fontFamily: "Cormorant Unicase",
+  textTransform: "uppercase",
+  borderRadius: 4,
+  fontSize: "0.9rem",
+  letterSpacing: "0.5px",
+
+  "& .MuiSelect-icon": {
+    color: "#e0c0a0",
+  },
+
+  "&:hover": {
+    borderColor: "#e0c0a0",
+  },
+
+  "&.Mui-focused": {
+    borderColor: "#e0c0a0",
   },
 }));

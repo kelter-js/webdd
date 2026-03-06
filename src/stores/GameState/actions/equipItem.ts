@@ -1,10 +1,12 @@
 import { StoreSet } from "./types";
 
 import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
+import { GEAR_SLOTS } from "../../../entities/gear";
+import { memoizeItem } from "../../../utils/memoizeItem";
 
 export const equipItem =
   (set: StoreSet) =>
-  (equipItemId: string, characterName: string, unequipItemId?: string) => {
+  (equipItemId: string, characterName: string, type: GEAR_SLOTS) => {
     set((state) => {
       const copyState = {
         ...state,
@@ -24,16 +26,16 @@ export const equipItem =
       }
 
       if (copyState.player.gear_memoized[characterName] && equipItemData) {
-        if (unequipItemId) {
-          const unequipItem = copyState.player.gear_memoized[
-            characterName
-          ].find(([_, gearId]) => gearId === unequipItemId);
+        if (copyState.gear && copyState.gear[characterName]) {
+          const unequipItem = copyState.gear[characterName].find(
+            ({ type: itemType }) => itemType === type,
+          );
           // помещаем мемоизированную версию предмета в инвентарь с персонажа
           if (unequipItem) {
-            copyState.player.inventory_memoized.push(unequipItem);
+            copyState.player.inventory_memoized.push(memoizeItem(unequipItem));
             copyState.player.gear_memoized[characterName] =
               copyState.player.gear_memoized[characterName].filter(
-                ([_, itemId]) => itemId !== unequipItemId,
+                ([_, itemId]) => itemId !== unequipItem.gearId,
               );
           }
         }

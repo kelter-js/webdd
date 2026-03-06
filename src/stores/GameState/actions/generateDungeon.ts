@@ -9,11 +9,11 @@ const DEFAULT_ATTEMPS_AMOUNT = 5;
 
 const getDungeonSizeByTier = (currentTier: number) => {
   if (currentTier === 3) {
-    return 10;
+    return 7;
   }
 
   if (currentTier === 2) {
-    return 7;
+    return 6;
   }
 
   return 5;
@@ -26,7 +26,9 @@ export const generateDungeon =
     set((state) => {
       const stateCopy = { ...state, player: { ...state.player } };
 
-      const dungeonSize = getDungeonSizeByTier(stateCopy.player.currentTier);
+      const dungeonSize = getDungeonSizeByTier(
+        dungeonLevel ?? stateCopy.player.currentTier,
+      );
       const newDungeon = generateDungeonUtil(
         dungeonSize,
         dungeonSize,
