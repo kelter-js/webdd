@@ -896,4 +896,86 @@ export const RECEIPTS: ReceiptData[] = [
     targetItemIcon: "",
     goldRequiredToCraft: 24000,
   },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.GLOCK_17_TIER_1, 3000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.GLOCK_17_TIER_1,
+        BASE_ITEMS_ID.GLOCK_17_TIER_2,
+      ),
+    title: "Glock 17 MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 3000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.GLOCK_17_TIER_2, 6000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.GLOCK_17_TIER_2,
+        BASE_ITEMS_ID.GLOCK_17_TIER_3,
+      ),
+    title: "Glock 17 MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FN_57_TIER_1, 6000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.FN_57_TIER_1, BASE_ITEMS_ID.FN_57_TIER_2),
+    title: "FN Five Seven MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 6000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.FN_57_TIER_2, 12000),
+    create: (state: GameStateData) =>
+      craftItem(state, BASE_ITEMS_ID.FN_57_TIER_2, BASE_ITEMS_ID.FN_57_TIER_3),
+    title: "FN Five Seven MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.DESERT_EAGLE_TIER_1, 12000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_1,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
+      ),
+    title: "Desert Eagle MK II",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 12000,
+  },
+  {
+    type: RECEIPT_TYPES.ITEM,
+    isDisabled: (state: GameStateData) =>
+      isDisabled(state, BASE_ITEMS_ID.DESERT_EAGLE_TIER_2, 24000),
+    create: (state: GameStateData) =>
+      craftItem(
+        state,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_3,
+      ),
+    title: "Desert Eagle MK III",
+    sourceItemIcon: "",
+    targetItemIcon: "",
+    goldRequiredToCraft: 24000,
+  },
 ];

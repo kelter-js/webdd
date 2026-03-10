@@ -15,6 +15,7 @@ import { v4 } from "uuid";
 import { getResourceIcon } from "../../../../utils/getResourceIcon";
 import { getResourceDescription } from "../../../../utils/getResourceDescription";
 import { ResourceData } from "../../../../types";
+import { JUNK_DATA } from "../../../../constants/items";
 
 export const BattleResult = () => {
   const {
@@ -134,7 +135,7 @@ export const BattleResult = () => {
             </Stack>
 
             <Typography fontSize={20} fontFamily="inherit">
-              {junk}
+              {JUNK_DATA[junk].title}
             </Typography>
           </Stack>
         )}

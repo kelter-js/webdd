@@ -6,6 +6,7 @@ import accountant from "../../assets/npc/accountant.png";
 import crazyTrader from "../../assets/npc/crazy_trader.png";
 import ghost from "../../assets/npc/ghost.png";
 import priest from "../../assets/npc/priest.png";
+import tutor from "../../assets/npc/tutor.png";
 import starcounter from "../../assets/npc/starcounter.png";
 import watchmen from "../../assets/npc/watchmen.png";
 import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
@@ -126,6 +127,78 @@ export const questDeskDialog: DialogueTree = {
     end: {
       text: "Мне нужно закончить предыдущую работу...",
       options: [{ text: "[Уйти]", nextNode: "end" }],
+    },
+  },
+};
+
+export const tutorDialog: DialogueTree = {
+  id: BUILDING_NAMES.TUTOR,
+  src: tutor,
+  name: "Гид",
+  startNode: "welcome",
+  nodes: {
+    welcome: {
+      text: "Привет-привет. По глазам, ммм... Нет, по внешнему виду-то тоже вижу что не здешние. Бесплатно могу рассказать что тут да как у нас устроено. Хватит глаза такие делать, устанешь удивляться тут.",
+      options: [
+        { text: "[Далее]", nextNode: "tier_1_tip" },
+        {
+          text: "[отказаться]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.STOP_TUTOR_TIER_1,
+        },
+      ],
+    },
+    tier_1_tip: {
+      text: "Имя своё я не помню, много путешествую, знакомиться поэтому не будем, может и не понадобиться мне ваши имена знать. Осмотритесь вокруг, познакомьтесь со всеми, составьте план действий.",
+      options: [
+        { text: "[Далее]", nextNode: "tier_2_tip" },
+        {
+          text: "[отказаться]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.STOP_TUTOR_TIER_1,
+        },
+      ],
+    },
+    tier_2_tip: {
+      text: "Золота-то у вас поди совсем немного, но прикупите зелья в лавке и факелы пополните на всякий случай, сколько хватит. Есть кузнец у нас тут ещё, кхм, да...",
+      options: [
+        { text: "[Далее]", nextNode: "tier_3_tip" },
+        {
+          text: "[отказаться]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.STOP_TUTOR_TIER_1,
+        },
+      ],
+    },
+    tier_3_tip: {
+      text: "В центре города обычно стоит доска с объявлениями, ребятам что-то бывает нужно - посматривайте, можно подзаработать так. В общем-то, у нас тут у всех цель одна - выжить и возможно даже покинуть это злосчастное место, так что местным на руку если вы дольше проживете. Заглядывайте в ратушу - вам чем смогут - помогут, выберут стратегию развития так сказать.",
+      options: [
+        { text: "[Далее]", nextNode: "tier_4_tip" },
+        {
+          text: "[отказаться]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.STOP_TUTOR_TIER_1,
+        },
+      ],
+    },
+    tier_4_tip: {
+      text: "Врач бесплатно подлечит, если будет что сшивать от вас, в остальном - пообщайтесь, сами всё увидите. Ну, не буду время зря тратить, глядишь, ещё свидемся. Ни пуха ни пера!",
+      options: [
+        {
+          text: "[откланяться]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.STOP_TUTOR_TIER_1,
+        },
+      ],
+    },
+
+    welcome_tier_2: {
+      text: "ДОРАБАТЫВАТЬ",
+      options: [],
+    },
+    welcome_tier_3: {
+      text: "ДОРАБАТЫВАТЬ",
+      options: [],
     },
   },
 };

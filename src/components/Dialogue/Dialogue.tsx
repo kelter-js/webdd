@@ -49,8 +49,6 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   const { handleSetSrc, getPlayerRef, handleRemoveSrc } = usePlayer();
 
   const playerRef = getPlayerRef(DIALOGUE_AMBIENT_PLAYER_REF);
-  console.log("playerRef", playerRef);
-  console.log("handleSetSrc", handleSetSrc);
 
   const handleEndDialogue = (cb: VoidFunction) => {
     cb();
@@ -60,6 +58,8 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
   // const { text, options, flags } = nodes[currentNode];
   const { text, options, flags } = nodes[currentNode];
+  console.log("flags", flags);
+  console.log("nodes", nodes);
 
   const handleOptionClick = ({ nextNode, id }: DialogueOption) => {
     if (flags?.length) {
@@ -82,6 +82,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
 
     if (id === DIALOGUE_IDS.BUY_CAMERA) {
       buyCamera();
+    }
+
+    if (id === DIALOGUE_IDS.STOP_TUTOR_TIER_1) {
+      updateDialogFlags([DIALOGUE_FLAGS.TUTOR_TIER_1_ENDED]);
     }
 
     if (id === DIALOGUE_IDS.ALMANAC) {

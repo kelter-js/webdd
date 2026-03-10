@@ -4,16 +4,22 @@ import { Box, Paper, Typography } from "@mui/material";
 
 import { StorySlideProps } from "./types";
 import { useGameState } from "../../stores";
+import { SLIDERS } from "../../entities/sliders";
+import { FLAGS } from "../../constants";
 
-export const StorySlide: FC<StorySlideProps> = ({ slides }) => {
+export const StorySlide: FC<StorySlideProps> = ({ slides, sliderId }) => {
   const [index, setIndex] = useState(0);
 
-  const { setSliders } = useGameState();
+  const { setSliders, updateFlags } = useGameState();
 
   const handleNext = () => {
     if (index < slides.length - 1) {
       setIndex(index + 1);
     } else {
+      if (sliderId === SLIDERS.INTRO) {
+        updateFlags(FLAGS.INTRO_SHOWED);
+      }
+
       setSliders(null);
     }
   };

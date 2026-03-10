@@ -17,6 +17,7 @@ import {
   FINAL_FULL_FAIL_TEXT,
   FINAL_FAIL_TEXT,
   FINAL_TEXT,
+  tutorDialog,
 } from "../constants/dialogs";
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
@@ -366,6 +367,18 @@ export const useGetDialogue = (npc: string | null) => {
         return ghostDialog;
       }
 
+      case BUILDING_NAMES.TUTOR: {
+        if (dialogFlags.includes(DIALOGUE_FLAGS.TUTOR_TIER_1_ENDED)) {
+          tutorDialog.startNode = "welcome_tier_2";
+        }
+
+        if (dialogFlags.includes(DIALOGUE_FLAGS.TUTOR_TIER_2_ENDED)) {
+          tutorDialog.startNode = "welcome_tier_3";
+        }
+
+        return tutorDialog;
+      }
+
       default:
         return null;
     }
@@ -377,6 +390,7 @@ export const useGetDialogue = (npc: string | null) => {
     resources,
     collected,
     player,
+
     location?.attempts,
     location?.success,
     location?.node,

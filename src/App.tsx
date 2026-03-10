@@ -27,13 +27,14 @@ import { getPotionPriceByTypeAndTier } from "./utils/getPotionPriceByTypeAndTier
 import { StorySlide } from "./components/StorySlide";
 import { getSliderById } from "./utils/getSliderById";
 import { useSoundtrack } from "./hooks/useSoundtrack";
-import { FLAGS } from "./constants";
+import { BUILDING_NAMES, FLAGS } from "./constants";
 import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
 import {
   generateGenericItemInCurrentPool,
   generateItem,
 } from "./utils/generateStoreItems";
 import { useWatchCharacterLevels } from "./hooks/useWatchCharacterLevels";
+import { DIALOGUE_FLAGS } from "./entities/dialogues";
 
 //!!!оптимизация localStorage
 // Сжатие данных:
@@ -281,7 +282,15 @@ export const App = () => {
   useScrollbarWidth();
 
   const {
-    player: { name, isGameOver, currentTier, sliderId, flags, itemsToBuy },
+    player: {
+      name,
+      isGameOver,
+      currentTier,
+      sliderId,
+      flags,
+      itemsToBuy,
+      dialogFlags,
+    },
     setLocationState,
     initiateState,
     setGameOver,
@@ -302,6 +311,7 @@ export const App = () => {
     toggleModal,
     toggleAutoSave,
     isNewGame,
+    setDialogueOpen,
   } = useAppState();
 
   useGlobalListeners();
@@ -354,6 +364,17 @@ export const App = () => {
     initiateState();
   }, [name]);
 
+  // выделить в отдельный хук
+  useEffect(() => {
+    if (
+      loaded &&
+      flags.includes(FLAGS.INTRO_SHOWED) &&
+      !dialogFlags.includes(DIALOGUE_FLAGS.TUTOR_TIER_1_ENDED)
+    ) {
+      setDialogueOpen(BUILDING_NAMES.TUTOR);
+    }
+  }, [dialogFlags, flags, sliderId, loaded]);
+
   const canShowContent = name && !isFading && loaded;
 
   return (
@@ -370,7 +391,9 @@ export const App = () => {
 
       {!loaded && <LoadingModal progress={progress} />}
 
-      {sliderId && <StorySlide slides={getSliderById(sliderId)} />}
+      {sliderId && (
+        <StorySlide sliderId={sliderId} slides={getSliderById(sliderId)} />
+      )}
 
       {canShowContent && <ViewManager />}
       {canShowContent &&
@@ -436,16 +459,21 @@ export const App = () => {
 // систему выбора цели и фильтрации целей
 // есть значение на шанс спешиал энкаунтера - за каждый ПОКИНУТЫЙ успешно данж - нужно повышать шанс этой встречи
 
-// 07.03
-// пофксить названия мусора в окне награды после битвы
-// обновить константы врагов - сделать импорт артов и вывод их в маппинге - тип моба - его арт - done
+// 11.03
 // реализовать спешиал энкаунтер SHOOTER
-// добавить рецепты пистолетов
-// добавить ещё одного нпц, просто который немного объясняет что требуется от игрока, после интро инициирует диалоги - его диалоги должны иметь флаги, опираться на slideId и currentTier и проверку собственных флагов
+// в крафте оружия передавать в функцию крафта ещё и стоимость крафта и логику для изъятияд енег при крафте у персонажа
+// инициацию диалогов тутора вывести в отдельный хук
+
+// 10.03
+// пофксить названия мусора в окне награды после битвы - done
+// обновить константы врагов - сделать импорт артов и вывод их в маппинге - тип моба - его арт - done
+// добавить рецепты пистолетов - done
+// добавить ещё одного нпц, просто который немного объясняет что требуется от игрока, после интро инициирует диалоги -
+//  его диалоги должны иметь флаги, опираться на slideId и currentTier и проверку собственных флагов - done
 
 // 06.03
 // выход в подземелье всегда должен рендрить модалку - для сюжетных подземелий можно выбрать сложность - для квестовых сложность выбрать нельзя - done
-// доработать награды за квест - их генерацию и вывод награды -
+// доработать награды за квест - их генерацию и вывод награды - done
 // игнорировать выбранную сложность, если выбрали квестовое подземелье - done
 // не повышать счетчик пройденных подземелий, если сложность выбрана меньше, чем текущий тир - done
 // добавить рецепты ПП - done
