@@ -20,6 +20,7 @@ export enum BUILDING_NAMES {
   CRAZY_TRADER = "CRAZY_TRADER",
   GHOST = "GHOST",
   TUTOR = "TUTOR",
+  SHOOTING = "SHOOTING",
 }
 
 export const LOCATIONS = {

@@ -18,6 +18,13 @@ import {
   FINAL_FAIL_TEXT,
   FINAL_TEXT,
   tutorDialog,
+  FINAL_DEFAULT_OPTIONS_SHOOTING,
+  shootingDialog,
+  FINAL_FAIL_TEXT_SHOOTING,
+  LEAVE_OPTION_SHOOTING,
+  FINAL_FULL_FAIL_TEXT_SHOOTING,
+  FINAL_TEXT_SHOOTING,
+  SUCCESS_OPTIONS_SHOOTING,
 } from "../constants/dialogs";
 
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
@@ -365,6 +372,28 @@ export const useGetDialogue = (npc: string | null) => {
         }
 
         return ghostDialog;
+      }
+
+      case BUILDING_NAMES.SHOOTING: {
+        shootingDialog.startNode = location?.node ?? "welcome";
+        shootingDialog.nodes.shootingEnd.options = [
+          ...FINAL_DEFAULT_OPTIONS_SHOOTING,
+        ];
+        shootingDialog.nodes.shootingEnd.text = FINAL_FAIL_TEXT_SHOOTING;
+
+        if (location?.attempts && location?.attempts <= 0) {
+          shootingDialog.nodes.shootingEnd.options = [LEAVE_OPTION_SHOOTING];
+          shootingDialog.nodes.shootingEnd.text = FINAL_FULL_FAIL_TEXT_SHOOTING;
+        }
+
+        if (Number(location?.success) === 1) {
+          shootingDialog.nodes.shootingEnd.text = FINAL_TEXT_SHOOTING;
+          shootingDialog.nodes.shootingEnd.options = [
+            ...SUCCESS_OPTIONS_SHOOTING,
+          ];
+        }
+
+        return shootingDialog;
       }
 
       case BUILDING_NAMES.TUTOR: {

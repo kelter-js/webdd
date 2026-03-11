@@ -1,11 +1,12 @@
 import { Stack } from "@mui/material";
-import { FC } from "react";
+import { FC, useState, MouseEvent } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { InventoryCellProps } from "./types";
 import { useGameState } from "../../stores";
 import { Item } from "../../types/gameState";
 import { GEAR_SLOTS } from "../../entities/gear";
 import { CLASS_GUN_RESTRICTIONS } from "../../constants/characters";
+import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
 
 export interface DragItemWithMeta {
   characterName?: string;
@@ -19,6 +20,19 @@ export const CharacterCell: FC<InventoryCellProps> = ({
   name,
 }) => {
   console.log("OUTSIDE ITEM", item);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+
+  const handleEnter = (event: MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleLeave = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   const { equipItem } = useGameState();
 
   const [{ canDrop }, drop] = useDrop<
@@ -90,6 +104,8 @@ export const CharacterCell: FC<InventoryCellProps> = ({
         drag(node);
         drop(node);
       }}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
       sx={{
         border: `${canDrop || isDragging ? "5px" : "1px"} solid ${
           canDrop || isDragging ? "gold" : "orange"
@@ -100,6 +116,10 @@ export const CharacterCell: FC<InventoryCellProps> = ({
         opacity: canDrop ? 0.5 : isDragging ? 0 : 1,
         cursor: "pointer",
       }}
-    ></Stack>
+    >
+      {item && anchorEl && (
+        <ItemDataModal open={open} anchorEl={anchorEl} item={item} />
+      )}
+    </Stack>
   );
 };

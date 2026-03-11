@@ -49,6 +49,9 @@ export interface AppState {
   isTorchBuyOpen: boolean;
   toggleTorchBuyMenu: VoidFunction;
 
+  isShootingGameEnabled: boolean;
+  toggleShootingGame: VoidFunction;
+
   charactersLeveledUp: LeveledUpData[];
   pushLeveledUpList: (characterData: LeveledUpData) => void;
   deleteLeveledUpList: (characterName: string) => void;

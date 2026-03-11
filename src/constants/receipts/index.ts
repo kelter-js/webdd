@@ -8,12 +8,22 @@ import MediumPotion from "../../assets/potions/medium-potion.svg";
 import { BASE_ITEMS_ID } from "../items";
 import { v4 } from "uuid";
 
+const FIRST_TIER_MKII_UPGRADE_COST = 3000;
+const FIRST_TIER_MKIII_UPGRADE_COST = 6000;
+const SECOND_TIER_MKIII_UPGRADE_COST = 12000;
+const THIRD_TIER_MKIII_UPGRADE_COST = 24000;
+
 const craftItem = (
   state: GameStateData,
   sourceItem: BASE_ITEMS_ID,
   targetItem: BASE_ITEMS_ID,
+  price?: number,
 ) => {
-  const { inventory_memoized, gear_memoized } = state;
+  const { inventory_memoized, gear_memoized, gold } = state;
+
+  if (price && price > gold) {
+    return state;
+  }
 
   const copyState: GameStateData = {
     ...state,
@@ -57,6 +67,10 @@ const craftItem = (
   }
 
   const newItem: MemoizedItem = [targetItem, v4()];
+
+  if (price) {
+    copyState.gold -= price;
+  }
 
   return {
     ...copyState,
@@ -243,739 +257,1211 @@ export const RECEIPTS: ReceiptData[] = [
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.BNTI_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.BNTI_TIER_1, BASE_ITEMS_ID.BNTI_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.BNTI_TIER_1,
+        BASE_ITEMS_ID.BNTI_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "БНТИ MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.BNTI_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.BNTI_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.BNTI_TIER_2, BASE_ITEMS_ID.BNTI_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.BNTI_TIER_2,
+        BASE_ITEMS_ID.BNTI_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "БНТИ MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.NPP_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.NPP_TIER_1, BASE_ITEMS_ID.NPP_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.NPP_TIER_1,
+        BASE_ITEMS_ID.NPP_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "NPP MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NPP_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.NPP_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.NPP_TIER_2, BASE_ITEMS_ID.NPP_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.NPP_TIER_2,
+        BASE_ITEMS_ID.NPP_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "NPP MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
   // Бронежилеты 2 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.IOTV_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.IOTV_TIER_1, BASE_ITEMS_ID.IOTV_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.IOTV_TIER_1,
+        BASE_ITEMS_ID.IOTV_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "IOTV MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.IOTV_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.IOTV_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.IOTV_TIER_2, BASE_ITEMS_ID.IOTV_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.IOTV_TIER_2,
+        BASE_ITEMS_ID.IOTV_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "IOTV MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FORT_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.FORT_TIER_1, BASE_ITEMS_ID.FORT_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FORT_TIER_1,
+        BASE_ITEMS_ID.FORT_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "FORT MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FORT_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FORT_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.FORT_TIER_2, BASE_ITEMS_ID.FORT_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FORT_TIER_2,
+        BASE_ITEMS_ID.FORT_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "FORT MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
   // Бронежилеты 3 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.NFM_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.NFM_TIER_1, BASE_ITEMS_ID.NFM_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.NFM_TIER_1,
+        BASE_ITEMS_ID.NFM_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "NFM MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.NFM_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.NFM_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.NFM_TIER_2, BASE_ITEMS_ID.NFM_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.NFM_TIER_2,
+        BASE_ITEMS_ID.NFM_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "NFM MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.REDUT_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.REDUT_TIER_1, BASE_ITEMS_ID.REDUT_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.REDUT_TIER_1,
+        BASE_ITEMS_ID.REDUT_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "REDUT MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REDUT_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.REDUT_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.REDUT_TIER_2, BASE_ITEMS_ID.REDUT_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.REDUT_TIER_2,
+        BASE_ITEMS_ID.REDUT_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "REDUT MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
 
   // Шлемы 1 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.GALVION_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.GALVION_TIER_1,
         BASE_ITEMS_ID.GALVION_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "Galvion MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GALVION_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.GALVION_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.GALVION_TIER_2,
         BASE_ITEMS_ID.GALVION_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Galvion MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.HJELM_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.HJELM_TIER_1, BASE_ITEMS_ID.HJELM_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.HJELM_TIER_1,
+        BASE_ITEMS_ID.HJELM_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "HJELM MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.HJELM_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.HJELM_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.HJELM_TIER_2, BASE_ITEMS_ID.HJELM_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.HJELM_TIER_2,
+        BASE_ITEMS_ID.HJELM_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "HJELM MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
 
   // Шлемы 2 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.ALTYN_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_1, BASE_ITEMS_ID.ALTYN_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.ALTYN_TIER_1,
+        BASE_ITEMS_ID.ALTYN_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Altyn MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.ALTYN_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.ALTYN_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.ALTYN_TIER_2, BASE_ITEMS_ID.ALTYN_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.ALTYN_TIER_2,
+        BASE_ITEMS_ID.ALTYN_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Altyn MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MASKA_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MASKA_TIER_1, BASE_ITEMS_ID.MASKA_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MASKA_TIER_1,
+        BASE_ITEMS_ID.MASKA_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Maska MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MASKA_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MASKA_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MASKA_TIER_2, BASE_ITEMS_ID.MASKA_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MASKA_TIER_2,
+        BASE_ITEMS_ID.MASKA_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Maska MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
   // Шлемы 3 тир
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.RONIN_HELMET_TIER_1,
         BASE_ITEMS_ID.RONIN_HELMET_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_HELMET_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.RONIN_HELMET_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.RONIN_HELMET_TIER_2,
         BASE_ITEMS_ID.RONIN_HELMET_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1,
         BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin Respirator MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2,
         BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin Respirator MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ДРОБОВИКИ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MP155_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MP155_TIER_1, BASE_ITEMS_ID.MP155_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MP155_TIER_1,
+        BASE_ITEMS_ID.MP155_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "MP-155 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP155_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MP155_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MP155_TIER_2, BASE_ITEMS_ID.MP155_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MP155_TIER_2,
+        BASE_ITEMS_ID.MP155_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "MP-155 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.REMINGTON_870_TIER_1,
         BASE_ITEMS_ID.REMINGTON_870_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Remington 870 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.REMINGTON_870_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.REMINGTON_870_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.REMINGTON_870_TIER_2,
         BASE_ITEMS_ID.REMINGTON_870_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Remington 870 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SAIGA_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_1, BASE_ITEMS_ID.SAIGA_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SAIGA_TIER_1,
+        BASE_ITEMS_ID.SAIGA_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Saiga-12 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SAIGA_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SAIGA_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SAIGA_TIER_2, BASE_ITEMS_ID.SAIGA_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SAIGA_TIER_2,
+        BASE_ITEMS_ID.SAIGA_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "Saiga-12 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // СНАЙПЕРСКИЕ ВИНТОВКИ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SV98_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SV98_TIER_1, BASE_ITEMS_ID.SV98_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SV98_TIER_1,
+        BASE_ITEMS_ID.SV98_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "СВ-98 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SV98_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SV98_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SV98_TIER_2, BASE_ITEMS_ID.SV98_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SV98_TIER_2,
+        BASE_ITEMS_ID.SV98_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "СВ-98 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.DLV10_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.DLV10_TIER_1, BASE_ITEMS_ID.DLV10_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.DLV10_TIER_1,
+        BASE_ITEMS_ID.DLV10_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "ДВЛ-10 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DLV10_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.DLV10_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.DLV10_TIER_2, BASE_ITEMS_ID.DLV10_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.DLV10_TIER_2,
+        BASE_ITEMS_ID.DLV10_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "ДВЛ-10 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.AXMC_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.AXMC_TIER_1, BASE_ITEMS_ID.AXMC_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.AXMC_TIER_1,
+        BASE_ITEMS_ID.AXMC_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "AXMC MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AXMC_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.AXMC_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.AXMC_TIER_2, BASE_ITEMS_ID.AXMC_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.AXMC_TIER_2,
+        BASE_ITEMS_ID.AXMC_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "AXMC MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ПУЛЕМЕТЫ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RPD_TIER_1, 3000),
+      isDisabled(state, BASE_ITEMS_ID.RPD_TIER_1, FIRST_TIER_MKII_UPGRADE_COST),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.RPD_TIER_1, BASE_ITEMS_ID.RPD_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RPD_TIER_1,
+        BASE_ITEMS_ID.RPD_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "РПД MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.RPD_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.RPD_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.RPD_TIER_2, BASE_ITEMS_ID.RPD_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.RPD_TIER_2,
+        BASE_ITEMS_ID.RPD_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "РПД MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.M60_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.M60_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.M60_TIER_1, BASE_ITEMS_ID.M60_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.M60_TIER_1,
+        BASE_ITEMS_ID.M60_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "M60 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.M60_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.M60_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.M60_TIER_2, BASE_ITEMS_ID.M60_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.M60_TIER_2,
+        BASE_ITEMS_ID.M60_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "M60 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.PKM_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.PKM_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.PKM_TIER_1, BASE_ITEMS_ID.PKM_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.PKM_TIER_1,
+        BASE_ITEMS_ID.PKM_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "ПКМ MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.PKM_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.PKM_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.PKM_TIER_2, BASE_ITEMS_ID.PKM_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.PKM_TIER_2,
+        BASE_ITEMS_ID.PKM_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "ПКМ MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ШТУРМОВЫЕ ВИНТОВКИ
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AK_12_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.AK_12_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.AK_12_TIER_1, BASE_ITEMS_ID.AK_12_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.AK_12_TIER_1,
+        BASE_ITEMS_ID.AK_12_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "АК-12 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.AK_12_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.AK_12_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.AK_12_TIER_2, BASE_ITEMS_ID.AK_12_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.AK_12_TIER_2,
+        BASE_ITEMS_ID.AK_12_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "АК-12 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.M4A1_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.M4A1_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.M4A1_TIER_1, BASE_ITEMS_ID.M4A1_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.M4A1_TIER_1,
+        BASE_ITEMS_ID.M4A1_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "M4A1 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.M4A1_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.M4A1_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.M4A1_TIER_2, BASE_ITEMS_ID.M4A1_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.M4A1_TIER_2,
+        BASE_ITEMS_ID.M4A1_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "M4A1 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SA58_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SA58_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SA58_TIER_1, BASE_ITEMS_ID.SA58_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SA58_TIER_1,
+        BASE_ITEMS_ID.SA58_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "SA-58 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.SA58_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.SA58_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.SA58_TIER_2, BASE_ITEMS_ID.SA58_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.SA58_TIER_2,
+        BASE_ITEMS_ID.SA58_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "SA-58 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP5SD_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MP5SD_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MP5SD_TIER_1, BASE_ITEMS_ID.MP5SD_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MP5SD_TIER_1,
+        BASE_ITEMS_ID.MP5SD_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     title: "MP5SD MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.MP5SD_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.MP5SD_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.MP5SD_TIER_2, BASE_ITEMS_ID.MP5SD_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.MP5SD_TIER_2,
+        BASE_ITEMS_ID.MP5SD_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "MP5SD MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FN_P90S_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FN_P90S_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.FN_P90S_TIER_1,
         BASE_ITEMS_ID.FN_P90S_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN P90S MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FN_P90S_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FN_P90S_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.FN_P90S_TIER_2,
         BASE_ITEMS_ID.FN_P90S_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN P90S MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.KRISS_VECTOR_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.KRISS_VECTOR_TIER_1,
         BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "KRISS VECTOR MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.KRISS_VECTOR_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.KRISS_VECTOR_TIER_2,
         BASE_ITEMS_ID.KRISS_VECTOR_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "KRISS VECTOR MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GLOCK_17_TIER_1, 3000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.GLOCK_17_TIER_1,
+        FIRST_TIER_MKII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.GLOCK_17_TIER_1,
         BASE_ITEMS_ID.GLOCK_17_TIER_2,
+        FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "Glock 17 MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 3000,
+    goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.GLOCK_17_TIER_2, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.GLOCK_17_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.GLOCK_17_TIER_2,
         BASE_ITEMS_ID.GLOCK_17_TIER_3,
+        FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Glock 17 MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FN_57_TIER_1, 6000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FN_57_TIER_1,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.FN_57_TIER_1, BASE_ITEMS_ID.FN_57_TIER_2),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FN_57_TIER_1,
+        BASE_ITEMS_ID.FN_57_TIER_2,
+        FIRST_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "FN Five Seven MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 6000,
+    goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.FN_57_TIER_2, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.FN_57_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
-      craftItem(state, BASE_ITEMS_ID.FN_57_TIER_2, BASE_ITEMS_ID.FN_57_TIER_3),
+      craftItem(
+        state,
+        BASE_ITEMS_ID.FN_57_TIER_2,
+        BASE_ITEMS_ID.FN_57_TIER_3,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     title: "FN Five Seven MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DESERT_EAGLE_TIER_1, 12000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_1,
+        SECOND_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.DESERT_EAGLE_TIER_1,
         BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
+        SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Desert Eagle MK II",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 12000,
+    goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
     type: RECEIPT_TYPES.ITEM,
     isDisabled: (state: GameStateData) =>
-      isDisabled(state, BASE_ITEMS_ID.DESERT_EAGLE_TIER_2, 24000),
+      isDisabled(
+        state,
+        BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
+        THIRD_TIER_MKIII_UPGRADE_COST,
+      ),
     create: (state: GameStateData) =>
       craftItem(
         state,
         BASE_ITEMS_ID.DESERT_EAGLE_TIER_2,
         BASE_ITEMS_ID.DESERT_EAGLE_TIER_3,
+        THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Desert Eagle MK III",
     sourceItemIcon: "",
     targetItemIcon: "",
-    goldRequiredToCraft: 24000,
+    goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
 ];

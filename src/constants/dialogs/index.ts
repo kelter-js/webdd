@@ -9,8 +9,89 @@ import priest from "../../assets/npc/priest.png";
 import tutor from "../../assets/npc/tutor.png";
 import starcounter from "../../assets/npc/starcounter.png";
 import watchmen from "../../assets/npc/watchmen.png";
+import shooter from "../../assets/npc/shooter.png";
 import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
+
+export const FINAL_FAIL_TEXT_SHOOTING =
+  "Это было смешно. Ещё раз попробуете или с вас хватит позора?";
+export const FINAL_FULL_FAIL_TEXT_SHOOTING =
+  "Проваливай, посмешище! Надеюсь больше не увидимся. Титул мой!";
+export const FINAL_TEXT_SHOOTING =
+  "Хахах... Ладно, давай... может оставим это между нами?.. Забери на выбор любую пушку у меня и оставим титул при мне?..";
+
+export const LEAVE_OPTION_SHOOTING = {
+  text: "[покинуть]",
+  nextNode: "end",
+  id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_SHOOTER,
+};
+export const FINAL_DEFAULT_OPTIONS_SHOOTING = [
+  LEAVE_OPTION_SHOOTING,
+  {
+    text: "[попробовать ещё раз]",
+    nextNode: "shootingEnd",
+    id: DIALOGUE_IDS.SHOOTING_START_GAME,
+  },
+];
+
+export const SUCCESS_OPTIONS_SHOOTING = [
+  LEAVE_OPTION_SHOOTING,
+  {
+    text: "[получить легендарный дробовик]",
+    nextNode: "end",
+    id: DIALOGUE_IDS.SHOOTING_RECEIVE_SHOTGUN,
+  },
+  {
+    text: "[получить легендарную снайперскую винтовку]",
+    nextNode: "end",
+    id: DIALOGUE_IDS.SHOOTING_RECEIVE_SNIPER_RIFLE,
+  },
+  {
+    text: "[получить легендарный пистолет-пулемёт]",
+    nextNode: "end",
+    id: DIALOGUE_IDS.SHOOTING_RECEIVE_SMG,
+  },
+];
+
+export const shootingDialog: DialogueTree = {
+  id: BUILDING_NAMES.SHOOTING,
+  src: shooter,
+  name: "Опытный стрелок",
+  startNode: "welcome",
+  nodes: {
+    welcome: {
+      text: "Вот мы и встретились! А я за вами давно следую... Много шороху навели, все только о вас и говорят. Но ведь все знают, что в отличии от дешевок вроде вас, ИСТИННЫЙ мастер стрельбы - я, а не всякая чушь новоприбывшая, и я это сегодня докажу. Давай состязаться! Настреляешь 10 тарелок - и уступлю титул. А? Только три попытки...",
+      options: [
+        {
+          text: "Да, почему бы и нет, люблю помериться мастерством",
+          nextNode: "participate",
+          id: DIALOGUE_IDS.INITIATE_SHOOTING_GAME,
+        },
+        {
+          text: "Эээ... оставь его себе. Времени нет. [покинуть]",
+          nextNode: "end",
+          id: DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_SHOOTER,
+        },
+      ],
+    },
+
+    participate: {
+      text: "Готов? Буду подкидывать тарелки, твоя задача попасть. Десять тарелок. Ну, начнем?.. Раз, два, три - погнали!",
+      options: [
+        {
+          text: "[начать игру]",
+          nextNode: "shootingEnd",
+          id: DIALOGUE_IDS.SHOOTING_START_GAME,
+        },
+      ],
+    },
+
+    shootingEnd: {
+      text: FINAL_FAIL_TEXT_SHOOTING,
+      options: FINAL_DEFAULT_OPTIONS_SHOOTING,
+    },
+  },
+};
 
 export const smithDialog: DialogueTree = {
   id: "intro_npc",

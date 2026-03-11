@@ -28,6 +28,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     toggleAlmanac,
     toggleTradeModal,
     toggleCraftMenu,
+    toggleShootingGame,
     toggleTorchBuyMenu,
   } = useAppState();
   const {
@@ -130,8 +131,26 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       );
     }
 
+    if (id === DIALOGUE_IDS.LEAVE_SPECIAL_ENCOUNTER_SHOOTER) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(SPECIAL_ENCOUNTERS.SHOOTING),
+      );
+    }
+
     if (id === DIALOGUE_IDS.START_GHOST_GAME) {
       startSpecialEncounterGame(nextNode);
+    }
+
+    if (id === DIALOGUE_IDS.INITIATE_SHOOTING_GAME) {
+      startSpecialEncounterGame(nextNode);
+    }
+
+    if (id === DIALOGUE_IDS.SHOOTING_START_GAME) {
+      handleEndDialogue(() => {
+        toggleShootingGame();
+        updateSpecialEncounter({ node: nextNode, reset: true });
+        setDialogueOpen(null);
+      });
     }
 
     if (id === DIALOGUE_IDS.GHOST_CORRECT_ANSWER) {
@@ -154,6 +173,34 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
         ),
       );
     }
+
+    if (id === DIALOGUE_IDS.SHOOTING_RECEIVE_SHOTGUN) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.GHOST,
+          BASE_ITEMS_ID.AA12_TIER_1,
+        ),
+      );
+    }
+
+    if (id === DIALOGUE_IDS.SHOOTING_RECEIVE_SMG) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.GHOST,
+          BASE_ITEMS_ID.VERESK_TIER_1,
+        ),
+      );
+    }
+
+    if (id === DIALOGUE_IDS.SHOOTING_RECEIVE_SNIPER_RIFLE) {
+      handleEndDialogue(() =>
+        handleExitSpecialEncounter(
+          SPECIAL_ENCOUNTERS.GHOST,
+          BASE_ITEMS_ID.SWORD_MK18_TIER_1,
+        ),
+      );
+    }
+
     if (id === DIALOGUE_IDS.GHOST_RECEIVE_ARTIFACT) {
       handleEndDialogue(() =>
         handleExitSpecialEncounter(

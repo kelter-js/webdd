@@ -22,3 +22,9 @@ export const CLASS_BY_GUN_TYPE_MAPPING = {
   [GUN_TYPES.MACHINE_GUN]: CLASSES.TANK,
   [GUN_TYPES.SHOTGUN]: CLASSES.TANK,
 };
+
+export const CLASS_DESCRIPTIONS = {
+  [CLASSES.TANK]: "Танк",
+  [CLASSES.MEDIC]: "Медик",
+  [CLASSES.SNIPER]: "Снайпер",
+};

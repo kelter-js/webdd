@@ -6,9 +6,10 @@ import { CLASS_BY_GUN_TYPE_MAPPING } from "../../../../../../constants/character
 
 import { ShopItemContainer } from "./ShopItem.styled";
 import emptySlot from "../../../../../../assets/static/empty_slot.png";
-import { Divider, Stack, Typography } from "@mui/material";
-import { getIconByType } from "./utils";
+
 import { createPortal } from "react-dom";
+
+import { ItemDataModal } from "../../../../../../common/ItemDataModal/ItemDataModal";
 
 export const ShopItem: FC<ShopItemProps> = ({
   isHovered,
@@ -19,18 +20,15 @@ export const ShopItem: FC<ShopItemProps> = ({
   onHover,
   index,
 }) => {
-  const { description, gunType, type, value, name, tier, minValue } =
-    itemData ?? {};
+  const { gunType, type } = itemData ?? {};
 
   const {
     gear,
     player: { party },
   } = useGameState();
 
-  const itemStatsElementRef = useRef<HTMLDivElement>(null);
-
   const sameTypeGearEquipped = useMemo(() => {
-    if (gear) {
+    if (isHovered && gear) {
       if (type === GEAR_SLOTS.WEAPON) {
         const availableClassByGunType = CLASS_BY_GUN_TYPE_MAPPING[gunType!];
         const characterName = party.find(
@@ -42,8 +40,14 @@ export const ShopItem: FC<ShopItemProps> = ({
             (item) => item.type === GEAR_SLOTS.WEAPON,
           );
 
-          return [{ name: characterName, item: currentlyEquippedGun }];
+          if (currentlyEquippedGun) {
+            return [{ name: characterName, item: currentlyEquippedGun }];
+          }
+
+          return [];
         }
+
+        return [];
       }
 
       return Object.entries(gear)
@@ -55,7 +59,7 @@ export const ShopItem: FC<ShopItemProps> = ({
     }
 
     return [];
-  }, [gunType, type]);
+  }, [gunType, type, isHovered, gear]);
 
   const hasSomeGearEquipped = Boolean(sameTypeGearEquipped.length);
 
@@ -102,118 +106,15 @@ export const ShopItem: FC<ShopItemProps> = ({
     >
       <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
 
-      {isHovered &&
+      {itemData &&
+        itemRef.current &&
         createPortal(
-          <Stack
-            ref={floatingRef}
-            position="fixed"
-            zIndex={2000}
-            direction="row"
-            gap={0.5}
-            sx={{
-              backdropFilter: "blur(2px)",
-            }}
-          >
-            <Stack
-              gap={0.5}
-              bgcolor="rgba(30, 20, 10, 0.50)"
-              border="1px solid rgba(192, 160, 128, 0.3)"
-              justifyContent="flex-start"
-              alignItems="center"
-              p={1}
-              ref={itemStatsElementRef}
-              maxHeight="80px"
-              minWidth="120px"
-            >
-              <Typography fontFamily="inherit" variant="h6" whiteSpace="pre">
-                {name} (MK{tier})
-              </Typography>
-
-              <Stack
-                direction="row"
-                gap={1}
-                alignItems="center"
-                justifyContent="center"
-              >
-                <div>{getIconByType(type!)}</div>
-
-                <Typography fontFamily="inherit" variant="h6">
-                  {minValue && `${minValue} - `} {value}
-                </Typography>
-              </Stack>
-            </Stack>
-
-            {hasSomeGearEquipped && (
-              <Stack
-                bgcolor="rgba(30, 20, 10, 0.50)"
-                border="1px solid rgba(192, 160, 128, 0.3)"
-                justifyContent="center"
-                alignItems="center"
-                p={0.2}
-              >
-                <Typography fontFamily="inherit" variant="h6">
-                  Экипировано:
-                </Typography>
-
-                {sameTypeGearEquipped.map((gear, index, self) => (
-                  <Stack
-                    key={`${gear?.name}-${index}`}
-                    borderBottom={
-                      self.length !== index + 1
-                        ? "3px solid rgba(192, 160, 128,1)"
-                        : "none"
-                    }
-                  >
-                    <Typography
-                      fontFamily="inherit"
-                      variant="h6"
-                      mb={0.2}
-                      textAlign="center"
-                    >
-                      {gear.name}
-                    </Typography>
-
-                    {gear.item && (
-                      <Stack
-                        direction={
-                          gear.item.type === GEAR_SLOTS.WEAPON
-                            ? "column"
-                            : "row"
-                        }
-                        alignItems="center"
-                        justifyContent="center"
-                        gap={gear.item.type === GEAR_SLOTS.WEAPON ? 0 : 0.4}
-                      >
-                        <Typography fontFamily="inherit" variant="h6">
-                          {gear.item.name} (MK{gear.item.tier})
-                        </Typography>
-
-                        <Stack direction="row">
-                          <div>{getIconByType(gear?.item?.type)}</div>
-
-                          {gear.item.type !== GEAR_SLOTS.ARTIFACT && (
-                            <Typography fontFamily="inherit" variant="h6">
-                              {gear.item?.minValue &&
-                                `${gear.item?.minValue} - `}{" "}
-                              {gear.item.value}
-                            </Typography>
-                          )}
-
-                          {gear.item.type === GEAR_SLOTS.ARTIFACT && (
-                            <Typography fontFamily="inherit" variant="h6">
-                              {gear.item.description}
-                            </Typography>
-                          )}
-                        </Stack>
-                      </Stack>
-                    )}
-
-                    <Divider />
-                  </Stack>
-                ))}
-              </Stack>
-            )}
-          </Stack>,
+          <ItemDataModal
+            open={isHovered}
+            anchorEl={itemRef.current}
+            item={itemData}
+            sameGear={sameTypeGearEquipped}
+          />,
           document.body,
         )}
     </ShopItemContainer>

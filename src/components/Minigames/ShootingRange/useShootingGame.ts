@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { generateTargets } from "./utils";
-import { useGameState } from "../../../stores";
-import { NO_MORE_ATTEMPTS } from "../QTEGame/constants";
+
 import { CoordinatesData, MiniGameProps } from "../types";
 
 const MAX_INDEX = 19;
@@ -11,21 +10,8 @@ export const useShootingGame = ({ onFail, onWin }: MiniGameProps) => {
   const [targets, setTargets] = useState<CoordinatesData[]>(generateTargets());
   const [failsAmount, setFailsAmount] = useState(0);
   const [currentIndex, setIndex] = useState(0);
-  const [isStarted, setStarted] = useState(false);
+  const [isStarted, setStarted] = useState(true);
   const [animatedElements, setAnimatedElements] = useState<number[]>([]);
-
-  const {
-    changeAttempts,
-    player: { location },
-  } = useGameState();
-
-  const gameAttempts = location?.attempts ?? NO_MORE_ATTEMPTS;
-
-  useEffect(() => {
-    if (gameAttempts === NO_MORE_ATTEMPTS) {
-      onFail();
-    }
-  }, [gameAttempts]);
 
   useEffect(() => {
     if (isStarted) {
@@ -47,8 +33,8 @@ export const useShootingGame = ({ onFail, onWin }: MiniGameProps) => {
     if (failsAmount >= GAME_OVER_FAILS) {
       setStarted(false);
       setIndex(0);
-      changeAttempts(gameAttempts - 1);
       setAnimatedElements([]);
+      onFail();
     }
   }, [failsAmount]);
 

@@ -80,6 +80,11 @@ export const useAppState = create<AppState>((set) => ({
     set((state) => ({
       isTorchBuyOpen: !state.isTorchBuyOpen,
     })),
+  isShootingGameEnabled: false,
+  toggleShootingGame: () =>
+    set((state) => ({
+      isShootingGameEnabled: !state.isShootingGameEnabled,
+    })),
 
   charactersLeveledUp: [],
   pushLeveledUpList: (characterData: LeveledUpData) =>
