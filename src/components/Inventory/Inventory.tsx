@@ -27,6 +27,7 @@ export const Inventory = () => {
             <CharacterGear
               key={character.name}
               name={character.name}
+              currentHealth={character.currentHealth}
               characterClass={character.characterClass}
             />
           ))}

@@ -108,11 +108,11 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                   }}
                 />
 
-                <Stack sx={{ pr: 1, pt: 1, pb: 1, width: "100%" }}>
-                  <Stack direction="row" gap={2} justifyContent="center">
+                <Stack sx={{ pt: 1, pb: 1, width: "100%", mr: 1 }}>
+                  <Stack direction="row" gap={1} justifyContent="center">
                     <Tooltip title="Урон">
                       <Stack direction="column" gap={0.5} alignItems="center">
-                        <Icons.Attack />
+                        <Icons.Attack size={40} />
                         <Typography fontFamily="inherit">
                           {`${characterStats?.minAttack ?? 12} - ${characterStats?.maxAttack ?? 15}`}
                         </Typography>
@@ -121,7 +121,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
                     <Tooltip title="Защита">
                       <Stack direction="column" gap={0.5} alignItems="center">
-                        <Icons.Defense />
+                        <Icons.Defense size={40} />
                         <Typography fontFamily="inherit">
                           {characterStats?.defense || 8}
                         </Typography>
@@ -130,7 +130,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
                     <Tooltip title="Здоровье">
                       <Stack direction="column" gap={0.5} alignItems="center">
-                        <Icons.Health />
+                        <Icons.Health size={40} />
                         <Typography fontFamily="inherit">
                           {`${partyMember?.currentHealth ?? 150}/${characterStats?.maxHealth ?? 150}`}
                         </Typography>

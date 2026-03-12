@@ -5,6 +5,7 @@ import { useAppState, useGameState } from "../../stores";
 import { GameStateData } from "../../types/gameState";
 import { RECEIPTS } from "../../constants/receipts";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import craftBg from "../../assets/static/craft.png";
 
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { StartGameText } from "../Initiate/components/SetNameModal/SetNameModal.styled";
@@ -103,6 +104,15 @@ export const CraftModal = () => {
         </OverlayScrollbarsComponent>
 
         <Stack alignItems="center" justifyContent="center" width="100%">
+          <img
+            src={craftBg}
+            style={{
+              position: "absolute",
+              width: 815,
+              height: 630,
+              top: "-22px",
+            }}
+          />
           <Stack gap={3} mb={8}>
             <Stack border="1px solid #5a3020"></Stack>
             <Stack border="1px solid #5a3020"></Stack>
@@ -111,13 +121,22 @@ export const CraftModal = () => {
 
           <Stack>
             <Stack border="1px solid #5a3020"></Stack>
-
-            {currentCraftData?.goldRequiredToCraft && (
-              <Typography display="flex" alignItems="center" gap={1}>
-                {currentCraftData?.goldRequiredToCraft} <Icons.GoldIcon />
-              </Typography>
-            )}
           </Stack>
+
+          {currentCraftData?.goldRequiredToCraft && (
+            <Typography
+              position="absolute"
+              bottom="90px"
+              fontFamily="inherit"
+              display="flex"
+              alignItems="center"
+              gap={1}
+              variant="h4"
+            >
+              Требуется: {currentCraftData?.goldRequiredToCraft}{" "}
+              <Icons.GoldIcon />
+            </Typography>
+          )}
 
           <HoldProgressButton
             sx={{ mt: "auto" }}

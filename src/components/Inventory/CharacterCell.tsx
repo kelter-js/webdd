@@ -6,6 +6,7 @@ import { useGameState } from "../../stores";
 import { Item } from "../../types/gameState";
 import { GEAR_SLOTS } from "../../entities/gear";
 import { CLASS_GUN_RESTRICTIONS } from "../../constants/characters";
+import frame from "../../assets/static/gear_slot_frame.png";
 import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
 
 export interface DragItemWithMeta {
@@ -107,9 +108,6 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       sx={{
-        border: `${canDrop || isDragging ? "5px" : "1px"} solid ${
-          canDrop || isDragging ? "gold" : "orange"
-        }`,
         height: 100,
         width: 150,
         flexGrow: 1,
@@ -117,6 +115,16 @@ export const CharacterCell: FC<InventoryCellProps> = ({
         cursor: "pointer",
       }}
     >
+      <img
+        src={frame}
+        style={{
+          width: "191px",
+          height: "140px",
+          position: "relative",
+          left: "-21px",
+          top: "-30px",
+        }}
+      />
       {item && anchorEl && (
         <ItemDataModal open={open} anchorEl={anchorEl} item={item} />
       )}

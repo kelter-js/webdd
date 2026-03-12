@@ -12,7 +12,9 @@ import { CoffinIcon } from "./Coffin";
 import { MachineGun } from "./MachineGun";
 import { FindItemIcon } from "./FindItem";
 import { Submachine } from "./Submachine";
+import { Critical } from "./Critical";
 import { Artifact } from "./Artifact";
+import { Evasion } from "./Evasion";
 import { Jewelry } from "./Jewelry";
 import { TorchIcon } from "./Torch";
 import { Shotgun } from "./Shotgun";
@@ -43,6 +45,8 @@ export {
   CoffinIcon,
   MachineGun,
   Submachine,
+  Critical,
+  Evasion,
   Artifact,
   TorchIcon,
   Jewelry,

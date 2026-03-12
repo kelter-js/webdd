@@ -82,6 +82,7 @@ export interface Statistics {
   evasionChance: number;
   critStrike: number;
   vampire?: number;
+  critChance: number;
 }
 
 export enum EFFECT_TYPES {
