@@ -11,5 +11,6 @@ export const ShopItemContainer = styled("div", {
     width: 183,
     height: 183,
     opacity: isEmptySlot ? 0.6 : 1,
+    cursor: "pointer",
   }),
 );

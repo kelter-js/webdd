@@ -8,4 +8,5 @@ export interface ShopItemProps {
   onHover: VoidFunction;
   onBlur: VoidFunction;
   index: number;
+  onClick: (itemId: string, price: number) => void;
 }

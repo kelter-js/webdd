@@ -8,6 +8,10 @@ import {
   useTransform,
 } from "framer-motion";
 import { StartGameText } from "../TradeModal.styled";
+import { usePlayer } from "../../../contexts/Player";
+import craftSfx from "../../../assets/audio/craft.mp3";
+
+const CRAFT_SFX = "craftSfx";
 
 export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
   children,
@@ -20,6 +24,8 @@ export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
   const progress = useMotionValue(0);
   const holdTimerRef = useRef<AnimationPlaybackControls | null>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
+
+  const { handleSetSrc, handleRemoveSrc } = usePlayer();
 
   // Анимация фона на основе прогресса
   useTransform(
@@ -36,6 +42,7 @@ export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
   // Обработчики событий мыши/тача
   const handleMouseDown = (): void => {
     if (disabled) return;
+    handleSetSrc(CRAFT_SFX, craftSfx);
     setIsHolding(true);
     progress.set(0);
 
@@ -55,6 +62,7 @@ export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
 
   const handleMouseUp = (): void => {
     if (disabled) return;
+    handleRemoveSrc(CRAFT_SFX);
     if (holdTimerRef.current) {
       holdTimerRef.current.stop();
     }

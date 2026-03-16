@@ -62,7 +62,12 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
       <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
 
       {item && anchorEl && (
-        <ItemDataModal open={open} anchorEl={anchorEl} item={item} />
+        <ItemDataModal
+          open={open}
+          anchorEl={isDragging ? undefined : anchorEl}
+          item={item}
+          displayDescription
+        />
       )}
     </Stack>
   );

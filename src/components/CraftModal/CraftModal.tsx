@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModal } from "../GameModal";
 
 import { useAppState, useGameState } from "../../stores";
-import { GameStateData } from "../../types/gameState";
+import { GameStateData, Item } from "../../types/gameState";
 import { RECEIPTS } from "../../constants/receipts";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import craftBg from "../../assets/static/craft.png";
@@ -11,22 +11,19 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { StartGameText } from "../Initiate/components/SetNameModal/SetNameModal.styled";
 import { HoldProgressButton } from "./components/HoldProgressButton";
 import { Icons } from "../../common";
+import { CraftFunctionType } from "../../types";
+import { CraftDrop } from "./components/CraftDrop";
+import { generateRandomItem } from "../Battle/utils";
+import { useSnackbar } from "../../contexts/Snackbar";
 
 export const CraftModal = () => {
   const { player } = useGameState();
   const { toggleCraftMenu } = useAppState();
+  const [craftedItem, setCraftedItem] = useState<null | Item>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const handleCraft = (create: (state: GameStateData) => GameStateData) => {
-    const newPlayerState = create(player);
-    // mock
-    // нужна функция обновления состояния игрока - из useGameState
-    // внутри action из useGameState нужно делать ещё две вещи - обновлять инвентарь если receipt.type === item, который не memoized а обычный, а ещё
-    // понадобится пересчет статов - ведь мы могли снять вещь
-    // доработать рецепты - возвращать модель, в которой модель обновленного стейта + флаг, что мы взяли вещь из гира персонажа - и ориентируясь на этот флаг осуществлять пересчет статов
-    // чтобы не делать лишние вычисления
-  };
+  const handleClearCraftedResult = () => setCraftedItem(null);
+  const { showSnackbar } = useSnackbar();
 
   const psRef = useRef(null);
 
@@ -50,9 +47,35 @@ export const CraftModal = () => {
 
   const currentCraftData = RECEIPTS[selectedIndex];
 
-  const isCraftButtonDisabled = useMemo(() => {
-    return currentCraftData?.isDisabled(player) || false;
-  }, [player, currentCraftData.isDisabled]);
+  const handleCraft = () => {
+    const { state, item } = currentCraftData.create(player);
+
+    if (item) {
+      if (typeof item === "string") {
+        showSnackbar(item);
+      } else {
+        setCraftedItem(item);
+      }
+    }
+
+    // mock
+    // нужна функция обновления состояния игрока - из useGameState
+    // внутри action из useGameState нужно делать ещё две вещи - обновлять инвентарь если receipt.type === item, который не memoized а обычный, а ещё
+    // понадобится пересчет статов - ведь мы могли снять вещь
+    // доработать рецепты - возвращать модель, в которой модель обновленного стейта + флаг, что мы взяли вещь из гира персонажа - и ориентируясь на этот флаг осуществлять пересчет статов
+    // чтобы не делать лишние вычисления
+  };
+
+  const isCraftButtonDisabled = useMemo(
+    () => currentCraftData?.isDisabled(player) || false,
+    [player, currentCraftData.isDisabled],
+  );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCraftedItem(generateRandomItem(1));
+    }, 1000);
+  }, []);
 
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>
@@ -88,8 +111,12 @@ export const CraftModal = () => {
                   variant="h5"
                   key={index}
                   p={0.5}
-                  onClick={() => setSelectedIndex(index)}
-                  sx={{ cursor: "pointer" }}
+                  onClick={() => {
+                    if (!craftedItem) {
+                      setSelectedIndex(index);
+                    }
+                  }}
+                  sx={{ cursor: "pointer", opacity: craftedItem ? 0.3 : 1 }}
                   border={`${index === selectedIndex ? "4px" : "2px"} solid ${
                     index === selectedIndex
                       ? "rgba(150, 80, 0, 1)"
@@ -138,9 +165,13 @@ export const CraftModal = () => {
             </Typography>
           )}
 
+          {craftedItem && (
+            <CraftDrop item={craftedItem} onClose={handleClearCraftedResult} />
+          )}
+
           <HoldProgressButton
             sx={{ mt: "auto" }}
-            onComplete={() => console.log("Action completed!")}
+            onComplete={handleCraft}
             disabled={isCraftButtonDisabled}
           >
             Создать

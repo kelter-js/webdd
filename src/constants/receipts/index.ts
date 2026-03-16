@@ -7,6 +7,8 @@ import ExtraLargePotion from "../../assets/potions/extra-large-potion.svg";
 import MediumPotion from "../../assets/potions/medium-potion.svg";
 import { BASE_ITEMS_ID } from "../items";
 import { v4 } from "uuid";
+import { dememoizeItem } from "../../utils/dememoizeItem";
+import { getPotionDescriptionByType } from "../../utils/getPotionDescriptionByType";
 
 const FIRST_TIER_MKII_UPGRADE_COST = 3000;
 const FIRST_TIER_MKIII_UPGRADE_COST = 6000;
@@ -22,7 +24,7 @@ const craftItem = (
   const { inventory_memoized, gear_memoized, gold } = state;
 
   if (price && price > gold) {
-    return state;
+    return { state, item: null };
   }
 
   const copyState: GameStateData = {
@@ -72,10 +74,12 @@ const craftItem = (
     copyState.gold -= price;
   }
 
-  return {
+  const newState = {
     ...copyState,
     inventory_memoized: [...copyState.inventory_memoized, newItem],
   };
+
+  return { state: newState, item: dememoizeItem(newItem) };
 };
 
 const isDisabled = (
@@ -140,7 +144,12 @@ export const RECEIPTS: ReceiptData[] = [
         }
       }
 
-      return { ...state, consumables: newConsumables };
+      const newState = { ...state, consumables: newConsumables };
+
+      return {
+        state: newState,
+        item: `Вы изготовили: одно ${getPotionDescriptionByType(POTION_TYPES.MEDIUM_HEALTH_POTION)}`,
+      };
     },
     title: "Среднее зелье здоровья",
     sourceItemIcon: SmallPotion,
@@ -193,8 +202,14 @@ export const RECEIPTS: ReceiptData[] = [
         }
       }
 
-      return { ...state, consumables: newConsumables };
+      const newState = { ...state, consumables: newConsumables };
+
+      return {
+        state: newState,
+        item: `Вы изготовили: одно ${getPotionDescriptionByType(POTION_TYPES.LARGE_HEALTH_POTION)}`,
+      };
     },
+
     title: "Большое зелье здоровья",
     sourceItemIcon: MediumPotion,
     targetItemIcon: LargePotion,
@@ -246,7 +261,12 @@ export const RECEIPTS: ReceiptData[] = [
         }
       }
 
-      return { ...state, consumables: newConsumables };
+      const newState = { ...state, consumables: newConsumables };
+
+      return {
+        state: newState,
+        item: `Вы изготовили: одно ${getPotionDescriptionByType(POTION_TYPES.EXTRA_LARGE_HEALTH_POTION)}`,
+      };
     },
     title: "Ритуальное зелье здоровья",
     sourceItemIcon: LargePotion,

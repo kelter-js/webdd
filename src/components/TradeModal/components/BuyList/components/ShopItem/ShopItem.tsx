@@ -19,12 +19,13 @@ export const ShopItem: FC<ShopItemProps> = ({
   onBlur,
   onHover,
   index,
+  onClick,
 }) => {
   const { gunType, type } = itemData ?? {};
 
   const {
     gear,
-    player: { party },
+    player: { party, gold },
   } = useGameState();
 
   const sameTypeGearEquipped = useMemo(() => {
@@ -103,6 +104,11 @@ export const ShopItem: FC<ShopItemProps> = ({
       onMouseEnter={onHover}
       onMouseLeave={onBlur}
       ref={itemRef}
+      onClick={() => {
+        if (itemData) {
+          onClick(itemData?.gearId, itemData?.price);
+        }
+      }}
     >
       <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
 
@@ -114,6 +120,7 @@ export const ShopItem: FC<ShopItemProps> = ({
             anchorEl={itemRef.current}
             item={itemData}
             sameGear={sameTypeGearEquipped}
+            gold={gold}
           />,
           document.body,
         )}

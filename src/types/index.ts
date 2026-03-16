@@ -50,9 +50,14 @@ export enum RECEIPT_TYPES {
   ITEM = "ITEM",
 }
 
+export type CraftFunctionType = (state: GameStateData) => {
+  state: GameStateData;
+  item: Item | null | string;
+};
+
 export interface ReceiptData {
   isDisabled: (state: GameStateData) => boolean;
-  create: (state: GameStateData) => GameStateData;
+  create: CraftFunctionType;
   title: string;
   sourceItemIcon: string;
   targetItemIcon: string;

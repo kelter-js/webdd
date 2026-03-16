@@ -40,6 +40,7 @@ const COBBLESTONE_TEXTURE = `
 const ROOM_STYLES = {
   [ROOM_TYPES.START]: { bg: "#065f46", symbol: "🚪", color: "white" },
   [ROOM_TYPES.END]: { bg: "#7f1d1d", symbol: "🏁", color: "white" },
+  [ROOM_TYPES.STORY_BOSS]: { bg: "#7f1d1d", symbol: "🏁", color: "white" },
   deadEnd: { bg: "#1e293b", symbol: "✖", color: "#f59e0b" },
   visited: { bg: "#334155", symbol: "•", color: "white" },
   unvisited: { bg: "#1e293b", symbol: "?", color: "#64748b" },
@@ -243,7 +244,7 @@ export const Map = () => {
     const roomType =
       room.type === ROOM_TYPES.START
         ? ROOM_TYPES.START
-        : room.type === ROOM_TYPES.END
+        : room.type === ROOM_TYPES.END || room.type === ROOM_TYPES.STORY_BOSS
           ? ROOM_TYPES.END
           : room.isDeadEndRoom
             ? "deadEnd"

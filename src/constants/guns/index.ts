@@ -37,7 +37,8 @@ export const SV98_TIER_1: Omit<Item, "gearId"> = {
   name: "SV-98",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "СВ-98 - болтовая снайперская винтовка калибра 7,62×54 мм R. Предназначена для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 10,
@@ -56,7 +57,8 @@ export const SV98_TIER_2 = {
   name: "SV-98 MKII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "СВ-98 - болтовая снайперская винтовка калибра 7,62×54 мм R. Предназначена для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 12,
@@ -75,7 +77,8 @@ export const SV98_TIER_3 = {
   name: "SV-98 MKIII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "СВ-98 - болтовая снайперская винтовка калибра 7,62×54 мм R. Предназначена для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 12,
@@ -95,7 +98,8 @@ export const DLV10_TIER_1 = {
   name: "ДВЛ-10",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "ДВЛ-10 - высокоточная болтовая снайперская винтовка. Использует патроны .308 Winchester, предназначена для тихой и точной стрельбы на средних и дальних дистанциях.",
   iconSrc: "",
   soundSrc: "",
   magSize: 10,
@@ -114,7 +118,8 @@ export const DLV10_TIER_2 = {
   name: "ДВЛ-10 MKII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "ДВЛ-10 - высокоточная болтовая снайперская винтовка. Использует патроны .308 Winchester, предназначена для тихой и точной стрельбы на средних и дальних дистанциях.",
   iconSrc: "",
   soundSrc: "",
   magSize: 10,
@@ -133,7 +138,8 @@ export const DLV10_TIER_3 = {
   name: "ДВЛ-10 MKIII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "ДВЛ-10 - высокоточная болтовая снайперская винтовка. Использует патроны .308 Winchester, предназначена для тихой и точной стрельбы на средних и дальних дистанциях.",
   iconSrc: "",
   soundSrc: "",
   magSize: 10,
@@ -153,7 +159,8 @@ export const AXMC_TIER_1 = {
   name: "AXMC",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "AXMC — британская модульная болтовая снайперская винтовка, предназначенная для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 6,
@@ -172,7 +179,8 @@ export const AXMC_TIER_2 = {
   name: "AXMC MKII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "AXMC — британская модульная болтовая снайперская винтовка, предназначенная для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 6,
@@ -191,7 +199,8 @@ export const AXMC_TIER_3 = {
   name: "AXMC MKIII",
   gunType: GUN_TYPES.SNIPER_RIFLE,
   type: GEAR_SLOTS.WEAPON,
-  description: "",
+  description:
+    "AXMC — британская модульная болтовая снайперская винтовка, предназначенная для высокоточной стрельбы на дальние дистанции.",
   iconSrc: "",
   soundSrc: "",
   magSize: 6,
@@ -209,7 +218,8 @@ export const AXMC_TIER_3 = {
 // !!! ДРОБОВИКИ
 export const MP155_TIER_1 = {
   name: "MP-155",
-  description: "Российский самозарядный дробовик",
+  description:
+    "МР-155 - полуавтоматический гладкоствольный дробовик, предназначенный для охоты и спортивной стрельбы. Работает на газоотводной автоматике и выпускается в 12-м калибре",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -228,7 +238,8 @@ export const MP155_TIER_1 = {
 
 export const MP155_TIER_2 = {
   name: "MP-155 MKII",
-  description: "Российский самозарядный дробовик",
+  description:
+    "МР-155 - полуавтоматический гладкоствольный дробовик, предназначенный для охоты и спортивной стрельбы. Работает на газоотводной автоматике и выпускается в 12-м калибре",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -247,7 +258,8 @@ export const MP155_TIER_2 = {
 
 export const MP155_TIER_3 = {
   name: "MP-155 MKIII",
-  description: "Российский самозарядный дробовик",
+  description:
+    "МР-155 - полуавтоматический гладкоствольный дробовик, предназначенный для охоты и спортивной стрельбы. Работает на газоотводной автоматике и выпускается в 12-м калибре",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -267,7 +279,8 @@ export const MP155_TIER_3 = {
 // ===== Remington 870 (Локация 2: overAllTier 2) =====
 export const REMINGTON_870_TIER_1 = {
   name: "Remington 870",
-  description: "Американская классика",
+  description:
+    "Remington 870 - американский помповый гладкоствольный дробовик. Известен высокой надёжностью и широко используется для охоты, самообороны и в правоохранительных структурах.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -286,7 +299,8 @@ export const REMINGTON_870_TIER_1 = {
 
 export const REMINGTON_870_TIER_2 = {
   name: "Remington 870 MKII",
-  description: "Американская классика",
+  description:
+    "Remington 870 - американский помповый гладкоствольный дробовик. Известен высокой надёжностью и широко используется для охоты, самообороны и в правоохранительных структурах.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -305,7 +319,8 @@ export const REMINGTON_870_TIER_2 = {
 
 export const REMINGTON_870_TIER_3 = {
   name: "Remington 870 MKIII",
-  description: "Американская классика",
+  description:
+    "Remington 870 - американский помповый гладкоствольный дробовик. Известен высокой надёжностью и широко используется для охоты, самообороны и в правоохранительных структурах.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -325,7 +340,8 @@ export const REMINGTON_870_TIER_3 = {
 // ===== Saiga-12 (Локация 3: overAllTier 3) =====
 export const SAIGA_TIER_1 = {
   name: "Saiga-12",
-  description: "Полуавтоматический дробовик на базе АК",
+  description:
+    "Сайга‑12 - полуавтоматический гладкоствольный дробовик на базе автомата АК‑47. Использует коробчатые магазины и предназначен для охоты, спортивной стрельбы и тактического применения.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -344,7 +360,8 @@ export const SAIGA_TIER_1 = {
 
 export const SAIGA_TIER_2 = {
   name: "Saiga-12 MKII",
-  description: "Полуавтоматический дробовик на базе АК",
+  description:
+    "Сайга‑12 - полуавтоматический гладкоствольный дробовик на базе автомата АК‑47. Использует коробчатые магазины и предназначен для охоты, спортивной стрельбы и тактического применения.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -363,7 +380,8 @@ export const SAIGA_TIER_2 = {
 
 export const SAIGA_TIER_3 = {
   name: "Saiga-12 MKIII",
-  description: "Полуавтоматический дробовик на базе АК",
+  description:
+    "Сайга‑12 - полуавтоматический гладкоствольный дробовик на базе автомата АК‑47. Использует коробчатые магазины и предназначен для охоты, спортивной стрельбы и тактического применения.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -382,7 +400,8 @@ export const SAIGA_TIER_3 = {
 
 export const AA12_TIER_1 = {
   name: "AA-12",
-  description: "Полуавтоматический дробовик на базе АК",
+  description:
+    "AA-12 - американский полностью автоматический гладкоствольный дробовик. Использует магазины или барабаны на 12-й калибр и известен очень низкой отдачей благодаря специальной системе автоматики.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SHOTGUN,
@@ -401,7 +420,8 @@ export const AA12_TIER_1 = {
 
 export const AK_12_TIER_1 = {
   name: "AK-12",
-  description: "Калашников",
+  description:
+    "АК-12 - современный автомат калибра 5,45×39 мм. Отличается улучшенной эргономикой, планками для прицелов и повышенной точностью стрельбы.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -420,7 +440,8 @@ export const AK_12_TIER_1 = {
 
 export const AK_12_TIER_2 = {
   name: "AK-12 MKII",
-  description: "Калашников",
+  description:
+    "АК-12 - современный автомат калибра 5,45×39 мм. Отличается улучшенной эргономикой, планками для прицелов и повышенной точностью стрельбы.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -439,7 +460,8 @@ export const AK_12_TIER_2 = {
 
 export const AK_12_TIER_3 = {
   name: "AK-12 MKIII",
-  description: "Калашников",
+  description:
+    "АК-12 - современный автомат калибра 5,45×39 мм. Отличается улучшенной эргономикой, планками для прицелов и повышенной точностью стрельбы.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -459,7 +481,8 @@ export const AK_12_TIER_3 = {
 // ===== M4A1 (Локация 2) =====
 export const M4A1_TIER_1 = {
   name: "M4A1",
-  description: "Кольт",
+  description:
+    "M4A1 - американский автоматический карабин калибра 5,56×45 мм. Широко используется благодаря компактности, модульности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -478,7 +501,8 @@ export const M4A1_TIER_1 = {
 
 export const M4A1_TIER_2 = {
   name: "M4A1 MKII",
-  description: "Кольт",
+  description:
+    "M4A1 - американский автоматический карабин калибра 5,56×45 мм. Широко используется благодаря компактности, модульности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -497,7 +521,8 @@ export const M4A1_TIER_2 = {
 
 export const M4A1_TIER_3 = {
   name: "M4A1 MKIII",
-  description: "Кольт",
+  description:
+    "M4A1 - американский автоматический карабин калибра 5,56×45 мм. Широко используется благодаря компактности, модульности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -517,7 +542,8 @@ export const M4A1_TIER_3 = {
 // ===== SA-58 (Локация 3) =====
 export const SA58_TIER_1 = {
   name: "SA-58",
-  description: "Австрия",
+  description:
+    "SA‑58 — современная модификация винтовки VZ.58. Использует патрон 7,62×39 мм и отличается модернизированной эргономикой, планками для прицелов и возможностью установки различных аксессуаров.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -536,7 +562,8 @@ export const SA58_TIER_1 = {
 
 export const SA58_TIER_2 = {
   name: "SA-58 MKII",
-  description: "Австрия",
+  description:
+    "SA‑58 — современная модификация винтовки VZ.58. Использует патрон 7,62×39 мм и отличается модернизированной эргономикой, планками для прицелов и возможностью установки различных аксессуаров.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -555,7 +582,8 @@ export const SA58_TIER_2 = {
 
 export const SA58_TIER_3 = {
   name: "SA-58 MKIII",
-  description: "Австрия",
+  description:
+    "SA‑58 — современная модификация винтовки VZ.58. Использует патрон 7,62×39 мм и отличается модернизированной эргономикой, планками для прицелов и возможностью установки различных аксессуаров.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.ASSAULT_RIFLE,
@@ -574,7 +602,8 @@ export const SA58_TIER_3 = {
 
 export const SWORD_MK18_TIER_1 = {
   name: "Sword MK-18",
-  description: "Легендарная марксманская винтовка",
+  description:
+    "SWORD MK‑18 Mjölnir — американская полуавтоматическая крупнокалиберная винтовка под патрон .50 BMG. Предназначена для дальнобойной высокоточной стрельбы и поражения техники или целей на больших дистанциях.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SNIPER_RIFLE,
@@ -595,7 +624,8 @@ export const SWORD_MK18_TIER_1 = {
 // ===== MP5SD (Локация 1: overAllTier 1) =====
 export const MP5SD_TIER_1 = {
   name: "MP5SD",
-  description: "Немецкий ПП с интегрированным глушителем",
+  description:
+    "HK MP5SD — версия пистолета‑пулемёта Heckler & Koch MP5 со встроенным глушителем. Использует патрон 9×19 мм и предназначена для скрытных операций благодаря значительно сниженной громкости выстрела.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -614,7 +644,8 @@ export const MP5SD_TIER_1 = {
 
 export const MP5SD_TIER_2 = {
   name: "MP5SD MKII",
-  description: "Немецкий ПП с интегрированным глушителем",
+  description:
+    "HK MP5SD — версия пистолета‑пулемёта Heckler & Koch MP5 со встроенным глушителем. Использует патрон 9×19 мм и предназначена для скрытных операций благодаря значительно сниженной громкости выстрела.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -633,7 +664,8 @@ export const MP5SD_TIER_2 = {
 
 export const MP5SD_TIER_3 = {
   name: "MP5SD MKIII",
-  description: "Немецкий ПП с интегрированным глушителем",
+  description:
+    "HK MP5SD — версия пистолета‑пулемёта Heckler & Koch MP5 со встроенным глушителем. Использует патрон 9×19 мм и предназначена для скрытных операций благодаря значительно сниженной громкости выстрела.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -653,7 +685,8 @@ export const MP5SD_TIER_3 = {
 // ===== FN P90S (Локация 2: overAllTier 2) =====
 export const FN_P90S_TIER_1 = {
   name: "FN P90S",
-  description: "Бельгийский ПП с огромным магазином",
+  description:
+    "FN P90 — компактный бельгийский пистолет‑пулемёт компании FN Herstal, разработанный под патрон 5,7×28 мм. Отличается верхним горизонтальным магазином на 50 патронов и буллпап‑конструкцией, предназначенной для компактности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -672,7 +705,8 @@ export const FN_P90S_TIER_1 = {
 
 export const FN_P90S_TIER_2 = {
   name: "FN P90S MKII",
-  description: "Бельгийский ПП с огромным магазином",
+  description:
+    "FN P90 — компактный бельгийский пистолет‑пулемёт компании FN Herstal, разработанный под патрон 5,7×28 мм. Отличается верхним горизонтальным магазином на 50 патронов и буллпап‑конструкцией, предназначенной для компактности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -691,7 +725,8 @@ export const FN_P90S_TIER_2 = {
 
 export const FN_P90S_TIER_3 = {
   name: "FN P90S MKIII",
-  description: "Бельгийский ПП с огромным магазином",
+  description:
+    "FN P90 — компактный бельгийский пистолет‑пулемёт компании FN Herstal, разработанный под патрон 5,7×28 мм. Отличается верхним горизонтальным магазином на 50 патронов и буллпап‑конструкцией, предназначенной для компактности и высокой скорострельности.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -711,7 +746,8 @@ export const FN_P90S_TIER_3 = {
 // ===== KRISS VECTOR (Локация 3: overAllTier 3) =====
 export const KRISS_VECTOR_TIER_1 = {
   name: "KRISS VECTOR",
-  description: "ПП с уникальной системой отдачи",
+  description:
+    "KRISS Vector — американский пистолет‑пулемёт компании KRISS, известный системой снижения отдачи Super V. Чаще всего использует патрон .45 ACP и отличается высокой скорострельностью и хорошей управляемостью при стрельбе.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -730,7 +766,8 @@ export const KRISS_VECTOR_TIER_1 = {
 
 export const KRISS_VECTOR_TIER_2 = {
   name: "KRISS VECTOR MKII",
-  description: "ПП с уникальной системой отдачи",
+  description:
+    "KRISS Vector — американский пистолет‑пулемёт компании KRISS, известный системой снижения отдачи Super V. Чаще всего использует патрон .45 ACP и отличается высокой скорострельностью и хорошей управляемостью при стрельбе.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -749,7 +786,8 @@ export const KRISS_VECTOR_TIER_2 = {
 
 export const KRISS_VECTOR_TIER_3 = {
   name: "KRISS VECTOR MKIII",
-  description: "ПП с уникальной системой отдачи",
+  description:
+    "KRISS Vector — американский пистолет‑пулемёт компании KRISS, известный системой снижения отдачи Super V. Чаще всего использует патрон .45 ACP и отличается высокой скорострельностью и хорошей управляемостью при стрельбе.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -768,7 +806,8 @@ export const KRISS_VECTOR_TIER_3 = {
 
 export const VERESK_TIER_1 = {
   name: "Вереск",
-  description: "ПП с уникальной системой отдачи",
+  description:
+    "СР‑2 «Вереск» - компактный пистолет-пулемёт под патрон 9×21 мм. Предназначен для спецподразделений и способен эффективно поражать цели в бронежилетах на ближних дистанциях.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.SMG,
@@ -789,7 +828,8 @@ export const VERESK_TIER_1 = {
 // ===== GLOCK 17 (Локация 1: overAllTier 1) =====
 export const GLOCK_17_TIER_1 = {
   name: "GLOCK 17",
-  description: "Австрийский полимерный пистолет",
+  description:
+    "Glock 17 — австрийский самозарядный пистолет калибра 9×19 мм. Известен простотой конструкции, надёжностью и широко используется военными, полицией и гражданскими по всему миру.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -808,7 +848,8 @@ export const GLOCK_17_TIER_1 = {
 
 export const GLOCK_17_TIER_2 = {
   name: "GLOCK 17 MKII",
-  description: "Австрийский полимерный пистолет",
+  description:
+    "Glock 17 — австрийский самозарядный пистолет калибра 9×19 мм. Известен простотой конструкции, надёжностью и широко используется военными, полицией и гражданскими по всему миру.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -827,7 +868,8 @@ export const GLOCK_17_TIER_2 = {
 
 export const GLOCK_17_TIER_3 = {
   name: "GLOCK 17 MKIII",
-  description: "Австрийский полимерный пистолет",
+  description:
+    "Glock 17 — австрийский самозарядный пистолет калибра 9×19 мм. Известен простотой конструкции, надёжностью и широко используется военными, полицией и гражданскими по всему миру.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -847,7 +889,8 @@ export const GLOCK_17_TIER_3 = {
 // ===== FN Five Seven (Локация 2: overAllTier 2) =====
 export const FN_57_TIER_1 = {
   name: "FN Five Seven",
-  description: "Пистолет с высокой пробивной способностью",
+  description:
+    "FN Five‑seveN — самозарядный пистолет разработанный под патрон 5,7×28 мм. Отличается высокой начальной скоростью пули, малой отдачей и используется военными и правоохранительными структурами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -866,7 +909,8 @@ export const FN_57_TIER_1 = {
 
 export const FN_57_TIER_2 = {
   name: "FN Five Seven MKII",
-  description: "Пистолет с высокой пробивной способностью",
+  description:
+    "FN Five‑seveN — самозарядный пистолет разработанный под патрон 5,7×28 мм. Отличается высокой начальной скоростью пули, малой отдачей и используется военными и правоохранительными структурами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -885,7 +929,8 @@ export const FN_57_TIER_2 = {
 
 export const FN_57_TIER_3 = {
   name: "FN Five Seven MKIII",
-  description: "Пистолет с высокой пробивной способностью",
+  description:
+    "FN Five‑seveN — самозарядный пистолет разработанный под патрон 5,7×28 мм. Отличается высокой начальной скоростью пули, малой отдачей и используется военными и правоохранительными структурами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -905,7 +950,8 @@ export const FN_57_TIER_3 = {
 // ===== Desert Eagle (Локация 3: overAllTier 3) =====
 export const DESERT_EAGLE_TIER_1 = {
   name: "Desert Eagle",
-  description: "Легендарный крупнокалиберный пистолет",
+  description:
+    "Desert Eagle — мощный самозарядный пистолет. Известен использованием мощных патронов, таких как .50 Action Express, и характерными крупными размерами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -924,7 +970,8 @@ export const DESERT_EAGLE_TIER_1 = {
 
 export const DESERT_EAGLE_TIER_2 = {
   name: "Desert Eagle MKII",
-  description: "Легендарный крупнокалиберный пистолет",
+  description:
+    "Desert Eagle — мощный самозарядный пистолет. Известен использованием мощных патронов, таких как .50 Action Express, и характерными крупными размерами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -943,7 +990,8 @@ export const DESERT_EAGLE_TIER_2 = {
 
 export const DESERT_EAGLE_TIER_3 = {
   name: "Desert Eagle MKIII",
-  description: "Легендарный крупнокалиберный пистолет",
+  description:
+    "Desert Eagle — мощный самозарядный пистолет. Известен использованием мощных патронов, таких как .50 Action Express, и характерными крупными размерами.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.PISTOL,
@@ -964,7 +1012,8 @@ export const DESERT_EAGLE_TIER_3 = {
 // ===== RPD (Локация 1: overAllTier 1) =====
 export const RPD_TIER_1 = {
   name: "RPD",
-  description: "Советский ручной пулемет Дегтярёва",
+  description:
+    "РПД — советский ручной пулемёт под патрон 7,62×39 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -983,7 +1032,8 @@ export const RPD_TIER_1 = {
 
 export const RPD_TIER_2 = {
   name: "RPD MKII",
-  description: "Советский ручной пулемет Дегтярёва",
+  description:
+    "РПД — советский ручной пулемёт под патрон 7,62×39 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1002,7 +1052,8 @@ export const RPD_TIER_2 = {
 
 export const RPD_TIER_3 = {
   name: "RPD MKIII",
-  description: "Советский ручной пулемет Дегтярёва",
+  description:
+    "РПД — советский ручной пулемёт под патрон 7,62×39 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1022,7 +1073,8 @@ export const RPD_TIER_3 = {
 // ===== M60 (Локация 2: overAllTier 2) =====
 export const M60_TIER_1 = {
   name: "M60",
-  description: "Американский пулемет времен Вьетнама",
+  description:
+    "M60 machine gun — американский единый пулемёт калибра 7,62×51 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1041,7 +1093,8 @@ export const M60_TIER_1 = {
 
 export const M60_TIER_2 = {
   name: "M60 MKII",
-  description: "Американский пулемет времен Вьетнама",
+  description:
+    "M60 machine gun — американский единый пулемёт калибра 7,62×51 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1060,7 +1113,8 @@ export const M60_TIER_2 = {
 
 export const M60_TIER_3 = {
   name: "M60 MKIII",
-  description: "Американский пулемет времен Вьетнама",
+  description:
+    "M60 machine gun — американский единый пулемёт калибра 7,62×51 мм. Использует ленточное питание и предназначен для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1080,7 +1134,8 @@ export const M60_TIER_3 = {
 // ===== PKM (Локация 3: overAllTier 3) =====
 export const PKM_TIER_1 = {
   name: "PKM",
-  description: "Пулемет Калашникова Модернизированный",
+  description:
+    "ПКМ — модернизированная версия пулемёта ПК (пулемёт Калашникова) под патрон 7,62×54 мм R. Отличается высокой надёжностью, ленточным питанием и широко используется для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1099,7 +1154,8 @@ export const PKM_TIER_1 = {
 
 export const PKM_TIER_2 = {
   name: "PKM MKII",
-  description: "Пулемет Калашникова Модернизированный",
+  description:
+    "ПКМ — модернизированная версия пулемёта ПК (пулемёт Калашникова) под патрон 7,62×54 мм R. Отличается высокой надёжностью, ленточным питанием и широко используется для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,
@@ -1118,7 +1174,8 @@ export const PKM_TIER_2 = {
 
 export const PKM_TIER_3 = {
   name: "PKM MKIII",
-  description: "Пулемет Калашникова Модернизированный",
+  description:
+    "ПКМ — модернизированная версия пулемёта ПК (пулемёт Калашникова) под патрон 7,62×54 мм R. Отличается высокой надёжностью, ленточным питанием и широко используется для огневой поддержки пехоты.",
   iconSrc: "",
   soundSrc: "",
   gunType: GUN_TYPES.MACHINE_GUN,

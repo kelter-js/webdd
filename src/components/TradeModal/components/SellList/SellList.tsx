@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { SELL_SFX_ID } from "../../../../constants";
 import sellSfx from "../../../../assets/audio/sell.mp3";
 import { usePlayer } from "../../../../contexts/Player";
+import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
 
 export const SellList = () => {
   const { inventory, sellItem } = useGameState();
@@ -110,26 +111,9 @@ export const SellList = () => {
 
       {!hasEmptyInventory && (
         <Stack gap={1}>
-          <img src={emptySlot} style={{ width: "190px", height: "190px" }} />
-
-          <Stack borderBottom="1px solid #5a3020">
-            <Typography fontFamily="inherit" variant="h6">
-              Название:
-            </Typography>
-
-            <Typography fontFamily="inherit" variant="h5">
-              {currentItemToSellData.name}
-            </Typography>
-          </Stack>
-
-          <Stack borderBottom="1px solid #5a3020">
-            <Typography fontFamily="inherit" variant="h6">
-              Описание:
-            </Typography>
-
-            <Typography fontFamily="inherit" variant="h5">
-              {currentItemToSellData.description}
-            </Typography>
+          <Stack gap={5} direction="row">
+            <img src={emptySlot} style={{ width: "190px", height: "190px" }} />
+            <ItemDataModal item={currentItemToSellData} displayDescription />
           </Stack>
 
           <Stack borderBottom="1px solid #5a3020">
@@ -139,16 +123,6 @@ export const SellList = () => {
 
             <Typography fontFamily="inherit" variant="h5">
               {currentItemToSellData.price}
-            </Typography>
-          </Stack>
-
-          <Stack borderBottom="1px solid #5a3020">
-            <Typography fontFamily="inherit" variant="h6">
-              Текущий тир предмета:
-            </Typography>
-
-            <Typography fontFamily="inherit" variant="h5">
-              {currentItemToSellData.tier}
             </Typography>
           </Stack>
 

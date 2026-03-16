@@ -4,13 +4,32 @@ import { BackgroundFiller, Container } from "./BuyList.styled";
 import { DEFAULT_SLOTS, GRID_ITEM_COORDINATES } from "./constants";
 import { useState } from "react";
 import { ShopItem } from "./components/ShopItem";
+import { useSnackbar } from "../../../../contexts/Snackbar";
+import sellSfx from "../../../../assets/audio/sell.mp3";
+import { usePlayer } from "../../../../contexts/Player";
+import { SELL_SFX_ID } from "../../../../constants";
 
 export const BuyList = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // MOCK: заменить potionsToBuy на itemToBuy - в listToBuy мы их демемоизируем и выводим список, значения пока не готовы в сторе
-  const { sell_inventory } = useGameState();
+  const {
+    sell_inventory,
+    buyItem,
+    player: { gold },
+  } = useGameState();
+  const { showSnackbar } = useSnackbar();
   const sellInventory = sell_inventory || [];
   const handleBlur = () => setHoveredIndex(null);
+  const { handleSetSrc } = usePlayer();
+
+  const handleBuy = (itemId: string, price: number) => {
+    if (price > gold) {
+      showSnackbar("Недостаточно денег!");
+    } else {
+      buyItem(itemId);
+      handleSetSrc(SELL_SFX_ID, sellSfx);
+    }
+  };
 
   // на уровне хука инициализации нужно проверять - есть не сгенерирован ассортимент - генерить и класть в itemToBuy в мемоизированном состоянии
   // потом здесь
@@ -33,6 +52,7 @@ export const BuyList = () => {
             }
           }}
           onBlur={handleBlur}
+          onClick={handleBuy}
         />
       ))}
     </Container>

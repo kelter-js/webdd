@@ -126,7 +126,12 @@ export const CharacterCell: FC<InventoryCellProps> = ({
         }}
       />
       {item && anchorEl && (
-        <ItemDataModal open={open} anchorEl={anchorEl} item={item} />
+        <ItemDataModal
+          open={open}
+          anchorEl={isDragging ? undefined : anchorEl}
+          item={item}
+          displayDescription
+        />
       )}
     </Stack>
   );
