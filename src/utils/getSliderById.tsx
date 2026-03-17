@@ -6,6 +6,7 @@ import slide_2_1 from "../assets/slides/slide_2_1.png";
 import slide_2_2 from "../assets/slides/slide_2_2.png";
 import slide_2_3 from "../assets/slides/slide_2_3.png";
 import slide_2_4 from "../assets/slides/slide_2_4.png";
+import slide_3_1 from "../assets/slides/slide_3_1.png";
 import { SLIDERS } from "../entities/sliders";
 import { SlideData } from "../types";
 
@@ -181,6 +182,28 @@ const ACT_1_SLIDERS: SlideData[] = [
   },
 ];
 
+const ACT_2_SLIDERS: SlideData[] = [
+  {
+    id: 1,
+    text: (
+      <>
+        - Клара... Совсем немного и мы снова встретимся. Ты и я, как в старые
+        времена... Я расскажу тебе о том, через что я прошёл. Снова свожу тебя
+        на твоё любимое представление, куплю внеочередной раз ту дурацкую
+        сладкую вату.
+        <br />
+        Мужчина мечтательно смотрел в окно, размешивая сахар в кружке с чаем,
+        погруженный в свои размышления. Он оглянулся на стол и посмотрел на
+        шлем, который готовил для себя.
+        <br />- Осталось ещё немного. Свой шлем я уже настроил. Но симуляция ещё
+        не стабильна. Нужны... ещё носители воспоминаний. Найду ещё кого-то, кто
+        застал... тебя. Застал то время. Кто ещё помнит... Нас.
+      </>
+    ),
+    image: slide_3_1,
+  },
+];
+
 //FIXME: IDшники все буду в enum и будем через свич возвращать, реализации сейчас нет
 export const getSliderById = (id: SLIDERS | null) => {
   switch (id) {
@@ -189,6 +212,9 @@ export const getSliderById = (id: SLIDERS | null) => {
 
     case SLIDERS.FIRST_ACT:
       return ACT_1_SLIDERS;
+
+    case SLIDERS.SECOND_ACT:
+      return ACT_2_SLIDERS;
 
     default:
       return INTRO_SLIDERS;

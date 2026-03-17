@@ -208,6 +208,7 @@ export const useGameState = create<StoreState>()(
                 const specialEncounter = generateSpecialEncounter(
                   copyState.player.flags,
                 );
+                console.log("are we here?", specialEncounter);
 
                 copyState.player.location.specialEncounter = specialEncounter;
 
@@ -364,8 +365,6 @@ export const useGameState = create<StoreState>()(
             if (currentCell.type === ROOM_TYPES.ENEMY) {
               onFightStart();
               startBattle({ isQuest: true });
-
-              currentCell.type = ROOM_TYPES.CLEARED;
             }
 
             copyState.player.location.dungeon = newDungeon;

@@ -80,6 +80,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
           return (
             <S.CharacterContainer key={partyMember.name}>
               <S.Avatar
+                id={partyMember.name}
                 isSelected={partyMember.name === selectedPlayer?.name}
                 isDamaged={isDamaged}
                 animate={{

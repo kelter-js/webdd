@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Stack } from "@mui/material";
 import encounter from "../../assets/hospital_encounter.png";
 import { CharactersBar } from "./components/CharactersBar";
@@ -12,6 +12,8 @@ import { usePlayerTurnIsOver } from "./hooks/usePlayerTurnIsOver";
 import { usePlayerControl } from "./hooks/usePlayerControl";
 import { useHandleBattleEnd } from "./hooks/useHandleBattleEnd";
 import { wait } from "../../utils";
+import { ShootingEffect } from "./components/ShootingEffect";
+import { GEAR_SLOTS } from "../../entities/gear";
 
 const getLayoutCoordinates = (enemiesAmount: number) => {
   switch (enemiesAmount) {
@@ -40,9 +42,10 @@ export const Battle = () => {
   const {
     isDiceRequiredRoll,
     turnOffDices,
-    player: { battle },
+    player: { battle, party },
     updateBattle,
     killEnemy,
+    gear,
   } = useGameState();
 
   const [attackingEnemyId, setAttackingEnemyId] = useState<number | null>(null);
@@ -62,6 +65,10 @@ export const Battle = () => {
   }, [isFading]);
 
   useHandleBattleEnd();
+
+  useEffect(() => {
+    setTimeout(() => setShooting(true), 2000);
+  }, []);
 
   // MOCK
   // useEffect(() => {
@@ -125,8 +132,11 @@ export const Battle = () => {
   // утиль функция генерирует новую модель и ее устанавливаем через updateBattle - мы сразу в новой модели генерируем новое сообщение боя,
   // отнимает хп у врага, патроны из магазина у игрока, развешивает статус эффекты, проигрываем анимации
 
+  const [isShooting, setShooting] = useState(false);
   const [damage, setDamage] = useState(0);
   const [target, setTarget] = useState<number | null>(null);
+
+  const resetShooting = () => setShooting(false);
 
   const resetTarget = () => setTarget(null);
   const resetDamage = () => setDamage(0);
@@ -142,6 +152,19 @@ export const Battle = () => {
   }, []);
 
   const handleClearDamage = () => setDamage(0);
+
+  const magSizesMap = useMemo(() => {
+    if (!gear) {
+      return Object.fromEntries(party.map((item) => [item.name, 1]));
+    }
+
+    return Object.fromEntries(
+      Object.entries(gear).map(([key, value]) => [
+        key,
+        value.find((item) => item.type === GEAR_SLOTS.WEAPON)?.magSize || 1,
+      ]),
+    );
+  }, [gear, party]);
 
   // const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length || 0);
   // mock
@@ -176,6 +199,7 @@ export const Battle = () => {
             key={index}
             damage={damage}
             isCritical
+            index={index}
             onDamageAnimationEnd={handleClearDamage}
             layout={enemyLayout[index]}
             isAttacking={index === attackingEnemyId}
@@ -187,6 +211,16 @@ export const Battle = () => {
             }
           />
         ),
+      )}
+
+      {isShooting && (
+        <ShootingEffect
+          sourceId={selectedPlayer?.name || ""}
+          targetId={`enemy-${selectedEnemy}`}
+          onComplete={resetShooting}
+          // shots={selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] : 1}
+          shots={10}
+        />
       )}
 
       {!showDices && (

@@ -15,7 +15,7 @@ export const generateSpecialEncounter = (flags: FLAGS[]) => {
   );
 
   if (encountersList.length !== 0) {
-    const roll = getRandom(0, encountersList.length);
+    const roll = getRandom(0, encountersList.length - 1);
     return encountersList[roll];
   }
 

@@ -132,8 +132,6 @@ export const smithDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 1 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -143,8 +141,6 @@ export const smithDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 2 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -154,8 +150,6 @@ export const smithDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 3 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -397,8 +391,6 @@ export const priestDialog: DialogueTree = {
         {
           text: "Спасибо, любитель старины",
           nextNode: "end",
-          // тут нужно реальное айди получения 1 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -408,8 +400,6 @@ export const priestDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 2 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -419,8 +409,6 @@ export const priestDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 3 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -566,14 +554,14 @@ export const citadelDialog: DialogueTree = {
   startNode: "welcome",
   nodes: {
     welcome: {
-      text: "О, искатели приключений, добро пожаловать в наш штаб. Здесь мы пытаемся наладить более-менее цивилизованную жизнь...",
+      text: "О, искатели приключений, добро пожаловать в наш штаб. Здесь мы пытаемся наладить более-менее цивилизованную жизнь... Нам сказали уже про тебя. Мы можем предложить скромную, но всё-таки помощь.",
       options: [
         { text: "Кто ты?", nextNode: "who_are_you" },
         { text: "Что здесь происходит?", nextNode: "economic_direction" },
       ],
     },
     who_are_you: {
-      text: "Я Алкедон, нечто среднее между мером, бригадиром, нянькой и бухгалтером. Отвечаю за экономическое направление.",
+      text: "Я Алкедон, нечто среднее между мэром, бригадиром, нянькой и бухгалтером. Отвечаю за всё и вся. У нас тут периодически разные излишки образуются, можем периодами кое-чем делиться.",
       options: [
         {
           text: "Экономическое направление?",
@@ -592,9 +580,6 @@ export const citadelDialog: DialogueTree = {
   },
 };
 
-// 3 вопрос - кол-во колёс  у машины(правильный ответ - возразить, какая машина, по-разному бывает, плохой вопрос)
-// 4 вопрос - носит ли кузнец шляпу
-// 5 вопрос - как зову того, кто живёт в башне - звездочёт, звездосчёт, звездомёт, звездолёт
 const SECOND_QUESTION_OPTIONS = [
   {
     text: "То есть, вот такой скачек по сложности? 2+2 и теперь это?",
@@ -924,8 +909,6 @@ export const tavernDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 1 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -935,8 +918,6 @@ export const tavernDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 2 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },
@@ -946,8 +927,6 @@ export const tavernDialog: DialogueTree = {
         {
           text: "Спасибо, мне это точно поможет",
           nextNode: "end",
-          // тут нужно реальное айди получения 3 тира артефакта
-          // id: DIALOGUE_IDS.RELEASE_ORE,
         },
       ],
     },

@@ -29,6 +29,7 @@ export const QuestCardDescription = styled(QuestCardText)`
   top: 425px;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 13px;
 `;
 
 export const QuestCardReward = styled(QuestCardText)(

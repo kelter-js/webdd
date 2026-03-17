@@ -10,12 +10,13 @@ import { StoreSet } from "./types";
 
 // FIXME типизация
 export const resetBattle =
-  (set: StoreSet) => (newResources: ResourceData[] | null, gold: number) => {
+  (set: StoreSet) =>
+  (newResources: ResourceData[] | null, gold: number, cb?: VoidFunction) => {
     set((state) => {
       const copyState = {
         ...state,
         inventory: state.inventory || [],
-        player: { ...state.player },
+        player: { ...state.player, location: { ...state.player.location } },
       };
 
       const battle = copyState.player.battle;
@@ -128,6 +129,8 @@ export const resetBattle =
 
       if (currentCell && currentCell.type === ROOM_TYPES.ENEMY) {
         copyState.player.location!.isQuestCompleted = true;
+        currentCell.type = ROOM_TYPES.CLEARED;
+        cb?.();
       }
 
       if (reward?.flags) {

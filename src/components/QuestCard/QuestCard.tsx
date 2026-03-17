@@ -19,7 +19,7 @@ export const QuestCard: FC<QuestCardProps> = ({ type }) => {
   const handleStartQuest = () => {
     setQuestData({
       exp: 1000,
-      money: 1000,
+      gold: 1000,
       type,
       status: QUEST_STATUSES.INITIATED,
     });
@@ -33,7 +33,9 @@ export const QuestCard: FC<QuestCardProps> = ({ type }) => {
 
       <S.QuestCardTitle>{title}</S.QuestCardTitle>
 
-      <S.QuestCardDescription>{description}</S.QuestCardDescription>
+      <S.QuestCardDescription variant="body2">
+        {description}
+      </S.QuestCardDescription>
 
       <S.QuestCardReward>{reward.join(", ")}</S.QuestCardReward>
     </S.QuestCardContainer>

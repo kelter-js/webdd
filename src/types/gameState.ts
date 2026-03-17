@@ -322,6 +322,7 @@ export interface StoreState {
   resetBattle: (
     newSelectedResources: ResourceData[] | null,
     gold: number,
+    cb?: VoidFunction,
   ) => void;
   buyCamera: VoidFunction;
   equipItem: (

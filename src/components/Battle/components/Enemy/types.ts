@@ -21,5 +21,6 @@ export interface EnemyProps {
   layout: string;
   isAttacking: boolean;
   isSelected: boolean;
+  index: number;
   onAttackEnd: VoidFunction;
 }

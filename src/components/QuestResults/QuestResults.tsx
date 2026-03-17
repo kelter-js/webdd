@@ -4,7 +4,6 @@ import { Box, Modal, Stack, Typography } from "@mui/material";
 import * as S from "./QuestResults.styled";
 import { Icons } from "../../common";
 import { getGearIcon } from "../Map/components/BattleResult/utils";
-import { getItemNameByGearId } from "../../utils/getItemNameByGearId";
 
 // NOT FULLY IMPLEMENTED YET 🟥
 
@@ -72,7 +71,7 @@ export const QuestResults = () => {
               </Stack>
 
               <Typography fontFamily="inherit" fontSize={20}>
-                {getItemNameByGearId(item.gearId)} MK{item.tier}
+                {item.name} MK{item.tier}
               </Typography>
             </Stack>
           )}

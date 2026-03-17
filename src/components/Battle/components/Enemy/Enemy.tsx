@@ -18,6 +18,7 @@ export const Enemy: FC<EnemyProps> = ({
   isAttacking = false,
   onAttackEnd,
   isSelected = false,
+  index,
 }) => {
   const {
     player: { battle },
@@ -61,7 +62,7 @@ export const Enemy: FC<EnemyProps> = ({
 
   return (
     <Container
-      id="image-container"
+      id={`enemy-${index}`}
       left={layout}
       initial={{ x: "-50%", scale: 1, y: 0 }}
       animate={

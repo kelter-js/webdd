@@ -117,7 +117,11 @@ export const generateDungeon = (
       const randomColumn = getRandom(0, height);
       const cell = dungeon[randomColumn][randomRow];
 
-      if (cell.type === ROOM_TYPES.END || cell.type === ROOM_TYPES.START) {
+      if (
+        cell.type === ROOM_TYPES.END ||
+        cell.type === ROOM_TYPES.START ||
+        cell.isDeadEndRoom
+      ) {
         counter++;
         continue;
       }

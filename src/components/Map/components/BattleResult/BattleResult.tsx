@@ -4,7 +4,6 @@ import { Button, Divider, Stack, Typography } from "@mui/material";
 import { Icons, Tooltip } from "../../../../common";
 import { getGearIcon } from "./utils";
 import { getPotionIcon } from "../../../../utils/getPotionIcon";
-import { getItemNameByGearId } from "../../../../utils/getItemNameByGearId";
 
 import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
 
@@ -16,12 +15,15 @@ import { getResourceIcon } from "../../../../utils/getResourceIcon";
 import { getResourceDescription } from "../../../../utils/getResourceDescription";
 import { ResourceData } from "../../../../types";
 import { JUNK_DATA } from "../../../../constants/items";
+import { useSnackbar } from "../../../../contexts/Snackbar";
 
 export const BattleResult = () => {
   const {
     player: { battle, resources: playerResources, resourcesBagLevel },
     resetBattle,
   } = useGameState();
+
+  const { showSnackbar } = useSnackbar();
 
   const reward = battle?.reward;
 
@@ -140,7 +142,7 @@ export const BattleResult = () => {
           </Stack>
         )}
 
-        {items?.map(({ type, gunType, tier, gearId }) => (
+        {items?.map(({ type, gunType, tier, gearId, name }) => (
           <Stack
             alignItems="center"
             width="100%"
@@ -153,7 +155,7 @@ export const BattleResult = () => {
             </Stack>
 
             <Typography fontFamily="inherit" fontSize={20}>
-              {getItemNameByGearId(gearId)} MK{tier}
+              {name} MK{tier}
             </Typography>
           </Stack>
         ))}
@@ -282,7 +284,14 @@ export const BattleResult = () => {
             goldAmount = leftOverResources.length * 50;
           }
 
-          resetBattle(isOverEncumbered ? selectedResources : null, goldAmount);
+          resetBattle(
+            isOverEncumbered ? selectedResources : null,
+            goldAmount,
+            () =>
+              showSnackbar(
+                "Предмет по заданию найден, можно покидать подземелье!",
+              ),
+          );
         }}
       >
         <Typography

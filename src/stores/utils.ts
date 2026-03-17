@@ -134,7 +134,7 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
   }
 
   if (roll < WITHOUT_FIGHT_POTION_CHANCE) {
-    const result = generatePotion(currentTier);
+    const result = generatePotion(currentTier, 100);
 
     return {
       result,
@@ -201,7 +201,6 @@ export const getRandomRewardByQuest = (
   quest: DUNGEONS,
   status: QUEST_STATUSES,
 ) => {
-  console.log("status", status);
   const isQuestFailed = status === QUEST_STATUSES.FAILED;
 
   const exp = getExpByQuest(currentTier);
@@ -227,7 +226,7 @@ export const getRandomRewardByQuest = (
       ? generateRandomItem(currentTier, isEnhancedItem)
       : null;
 
-  if (item) {
+  if (item && quest !== DUNGEONS.CATCH_GOBLIN) {
     reward.item = item;
   }
 

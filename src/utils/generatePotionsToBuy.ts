@@ -12,8 +12,8 @@ const START_RANGE = 1;
 const END_RANGE = 100;
 const POTION_PRESET = { amount: DEFAULT_SELL_AMOUNT_OF_POTIONS };
 
-export const generatePotion = (tier: number) => {
-  const roll = getRandom(START_RANGE, END_RANGE);
+export const generatePotion = (tier: number, additionalChance: number = 0) => {
+  const roll = getRandom(START_RANGE, END_RANGE) + additionalChance;
   const medium = MEDIUM_POTION_CHANCE * tier;
   const large = LARGE_POTION_CHANCE * tier;
   const extra = EXTRA_LARGE_POTION_CHANCE * tier;
