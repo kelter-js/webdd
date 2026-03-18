@@ -1,1 +1,1 @@
-export { Battle } from "./Battle";
+export { BattleContainer } from "./BattleContainer";

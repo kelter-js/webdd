@@ -2,7 +2,7 @@ import { RENDER_LOCATIONS } from "../../entities";
 import { LevelingContainer } from "../../components/Leveling/LevelingContainer";
 import { Inventory } from "../../components/Inventory";
 import { Map } from "../../components/Map";
-import { Battle } from "../../components/Battle";
+import { BattleContainer } from "../../components/Battle";
 import { MenuLayout } from "../MenuLayout";
 import { Settlement } from "../Settlement";
 import { useAppState, useGameState } from "../../stores";
@@ -31,7 +31,7 @@ export const ViewManager = () => {
 
       {locationState === RENDER_LOCATIONS.SETTLEMENT && <Settlement />}
       {locationState === RENDER_LOCATIONS.INVENTORY && <Inventory />}
-      {locationState === RENDER_LOCATIONS.BATTLE && <Battle />}
+      {locationState === RENDER_LOCATIONS.BATTLE && <BattleContainer />}
       {locationState === RENDER_LOCATIONS.DUNGEON && <Map />}
       {locationState === RENDER_LOCATIONS.SPECIAL_ENCOUNTER && (
         <SpecialEncounterContainer />

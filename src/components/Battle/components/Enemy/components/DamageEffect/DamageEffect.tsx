@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { DamageInstance, DamageEffectProps } from "./types";
@@ -13,14 +13,16 @@ import {
   getDamageAnimationConfig,
   getDamageInitialAnimationConfig,
 } from "./constants";
+import { createPortal } from "react-dom";
 
 export const DamageEffect: FC<DamageEffectProps> = ({
   onDamageAnimationEnd,
   damage,
   isCritical,
+  containerId,
 }) => {
   const addDamageNumber = (damage: number) => {
-    const container = document.getElementById("image-container");
+    const container = document.getElementById(containerId ?? "image-container");
 
     const newDamage: DamageInstance = {
       id: Date.now() + Math.random(),
@@ -47,7 +49,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   };
 
   const [damageNumbers, setDamageNumbers] = useState<DamageInstance | null>(
-    addDamageNumber(damage)
+    addDamageNumber(damage),
   );
 
   const removeDamageNumber = () => {
@@ -63,9 +65,28 @@ export const DamageEffect: FC<DamageEffectProps> = ({
 
   const { id, x, y, damage: damageNumber } = damageNumbers || {};
 
+  const container = useMemo(() => {
+    if (containerId) {
+      const element = document.getElementById(containerId);
+
+      if (element) {
+        return element.getBoundingClientRect();
+      }
+
+      return null;
+    }
+
+    return null;
+  }, [containerId]);
+
   return (
     <AnimatePresence onExitComplete={handleAllAnimationsComplete}>
-      <NumbersContainer key={id}>
+      <NumbersContainer
+        key={id}
+        hasId={!!container}
+        x={container?.left}
+        y={container?.top}
+      >
         <DamageNumber
           as={motion.div}
           initial={getDamageInitialAnimationConfig(x, y)}

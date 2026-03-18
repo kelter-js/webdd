@@ -1,5 +1,5 @@
 import { POTION_TYPES } from "../../../entities/consumables";
-import { Character } from "../../../types/gameState";
+import { BattleCharacterModel } from "../../../types/gameState";
 import { getPotionHealth } from "../../utils";
 import { StoreSet } from "./types";
 
@@ -8,7 +8,7 @@ export const consumePotion =
   (
     characterName: string,
     potion: POTION_TYPES,
-    cb: (data?: Character[]) => void,
+    cb: (data?: BattleCharacterModel[]) => void,
   ) => {
     set((state) => {
       const battle = state.player.battle;

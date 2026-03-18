@@ -130,6 +130,7 @@ export interface Creature {
   hasTurn?: boolean;
   subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
   isEnhanced: boolean;
+  id?: string;
 }
 
 export interface Enemy {
@@ -284,7 +285,7 @@ export interface StoreState {
   inventory: null | Item[];
   sell_inventory: null | Item[];
   // хранит в себе не мемоизированные модели предметов - не привязано к игроку, просто массив вещей
-  statistics: null | { [key: string]: Statistics };
+  statistics: null | Record<string, Statistics>;
   abilities: null | { [key: string]: Ability };
   setDungeon: (newDungeon: DungeonCreation | null) => void;
   updateDungeon: (
@@ -356,7 +357,7 @@ export interface StoreState {
   consumePotion: (
     characterName: string,
     potionType: POTION_TYPES,
-    cb: (data?: Character[]) => void,
+    cb: (data?: BattleCharacterModel[]) => void,
   ) => void;
 
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;

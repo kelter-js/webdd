@@ -14,6 +14,8 @@ import { useHandleBattleEnd } from "./hooks/useHandleBattleEnd";
 import { wait } from "../../utils";
 import { ShootingEffect } from "./components/ShootingEffect";
 import { GEAR_SLOTS } from "../../entities/gear";
+import { Battle } from "../../types/gameState";
+import { getBattleBackground } from "./utils";
 
 const getLayoutCoordinates = (enemiesAmount: number) => {
   switch (enemiesAmount) {
@@ -35,14 +37,14 @@ const getLayoutCoordinates = (enemiesAmount: number) => {
   }
 };
 
-export const Battle = () => {
+export const BattleContainer = () => {
   const [showDices, setShowDices] = useState(false);
 
   const { isFading, selectedEnemy } = useAppState();
   const {
     isDiceRequiredRoll,
     turnOffDices,
-    player: { battle, party },
+    player: { battle, party, currentTier, location },
     updateBattle,
     killEnemy,
     gear,
@@ -67,7 +69,7 @@ export const Battle = () => {
   useHandleBattleEnd();
 
   useEffect(() => {
-    setTimeout(() => setShooting(true), 2000);
+    setTimeout(() => setDamage(125), 2000);
   }, []);
 
   // MOCK
@@ -122,8 +124,95 @@ export const Battle = () => {
   const nextTurn = usePlayerTurnIsOver(showDices || isDiceRequiredRoll);
   console.log("showDices", showDices || isDiceRequiredRoll);
   console.log("nextTurn", nextTurn);
-  const { selectedPlayer, setSelectedPlayer, handleSelectNextPlayer } =
-    usePlayerControl();
+  console.log("ифее", battle?.turn);
+
+  // usePlayerControl управляет и какой ходит сейчас игрок и какой противник
+  // когда ходит игрок - сначала высчитывается эффект - другой хук будет обновлять состояние battle.player.effect[имя_игрока].hasTriggered - после срабатывания эффекта меняет на true
+  // после игрок получает доступ к управлению персонажем - ходит, вычисляется новая модель боя, устанавливается через setTimeout(newModel, 200); - здесь мы отняли патроны из магазина,
+  // отнимаем хп у врага, устанавливаем на него нужные эффекты
+  // устанавливаем локальные состояния- крит ли это, сколько урона и проигрываем анимацию isShooting
+  // в конце анимации floating damage у врага в коллбэке мы должны сделать следующее onAnimationEnd
+  // этот коллбэк делает
+
+  const {
+    selectedPlayer,
+    setSelectedPlayer,
+    handleSelectNextPlayer,
+    currentEnemy,
+    handleSelectNextEnemy,
+  } = usePlayerControl();
+
+  const magSizesMap = useMemo(() => {
+    if (!gear) {
+      return Object.fromEntries(party.map((item) => [item.name, 1]));
+    }
+
+    return Object.fromEntries(
+      Object.entries(gear).map(([key, value]) => [
+        key,
+        value.find((item) => item.type === GEAR_SLOTS.WEAPON)?.magSize || 1,
+      ]),
+    );
+  }, [gear, party]);
+
+  // const onTurnEnd = () => {
+  //   setDamage(0);
+  //   setTarget(null);
+
+  //   if (battle?.turn === TURN_STATES.PLAYER_TURN) {
+  //     setShooting(false);
+  //     const newBattleModel: Battle = {
+  //       ...battle,
+  //       player: {
+  //         ...battle.player,
+  //         effects: {
+  //           [selectedPlayer?.name]: {
+  //             ...battle.player.effects[selectedPlayer?.name],
+  //             hasTriggered: false,
+  //           },
+  //         },
+  //         party: battle.player.party.map((player) =>
+  //           player.name === selectedPlayer?.name
+  //             ? {
+  //                 ...player,
+  //                 hasTurn: false,
+  //                 currentAmountOfRounds: Math.max(
+  //                   0,
+  //                   (player.currentAmountOfRounds || 0) -
+  //                     magSizesMap[selectedPlayer.name] || 1,
+  //                 ),
+  //               }
+  //             : player,
+  //         ),
+  //       },
+  //     };
+  //     setNewBattleModel(newBattleModel);
+  //     handleSelectNextPlayer(newBattleModel.player.party);
+  //   } else {
+  //     const newBattleModel: Battle = {
+  //       ...battle,
+  //       enemy: {
+  //         ...battle.enemy,
+  //         effects: {
+  //           [currentEnemy?.id]: {
+  //             ...battle.enemy.effects[currentEnemy?.id],
+  //             hasTriggered: false,
+  //           },
+  //         },
+  //         party: battle.enemy.party.map((creature) =>
+  //           creature.id === currentEnemy?.id
+  //             ? {
+  //                 ...creature,
+  //                 hasTurn: false,
+  //               }
+  //             : creature,
+  //         ),
+  //       },
+  //     };
+  //     setNewBattleModel(newBattleModel);
+  //     handleSelectNextEnemy(newBattleModel.enemy.party);
+  //   }
+  // };
 
   // когда буду писать логику нанесения урона и в принципе действия игрока - нужно учесть что нужны флаг - критический ли урон
   // а также чтобы у нас коллбэк действий возвращал кол-во урона для его отображения
@@ -134,6 +223,7 @@ export const Battle = () => {
 
   const [isShooting, setShooting] = useState(false);
   const [damage, setDamage] = useState(0);
+  const [isCritical, setCritical] = useState(false);
   const [target, setTarget] = useState<number | null>(null);
 
   const resetShooting = () => setShooting(false);
@@ -153,23 +243,15 @@ export const Battle = () => {
 
   const handleClearDamage = () => setDamage(0);
 
-  const magSizesMap = useMemo(() => {
-    if (!gear) {
-      return Object.fromEntries(party.map((item) => [item.name, 1]));
-    }
-
-    return Object.fromEntries(
-      Object.entries(gear).map(([key, value]) => [
-        key,
-        value.find((item) => item.type === GEAR_SLOTS.WEAPON)?.magSize || 1,
-      ]),
-    );
-  }, [gear, party]);
-
   // const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length || 0);
   // mock
   const enemyLayout = getLayoutCoordinates(
     battle?.enemy?.party?.length || ["test", "test", "test"].length,
+  );
+
+  const currentBackground = useMemo(
+    () => getBattleBackground(location?.dungeonLevel || currentTier),
+    [location?.dungeonLevel, currentTier],
   );
 
   return (
@@ -182,7 +264,7 @@ export const Battle = () => {
         },
       }}
     >
-      <img src={encounter} className="map-image" />
+      <img src={currentBackground} className="map-image" />
 
       <BattleLog />
 
@@ -191,6 +273,10 @@ export const Battle = () => {
         setSelectedPlayer={setSelectedPlayer}
         damageTargetIndex={target}
         selectedNextPlayer={handleSelectNextPlayer}
+        damageReceived={
+          battle?.turn === TURN_STATES.ENEMY_TURN && damage ? damage : null
+        }
+        damageTarget={battle?.player.party[0].name ?? null}
       />
 
       {(battle?.enemy?.party || ["test", "test", "test"])?.map(

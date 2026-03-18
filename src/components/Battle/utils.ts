@@ -18,6 +18,16 @@ import { POTION_TYPES } from "../../entities/consumables";
 import { ALL_RESOURCES_TYPE, RESOURCES } from "../../entities/resources";
 import { getRandom } from "../../utils";
 import { generateItem } from "../../utils/generateStoreItems";
+import staticBgTier1 from "../../assets/static/dungeon_hallway/battle_tier_1/image (1).jpg";
+import staticBgTier2 from "../../assets/static/dungeon_hallway/battle_tier_1/image (2).jpg";
+import staticBgTier3 from "../../assets/static/dungeon_hallway/battle_tier_1/image (3).jpg";
+import staticBgTier4 from "../../assets/static/dungeon_hallway/battle_tier_1/image (4).jpg";
+import staticBgTier5 from "../../assets/static/dungeon_hallway/battle_tier_1/image (5).jpg";
+import staticBgTier6 from "../../assets/static/dungeon_hallway/battle_tier_1/image (6).jpg";
+import staticBgTier7 from "../../assets/static/dungeon_hallway/battle_tier_1/image (7).jpg";
+import staticBgTier8 from "../../assets/static/dungeon_hallway/battle_tier_1/image (8).jpg";
+import staticBgTier9 from "../../assets/static/dungeon_hallway/battle_tier_1/image (9).jpg";
+import staticBgTier10 from "../../assets/static/dungeon_hallway/battle_tier_1/image (10).jpg";
 
 // ключи - айди существа - значение это путь к изображению с существом
 export const CREATURE_ID_TO_IMAGE_MAP = {};
@@ -160,4 +170,43 @@ export const generateRandomItem = (
     enhancedItemChance,
     ALL_ITEMS_RARE_TIER_3,
   );
+};
+
+const firstTierStaticBackgrounds = [
+  staticBgTier1,
+  staticBgTier2,
+  staticBgTier3,
+  staticBgTier4,
+  staticBgTier5,
+  staticBgTier6,
+  staticBgTier7,
+  staticBgTier8,
+  staticBgTier9,
+  staticBgTier10,
+];
+
+export const getBattleBackground = (tier: number) => {
+  switch (tier) {
+    case 1: {
+      const randomImageIndex = getRandom(
+        0,
+        firstTierStaticBackgrounds.length - 1,
+      );
+      return firstTierStaticBackgrounds[randomImageIndex];
+    }
+
+    case 2: {
+      // MOCK
+      return staticBgTier1;
+    }
+
+    case 3: {
+      // MOCK
+      return staticBgTier1;
+    }
+
+    default: {
+      return staticBgTier1;
+    }
+  }
 };

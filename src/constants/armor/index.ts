@@ -5,7 +5,8 @@ console.log("BASE_ITEMS_ID", BASE_ITEMS_ID);
 
 export const BNTI_TIER_1 = {
   name: "БНТИ",
-  description: "Простой бронежилет",
+  description:
+    "БНТИ «Жук» - бронежилет выполненный в камуфляже EMR. Предназначен для защиты от пуль и осколков, а также оснащается модульной системой креплений для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -17,7 +18,8 @@ export const BNTI_TIER_1 = {
 
 export const BNTI_TIER_2 = {
   name: "БНТИ",
-  description: "Простой бронежилет",
+  description:
+    "БНТИ «Жук» - бронежилет выполненный в камуфляже EMR. Предназначен для защиты от пуль и осколков, а также оснащается модульной системой креплений для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -29,7 +31,8 @@ export const BNTI_TIER_2 = {
 
 export const BNTI_TIER_3 = {
   name: "БНТИ",
-  description: "Простой бронежилет",
+  description:
+    "БНТИ «Жук» - бронежилет выполненный в камуфляже EMR. Предназначен для защиты от пуль и осколков, а также оснащается модульной системой креплений для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -41,7 +44,8 @@ export const BNTI_TIER_3 = {
 
 export const NPP_TIER_1 = {
   name: "NPP",
-  description: "Простой бронежилет",
+  description:
+    "бронежилеты НПП «Корунд» - линейка бронежилетов НПП. Предназначены для защиты от пуль и осколков, отличаются различными классами защиты и модульной конструкцией для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -53,7 +57,8 @@ export const NPP_TIER_1 = {
 
 export const NPP_TIER_2 = {
   name: "NPP",
-  description: "Простой бронежилет",
+  description:
+    "бронежилеты НПП «Корунд» - линейка бронежилетов НПП. Предназначены для защиты от пуль и осколков, отличаются различными классами защиты и модульной конструкцией для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -65,7 +70,8 @@ export const NPP_TIER_2 = {
 
 export const NPP_TIER_3 = {
   name: "NPP",
-  description: "Простой бронежилет",
+  description:
+    "бронежилеты НПП «Корунд» - линейка бронежилетов НПП. Предназначены для защиты от пуль и осколков, отличаются различными классами защиты и модульной конструкцией для размещения снаряжения.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -77,7 +83,8 @@ export const NPP_TIER_3 = {
 
 export const IOTV_TIER_1 = {
   name: "IOTV",
-  description: "Простой бронежилет",
+  description:
+    "IOTV Gen 4 - модульный армейский бронежилет системы Improved Outer Tactical Vest, обеспечивающий защиту с использованием плит ESAPI и мягкой брони. Отличается развитой системой MOLLE и рассчитан на баланс защиты и подвижности.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -89,7 +96,8 @@ export const IOTV_TIER_1 = {
 
 export const IOTV_TIER_2 = {
   name: "IOTV",
-  description: "Простой бронежилет",
+  description:
+    "IOTV Gen 4 - модульный армейский бронежилет системы Improved Outer Tactical Vest, обеспечивающий защиту с использованием плит ESAPI и мягкой брони. Отличается развитой системой MOLLE и рассчитан на баланс защиты и подвижности.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -101,7 +109,8 @@ export const IOTV_TIER_2 = {
 
 export const IOTV_TIER_3 = {
   name: "IOTV",
-  description: "Простой бронежилет",
+  description:
+    "IOTV Gen 4 - модульный армейский бронежилет системы Improved Outer Tactical Vest, обеспечивающий защиту с использованием плит ESAPI и мягкой брони. Отличается развитой системой MOLLE и рассчитан на баланс защиты и подвижности.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -113,7 +122,8 @@ export const IOTV_TIER_3 = {
 
 export const FORT_TIER_1 = {
   name: "FORT",
-  description: "Простой бронежилет",
+  description:
+    "Форт «Редут-Т5» - бронежилет предназначенный для защиты от пуль и осколков. Оснащён модульной системой креплений и рассчитан на использование с бронеплитами различных классов защиты.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -125,7 +135,8 @@ export const FORT_TIER_1 = {
 
 export const FORT_TIER_2 = {
   name: "FORT",
-  description: "Простой бронежилет",
+  description:
+    "Форт «Редут-Т5» - бронежилет предназначенный для защиты от пуль и осколков. Оснащён модульной системой креплений и рассчитан на использование с бронеплитами различных классов защиты.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -137,7 +148,8 @@ export const FORT_TIER_2 = {
 
 export const FORT_TIER_3 = {
   name: "FORT",
-  description: "Простой бронежилет",
+  description:
+    "Форт «Редут-Т5» - бронежилет предназначенный для защиты от пуль и осколков. Оснащён модульной системой креплений и рассчитан на использование с бронеплитами различных классов защиты.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -149,7 +161,8 @@ export const FORT_TIER_3 = {
 
 export const NFM_TIER_1 = {
   name: "NFM",
-  description: "Простой бронежилет",
+  description:
+    "NFM THOR Integrated Carrier - модульный бронежилет/плитник. Предназначен для размещения баллистических плит и снаряжения, сочетает защиту, эргономику и высокую подвижность благодаря интегрированной системе распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -161,7 +174,8 @@ export const NFM_TIER_1 = {
 
 export const NFM_TIER_2 = {
   name: "NFM",
-  description: "Простой бронежилет",
+  description:
+    "NFM THOR Integrated Carrier - модульный бронежилет/плитник. Предназначен для размещения баллистических плит и снаряжения, сочетает защиту, эргономику и высокую подвижность благодаря интегрированной системе распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -173,7 +187,8 @@ export const NFM_TIER_2 = {
 
 export const NFM_TIER_3 = {
   name: "NFM",
-  description: "Простой бронежилет",
+  description:
+    "NFM THOR Integrated Carrier - модульный бронежилет/плитник. Предназначен для размещения баллистических плит и снаряжения, сочетает защиту, эргономику и высокую подвижность благодаря интегрированной системе распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -185,7 +200,8 @@ export const NFM_TIER_3 = {
 
 export const REDUT_TIER_1 = {
   name: "REDUT",
-  description: "Простой бронежилет",
+  description:
+    "6Б43 — штатный армейский бронежилет повышенного уровня защиты. Оснащается бронеплитами и дополнительными модулями.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 1,
@@ -197,7 +213,8 @@ export const REDUT_TIER_1 = {
 
 export const REDUT_TIER_2 = {
   name: "REDUT",
-  description: "Простой бронежилет",
+  description:
+    "6Б43 — штатный армейский бронежилет повышенного уровня защиты. Оснащается бронеплитами и дополнительными модулями.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 2,
@@ -209,7 +226,8 @@ export const REDUT_TIER_2 = {
 
 export const REDUT_TIER_3 = {
   name: "REDUT",
-  description: "Простой бронежилет",
+  description:
+    "6Б43 — штатный армейский бронежилет повышенного уровня защиты. Оснащается бронеплитами и дополнительными модулями.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,
@@ -221,7 +239,8 @@ export const REDUT_TIER_3 = {
 
 export const OSPREY_TIER_1 = {
   name: "Osprey",
-  description: "Простой бронежилет",
+  description:
+    "Osprey Mk4A — модульный бронежилет вооружённых сил, предназначенный для защиты от пуль и осколков с использованием керамических плит. Версия CQC ориентирована на ближний бой и отличается улучшенной подвижностью и возможностью крепления снаряжения через систему MOLLE.",
   iconSrc: "",
   type: GEAR_SLOTS.ARMOR,
   tier: 3,

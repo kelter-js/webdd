@@ -286,7 +286,7 @@ export const getFirstTurn = (
 
   console.log("roll", roll);
   console.log("enemyChance", enemyChance);
-
+  return TURN_STATES.ENEMY_TURN;
   return roll < enemyChance ? TURN_STATES.ENEMY_TURN : TURN_STATES.PLAYER_TURN;
 };
 

@@ -51,6 +51,8 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
     }, 900);
 
     setNextTurn(upcomingTurn);
+
+    // return () => clearTimeout(fakeTimerId1);
   }, [
     battle,
     currentTurn,

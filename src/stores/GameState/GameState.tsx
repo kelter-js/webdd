@@ -153,7 +153,6 @@ export const useGameState = create<StoreState>()(
               currentCell.type !== ROOM_TYPES.ENEMY;
             const isDeadEnd = currentCell.isDeadEndRoom;
             currentCell.visited = true;
-            console.log("currentCell", currentCell);
 
             const startBattle = (
               params?: Pick<

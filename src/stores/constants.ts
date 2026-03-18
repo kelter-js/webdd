@@ -62,18 +62,7 @@ function getEvasionChance(agility: number) {
 // const chance = getEvasionChance(character.agility); // допустим, вернет 0.4
 // if (Math.random() < chance)
 
-function getFinalCritChance(weaponCritChance: number, characterLuck: number) {
-  const K = 50; // Коэффициент затухания
-  // Базовая формула: Шанс от оружия + бонус от удачи, который затухает
-  let luckBonus = characterLuck * 2;
-  let luckFactor = luckBonus / (luckBonus + K); // Стремится к 1
-
-  // Итоговый шанс в процентах (например, 5% + (30% * luckFactor))
-  let totalChance = weaponCritChance + 30 * luckFactor;
-
-  return Math.min(totalChance, 90); // Кап 90%
-}
-function calculateCritDamage(rawDamage: number, critMultiplier: number) {
+export function calculateCritDamage(rawDamage: number, critMultiplier: number) {
   // Просто умножаем урон на множитель
   return Math.round(rawDamage * Math.ceil(critMultiplier / 2));
 }

@@ -6,4 +6,6 @@ export interface CharactersBarProps {
   setSelectedPlayer: Dispatch<SetStateAction<BattleCharacterModel | undefined>>;
   damageTargetIndex: number | null;
   selectedNextPlayer: VoidFunction;
+  damageReceived: number | null;
+  damageTarget: string | null;
 }

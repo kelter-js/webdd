@@ -13,7 +13,9 @@ export const DamageNumber = styled(motion.div)`
   color: #ffd700;
   -webkit-text-stroke: 2px #000000;
   text-stroke: 2px #000000;
-  text-shadow: 0 0 10px #ff4500, 0 0 20px #ff0000;
+  text-shadow:
+    0 0 10px #ff4500,
+    0 0 20px #ff0000;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
 `;
 
@@ -27,7 +29,9 @@ export const CriticalText = styled(motion.div)`
   color: #ff0000;
   -webkit-text-stroke: 1.5px #000000;
   text-stroke: 1.5px #000000;
-  text-shadow: 0 0 8px #ff4500, 0 0 16px #ff0000;
+  text-shadow:
+    0 0 8px #ff4500,
+    0 0 16px #ff0000;
 
   /* Дополнительные эффекты */
   letter-spacing: 1px;
@@ -35,8 +39,19 @@ export const CriticalText = styled(motion.div)`
   filter: brightness(1.3) drop-shadow(0 2px 4px #000);
 `;
 
-export const NumbersContainer = styled("div")`
-  position: absolute;
-  left: 0px;
-  top: 0px;
-`;
+interface NumbersContainerProps {
+  hasId?: boolean;
+  x?: number;
+  y?: number;
+}
+
+const shouldForwardProp = (prop: string | keyof NumbersContainerProps) =>
+  !["hasId", "x", "y"].includes(prop as string);
+
+export const NumbersContainer = styled("div", {
+  shouldForwardProp,
+})<NumbersContainerProps>(({ hasId = false, x = 0, y = 0 }) => ({
+  position: hasId ? "fixed" : "absolute",
+  left: `${x}px`,
+  top: `${y}px`,
+}));
