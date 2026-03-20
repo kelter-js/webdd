@@ -20,6 +20,7 @@ import actress from "../../assets/enemies/third_tier/actress.png";
 import singer from "../../assets/enemies/third_tier/singer.png";
 import ballerine from "../../assets/enemies/third_tier/ballerina_boss.png";
 import mergedMass from "../../assets/enemies/third_tier/mergemass.png";
+import { Creature } from "../../types/gameState";
 
 // Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
 // также здесь
@@ -107,7 +108,16 @@ export const CREATURE_TO_IMG_MAP = {
   [ENEMIES.MERGED_MASS_TIER_1]: mergedMass,
 };
 
-export const CREATURES = {
+export interface EnemyPrototypeData {
+  aiPackage: AI_CATEGORIES;
+  pictureSrc: string;
+  audioSrc: string;
+  baseModel: Omit<Creature, "aiPackage">;
+}
+
+export type EnemyInitialData = Record<ENEMIES, EnemyPrototypeData>;
+
+export const CREATURES: EnemyInitialData = {
   [ENEMIES.SPIDER_TIER_1]: {
     // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
     // aiPackage: AI_CATEGORIES.DEFAULT,

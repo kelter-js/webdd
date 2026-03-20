@@ -3,10 +3,14 @@ import { useGameState } from "../../../stores";
 import { BattleCharacterModel, Creature } from "../../../types/gameState";
 import { TURN_STATES } from "../../../entities";
 
+// по окончанию floating damage или shooting анимации вызывается ВСЕГДА handleSelectNextPlayer или handleSelectNextEnemy и в аргументы передаем АКТУАЛЬНОЕ состояние
+// смена ХОДА ТОЛЬКО ЧЕРЕЗ ЭТУ ФУНКЦИЮ
+
 export const usePlayerControl = () => {
   const {
     player: { battle, party: mockParty },
     setGameOver,
+    updateBattle,
   } = useGameState();
 
   const [selectedPlayer, setSelectedPlayer] = useState<
@@ -21,8 +25,6 @@ export const usePlayerControl = () => {
   // далее после его хода переключаем на другого члена группа
   // по факту, при переключении на персонажа - нужно на нем отработать имеющийся эффект - яд или что-то иное, если оно есть
   // тоже самое с противником - при его ходе, проверяем есть ли эффекты и применяем сначала их
-  // модель эффекты - duration: 1, baseDamage: 16, stack: 1
-  // baseDamage * stack - сколько стаков эффекта, столько и дмг наносим - duration - сколько раундов-  если эффект можно наложить - накладываем и отнимает раунд от duration
   // если currentDuration - 1 === 0 - то сразу убираем эффекты дебаффа, после нанесения урона
 
   useEffect(() => {
@@ -39,8 +41,8 @@ export const usePlayerControl = () => {
     }
   }, [battle?.enemy.party]);
 
-  const handleSelectNextPlayer = (newBattleState?: BattleCharacterModel[]) => {
-    if (!newBattleState) {
+  const handleSelectNextPlayer = (newBattleState: BattleCharacterModel[]) => {
+    if (!battle) {
       setSelectedPlayer(undefined);
       return;
     }
@@ -51,6 +53,25 @@ export const usePlayerControl = () => {
       (character) => character.currentHealth > 0 && character.hasTurn,
     );
 
+    const updatedEffects = { ...battle.player.effects };
+
+    // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
+    if (selectedPlayer && updatedEffects[selectedPlayer.name]) {
+      updatedEffects[selectedPlayer.name] = {
+        ...updatedEffects[selectedPlayer.name],
+        hasTriggered: false,
+      };
+    }
+
+    updateBattle({
+      ...battle,
+      player: {
+        ...battle.player,
+        party: newBattleState,
+        effects: updatedEffects,
+      },
+    });
+
     console.log("readyToBattlePartyMembers", readyToBattlePartyMembers);
     if (readyToBattlePartyMembers.length === 0) {
       setSelectedPlayer(undefined);
@@ -59,8 +80,8 @@ export const usePlayerControl = () => {
     }
   };
 
-  const handleSelectNextEnemy = (newBattleState?: Creature[]) => {
-    if (!newBattleState) {
+  const handleSelectNextEnemy = (newBattleState: Creature[]) => {
+    if (!battle) {
       setSelectedEnemy(undefined);
       return;
     }
@@ -70,6 +91,25 @@ export const usePlayerControl = () => {
     const readyToBattleEnemy = newBattleState.filter(
       (character) => character.hp > 0 && character.hasTurn,
     );
+
+    const updatedEffects = { ...battle.enemy.effects };
+
+    // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
+    if (currentEnemy && updatedEffects[currentEnemy.id!]) {
+      updatedEffects[currentEnemy.id!] = {
+        ...updatedEffects[currentEnemy.id!],
+        hasTriggered: false,
+      };
+    }
+
+    updateBattle({
+      ...battle,
+      enemy: {
+        ...battle.enemy,
+        party: newBattleState,
+        effects: updatedEffects,
+      },
+    });
 
     if (readyToBattleEnemy.length === 0) {
       setSelectedEnemy(undefined);

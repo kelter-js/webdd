@@ -7,6 +7,7 @@ import { useSnackbar } from "../contexts/Snackbar";
 import { usePlayer } from "../contexts/Player";
 import { SELL_SFX_ID } from "../constants";
 import sellSfx from "../assets/audio/sell.mp3";
+import { TURN_STATES } from "../entities";
 
 // REFACTORING CHECKED ✅
 
@@ -188,6 +189,7 @@ export const useGlobalListeners = () => {
         if (
           event.code === "KeyA" &&
           locationState === RENDER_LOCATIONS.BATTLE &&
+          battle?.turn === TURN_STATES.PLAYER_TURN &&
           (battle?.enemy?.party?.length || 0) > 1
         ) {
           console.log("we fire ", getPreviousTargetIndex());
@@ -197,6 +199,7 @@ export const useGlobalListeners = () => {
         if (
           event.code === "KeyD" &&
           locationState === RENDER_LOCATIONS.BATTLE &&
+          battle?.turn === TURN_STATES.PLAYER_TURN &&
           (battle?.enemy?.party?.length || 0) > 1
         ) {
           console.log("we fire ", getNextTargetIndex());

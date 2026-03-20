@@ -24,7 +24,8 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
     let upcomingTurn: TURN_STATES | null = null;
 
     if (currentTurn === TURN_STATES.PLAYER_TURN) {
-      const playerHasTurns = playerParty?.some((m) => m.hasTurn) ?? false;
+      const playerHasTurns =
+        playerParty?.some((m) => m.hasTurn && m.currentHealth > 0) ?? false;
       console.log("playerHasTurns", playerHasTurns);
 
       if (!playerHasTurns) {
@@ -33,7 +34,8 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
     }
 
     if (currentTurn === TURN_STATES.ENEMY_TURN) {
-      const enemyHasTurns = enemyParty?.some((m) => m.hasTurn) ?? false;
+      const enemyHasTurns =
+        enemyParty?.some((m) => m.hasTurn && m.hp > 0) ?? false;
 
       if (!enemyHasTurns) {
         upcomingTurn = TURN_STATES.PLAYER_TURN;

@@ -5,7 +5,7 @@ export interface CharactersBarProps {
   selectedPlayer?: BattleCharacterModel;
   setSelectedPlayer: Dispatch<SetStateAction<BattleCharacterModel | undefined>>;
   damageTargetIndex: number | null;
-  selectedNextPlayer: VoidFunction;
+  selectedNextPlayer: (party: BattleCharacterModel[]) => void;
   damageReceived: number | null;
   damageTarget: string | null;
 }

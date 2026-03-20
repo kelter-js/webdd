@@ -1,10 +1,9 @@
-import { BattleUpdateState } from "../../../types/gameState";
-import { MIN_ENCOUNTER_CHANCE } from "../../constants";
+import { Battle } from "../../../types/gameState";
 import { StoreSet } from "./types";
-// FIXME типизация
-export const updateBattle = (set: StoreSet) => (props: BattleUpdateState) => {
-  set((state) => {
-    // все рассчеты делаем извне, сюда просто передается фулл модель боя и она заменяет собой прошлое состояние
-    return state;
-  });
+
+export const updateBattle = (set: StoreSet) => (newBattleModel: Battle) => {
+  set((state) => ({
+    ...state,
+    player: { ...state.player, battle: { ...newBattleModel } },
+  }));
 };

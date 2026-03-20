@@ -24,8 +24,6 @@ export const useHandleBattleEnd = () => {
     (acc, enemy) => acc + enemy.hp,
     0,
   );
-  console.log("enemyHealth", enemyHealth);
-  console.log("battle?.enemy?.party", battle?.enemy?.party);
 
   useEffect(() => {
     if (battle && enemyHealth !== undefined && enemyHealth <= 0) {

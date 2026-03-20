@@ -8,7 +8,7 @@ export const consumePotion =
   (
     characterName: string,
     potion: POTION_TYPES,
-    cb: (data?: BattleCharacterModel[]) => void,
+    cb: (data: BattleCharacterModel[]) => void,
   ) => {
     set((state) => {
       const battle = state.player.battle;

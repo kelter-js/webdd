@@ -24,6 +24,7 @@ import { AI_CATEGORIES } from "../entities/ai";
 import { CLASSES } from "../entities/characterClasses";
 import { POTION_TYPES } from "../entities/consumables";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
+import { EFFECTS } from "../entities/effects";
 import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
 import { GEAR_SLOTS } from "../entities/gear";
 import { GUN_TYPES } from "../entities/guns";
@@ -83,6 +84,7 @@ export interface Statistics {
   critStrike: number;
   vampire?: number;
   critChance: number;
+  bulletsPerTurn: number;
 }
 
 export enum EFFECT_TYPES {
@@ -100,7 +102,6 @@ export interface Item {
   gunType?: GUN_TYPES;
   value: number;
   minValue?: number;
-  effect?: ItemEffects;
   price: number;
   tier: number;
   baseId: BASE_ITEMS_ID;
@@ -135,12 +136,12 @@ export interface Creature {
 
 export interface Enemy {
   party: Creature[];
-  effects: BattleEffects[];
+  effects: BattleEffects;
 }
 
 export interface Player {
   party: BattleCharacterModel[];
-  effects: BattleEffects[];
+  effects: BattleEffects;
 }
 
 export interface Message {
@@ -162,14 +163,6 @@ export interface Location {
   dungeonLevel?: number;
   node?: string;
   success?: number;
-}
-
-export interface BattleUpdateState {
-  target: BATTLE_TARGET;
-  name?: string;
-  value: number;
-  effect?: { type: Effects; duration: number };
-  message: Message;
 }
 
 export interface PotionsReceivedData {
@@ -196,27 +189,17 @@ export interface Battle {
   reward: null | Reward;
 }
 
-type EffectValue = null | number;
-
 export interface Effects {
-  increaseChance?: EffectValue;
-  decreaseChance?: EffectValue;
-  chanceToRevive?: EffectValue;
-  chanceToHeal?: EffectValue;
-  doubleDamageChance?: EffectValue;
-  makeSleepy?: EffectValue;
-  goldFind?: EffectValue;
-  gearFind?: EffectValue;
-  skip?: EffectValue;
-  sleep?: EffectValue;
-}
-
-export interface BattleEffects {
-  type: Effects;
+  type: EFFECTS;
   duration: number;
 }
 
-export interface ItemEffects {}
+export interface EffectData {
+  list: Effects[];
+  hasTriggered: boolean;
+}
+
+export type BattleEffects = Record<string, EffectData>;
 
 export interface DungeonCoordinates {
   x: number;
@@ -280,7 +263,6 @@ export interface StoreState {
   gear: null | GearData;
   // эффекты будет отвечать за текущие эффекты на группе - отхил на передвижение по клеткам в данже, уменьшение/увел. шанса встречи с противником
   // увеличение кол-ва награды, шанса на выпадение предмета, шанса на воскрешение сопартийца, парсится после того, как распарсили и установили gear
-  effects: null | Effects;
   // уже после вычисления хар-ки
   inventory: null | Item[];
   sell_inventory: null | Item[];
@@ -299,7 +281,7 @@ export interface StoreState {
   setLocationState: (newLocation: RENDER_LOCATIONS) => void;
   // подвезти типизацию
   setBattle: (battleState: any) => void;
-  updateBattle: (battleState: BattleUpdateState) => void;
+  updateBattle: (battleState: Battle) => void;
   changeAttempts: (attempts: number) => void;
   increaseEndurance: (characterName: string) => void;
   increaseAccuracy: (characterName: string) => void;
@@ -357,7 +339,7 @@ export interface StoreState {
   consumePotion: (
     characterName: string,
     potionType: POTION_TYPES,
-    cb: (data?: BattleCharacterModel[]) => void,
+    cb: (data: BattleCharacterModel[]) => void,
   ) => void;
 
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;
@@ -403,7 +385,6 @@ export type PersistedState = Omit<
   | "resetGame"
   | "updateDialogFlags"
   | "updateGameTier"
-  | "effects"
   | "gear"
   | "playersLvlUpNotifications"
   | "statistics"
@@ -454,7 +435,6 @@ export type PersistedState = Omit<
 export interface StorageValue {
   state: {
     player: GameStateData;
-    effects: null | Effects;
     statistics: null | { [key: string]: Statistics };
     isDiceRequiredRoll: boolean;
     abilities: null | { [key: string]: Ability };

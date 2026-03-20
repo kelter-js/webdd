@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Stack } from "@mui/material";
 import encounter from "../../assets/hospital_encounter.png";
 import { CharactersBar } from "./components/CharactersBar";
@@ -16,8 +16,11 @@ import { ShootingEffect } from "./components/ShootingEffect";
 import { GEAR_SLOTS } from "../../entities/gear";
 import { Battle } from "../../types/gameState";
 import { getBattleBackground } from "./utils";
+import { DamageData } from "./types";
 
-const getLayoutCoordinates = (enemiesAmount: number) => {
+const getLayoutCoordinates = (enemiesAmount?: number) => {
+  if (enemiesAmount) return ["50%"];
+
   switch (enemiesAmount) {
     case 3: {
       return ["25%", "50%", "75%"];
@@ -40,6 +43,7 @@ const getLayoutCoordinates = (enemiesAmount: number) => {
 export const BattleContainer = () => {
   const [showDices, setShowDices] = useState(false);
 
+  // SelectedEnemy - выбранный противник
   const { isFading, selectedEnemy } = useAppState();
   const {
     isDiceRequiredRoll,
@@ -49,8 +53,6 @@ export const BattleContainer = () => {
     killEnemy,
     gear,
   } = useGameState();
-
-  const [attackingEnemyId, setAttackingEnemyId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isFading && isDiceRequiredRoll) {
@@ -220,11 +222,26 @@ export const BattleContainer = () => {
   // ЧЕРЕЗ СЛУШАТЕЛИ смотрим на нажатие A - ATTACK или клик по противнику - в утиль функцию передаем текущую модель боя
   // утиль функция генерирует новую модель и ее устанавливаем через updateBattle - мы сразу в новой модели генерируем новое сообщение боя,
   // отнимает хп у врага, патроны из магазина у игрока, развешивает статус эффекты, проигрываем анимации
+  // функцию атаки нужно делать на верхнем уровне - в этом компоненте - вычисленное состояние помещать в ref - и оттуда брать его по окончанию анимации и сбрасывать
 
+  // флаги анимации атаки и
   const [isShooting, setShooting] = useState(false);
+
+  // отвечает за то, какой персонаж получает урон
+  const [target, setTarget] = useState<number | null>(null);
+  // отвечает за то, что противник должен проиграть анимацию атаки
+  const [attackingEnemyId, setAttackingEnemyId] = useState<number | null>(null);
+
+  // общие флаги - крит и урон
   const [damage, setDamage] = useState(0);
   const [isCritical, setCritical] = useState(false);
-  const [target, setTarget] = useState<number | null>(null);
+
+  // эта модель будет замещать собой все остальные состояния кроме флагов атаки
+  const [battleDamageModel, setBattleDamageModel] = useState<
+    null | DamageData[]
+  >(null);
+
+  const tempBattleModel = useRef<null | Battle>(null);
 
   const resetShooting = () => setShooting(false);
 
@@ -245,9 +262,7 @@ export const BattleContainer = () => {
 
   // const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length || 0);
   // mock
-  const enemyLayout = getLayoutCoordinates(
-    battle?.enemy?.party?.length || ["test", "test", "test"].length,
-  );
+  const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length);
 
   const currentBackground = useMemo(
     () => getBattleBackground(location?.dungeonLevel || currentTier),
@@ -279,25 +294,24 @@ export const BattleContainer = () => {
         damageTarget={battle?.player.party[0].name ?? null}
       />
 
-      {(battle?.enemy?.party || ["test", "test", "test"])?.map(
-        (item, index, self) => (
-          <Enemy
-            key={index}
-            damage={damage}
-            isCritical
-            index={index}
-            onDamageAnimationEnd={handleClearDamage}
-            layout={enemyLayout[index]}
-            isAttacking={index === attackingEnemyId}
-            onAttackEnd={handleAttackEnd}
-            isSelected={
-              battle?.turn === TURN_STATES.PLAYER_TURN &&
-              index === selectedEnemy &&
-              self.length > 1
-            }
-          />
-        ),
-      )}
+      {battle?.enemy?.party?.map((item, index, self) => (
+        <Enemy
+          key={index}
+          damage={damage}
+          isCritical
+          index={index}
+          onDamageAnimationEnd={handleClearDamage}
+          layout={enemyLayout[index]}
+          isAttacking={index === attackingEnemyId}
+          onAttackEnd={handleAttackEnd}
+          isSelected={
+            battle?.turn === TURN_STATES.PLAYER_TURN &&
+            index === selectedEnemy &&
+            !isShooting &&
+            self.length > 1
+          }
+        />
+      ))}
 
       {isShooting && (
         <ShootingEffect

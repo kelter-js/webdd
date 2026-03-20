@@ -5,7 +5,6 @@ import {
   Character,
   Creature,
   EFFECT_TYPES,
-  Effects,
   GameStateData,
   GearData,
   Item,
@@ -32,6 +31,8 @@ import {
 import { CreatureBaseModel, QuestReward, RewardTypes } from "../types";
 import { generatePotion } from "../utils/generatePotionsToBuy";
 import {
+  EnemyInitialData,
+  EnemyPrototypeData,
   FIRST_TIER_BOSS,
   FIRST_TIER_CREATURES_LIST,
   FIRST_TIER_MINIBOSS_LIST,
@@ -46,6 +47,7 @@ import {
   THIRD_TIER_QUEST_MINIBOSS,
 } from "../constants/creatures";
 import { DUNGEONS, QUEST_STATUSES } from "../entities";
+import { v4 } from "uuid";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -53,7 +55,6 @@ import { DUNGEONS, QUEST_STATUSES } from "../entities";
 
 export const getEncounterRoll = (
   chance: number,
-  effects: Effects | null,
   alreadyVisited: boolean,
   hasLight: boolean,
   isDeadEnd: boolean,
@@ -63,14 +64,6 @@ export const getEncounterRoll = (
   }
 
   let encounterChance = chance;
-
-  if (effects?.increaseChance) {
-    encounterChance += effects?.increaseChance;
-  }
-
-  if (effects?.decreaseChance) {
-    encounterChance -= effects?.decreaseChance;
-  }
 
   if (alreadyVisited) {
     encounterChance += hasLight
@@ -238,14 +231,9 @@ const LOWER_ENEMY_START_FIRST_CHANCE = 30;
 
 export const getFirstTurn = (
   enemyTier: number,
-  playerEffect: any,
   players: Character[],
   isSpecial?: boolean,
 ): TURN_STATES => {
-  if (playerEffect?.sleep || playerEffect?.skip) {
-    return TURN_STATES.ENEMY_TURN;
-  }
-
   // поправь формулу!
   const partyMaxHealth = players.reduce(
     (acc, item) => acc + item.endurance * 6,
@@ -303,6 +291,7 @@ export const calculateStatistics = (
     critChance: Math.round(character.agility * 0.5),
     critStrike: 0,
     vampire: 0,
+    bulletsPerTurn: 1,
   };
 
   if (gear) {
@@ -321,6 +310,7 @@ export const calculateStatistics = (
         }
 
         statistics.maxAttack += item.value;
+        statistics.bulletsPerTurn = item.bulletsPerTurn || 1;
 
         if (item?.criticalStrike) {
           statistics.critStrike = item?.criticalStrike;
@@ -515,6 +505,50 @@ const getEnemyByLocationTier = (currentTier: number) => {
   return THIRD_TIER_CREATURES_LIST;
 };
 
+const initiateEffectState = (party: any[]) =>
+  Object.fromEntries(
+    party.map((entity) => [
+      entity?.id || entity?.name || "",
+      { list: [], hasTriggered: false },
+    ]),
+  );
+
+const generateBattleEnemyModel = ({
+  model,
+  entity,
+  hasTurn,
+}: {
+  model: Battle;
+  entity: EnemyPrototypeData | EnemyPrototypeData[];
+  hasTurn: boolean;
+}) => {
+  const isEntityArray = Array.isArray(entity);
+
+  if (isEntityArray) {
+    model.enemy.party.push(
+      ...entity.map((item) => ({
+        ...item.baseModel,
+        aiPackage: item.aiPackage,
+        id: v4(),
+        hasTurn,
+      })),
+    );
+  } else {
+    model.enemy.party.push({
+      ...entity.baseModel,
+      aiPackage: entity.aiPackage,
+      id: v4(),
+      hasTurn,
+    });
+  }
+
+  if (isEntityArray ? entity.length : entity) {
+    model.enemy.effects = initiateEffectState(model.enemy.party);
+  }
+
+  return model;
+};
+
 export const generateBattle = ({
   tier,
   turn,
@@ -525,9 +559,11 @@ export const generateBattle = ({
   characterGear,
 }: BattleGenerationProps) => {
   // формируем battle model
-  const model: Battle = {
+  let model: Battle = {
     player: {
-      effects: [],
+      effects: Object.fromEntries(
+        party.map((player) => [player.name, { list: [], hasTriggered: false }]),
+      ),
       party: party.map((character) => {
         const currentCharacterGear = characterGear
           ? characterGear[character.name]
@@ -554,33 +590,37 @@ export const generateBattle = ({
         };
       }),
     },
-    enemy: { effects: [], party: [] },
+    enemy: { effects: {}, party: [] },
     turn,
     messages: [
       `${turn === TURN_STATES.PLAYER_TURN ? "Игрок" : "Противник"} ходит первым`,
     ],
     reward: null,
   };
+  const isEnemyHasTurn = turn === TURN_STATES.ENEMY_TURN;
 
   if (isQuest) {
     if (tier === 1) {
-      model.enemy.party.push({
-        ...FIRST_TIER_QUEST_MINIBOSS.baseModel,
-        aiPackage: FIRST_TIER_QUEST_MINIBOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: FIRST_TIER_QUEST_MINIBOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
     if (tier === 2) {
-      model.enemy.party.push({
-        ...SECOND_TIER_QUEST_MINIBOSS.baseModel,
-        aiPackage: SECOND_TIER_QUEST_MINIBOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: SECOND_TIER_QUEST_MINIBOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
     if (tier === 3) {
-      model.enemy.party.push({
-        ...THIRD_TIER_QUEST_MINIBOSS.baseModel,
-        aiPackage: THIRD_TIER_QUEST_MINIBOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: THIRD_TIER_QUEST_MINIBOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
@@ -589,23 +629,26 @@ export const generateBattle = ({
 
   if (isBoss) {
     if (tier === 1) {
-      model.enemy.party.push({
-        ...FIRST_TIER_BOSS.baseModel,
-        aiPackage: FIRST_TIER_BOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: FIRST_TIER_BOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
     if (tier === 2) {
-      model.enemy.party.push({
-        ...SECOND_TIER_BOSS.baseModel,
-        aiPackage: SECOND_TIER_BOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: SECOND_TIER_BOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
     if (tier === 3) {
-      model.enemy.party.push({
-        ...THIRD_TIER_BOSS.baseModel,
-        aiPackage: THIRD_TIER_BOSS.aiPackage,
+      model = generateBattleEnemyModel({
+        model,
+        entity: THIRD_TIER_BOSS,
+        hasTurn: isEnemyHasTurn,
       });
     }
 
@@ -619,26 +662,22 @@ export const generateBattle = ({
     const targetList = getDeadEndEnemyByTier(tier);
 
     if (hasTwoEnemies > DEFAULT_TWO_SPECIAL_ENEMIES_CHANCE) {
-      const enemiesList = [
-        getRandomEnemyFromList(targetList),
-        getRandomEnemyFromList(targetList),
-      ].map((item) => ({
-        ...item.baseModel,
-        aiPackage: item.aiPackage,
-      }));
-
-      model.enemy.party.push(...enemiesList);
-
-      return model;
+      return generateBattleEnemyModel({
+        model,
+        entity: [
+          getRandomEnemyFromList(targetList),
+          getRandomEnemyFromList(targetList),
+        ],
+        hasTurn: isEnemyHasTurn,
+      });
     } else {
       const enemy = getRandomEnemyFromList(targetList);
 
-      model.enemy.party.push({
-        ...enemy.baseModel,
-        aiPackage: enemy.aiPackage,
+      return generateBattleEnemyModel({
+        model,
+        entity: enemy,
+        hasTurn: isEnemyHasTurn,
       });
-
-      return model;
     }
   } else {
     const roll = getRandom(1, 100);
@@ -649,38 +688,35 @@ export const generateBattle = ({
     const targetList = getEnemyByLocationTier(tier);
 
     if (roll < CHANCE_OF_THREE_ENEMIES) {
-      const enemiesList = [
-        getRandomEnemyFromList(targetList),
-        getRandomEnemyFromList(targetList),
-        getRandomEnemyFromList(targetList),
-      ].map((item) => ({
-        ...item.baseModel,
-        aiPackage: item.aiPackage,
-      }));
-
-      model.enemy.party.push(...enemiesList);
-
-      return model;
+      return generateBattleEnemyModel({
+        model,
+        entity: [
+          getRandomEnemyFromList(targetList),
+          getRandomEnemyFromList(targetList),
+          getRandomEnemyFromList(targetList),
+        ],
+        hasTurn: isEnemyHasTurn,
+      });
     }
 
     if (roll < CHANCE_OF_TWO_ENEMIES) {
-      const enemiesList = [
-        getRandomEnemyFromList(targetList),
-        getRandomEnemyFromList(targetList),
-      ].map((item) => ({
-        ...item.baseModel,
-        aiPackage: item.aiPackage,
-      }));
-
-      model.enemy.party.push(...enemiesList);
-
-      return model;
+      return generateBattleEnemyModel({
+        model,
+        entity: [
+          getRandomEnemyFromList(targetList),
+          getRandomEnemyFromList(targetList),
+        ],
+        hasTurn: isEnemyHasTurn,
+      });
     }
+
     const enemy = getRandomEnemyFromList(targetList);
 
-    model.enemy.party.push({ ...enemy.baseModel, aiPackage: enemy.aiPackage });
-
-    return model;
+    return generateBattleEnemyModel({
+      model,
+      entity: enemy,
+      hasTurn: isEnemyHasTurn,
+    });
   }
 };
 

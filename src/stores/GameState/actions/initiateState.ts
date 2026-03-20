@@ -12,7 +12,6 @@ export const initiateState = (set: StoreSet) => () =>
     stateCopy.statistics = {};
     stateCopy.abilities = {};
     stateCopy.gear = {};
-    stateCopy.effects = {};
     stateCopy.inventory =
       stateCopy.player.inventory_memoized?.map((item) => dememoizeItem(item)) ||
       [];

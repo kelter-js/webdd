@@ -165,7 +165,6 @@ export const useGameState = create<StoreState>()(
               const firstTurn = getFirstTurn(
                 copyState.player.location.dungeonLevel ||
                   copyState.player.currentTier,
-                copyState.effects,
                 copyState.player.party,
                 isSpecial,
               );
@@ -223,7 +222,6 @@ export const useGameState = create<StoreState>()(
 
                   const roll = getEncounterRoll(
                     currentChance!,
-                    copyState.effects,
                     isAlreadyVisited,
                     Boolean(currentCell.isLighted),
                     Boolean(isDeadEnd),

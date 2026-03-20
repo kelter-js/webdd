@@ -3,8 +3,9 @@ import { GEAR_SLOTS } from "../../entities/gear";
 
 // СИЛЬНЫЙ
 export const GALVION_TIER_1 = {
-  name: "БНТИ",
-  description: "Простой бронежилет",
+  name: "Galvion Caiman",
+  description:
+    "Galvion Caiman Hybrid Helmet - модульный шлем с углепластиковой оболочкой, сочетающий лёгкость «bump»-шлема и возможность установки баллистических накладок. Предназначен для спецподразделений и обеспечивает масштабируемую защиту.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -15,8 +16,9 @@ export const GALVION_TIER_1 = {
 };
 
 export const GALVION_TIER_2 = {
-  name: "БНТИ",
-  description: "Простой бронежилет",
+  name: "Galvion Caiman",
+  description:
+    "Galvion Caiman Hybrid Helmet - модульный шлем с углепластиковой оболочкой, сочетающий лёгкость «bump»-шлема и возможность установки баллистических накладок. Предназначен для спецподразделений и обеспечивает масштабируемую защиту.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -27,8 +29,9 @@ export const GALVION_TIER_2 = {
 };
 
 export const GALVION_TIER_3 = {
-  name: "БНТИ",
-  description: "Простой бронежилет",
+  name: "Galvion Caiman",
+  description:
+    "Galvion Caiman Hybrid Helmet - модульный шлем с углепластиковой оболочкой, сочетающий лёгкость «bump»-шлема и возможность установки баллистических накладок. Предназначен для спецподразделений и обеспечивает масштабируемую защиту.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -40,8 +43,9 @@ export const GALVION_TIER_3 = {
 
 // СЛАБЫЙ
 export const HJELM_TIER_1 = {
-  name: "NPP",
-  description: "Простой бронежилет",
+  name: "NFM HJELM Helmet",
+  description:
+    "NFM HJELM Helmet - модульный боевой шлем, выполненный в цвете Hellhound Grey. Обеспечивает баллистическую и противоосколочную защиту при малом весе, поддерживает установку оборудования (NVG, аксессуары) и отличается высокой эргономикой и системой распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -52,8 +56,9 @@ export const HJELM_TIER_1 = {
 };
 
 export const HJELM_TIER_2 = {
-  name: "NPP",
-  description: "Простой бронежилет",
+  name: "NFM HJELM Helmet",
+  description:
+    "NFM HJELM Helmet - модульный боевой шлем, выполненный в цвете Hellhound Grey. Обеспечивает баллистическую и противоосколочную защиту при малом весе, поддерживает установку оборудования (NVG, аксессуары) и отличается высокой эргономикой и системой распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -64,8 +69,9 @@ export const HJELM_TIER_2 = {
 };
 
 export const HJELM_TIER_3 = {
-  name: "NPP",
-  description: "Простой бронежилет",
+  name: "NFM HJELM Helmet",
+  description:
+    "NFM HJELM Helmet - модульный боевой шлем, выполненный в цвете Hellhound Grey. Обеспечивает баллистическую и противоосколочную защиту при малом весе, поддерживает установку оборудования (NVG, аксессуары) и отличается высокой эргономикой и системой распределения нагрузки.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -79,8 +85,9 @@ export const HJELM_TIER_3 = {
 
 // СИЛЬНЫЙ
 export const ALTYN_TIER_1 = {
-  name: "IOTV",
-  description: "Простой бронежилет",
+  name: "Алтын",
+  description:
+    "Алтын - тяжёлый бронешлем, разработанный в СССР и применяемый спецподразделениями КГБ/ФСБ. Оснащён титановым корпусом и бронированным забралом, обеспечивает высокую защиту от пистолетных пуль и осколков.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -91,8 +98,9 @@ export const ALTYN_TIER_1 = {
 };
 
 export const ALTYN_TIER_2 = {
-  name: "IOTV",
-  description: "Простой бронежилет",
+  name: "Алтын",
+  description:
+    "Алтын - тяжёлый бронешлем, разработанный в СССР и применяемый спецподразделениями КГБ/ФСБ. Оснащён титановым корпусом и бронированным забралом, обеспечивает высокую защиту от пистолетных пуль и осколков.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -103,8 +111,9 @@ export const ALTYN_TIER_2 = {
 };
 
 export const ALTYN_TIER_3 = {
-  name: "IOTV",
-  description: "Простой бронежилет",
+  name: "Алтын",
+  description:
+    "Алтын - тяжёлый бронешлем, разработанный в СССР и применяемый спецподразделениями КГБ/ФСБ. Оснащён титановым корпусом и бронированным забралом, обеспечивает высокую защиту от пистолетных пуль и осколков.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -116,8 +125,9 @@ export const ALTYN_TIER_3 = {
 
 // СЛАБЫЙ
 export const MASKA_TIER_1 = {
-  name: "FORT",
-  description: "Простой бронежилет",
+  name: "Маска-1щ",
+  description:
+    "Маска-1щ - тяжёлый стальной бронешлем, разработанный в 1990-е годы для спецподразделений МВД России. Оснащён цельнометаллическим пулестойким забралом и обеспечивает высокую защиту головы и лица от пистолетных пуль и осколков, но отличается большим весом и ограниченным обзором",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -128,8 +138,9 @@ export const MASKA_TIER_1 = {
 };
 
 export const MASKA_TIER_2 = {
-  name: "FORT",
-  description: "Простой бронежилет",
+  name: "Маска-1щ",
+  description:
+    "Маска-1щ - тяжёлый стальной бронешлем, разработанный в 1990-е годы для спецподразделений МВД России. Оснащён цельнометаллическим пулестойким забралом и обеспечивает высокую защиту головы и лица от пистолетных пуль и осколков, но отличается большим весом и ограниченным обзором",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -140,8 +151,9 @@ export const MASKA_TIER_2 = {
 };
 
 export const MASKA_TIER_3 = {
-  name: "FORT",
-  description: "Простой бронежилет",
+  name: "Маска-1щ",
+  description:
+    "Маска-1щ - тяжёлый стальной бронешлем, разработанный в 1990-е годы для спецподразделений МВД России. Оснащён цельнометаллическим пулестойким забралом и обеспечивает высокую защиту головы и лица от пистолетных пуль и осколков, но отличается большим весом и ограниченным обзором",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -155,8 +167,9 @@ export const MASKA_TIER_3 = {
 
 // СИЛЬНЫЙ
 export const RONIN_HELMET_TIER_1 = {
-  name: "NFM",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin",
+  description:
+    "DevTac Ronin - высокотехнологичный полноразмерный баллистический шлем японской компании Devtac, обеспечивающий защиту головы и лица до уровня NIJ IIIA. Отличается модульной конструкцией с полной маской, системой вентиляции/антизапотевания и совместимостью с NVG и средствами связи, ориентирован на штурмовые и CQB-задачи.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -167,8 +180,9 @@ export const RONIN_HELMET_TIER_1 = {
 };
 
 export const RONIN_HELMET_TIER_2 = {
-  name: "NFM",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin",
+  description:
+    "DevTac Ronin - высокотехнологичный полноразмерный баллистический шлем, обеспечивающий защиту головы и лица до уровня NIJ IIIA. Отличается модульной конструкцией с полной маской, системой вентиляции/антизапотевания и совместимостью с NVG и средствами связи, ориентирован на штурмовые и CQB-задачи.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -179,8 +193,9 @@ export const RONIN_HELMET_TIER_2 = {
 };
 
 export const RONIN_HELMET_TIER_3 = {
-  name: "NFM",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin",
+  description:
+    "DevTac Ronin - высокотехнологичный полноразмерный баллистический шлем, обеспечивающий защиту головы и лица до уровня NIJ IIIA. Отличается модульной конструкцией с полной маской, системой вентиляции/антизапотевания и совместимостью с NVG и средствами связи, ориентирован на штурмовые и CQB-задачи.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -192,8 +207,9 @@ export const RONIN_HELMET_TIER_3 = {
 
 // СЛАБЫЙ
 export const RONIN_RESPIRATOR_TIER_1 = {
-  name: "REDUT",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin Respirator",
+  description:
+    "DevTac Ronin Respirator - модификация шлема Ronin с интегрированной системой респиратора. Обеспечивает защиту уровня NIJ IIIA с покрытием до ~80% головы и лица, поддерживает использование полумаски с фильтрами, оснащён съёмными бронеплитами и активной вентиляцией/антизапотеванием визора",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 1,
@@ -204,8 +220,9 @@ export const RONIN_RESPIRATOR_TIER_1 = {
 };
 
 export const RONIN_RESPIRATOR_TIER_2 = {
-  name: "REDUT",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin Respirator",
+  description:
+    "DevTac Ronin Respirator - модификация шлема Ronin с интегрированной системой респиратора. Обеспечивает защиту уровня NIJ IIIA с покрытием до ~80% головы и лица, поддерживает использование полумаски с фильтрами, оснащён съёмными бронеплитами и активной вентиляцией/антизапотеванием визора",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 2,
@@ -216,8 +233,9 @@ export const RONIN_RESPIRATOR_TIER_2 = {
 };
 
 export const RONIN_RESPIRATOR_TIER_3 = {
-  name: "REDUT",
-  description: "Простой бронежилет",
+  name: "DevTac Ronin Respirator",
+  description:
+    "DevTac Ronin Respirator - модификация шлема Ronin с интегрированной системой респиратора. Обеспечивает защиту уровня NIJ IIIA с покрытием до ~80% головы и лица, поддерживает использование полумаски с фильтрами, оснащён съёмными бронеплитами и активной вентиляцией/антизапотеванием визора",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,
@@ -228,8 +246,9 @@ export const RONIN_RESPIRATOR_TIER_3 = {
 };
 
 export const CQCM_DEFENSE_ATOMIC_TIER_1 = {
-  name: "REDUT",
-  description: "Простой бронежилет",
+  name: "Atomic Defense CQCM ballistic mask",
+  description:
+    "Atomic Defense CQCM ballistic mask - полноразмерная баллистическая маска, обеспечивающая защиту лица уровня NIJ IIIA+. Закрывает всё лицо и выдерживает попадания пистолетных патронов и дроби, сочетая защиту с вентиляцией и системой амортизации удара.",
   iconSrc: "",
   type: GEAR_SLOTS.HELMET,
   tier: 3,

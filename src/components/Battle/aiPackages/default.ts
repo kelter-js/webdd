@@ -25,8 +25,6 @@ const MIN_HEALTH_PERCENTAGE_TO_HEAL = 35;
 // const calculateDamage = overrides?.calculateDamage ?? ((e, t) => getRandom(e.minAttack, e.maxAttack));
 
 export const defaultCreatureBattleAi = async (battle: Battle) => {
-  // создаем задержку перед ходом для проигрывания анимаций
-  await wait();
   const { enemy, player } = battle;
 
   const aliveParty = player.party.filter((p) => p.currentHealth > 0);
@@ -41,7 +39,7 @@ export const defaultCreatureBattleAi = async (battle: Battle) => {
 
   // FIXME - на будущее тут нужна ф-ия калькуляции урона исходя из модели противника
   // const damage = calculateDamage(enemy, target);
-  const damage = getRandom(enemy.minAttack, enemy.maxAttack);
+  // const damage = getRandom(enemy.minAttack, enemy.maxAttack);
 
   // FIXME
   // Возможно добавляем какой-то эффект или хилим себя
@@ -54,11 +52,11 @@ export const defaultCreatureBattleAi = async (battle: Battle) => {
 
   // FIXME: тут нужна калькуляция шанса того, что по персонажу не прошёл дамаг
 
-  const updatedParty = player.party.map((char) =>
-    char.name === target.name
-      ? { ...char, currentHealth: Math.max(0, char.currentHealth - damage) }
-      : char
-  );
+  // const updatedParty = player.party.map((char) =>
+  //   char.name === target.name
+  //     ? { ...char, currentHealth: Math.max(0, char.currentHealth - damage) }
+  //     : char
+  // );
 
   const aliveAfterBattle = player.party.filter((p) => p.currentHealth > 0);
 
@@ -66,11 +64,11 @@ export const defaultCreatureBattleAi = async (battle: Battle) => {
     return { isGameOver: true, model: battle };
   }
 
-  return {
-    isGameOver: false,
-    // FIXME: модель может обновляться иначе, могут быть увеличены ХП у врага, он может себя баффнуть
-    // Как только определится логика с бафами и хилом - так и обновится модель возвращаемая из функции
-    target: target.name,
-    model: { ...battle, player: { ...battle.player, party: updatedParty } },
-  };
+  // return {
+  //   isGameOver: false,
+  //   // FIXME: модель может обновляться иначе, могут быть увеличены ХП у врага, он может себя баффнуть
+  //   // Как только определится логика с бафами и хилом - так и обновится модель возвращаемая из функции
+  //   target: target.name,
+  //   model: { ...battle, player: { ...battle.player, party: updatedParty } },
+  // };
 };
