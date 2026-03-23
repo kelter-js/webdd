@@ -91,7 +91,7 @@ export const MEDIC_CLASS_PERKS_IMG = {
   [MEDIC_PERKS.INCREASE_HEALTH_V2]: enduranceV2,
 
   [MEDIC_PERKS.CURSED_ATTACK]: cursed,
-  [MEDIC_PERKS.WEAK_SPOTTER]: weakSpotter,
+  [MEDIC_PERKS.RELOADER]: weakSpotter,
 
   [MEDIC_PERKS.HEAL_ALL]: healAll,
   [MEDIC_PERKS.FORTIFICATION]: fortification,

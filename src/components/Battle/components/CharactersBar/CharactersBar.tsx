@@ -72,9 +72,8 @@ export const CharactersBar: FC<CharactersBarProps> = ({
           const handleChangeSelection = () => setSelectedPlayer(partyMember);
 
           const isDamaged = damageTargetIndex === index;
-          console.log("partyMember", partyMember.hasTurn);
-          // const hasTurn = getRandom(0, 100) > 50;
-          const hasTurn = false;
+
+          const hasTurn = partyMember.hasTurn;
 
           const isDead = partyMember.currentHealth <= 0;
 

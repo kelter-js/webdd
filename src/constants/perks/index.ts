@@ -138,7 +138,7 @@ export const SNIPER_PERKS_DESCRIPTIONS = {
     "Небольшой шанс, что ваша атака может вызвать рикошет и нанести половину основного урона другим врагам",
 
   [SNIPER_PERKS.INSTAKILL]:
-    "Активная: с небольшим шансом следующая атака убьет врага с одного удара - перезарядка два хода (не действует на боссов)",
+    "Активная: с 25% шансом следующая атака убьет врага с одного удара - перезарядка два хода (не действует на боссов)",
   [SNIPER_PERKS.BREACHER]:
     "Пассивная: ваша атака имеет шанс уменьшить сопротивление врага, тем самым все атаки по противнику получат прибавку равную 5% здоровья противника на два хода",
 } as const;
@@ -212,7 +212,7 @@ export enum MEDIC_PERKS {
 
   // 4 тир перков
   CURSED_ATTACK = "CURSED_ATTACK",
-  WEAK_SPOTTER = "WEAK_SPOTTER",
+  RELOADER = "RELOADER",
 
   // 5 тир перков
   HEAL_ALL = "HEAL_ALL",
@@ -224,19 +224,19 @@ export const MEDIC_PERKS_DESCRIPTIONS = {
   [MEDIC_PERKS.INCREASE_HEALTH]: "Увеличение здоровья 20%",
 
   [MEDIC_PERKS.BLEED]:
-    "Шанс, что следующая атака вызовет у врага кровотечение - 5% урона за ход в течение двух ходов",
-  [MEDIC_PERKS.HEAL]: "Шанс, что следующая атака вылечит весь отряд на 10%",
+    "15% Шанс, что следующая атака вызовет у врага кровотечение - 5% урона за ход в течение двух ходов",
+  [MEDIC_PERKS.HEAL]: "15% Шанс, что следующая атака вылечит весь отряд на 10%",
 
   [MEDIC_PERKS.INCREASE_DAMAGE_V2]: "Увеличение урона на 15%",
   [MEDIC_PERKS.INCREASE_HEALTH_V2]: "Увеличение здоровья 30%",
 
   [MEDIC_PERKS.CURSED_ATTACK]:
-    "Небольшой шанс, что атака уменьшит урон врага вдвое на следующий раунд",
-  [MEDIC_PERKS.WEAK_SPOTTER]:
-    "Небольшой шанс, что атака уменьшит сопротивление врага на 15%",
+    "10% шанс, что атака уменьшит урон врага вдвое на следующие два раунда",
+  [MEDIC_PERKS.RELOADER]:
+    "20% шанс, что атака перезарядит магазины у вас и всех ваших сопартийцев",
 
   [MEDIC_PERKS.HEAL_ALL]:
-    "Активная: лечит весь отряд на 30% - перезарядка 2 хода",
+    "Активная: лечит весь отряд на 30% здоровья - перезарядка 2 хода",
   [MEDIC_PERKS.FORTIFICATION]:
     "Пассивная: Все употребляемые командой зелья дополнительно восстанавливают 15% здоровья",
 } as const;
@@ -280,8 +280,8 @@ export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.CURSED_ATTACK],
     },
     {
-      id: MEDIC_PERKS.WEAK_SPOTTER,
-      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.WEAK_SPOTTER],
+      id: MEDIC_PERKS.RELOADER,
+      description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.RELOADER],
     },
   ],
   fifthTier: [
@@ -332,7 +332,7 @@ export const THIRD_TIER_PERKS = [
 
 export const FOURTH_TIER_PERKS = [
   MEDIC_PERKS.CURSED_ATTACK,
-  MEDIC_PERKS.WEAK_SPOTTER,
+  MEDIC_PERKS.RELOADER,
   SNIPER_PERKS.DAMAGE_INSPIRATION,
   SNIPER_PERKS.RICOCHETTE,
   TANK_PERKS.CRUSHER,

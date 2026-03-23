@@ -7,7 +7,7 @@ import tank from "../../../../assets/avatars/tank.png";
 import { Battle, Statistics } from "../../../../types/gameState";
 import { getRandom } from "../../../../utils";
 import { calculateCritDamage } from "../../../../stores/constants";
-import { SNIPER_PERKS } from "../../../../constants/perks";
+import { MEDIC_PERKS, SNIPER_PERKS } from "../../../../constants/perks";
 import { EFFECTS } from "../../../../entities/effects";
 import { DamageData } from "../../types";
 
@@ -45,6 +45,7 @@ export const calculateDamage = (
   statistics: Record<string, Statistics>,
   source: string,
   target: string,
+  magSize: Record<string, number>,
 ): { model: Battle; damageModel: DamageData[] | null } => {
   const isTargetEvading = getRandom(1, 100);
   const targetEnemy = battleModel.enemy.party.find(
@@ -98,6 +99,8 @@ export const calculateDamage = (
   let vampireEffect = sourcePlayer.vampire;
   let hasRichochette = false;
   let richochetteDamage = null;
+  let healAll = false;
+  let reloader = false;
 
   // Обрабатываем перки снайпера
   if (playerData.characterClass === CLASSES.SNIPER) {
@@ -122,9 +125,11 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(20);
 
       if (isSuccess) {
-        playerEffectsCopy[target].list.push({
-          type: EFFECTS.INSPIRED,
-          duration: 3,
+        Object.keys(playerEffectsCopy).forEach((key) => {
+          playerEffectsCopy[key].list.push({
+            type: EFFECTS.INSPIRED,
+            duration: 3,
+          });
         });
       }
     }
@@ -151,6 +156,47 @@ export const calculateDamage = (
 
   // Обрабатываем перки медика
   if (playerData.characterClass === CLASSES.MEDIC) {
+    if (perkIds.includes(MEDIC_PERKS.BLEED)) {
+      // 15% шанс прока перка
+      const isSuccess = isSuccessRoll(15);
+
+      if (isSuccess) {
+        enemyEffectsCopy[target].list.push({
+          type: EFFECTS.BLEED,
+          duration: 2,
+        });
+      }
+    }
+
+    if (perkIds.includes(MEDIC_PERKS.HEAL)) {
+      // 15% шанс прока перка
+      const isSuccess = isSuccessRoll(15);
+
+      if (isSuccess) {
+        healAll = true;
+      }
+    }
+
+    if (perkIds.includes(MEDIC_PERKS.CURSED_ATTACK)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(10);
+
+      if (isSuccess) {
+        enemyEffectsCopy[target].list.push({
+          type: EFFECTS.WEAKNESS,
+          duration: 2,
+        });
+      }
+    }
+
+    if (perkIds.includes(MEDIC_PERKS.RELOADER)) {
+      // 20% шанс прока перка
+      const isSuccess = isSuccessRoll(20);
+
+      if (isSuccess) {
+        reloader = true;
+      }
+    }
   }
 
   // Обрабатываем перки танка
@@ -167,6 +213,31 @@ export const calculateDamage = (
     )
   ) {
     damage += Math.round((targetEnemy.maxHP / 100) * 5);
+  }
+
+  if (
+    playerEffectsCopy[source].list.find(
+      (effect) => effect.type === EFFECTS.INSPIRED,
+    )
+  ) {
+    damage = Math.round((damage / 100) * 5);
+  }
+
+  if (
+    playerEffectsCopy[source].list.find(
+      (effect) => effect.type === EFFECTS.INSTA_KILL,
+    )
+  ) {
+    const isSuccess = isSuccessRoll(25);
+
+    playerEffectsCopy[source].list.push({
+      type: EFFECTS.INSTA_KILL_FATIGUE,
+      duration: 2,
+    });
+
+    if (isSuccess) {
+      damage = 9999;
+    }
   }
 
   // здесь же навешиваем эффекты, проводим доп вычисления, установка hasTurn: false в другом месте - снаружи, после анимаций
@@ -191,23 +262,46 @@ export const calculateDamage = (
   battleModelCopy.player = {
     ...battleModelCopy.player,
     party: battleModelCopy.player.party.map((player) => {
-      return player.name === source
-        ? {
-            ...player,
-            currentHealth: vampireEffect
-              ? Math.min(
-                  player.currentHealth +
-                    Math.round(damage * (vampireEffect / 100)),
-                  sourcePlayer.maxHealth,
-                )
-              : player.currentHealth,
-            hasTurn: false,
-            currentAmountOfRounds: Math.max(
-              0,
-              (player.currentAmountOfRounds || 0) - sourcePlayer.bulletsPerTurn,
-            ),
-          }
-        : player;
+      const healAllPercentage = healAll
+        ? Math.round((statistics[player.name].maxHealth / 100) * 10)
+        : 0;
+
+      const playerModel = player;
+
+      if (player.name === source) {
+        return {
+          ...player,
+          currentHealth: vampireEffect
+            ? Math.min(
+                player.currentHealth +
+                  Math.round(damage * (vampireEffect / 100)) +
+                  healAllPercentage,
+                sourcePlayer.maxHealth,
+              )
+            : player.currentHealth,
+          hasTurn: false,
+          currentAmountOfRounds: reloader
+            ? magSize[player.name]
+            : Math.max(
+                0,
+                (player.currentAmountOfRounds || 0) -
+                  sourcePlayer.bulletsPerTurn,
+              ),
+        };
+      }
+
+      if (healAll) {
+        playerModel.currentHealth = Math.min(
+          statistics[player.name].maxHealth,
+          player.currentHealth + healAllPercentage,
+        );
+      }
+
+      if (reloader) {
+        playerModel.currentAmountOfRounds = magSize[player.name];
+      }
+
+      return playerModel;
     }),
     effects: playerEffectsCopy,
   };
