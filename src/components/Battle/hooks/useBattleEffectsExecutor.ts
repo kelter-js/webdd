@@ -2,22 +2,23 @@ import { useEffect } from "react";
 import { useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 import { EFFECTS } from "../../../entities/effects";
-import {
-  BattleCharacterModel,
-  Creature,
-  Effects,
-} from "../../../types/gameState";
+import { Battle, Effects } from "../../../types/gameState";
+import { DamageData } from "../types";
 
 export const useBattleEffectsExecutor = ({
   selectedCharacter,
   selectedEnemy,
   toggleNextEnemy,
   toggleNextPlayer,
+  updateDamageModel,
+  isReadyToTrigger,
 }: {
   selectedCharacter?: string;
   selectedEnemy?: string;
-  toggleNextEnemy: (data: Creature[]) => void;
-  toggleNextPlayer: (data: BattleCharacterModel[]) => void;
+  toggleNextEnemy: (data: Battle) => void;
+  toggleNextPlayer: (data: Battle) => void;
+  updateDamageModel: (battleModel: Battle, damageModel: DamageData) => void;
+  isReadyToTrigger: boolean;
 }) => {
   const {
     player: { battle },
@@ -26,7 +27,7 @@ export const useBattleEffectsExecutor = ({
   } = useGameState();
 
   useEffect(() => {
-    if (battle) {
+    if (battle && isReadyToTrigger) {
       if (battle?.turn === TURN_STATES.ENEMY_TURN && selectedEnemy) {
         const {
           enemy: { effects },
@@ -80,6 +81,7 @@ export const useBattleEffectsExecutor = ({
             }
 
             enemyCopy.hp = Math.round(currentHp);
+            const isDead = enemy.hp !== 0 && enemyCopy.hp <= 0;
 
             const newBattleModel = {
               ...battle,
@@ -110,10 +112,22 @@ export const useBattleEffectsExecutor = ({
               },
             };
 
-            updateBattle(newBattleModel);
-
-            if (needToToggleEnemy) {
-              toggleNextEnemy(newBattleModel.enemy.party);
+            // если не изменилось ХП - значит урона не было - а просто нужно обновить флаги
+            if (currentHp === enemy.hp) {
+              if (needToToggleEnemy) {
+                toggleNextEnemy(newBattleModel);
+              } else {
+                updateBattle(newBattleModel);
+              }
+            } else {
+              updateDamageModel(newBattleModel, {
+                target: selectedEnemy,
+                damage: enemy.hp - currentHp,
+                isCritical: false,
+                isEvasion: false,
+                isEffect: true,
+                shouldPlayDeathAnimation: isDead,
+              });
             }
           }
         }
@@ -195,6 +209,8 @@ export const useBattleEffectsExecutor = ({
             }
 
             playerCopy.currentHealth = Math.round(currentHp);
+            const isDead =
+              player.currentHealth !== 0 && playerCopy.currentHealth <= 0;
 
             const newBattleModel = {
               ...battle,
@@ -225,14 +241,26 @@ export const useBattleEffectsExecutor = ({
               },
             };
 
-            updateBattle(newBattleModel);
-
-            if (needToTogglePlayer) {
-              toggleNextPlayer(newBattleModel.player.party);
+            // если не изменилось ХП - значит урона не было - а просто нужно обновить флаги
+            if (currentHp === playerCopy.currentHealth) {
+              if (needToTogglePlayer) {
+                toggleNextPlayer(newBattleModel);
+              } else {
+                updateBattle(newBattleModel);
+              }
+            } else {
+              updateDamageModel(newBattleModel, {
+                target: selectedCharacter,
+                damage: player.currentHealth - currentHp,
+                isCritical: false,
+                isEvasion: false,
+                isEffect: true,
+                shouldPlayDeathAnimation: isDead,
+              });
             }
           }
         }
       }
     }
-  }, [selectedCharacter, selectedEnemy, statistics]);
+  }, [selectedCharacter, selectedEnemy, statistics, isReadyToTrigger]);
 };

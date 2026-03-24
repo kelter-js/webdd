@@ -1,15 +1,11 @@
 import { POTION_TYPES } from "../../../entities/consumables";
-import { BattleCharacterModel } from "../../../types/gameState";
+import { Battle } from "../../../types/gameState";
 import { getPotionHealth } from "../../utils";
 import { StoreSet } from "./types";
 
 export const consumePotion =
   (set: StoreSet) =>
-  (
-    characterName: string,
-    potion: POTION_TYPES,
-    cb: (data: BattleCharacterModel[]) => void,
-  ) => {
+  (characterName: string, potion: POTION_TYPES, cb: (data: Battle) => void) => {
     set((state) => {
       const battle = state.player.battle;
       if (!battle) return state;
@@ -59,7 +55,7 @@ export const consumePotion =
         },
       };
 
-      cb(newState.player.battle.player.party);
+      cb(newState.player.battle);
 
       return newState;
     });

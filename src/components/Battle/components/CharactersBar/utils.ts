@@ -66,13 +66,22 @@ export const calculateDamage = (
 
   if (isTargetEvading < targetEnemy.evasionChance) {
     return {
-      model: battleModel,
+      model: {
+        ...battleModel,
+        player: {
+          ...battleModel.player,
+          party: battleModel.player.party.map((player) =>
+            player.name === source ? { ...player, hasTurn: false } : player,
+          ),
+        },
+      },
       damageModel: [
         {
           target,
           damage: null,
           isCritical: false,
           isEvasion: true,
+          shouldPlayDeathAnimation: false,
         },
       ],
     };
@@ -240,18 +249,33 @@ export const calculateDamage = (
     }
   }
 
-  // здесь же навешиваем эффекты, проводим доп вычисления, установка hasTurn: false в другом месте - снаружи, после анимаций
+  let shouldPlayDeathAnimation = false;
+
+  const initialTargetEnemy = battleModel.enemy.party.find(
+    (enemy) => enemy.id === target,
+  );
+
   battleModelCopy.enemy = {
     ...battleModelCopy.enemy,
     party: battleModelCopy.enemy.party.map((enemy) => {
       const isTarget = enemy.id === target;
 
       if (isTarget) {
-        return { ...enemy, hp: Math.max(enemy.hp - damage, 0) };
+        const newHp = Math.max(enemy.hp - damage, 0);
+
+        const isDead = initialTargetEnemy?.hp !== 0 && newHp === 0;
+
+        if (isDead) {
+          shouldPlayDeathAnimation = true;
+        }
+
+        return { ...enemy, hp: newHp };
       }
 
       if (richochetteDamage) {
-        return { ...enemy, hp: Math.max(enemy.hp - richochetteDamage, 0) };
+        const newHp = Math.max(enemy.hp - richochetteDamage, 0);
+
+        return { ...enemy, hp: newHp };
       }
 
       return enemy;
@@ -311,12 +335,18 @@ export const calculateDamage = (
       model: battleModelCopy,
       damageModel: battleModelCopy.enemy.party.map((enemy) => {
         const isSameTarget = enemy.id === target;
+        const initialEnemyModel = battleModel.enemy.party.find(
+          (initialEnemy) => initialEnemy.id === enemy.id,
+        );
+
+        const isDead = initialEnemyModel?.hp !== 0 && enemy.hp === 0;
 
         return {
           target: enemy.id || null,
           damage: isSameTarget ? damage : richochetteDamage,
           isCritical: isCrit,
           isEvasion: false,
+          shouldPlayDeathAnimation: isDead,
         };
       }),
     };
@@ -330,6 +360,7 @@ export const calculateDamage = (
         damage,
         isCritical: isCrit,
         isEvasion: false,
+        shouldPlayDeathAnimation,
       },
     ],
   };

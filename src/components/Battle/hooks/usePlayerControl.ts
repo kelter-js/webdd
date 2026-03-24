@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useGameState } from "../../../stores";
-import { BattleCharacterModel, Creature } from "../../../types/gameState";
+import {
+  Battle,
+  BattleCharacterModel,
+  Creature,
+} from "../../../types/gameState";
 import { TURN_STATES } from "../../../entities";
 
 // по окончанию floating damage или shooting анимации вызывается ВСЕГДА handleSelectNextPlayer или handleSelectNextEnemy и в аргументы передаем АКТУАЛЬНОЕ состояние
@@ -39,21 +43,13 @@ export const usePlayerControl = () => {
         setSelectedEnemy(readyToBattleEnemy[0]);
       }
     }
-  }, [battle?.enemy.party]);
+  }, [battle?.enemy.party, battle?.turn]);
 
-  const handleSelectNextPlayer = (newBattleState: BattleCharacterModel[]) => {
-    if (!battle) {
-      setSelectedPlayer(undefined);
-      return;
-    }
-
+  const handleSelectNextPlayer = (newBattleState: Battle) => {
     // расширить, возможно на игроке висит эффект оглушения или какой-то другой, который мешает делать ход
     // возможно другие проверки кроме здоровья
-    const readyToBattlePartyMembers = newBattleState.filter(
-      (character) => character.currentHealth > 0 && character.hasTurn,
-    );
 
-    const updatedEffects = { ...battle.player.effects };
+    const updatedEffects = { ...newBattleState.player.effects };
 
     // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
     if (selectedPlayer && updatedEffects[selectedPlayer.name]) {
@@ -64,35 +60,46 @@ export const usePlayerControl = () => {
     }
 
     updateBattle({
-      ...battle,
+      ...newBattleState,
       player: {
-        ...battle.player,
-        party: newBattleState,
+        ...newBattleState.player,
         effects: updatedEffects,
       },
     });
 
-    console.log("readyToBattlePartyMembers", readyToBattlePartyMembers);
-    if (readyToBattlePartyMembers.length === 0) {
-      setSelectedPlayer(undefined);
+    const readyToBattlePartyMembers = newBattleState.player.party.filter(
+      (character) => character.currentHealth > 0 && character.hasTurn,
+    );
+
+    const setNewPlayer = () => {
+      setSelectedPlayer(
+        readyToBattlePartyMembers.length === 0
+          ? undefined
+          : readyToBattlePartyMembers[0],
+      );
+    };
+
+    if (selectedPlayer) {
+      const existingPlayerInNewModel = newBattleState.player.party.find(
+        (player) => player.name === selectedPlayer.name,
+      );
+
+      if (
+        !existingPlayerInNewModel?.hasTurn ||
+        existingPlayerInNewModel.currentHealth <= 0
+      ) {
+        setNewPlayer();
+      }
     } else {
-      setSelectedPlayer(readyToBattlePartyMembers[0]);
+      setNewPlayer();
     }
   };
 
-  const handleSelectNextEnemy = (newBattleState: Creature[]) => {
-    if (!battle) {
-      setSelectedEnemy(undefined);
-      return;
-    }
-
+  const handleSelectNextEnemy = (newBattleModel: Battle) => {
     // расширить, возможно на игроке висит эффект оглушения или какой-то другой, который мешает делать ход
     // возможно другие проверки кроме здоровья
-    const readyToBattleEnemy = newBattleState.filter(
-      (character) => character.hp > 0 && character.hasTurn,
-    );
 
-    const updatedEffects = { ...battle.enemy.effects };
+    const updatedEffects = { ...newBattleModel.enemy.effects };
 
     // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
     if (currentEnemy && updatedEffects[currentEnemy.id!]) {
@@ -103,25 +110,42 @@ export const usePlayerControl = () => {
     }
 
     updateBattle({
-      ...battle,
+      ...newBattleModel,
       enemy: {
-        ...battle.enemy,
-        party: newBattleState,
+        ...newBattleModel.enemy,
         effects: updatedEffects,
       },
     });
 
-    if (readyToBattleEnemy.length === 0) {
-      setSelectedEnemy(undefined);
+    const readyToBattleEnemy = newBattleModel.enemy.party.filter(
+      (enemy) => enemy.hp > 0 && enemy.hasTurn,
+    );
+
+    const setNewEnemy = () => {
+      setSelectedEnemy(
+        readyToBattleEnemy.length === 0 ? undefined : readyToBattleEnemy[0],
+      );
+    };
+
+    if (currentEnemy) {
+      const existingEnemyInNewModel = newBattleModel.enemy.party.find(
+        (enemy) => enemy.id === currentEnemy.id,
+      );
+
+      if (
+        !existingEnemyInNewModel?.hasTurn ||
+        existingEnemyInNewModel.hp <= 0
+      ) {
+        setNewEnemy();
+      }
     } else {
-      setSelectedEnemy(readyToBattleEnemy[0]);
+      setNewEnemy();
     }
   };
 
   useEffect(() => {
     // mock
-
-    if (battle?.player) {
+    if (turn === TURN_STATES.PLAYER_TURN && battle?.player) {
       const readyToBattlePartyMembers = (battle?.player?.party || []).filter(
         (character) => character.currentHealth > 0 && character.hasTurn,
       );
@@ -136,7 +160,7 @@ export const usePlayerControl = () => {
         setSelectedPlayer(readyToBattlePartyMembers[0]);
       }
     }
-  }, [battle?.player?.party]);
+  }, [battle?.player?.party, battle?.turn]);
 
   return {
     selectedPlayer,

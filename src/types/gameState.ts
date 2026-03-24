@@ -339,7 +339,7 @@ export interface StoreState {
   consumePotion: (
     characterName: string,
     potionType: POTION_TYPES,
-    cb: (data: BattleCharacterModel[]) => void,
+    cb: (data: Battle) => void,
   ) => void;
 
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;

@@ -3,4 +3,6 @@ export interface DamageData {
   damage: number | null;
   isCritical: boolean;
   isEvasion: boolean;
+  isEffect?: boolean;
+  shouldPlayDeathAnimation: boolean;
 }

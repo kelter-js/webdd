@@ -40,6 +40,20 @@ import staticBgTier2_8 from "../../assets/static/dungeon_hallway/battle_tier_2/i
 import staticBgTier2_9 from "../../assets/static/dungeon_hallway/battle_tier_2/image (9).jpg";
 import staticBgTier2_10 from "../../assets/static/dungeon_hallway/battle_tier_2/image (10).jpg";
 
+import staticBgTier3_1 from "../../assets/static/dungeon_hallway/battle_tier_3/image (1).jpg";
+import staticBgTier3_2 from "../../assets/static/dungeon_hallway/battle_tier_3/image (2).jpg";
+import staticBgTier3_3 from "../../assets/static/dungeon_hallway/battle_tier_3/image (3).jpg";
+import staticBgTier3_4 from "../../assets/static/dungeon_hallway/battle_tier_3/image (4).jpg";
+import staticBgTier3_5 from "../../assets/static/dungeon_hallway/battle_tier_3/image (5).jpg";
+import staticBgTier3_6 from "../../assets/static/dungeon_hallway/battle_tier_3/image (6).jpg";
+import staticBgTier3_7 from "../../assets/static/dungeon_hallway/battle_tier_3/image (7).jpg";
+import staticBgTier3_8 from "../../assets/static/dungeon_hallway/battle_tier_3/image (8).jpg";
+import staticBgTier3_9 from "../../assets/static/dungeon_hallway/battle_tier_3/image (9).jpg";
+import staticBgTier3_10 from "../../assets/static/dungeon_hallway/battle_tier_3/image (10).jpg";
+import { Battle, Creature, Statistics } from "../../types/gameState";
+import { DamageData } from "./types";
+import { AI_CATEGORIES } from "../../entities/ai";
+
 // ключи - айди существа - значение это путь к изображению с существом
 export const CREATURE_ID_TO_IMAGE_MAP = {};
 
@@ -209,6 +223,19 @@ const secondTierStaticBackgrounds = [
   staticBgTier2_10,
 ];
 
+const thirdTierStaticBackgrounds = [
+  staticBgTier3_1,
+  staticBgTier3_2,
+  staticBgTier3_3,
+  staticBgTier3_4,
+  staticBgTier3_5,
+  staticBgTier3_6,
+  staticBgTier3_7,
+  staticBgTier3_8,
+  staticBgTier3_9,
+  staticBgTier3_10,
+];
+
 export const getBattleBackground = (tier: number) => {
   switch (tier) {
     case 1: {
@@ -228,12 +255,50 @@ export const getBattleBackground = (tier: number) => {
     }
 
     case 3: {
-      // MOCK
-      return staticBgTier1;
+      const randomImageIndex = getRandom(
+        0,
+        thirdTierStaticBackgrounds.length - 1,
+      );
+      return thirdTierStaticBackgrounds[randomImageIndex];
     }
 
     default: {
       return staticBgTier1;
     }
   }
+};
+
+export const calculateAiDamage = (
+  battleModel: Battle,
+  statistics: Record<string, Statistics>,
+  source: Creature,
+): { model: Battle; damageModel: DamageData[] | null } => {
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_1) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_2) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_3) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_1) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_2) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_3) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.TIER_2) {
+  }
+
+  if (source.aiPackage === AI_CATEGORIES.TIER_3) {
+  }
+
+  return { model: {} as Battle, damageModel: [] };
 };

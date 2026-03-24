@@ -15,8 +15,9 @@ import { wait } from "../../utils";
 import { ShootingEffect } from "./components/ShootingEffect";
 import { GEAR_SLOTS } from "../../entities/gear";
 import { Battle } from "../../types/gameState";
-import { getBattleBackground } from "./utils";
+import { calculateAiDamage, getBattleBackground } from "./utils";
 import { DamageData } from "./types";
+import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
 
 const getLayoutCoordinates = (enemiesAmount?: number) => {
   if (enemiesAmount) return ["50%"];
@@ -51,90 +52,19 @@ export const BattleContainer = () => {
     player: { battle, party, currentTier, location },
     updateBattle,
     killEnemy,
+    statistics,
     gear,
   } = useGameState();
 
-  useEffect(() => {
-    if (!isFading && isDiceRequiredRoll) {
-      setShowDices(true);
-      turnOffDices();
-      const fakeTimerId1 = setTimeout(() => {
-        setShowDices(false);
-      }, 1500);
-
-      return () => {
-        clearTimeout(fakeTimerId1);
-      };
-    }
-  }, [isFading]);
-
   useHandleBattleEnd();
 
-  useEffect(() => {
-    setTimeout(() => setDamage(125), 2000);
-  }, []);
-
-  // MOCK
-  // useEffect(() => {
-  //   const setDamage = async (index: number) => {
-  //     setAttackingEnemyId(index);
-  //     await wait(300);
-  //     setTarget(index);
-  //     await wait(500);
-  //     setTarget(null);
-  //   };
-
-  //   const fakeTimerId1 = setTimeout(() => {
-  //     killEnemy();
-  //     setDamage(0);
-  //   }, 5000);
-
-  //   const fakeTimerId2 = setTimeout(() => {
-  //     killEnemy();
-  //     setDamage(1);
-  //   }, 9000);
-
-  //   const fakeTimerId3 = setTimeout(() => {
-  //     killEnemy();
-  //     setDamage(2);
-  //   }, 13000);
-
-  //   return () => {
-  //     clearTimeout(fakeTimerId1);
-  //     clearTimeout(fakeTimerId2);
-  //     clearTimeout(fakeTimerId3);
-  //   };
-  // }, []);
-
   const handleAttackEnd = () => setAttackingEnemyId(null);
-
-  // useEffect(() => {
-  //   if (battle.turn === TURN_STATES.ENEMY_TURN) {
-  //     const runAi = async () => {
-  //       const logic = getAiPackageByCreatureId(battle.enemy.id);
-  //      нужно возвращать нанесенный дамаг чтобы отображать на экране его
-  //       const { isGameOver, model, damage, target } = await logic(battle);
-  //       // установка модели, проверка конца боя
-  //        меняем ход на ход игрока
-  //        устанавливаем в локальные состояния урон и таргет - передаем в Character bar - отыгрывает анмиации и сбрасывает состояния
-  //     };
-  //     runAi();
-  //   }
-  // }, [battle.turn]);
 
   // отслеживаем ходы игрока - переключает на ход противника
   const nextTurn = usePlayerTurnIsOver(showDices || isDiceRequiredRoll);
   console.log("showDices", showDices || isDiceRequiredRoll);
   console.log("nextTurn", nextTurn);
   console.log("ифее", battle?.turn);
-
-  // usePlayerControl управляет и какой ходит сейчас игрок и какой противник
-  // когда ходит игрок - сначала высчитывается эффект - другой хук будет обновлять состояние battle.player.effect[имя_игрока].hasTriggered - после срабатывания эффекта меняет на true
-  // после игрок получает доступ к управлению персонажем - ходит, вычисляется новая модель боя, устанавливается через setTimeout(newModel, 200); - здесь мы отняли патроны из магазина,
-  // отнимаем хп у врага, устанавливаем на него нужные эффекты
-  // устанавливаем локальные состояния- крит ли это, сколько урона и проигрываем анимацию isShooting
-  // в конце анимации floating damage у врага в коллбэке мы должны сделать следующее onAnimationEnd
-  // этот коллбэк делает
 
   const {
     selectedPlayer,
@@ -230,11 +160,10 @@ export const BattleContainer = () => {
   // отвечает за то, какой персонаж получает урон
   const [target, setTarget] = useState<number | null>(null);
   // отвечает за то, что противник должен проиграть анимацию атаки
-  const [attackingEnemyId, setAttackingEnemyId] = useState<number | null>(null);
+  const [attackingEnemyId, setAttackingEnemyId] = useState<string | null>(null);
 
   // общие флаги - крит и урон
   const [damage, setDamage] = useState(0);
-  const [isCritical, setCritical] = useState(false);
 
   // эта модель будет замещать собой все остальные состояния кроме флагов атаки
   const [battleDamageModel, setBattleDamageModel] = useState<
@@ -245,29 +174,104 @@ export const BattleContainer = () => {
 
   const resetShooting = () => setShooting(false);
 
-  const resetTarget = () => setTarget(null);
-  const resetDamage = () => setDamage(0);
-
-  useEffect(() => {
-    const fakeTimerId1 = setTimeout(() => {
-      setDamage(125);
-    }, 5000);
-
-    return () => {
-      clearTimeout(fakeTimerId1);
-    };
-  }, []);
-
   const handleClearDamage = () => setDamage(0);
 
-  // const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length || 0);
-  // mock
   const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length);
 
   const currentBackground = useMemo(
     () => getBattleBackground(location?.dungeonLevel || currentTier),
     [location?.dungeonLevel, currentTier],
   );
+
+  const resetAnimations = () => {
+    // если это урон от эффекта
+    if (tempBattleModel.current) {
+      const model = tempBattleModel.current;
+
+      if (
+        battleDamageModel &&
+        battleDamageModel.length === 1 &&
+        battleDamageModel[0].isEffect
+      ) {
+        if (battle?.turn === TURN_STATES.ENEMY_TURN) {
+          handleSelectNextEnemy(model);
+        } else {
+          handleSelectNextPlayer(model);
+        }
+
+        setBattleDamageModel(null);
+
+        tempBattleModel.current = null;
+        return;
+      }
+
+      if (battle?.turn === TURN_STATES.ENEMY_TURN) {
+        handleSelectNextEnemy(model);
+
+        setAttackingEnemyId(null);
+        tempBattleModel.current = null;
+        return;
+      }
+
+      if (battle?.turn === TURN_STATES.PLAYER_TURN) {
+        handleSelectNextPlayer(model);
+
+        setShooting(false);
+        tempBattleModel.current = null;
+        return;
+      }
+
+      setBattleDamageModel(null);
+    }
+  };
+
+  useEffect(() => {
+    // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
+    if (
+      !showDices &&
+      !nextTurn &&
+      battle?.turn === TURN_STATES.ENEMY_TURN &&
+      currentEnemy &&
+      !attackingEnemyId &&
+      battle &&
+      statistics
+    ) {
+      const { damageModel, model } = calculateAiDamage(
+        battle,
+        statistics,
+        currentEnemy,
+      );
+
+      tempBattleModel.current = model;
+      setBattleDamageModel(damageModel);
+      setAttackingEnemyId(currentEnemy.id!);
+    }
+  }, [
+    battle,
+    statistics,
+    battle?.turn,
+    currentEnemy,
+    attackingEnemyId,
+    showDices,
+    nextTurn,
+  ]);
+
+  const handleUpdateEffectState = (
+    battleModel: Battle,
+    damageModel: DamageData,
+  ) => {
+    tempBattleModel.current = battleModel;
+    setBattleDamageModel([damageModel]);
+  };
+
+  useBattleEffectsExecutor({
+    selectedCharacter: selectedPlayer?.name,
+    selectedEnemy: currentEnemy?.id,
+    isReadyToTrigger: !showDices && !nextTurn,
+    toggleNextEnemy: handleSelectNextEnemy,
+    toggleNextPlayer: handleSelectNextPlayer,
+    updateDamageModel: handleUpdateEffectState,
+  });
 
   return (
     <Stack
@@ -302,7 +306,7 @@ export const BattleContainer = () => {
           index={index}
           onDamageAnimationEnd={handleClearDamage}
           layout={enemyLayout[index]}
-          isAttacking={index === attackingEnemyId}
+          isAttacking={item.id === attackingEnemyId}
           onAttackEnd={handleAttackEnd}
           isSelected={
             battle?.turn === TURN_STATES.PLAYER_TURN &&
@@ -318,8 +322,7 @@ export const BattleContainer = () => {
           sourceId={selectedPlayer?.name || ""}
           targetId={`enemy-${selectedEnemy}`}
           onComplete={resetShooting}
-          // shots={selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] : 1}
-          shots={10}
+          shots={selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] : 1}
         />
       )}
 
