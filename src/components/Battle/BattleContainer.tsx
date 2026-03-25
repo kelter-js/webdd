@@ -18,9 +18,10 @@ import { Battle } from "../../types/gameState";
 import { calculateAiDamage, getBattleBackground } from "./utils";
 import { DamageData } from "./types";
 import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
+import { AnimatePresence } from "framer-motion";
 
 const getLayoutCoordinates = (enemiesAmount?: number) => {
-  if (enemiesAmount) return ["50%"];
+  console.log("enemiesAmount", enemiesAmount);
 
   switch (enemiesAmount) {
     case 3: {
@@ -28,7 +29,7 @@ const getLayoutCoordinates = (enemiesAmount?: number) => {
     }
 
     case 2: {
-      return ["35%", "65%"];
+      return ["25%", "75%"];
     }
 
     case 1: {
@@ -42,10 +43,9 @@ const getLayoutCoordinates = (enemiesAmount?: number) => {
 };
 
 export const BattleContainer = () => {
-  const [showDices, setShowDices] = useState(false);
-
   // SelectedEnemy - выбранный противник
   const { isFading, selectedEnemy } = useAppState();
+
   const {
     isDiceRequiredRoll,
     turnOffDices,
@@ -56,13 +56,23 @@ export const BattleContainer = () => {
     gear,
   } = useGameState();
 
+  const [showDices, setShowDices] = useState(isDiceRequiredRoll);
+
   useHandleBattleEnd();
 
   const handleAttackEnd = () => setAttackingEnemyId(null);
 
+  const [isFirstRender, setFirstRender] = useState(true);
+  const resetFirstRender = () => setFirstRender(false);
+
   // отслеживаем ходы игрока - переключает на ход противника
-  const nextTurn = usePlayerTurnIsOver(showDices || isDiceRequiredRoll);
-  console.log("showDices", showDices || isDiceRequiredRoll);
+  const nextTurn = usePlayerTurnIsOver(
+    showDices || isDiceRequiredRoll,
+    isFirstRender,
+    resetFirstRender,
+  );
+  console.log("showDices", showDices);
+  console.log("isDiceRequiredRoll", isDiceRequiredRoll);
   console.log("nextTurn", nextTurn);
   console.log("ифее", battle?.turn);
 
@@ -225,36 +235,37 @@ export const BattleContainer = () => {
     }
   };
 
-  useEffect(() => {
-    // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
-    if (
-      !showDices &&
-      !nextTurn &&
-      battle?.turn === TURN_STATES.ENEMY_TURN &&
-      currentEnemy &&
-      !attackingEnemyId &&
-      battle &&
-      statistics
-    ) {
-      const { damageModel, model } = calculateAiDamage(
-        battle,
-        statistics,
-        currentEnemy,
-      );
+  // useEffect(() => {
+  //   // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
 
-      tempBattleModel.current = model;
-      setBattleDamageModel(damageModel);
-      setAttackingEnemyId(currentEnemy.id!);
-    }
-  }, [
-    battle,
-    statistics,
-    battle?.turn,
-    currentEnemy,
-    attackingEnemyId,
-    showDices,
-    nextTurn,
-  ]);
+  //   if (
+  //     !showDices &&
+  //     !nextTurn &&
+  //     battle?.turn === TURN_STATES.ENEMY_TURN &&
+  //     currentEnemy &&
+  //     !attackingEnemyId &&
+  //     battle &&
+  //     statistics
+  //   ) {
+  //     const { damageModel, model } = calculateAiDamage(
+  //       battle,
+  //       statistics,
+  //       currentEnemy,
+  //     );
+
+  //     tempBattleModel.current = model;
+  //     setBattleDamageModel(damageModel);
+  //     setAttackingEnemyId(currentEnemy.id!);
+  //   }
+  // }, [
+  //   battle,
+  //   statistics,
+  //   battle?.turn,
+  //   currentEnemy,
+  //   attackingEnemyId,
+  //   showDices,
+  //   nextTurn,
+  // ]);
 
   const handleUpdateEffectState = (
     battleModel: Battle,
@@ -337,13 +348,20 @@ export const BattleContainer = () => {
         />
       )}
 
-      {showDices && (
-        <DiceRollModal
-          turnOwner={`Первым ходит: ${
-            battle?.turn === TURN_STATES.ENEMY_TURN ? "Противник" : "Игрок"
-          }`}
-        />
-      )}
+      <AnimatePresence
+        onExitComplete={() => {
+          console.log("are we triggered?");
+          turnOffDices();
+        }}
+      >
+        {showDices && (
+          <DiceRollModal
+            key="dice-modal" // Ключ обязателен для AnimatePresence!
+            turnOwner={`Первым ходит: ${battle?.turn === TURN_STATES.ENEMY_TURN ? "Противник" : "Игрок"}`}
+            onAnimationEnd={() => setShowDices(false)}
+          />
+        )}
+      </AnimatePresence>
     </Stack>
   );
 };

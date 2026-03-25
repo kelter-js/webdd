@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react";
 
-import { useGameState } from "../../../stores";
+import { useAppState, useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 
-export const usePlayerTurnIsOver = (showDices: boolean) => {
+export const usePlayerTurnIsOver = (
+  showDices: boolean,
+  isFirstRender: boolean,
+  resetFirstRender: VoidFunction,
+) => {
   const [nextTurn, setNextTurn] = useState<TURN_STATES | null>(null);
 
   const {
     player: { battle },
     setBattleTurn,
   } = useGameState();
+  const { isAudioEnabled } = useAppState();
 
   const currentTurn = battle?.turn;
   const playerParty = battle?.player?.party;
   const enemyParty = battle?.enemy?.party;
+  const messages = battle?.messages;
 
   useEffect(() => {
-    if (!battle || showDices) return;
+    console.log("inside turner:", showDices);
+    console.log("messages", messages);
+    if (!battle || showDices || !isAudioEnabled) return;
 
     // если уже идёт анимация смены хода — не запускаем повторно
     if (nextTurn !== null) return;
@@ -44,7 +52,18 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
 
     console.log("upcomingTurn", upcomingTurn);
 
-    if (!upcomingTurn) return;
+    if (!upcomingTurn) {
+      if (isFirstRender && currentTurn) {
+        setNextTurn(currentTurn);
+
+        setTimeout(() => {
+          resetFirstRender();
+          setNextTurn(null);
+        }, 900);
+      }
+
+      return;
+    }
 
     const fakeTimerId1 = setTimeout(() => {
       console.log("so does timeout fire?");
@@ -63,6 +82,9 @@ export const usePlayerTurnIsOver = (showDices: boolean) => {
     showDices,
     nextTurn,
     setBattleTurn,
+    messages,
+    isFirstRender,
+    isAudioEnabled,
   ]);
 
   return nextTurn;

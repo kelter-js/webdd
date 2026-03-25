@@ -1,5 +1,6 @@
 import { GUN_TYPES } from "../../entities/guns";
 import { CLASSES } from "../../entities/characterClasses";
+import { TEMPLATE_DAMAGE, TEMPLATE_NAME, TEMPLATE_TARGET } from "..";
 
 export const TANK_ALLOWED_GUNS = [GUN_TYPES.MACHINE_GUN, GUN_TYPES.SHOTGUN];
 export const MEDIC_ALLOWED_GUNS = [GUN_TYPES.PISTOL, GUN_TYPES.SMG];
@@ -28,3 +29,16 @@ export const CLASS_DESCRIPTIONS = {
   [CLASSES.MEDIC]: "Медик",
   [CLASSES.SNIPER]: "Снайпер",
 };
+
+export const CHARACTER_MESSAGES = [
+  `${TEMPLATE_NAME} попадает выстрелом по ${TEMPLATE_TARGET} причиняя тому ${TEMPLATE_DAMAGE} урона`,
+  `Выравнивая дыхание, успокаивая дрожь рук и хорошенько прицеливаясь, ${TEMPLATE_NAME} попадает по ${TEMPLATE_TARGET} нанося ${TEMPLATE_DAMAGE} урона`,
+  `В пылу боя, ${TEMPLATE_NAME} пытается устранить возникший клин, дрожащими руками ему удается это сделать в последний момент, осуществляя ряд выстрелов наносит ${TEMPLATE_DAMAGE} урона по ${TEMPLATE_NAME}`,
+  `Поглядывая себе под ноги и следя за окружением, ${TEMPLATE_NAME} выпускает очередь в ${TEMPLATE_TARGET}, даруя ему ${TEMPLATE_DAMAGE} урона`,
+  `Выкрикивая что-то нечленораздельное, ${TEMPLATE_NAME} наносит ${TEMPLATE_TARGET} ${TEMPLATE_DAMAGE} урона`,
+  `Выцеливая сухожилия, ${TEMPLATE_NAME} стреляет в ${TEMPLATE_TARGET}, нанося ${TEMPLATE_DAMAGE} урона`,
+  `Играючи и ловко, ставит оружие в залихватское положение и делает ряд выстрелов, которые лишь удачным стечением обстоятельств попадают по ${TEMPLATE_TARGET}, нанося ${TEMPLATE_DAMAGE} урона`,
+  `${TEMPLATE_NAME} внезапно подскальзывается, от падения палец попадает на курок и делает очередь в сторону ${TEMPLATE_TARGET}, причиняя ${TEMPLATE_DAMAGE} урона`,
+  `${TEMPLATE_NAME} пытается попасть в ${TEMPLATE_TARGET}, вместо этого пули рикошетят в потолок и оттуда падают кирпичи, нанося противнику ${TEMPLATE_TARGET} урона`,
+  `${TEMPLATE_TARGET} успешно уворачивается от части выстрелов ${TEMPLATE_NAME}, но последняя пуля всё-таки попадает в него, заставляя его получить ${TEMPLATE_DAMAGE} урона`,
+];

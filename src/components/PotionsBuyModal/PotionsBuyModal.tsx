@@ -5,12 +5,16 @@ import { Stack } from "@mui/material";
 import { Potion } from "./Potion/Potion";
 import { POTION_COORDINATES } from "./constants";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { usePlayer } from "../../contexts/Player";
+import sellSfx from "../../assets/audio/sell.mp3";
+import { SELL_SFX_ID } from "../../constants";
 
 export const PotionsBuyModal = () => {
   const { toggleBuyPotionsModal } = useAppState();
   const { showSnackbar } = useSnackbar();
 
   const handleCloseModal = () => toggleBuyPotionsModal(false);
+  const { handleSetSrc } = usePlayer();
 
   const {
     player: { potionsToBuy, gold },
@@ -20,6 +24,7 @@ export const PotionsBuyModal = () => {
   const handleBuyPotion = (index: number) => {
     try {
       buyPotion(index);
+      handleSetSrc(SELL_SFX_ID, sellSfx);
     } catch (err) {
       showSnackbar("Недостаточно золота для покупки");
     }

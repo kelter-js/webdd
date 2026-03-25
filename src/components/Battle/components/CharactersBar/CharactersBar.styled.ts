@@ -66,7 +66,7 @@ export const Avatar = styled(motion.div, {
     `5px solid ${isDamaged ? "red" : isSelected ? "green" : "white"}`};
   transition: border-color 0.2s ease;
   opacity: ${({ hasTurn, isDead }) =>
-    `${isDead ? "0.3" : hasTurn ? "0.5" : "1"}`};
+    `${isDead ? "0.3" : hasTurn ? "1" : "0.5"}`};
   overflow: hidden;
 `;
 

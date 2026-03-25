@@ -7,9 +7,14 @@ import tank from "../../../../assets/avatars/tank.png";
 import { Battle, Statistics } from "../../../../types/gameState";
 import { getRandom } from "../../../../utils";
 import { calculateCritDamage } from "../../../../stores/constants";
-import { MEDIC_PERKS, SNIPER_PERKS } from "../../../../constants/perks";
+import {
+  MEDIC_PERKS,
+  SNIPER_PERKS,
+  TANK_PERKS,
+} from "../../../../constants/perks";
 import { EFFECTS } from "../../../../entities/effects";
 import { DamageData } from "../../types";
+import { generatePlayerMessage } from "../../utils";
 
 export const getUnitAvatarSrc = (unitType: CLASSES, isDead: boolean) => {
   if (isDead) {
@@ -74,6 +79,10 @@ export const calculateDamage = (
             player.name === source ? { ...player, hasTurn: false } : player,
           ),
         },
+        messages: [
+          ...battleModel.messages,
+          generatePlayerMessage(source, targetEnemy.type, 0, true),
+        ],
       },
       damageModel: [
         {
@@ -86,7 +95,30 @@ export const calculateDamage = (
       ],
     };
   }
-  const battleModelCopy = { ...battleModel };
+
+  const battleModelCopy = {
+    ...battleModel,
+    enemy: { ...battleModel.enemy, effects: { ...battleModel.enemy.effects } },
+    player: {
+      ...battleModel.player,
+      effects: { ...battleModel.player.effects },
+    },
+  };
+
+  const enemyEffectsCopy = battleModelCopy.enemy.effects;
+  const playerEffectsCopy = battleModelCopy.player.effects;
+
+  if (!enemyEffectsCopy[target]) {
+    enemyEffectsCopy[target] = { hasTriggered: true, list: [] };
+  } else {
+    enemyEffectsCopy[target].list = [...enemyEffectsCopy[target].list];
+  }
+
+  if (!playerEffectsCopy[source]) {
+    playerEffectsCopy[source] = { hasTriggered: true, list: [] };
+  } else {
+    playerEffectsCopy[source].list = [...playerEffectsCopy[source].list];
+  }
 
   const characterCritChance = Math.min(sourcePlayer.critChance, 90);
 
@@ -100,16 +132,16 @@ export const calculateDamage = (
 
   //FIXME: нужна доработка по текущим перкам
 
-  const enemyEffectsCopy = { ...battleModel.enemy.effects };
-  const playerEffectsCopy = { ...battleModel.player.effects };
-
   const perkIds = playerData.perksList.map(({ id }) => id);
 
   let vampireEffect = sourcePlayer.vampire;
   let hasRichochette = false;
   let richochetteDamage = null;
   let healAll = false;
+  let healAllAmount = 0;
   let reloader = false;
+  let isInspired = false;
+  let restoredHP = 0;
 
   // Обрабатываем перки снайпера
   if (playerData.characterClass === CLASSES.SNIPER) {
@@ -118,7 +150,12 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(15);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list.push({ type: EFFECTS.STUN, duration: 1 });
+        enemyEffectsCopy[target].list = [
+          ...enemyEffectsCopy[target].list.filter(
+            (item) => item.type !== EFFECTS.STUN,
+          ),
+          { type: EFFECTS.STUN, duration: 1 },
+        ];
       }
     }
 
@@ -135,10 +172,15 @@ export const calculateDamage = (
 
       if (isSuccess) {
         Object.keys(playerEffectsCopy).forEach((key) => {
-          playerEffectsCopy[key].list.push({
-            type: EFFECTS.INSPIRED,
-            duration: 3,
-          });
+          playerEffectsCopy[key].list = [
+            ...playerEffectsCopy[key].list.filter(
+              (item) => item.type !== EFFECTS.INSPIRED,
+            ),
+            {
+              type: EFFECTS.INSPIRED,
+              duration: 3,
+            },
+          ];
         });
       }
     }
@@ -155,10 +197,15 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(10);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list.push({
-          type: EFFECTS.BROKE,
-          duration: 2,
-        });
+        enemyEffectsCopy[target].list = [
+          ...enemyEffectsCopy[target].list.filter(
+            (item) => item.type !== EFFECTS.BROKE,
+          ),
+          {
+            type: EFFECTS.BROKE,
+            duration: 2,
+          },
+        ];
       }
     }
   }
@@ -170,10 +217,15 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(15);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list.push({
-          type: EFFECTS.BLEED,
-          duration: 2,
-        });
+        enemyEffectsCopy[target].list = [
+          ...enemyEffectsCopy[target].list.filter(
+            (item) => item.type !== EFFECTS.BLEED,
+          ),
+          {
+            type: EFFECTS.BLEED,
+            duration: 2,
+          },
+        ];
       }
     }
 
@@ -191,10 +243,15 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(10);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list.push({
-          type: EFFECTS.WEAKNESS,
-          duration: 2,
-        });
+        enemyEffectsCopy[target].list = [
+          ...enemyEffectsCopy[target].list.filter(
+            (item) => item.type !== EFFECTS.WEAKNESS,
+          ),
+          {
+            type: EFFECTS.WEAKNESS,
+            duration: 2,
+          },
+        ];
       }
     }
 
@@ -210,6 +267,59 @@ export const calculateDamage = (
 
   // Обрабатываем перки танка
   if (playerData.characterClass === CLASSES.TANK) {
+    if (perkIds.includes(TANK_PERKS.INSPIRATION)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(10);
+
+      if (isSuccess) {
+        isInspired = true;
+      }
+    }
+
+    if (perkIds.includes(TANK_PERKS.VAMPIRE)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(25);
+
+      if (isSuccess) {
+        restoredHP = Math.round(damage / 2);
+      }
+    }
+
+    if (perkIds.includes(TANK_PERKS.CRUSHER)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(15);
+
+      if (isSuccess) {
+        enemyEffectsCopy[target].list = [
+          ...enemyEffectsCopy[target].list.filter(
+            (item) => item.type !== EFFECTS.STUN,
+          ),
+          {
+            type: EFFECTS.STUN,
+            duration: 1,
+          },
+        ];
+      }
+    }
+
+    if (perkIds.includes(TANK_PERKS.RECKLESSNESS)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(10);
+
+      if (isSuccess) {
+        hasRichochette = true;
+      }
+    }
+
+    if (perkIds.includes(TANK_PERKS.SCARLESS)) {
+      // 10% шанс прока перка
+      const isSuccess = isSuccessRoll(10);
+
+      if (isSuccess) {
+        healAll = true;
+        healAllAmount = Math.round(damage / 2);
+      }
+    }
   }
 
   if (hasRichochette) {
@@ -229,7 +339,7 @@ export const calculateDamage = (
       (effect) => effect.type === EFFECTS.INSPIRED,
     )
   ) {
-    damage = Math.round((damage / 100) * 5);
+    damage += Math.round((damage / 100) * 5);
   }
 
   if (
@@ -272,7 +382,7 @@ export const calculateDamage = (
         return { ...enemy, hp: newHp };
       }
 
-      if (richochetteDamage) {
+      if (richochetteDamage && enemy.hp > 0) {
         const newHp = Math.max(enemy.hp - richochetteDamage, 0);
 
         return { ...enemy, hp: newHp };
@@ -287,23 +397,31 @@ export const calculateDamage = (
     ...battleModelCopy.player,
     party: battleModelCopy.player.party.map((player) => {
       const healAllPercentage = healAll
-        ? Math.round((statistics[player.name].maxHealth / 100) * 10)
+        ? healAllAmount ||
+          Math.round((statistics[player.name].maxHealth / 100) * 10)
         : 0;
 
-      const playerModel = player;
+      const playerModel = { ...player };
 
       if (player.name === source) {
+        let health = player.currentHealth;
+
+        if (vampireEffect) {
+          health += Math.round(damage * (vampireEffect / 100));
+        }
+
+        if (healAllPercentage) {
+          health += healAllPercentage;
+        }
+
+        if (restoredHP) {
+          health += restoredHP;
+        }
+
         return {
           ...player,
-          currentHealth: vampireEffect
-            ? Math.min(
-                player.currentHealth +
-                  Math.round(damage * (vampireEffect / 100)) +
-                  healAllPercentage,
-                sourcePlayer.maxHealth,
-              )
-            : player.currentHealth,
-          hasTurn: false,
+          currentHealth: Math.min(health, sourcePlayer.maxHealth),
+          hasTurn: isInspired,
           currentAmountOfRounds: reloader
             ? magSize[player.name]
             : Math.max(
@@ -329,6 +447,11 @@ export const calculateDamage = (
     }),
     effects: playerEffectsCopy,
   };
+
+  battleModelCopy.messages = [
+    ...battleModelCopy.messages,
+    generatePlayerMessage(source, targetEnemy.type, damage),
+  ];
 
   if (hasRichochette) {
     return {

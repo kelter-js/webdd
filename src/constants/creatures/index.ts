@@ -22,6 +22,7 @@ import ballerine from "../../assets/enemies/third_tier/ballerina_boss.png";
 import mergedMass from "../../assets/enemies/third_tier/mergemass.png";
 import { Creature } from "../../types/gameState";
 import { getRandom } from "../../utils";
+import { TEMPLATE_DAMAGE, TEMPLATE_TARGET } from "..";
 
 // Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
 // также здесь
@@ -108,9 +109,6 @@ export const CREATURE_TO_IMG_MAP = {
 
   [ENEMIES.MERGED_MASS_TIER_1]: mergedMass,
 };
-
-const TEMPLATE_TARGET = "target";
-const TEMPLATE_DAMAGE = "damage";
 
 const SPIDER_MESSAGES = [
   `Паук наносит ${TEMPLATE_DAMAGE} урона ${TEMPLATE_TARGET}, нервно перебирая передними конечностями.`,
@@ -272,7 +270,7 @@ export const CREATURE_DIALOGUES: Record<ENEMIES, string[]> = {
   [ENEMIES.MERGED_MASS_TIER_1]: MERGED_MASS_MESSAGES,
 };
 
-const CREATURE_NAME_MAP = {
+export const CREATURE_NAME_MAP = {
   [ENEMIES.SPIDER_TIER_1]: "Паук",
   [ENEMIES.SPIDER_TIER_2]: "Паук",
   [ENEMIES.SPIDER_TIER_3]: "Паук",

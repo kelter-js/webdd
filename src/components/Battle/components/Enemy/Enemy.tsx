@@ -58,7 +58,7 @@ export const Enemy: FC<EnemyProps> = ({
     fragmentsRef.current = frags;
   }
 
-  console.log("isSelected", isSelected);
+  console.log("isSelected", layout);
 
   return (
     <Container

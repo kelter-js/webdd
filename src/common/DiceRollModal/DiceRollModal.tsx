@@ -27,55 +27,59 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({
   onAnimationEnd,
 }) => {
   const [isRolling, setIsRolling] = useState(true);
-
   const [diceResults, setDiceResults] =
     useState<DicesData>(DEFAULT_DICES_STATE);
 
   useEffect(() => {
-    setTimeout(() => {
-      setDiceResults([
-        Math.floor(Math.random() * DICES_SIDES) + 1,
-        Math.floor(Math.random() * DICES_SIDES) + 1,
-      ]);
+    setDiceResults([
+      Math.floor(Math.random() * DICES_SIDES) + 1,
+      Math.floor(Math.random() * DICES_SIDES) + 1,
+    ]);
+
+    const timer = setTimeout(() => {
       setIsRolling(false);
     }, DICES_ROLL_DURATION);
+
+    return () => clearTimeout(timer);
   }, []);
-
   return (
-    <AnimatePresence>
-      <DiceRollContainer>
-        {/* Затемнённый фон */}
-        <motion.div
-          initial={DICE_SHADOWS_INITIAL}
-          animate={DICE_SHADOWS_ANIMATE}
-          exit={DICE_SHADOWS_EXIT}
-          style={DICE_SHADOWS_STYLES}
-        />
+    <DiceRollContainer>
+      {/* Затемнённый фон */}
+      <motion.div
+        initial={DICE_SHADOWS_INITIAL}
+        animate={DICE_SHADOWS_ANIMATE}
+        exit={DICE_SHADOWS_EXIT}
+        style={DICE_SHADOWS_STYLES}
+      />
 
-        {/* Контейнер для кубиков */}
-        <motion.div style={DICE_ROLL_CONTAINER_STYLES}>
-          {/* Анимация для двух кубиков */}
-          <Stack direction="row" gap={2}>
-            {DICES_AMOUNT.map((index) => (
-              <motion.div
-                key={`dice-${index}`}
-                style={DICE_STYLES}
-                animate={
-                  isRolling ? DICE_ROLL_ANIMATE : DICE_ROLL_STATIC_ANIMATE
+      {/* Контейнер для кубиков */}
+      <motion.div style={DICE_ROLL_CONTAINER_STYLES}>
+        {/* Анимация для двух кубиков */}
+        <Stack direction="row" gap={2}>
+          {DICES_AMOUNT.map((index) => (
+            <motion.div
+              key={`dice-${index}`}
+              style={DICE_STYLES}
+              animate={isRolling ? DICE_ROLL_ANIMATE : DICE_ROLL_STATIC_ANIMATE}
+              transition={DICE_TRANSITION}
+              onAnimationComplete={() => {
+                if (!isRolling) {
+                  setTimeout(() => {
+                    onAnimationEnd();
+                  }, 600); // пауза чтобы увидеть результат
                 }
-                transition={DICE_TRANSITION}
-              >
-                {isRolling ? "?" : diceResults[index]}
-              </motion.div>
-            ))}
-          </Stack>
-          {!isRolling && (
-            <Typography variant="h5" fontFamily="inherit">
-              {turnOwner}
-            </Typography>
-          )}
-        </motion.div>
-      </DiceRollContainer>
-    </AnimatePresence>
+              }}
+            >
+              {isRolling ? "?" : diceResults[index]}
+            </motion.div>
+          ))}
+        </Stack>
+        {!isRolling && (
+          <Typography variant="h5" fontFamily="inherit">
+            {turnOwner}
+          </Typography>
+        )}
+      </motion.div>
+    </DiceRollContainer>
   );
 };

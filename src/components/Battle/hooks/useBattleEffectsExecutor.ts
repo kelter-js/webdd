@@ -242,7 +242,7 @@ export const useBattleEffectsExecutor = ({
             };
 
             // если не изменилось ХП - значит урона не было - а просто нужно обновить флаги
-            if (currentHp === playerCopy.currentHealth) {
+            if (currentHp === player.currentHealth) {
               if (needToTogglePlayer) {
                 toggleNextPlayer(newBattleModel);
               } else {

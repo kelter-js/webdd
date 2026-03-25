@@ -10,6 +10,10 @@ import { POTION_TYPES } from "../../../../entities/consumables";
 import { PotionsList } from "./components/PotionsList";
 import { TURN_STATES } from "../../../../entities";
 import { DamageEffect } from "../Enemy/components/DamageEffect";
+import { usePlayer } from "../../../../contexts/Player";
+import potionSfx from "../../../../assets/audio/potion.mp3";
+
+const POTION_SFX = "consumePotionSfx";
 
 export const CharactersBar: FC<CharactersBarProps> = ({
   selectedPlayer,
@@ -35,6 +39,8 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   const party = battle?.player?.party || [];
   const isEnemyTurn = battle?.turn === TURN_STATES.ENEMY_TURN;
 
+  const { handleSetSrc } = usePlayer();
+
   console.log("battle", battle);
   console.log("statistics", statistics);
 
@@ -53,6 +59,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   const handleConsumePotion = (potion: POTION_TYPES) => {
     if (selectedPlayer?.name) {
       console.log("do we trigger?");
+      handleSetSrc(POTION_SFX, potionSfx);
       consumePotion(selectedPlayer?.name, potion, selectedNextPlayer);
     }
   };

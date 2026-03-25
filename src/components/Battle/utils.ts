@@ -53,6 +53,14 @@ import staticBgTier3_10 from "../../assets/static/dungeon_hallway/battle_tier_3/
 import { Battle, Creature, Statistics } from "../../types/gameState";
 import { DamageData } from "./types";
 import { AI_CATEGORIES } from "../../entities/ai";
+import { ENEMIES } from "../../entities";
+import { CREATURE_NAME_MAP } from "../../constants/creatures";
+import { CHARACTER_MESSAGES } from "../../constants/characters";
+import {
+  TEMPLATE_DAMAGE,
+  TEMPLATE_NAME,
+  TEMPLATE_TARGET,
+} from "../../constants";
 
 // ключи - айди существа - значение это путь к изображению с существом
 export const CREATURE_ID_TO_IMAGE_MAP = {};
@@ -301,4 +309,25 @@ export const calculateAiDamage = (
   }
 
   return { model: {} as Battle, damageModel: [] };
+};
+
+export const generatePlayerMessage = (
+  name: string,
+  target: ENEMIES,
+  damage: number,
+  isEvasion?: boolean,
+) => {
+  if (isEvasion) {
+    return `${name} промахивается.`;
+  }
+
+  const enemyName = CREATURE_NAME_MAP[target];
+  const messageIndex = getRandom(0, CHARACTER_MESSAGES.length - 1);
+  const message = CHARACTER_MESSAGES[messageIndex];
+
+  message.replace(TEMPLATE_NAME, name);
+  message.replace(TEMPLATE_TARGET, enemyName);
+  message.replace(TEMPLATE_DAMAGE, String(damage));
+
+  return message;
 };

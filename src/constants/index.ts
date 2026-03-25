@@ -207,3 +207,7 @@ export const TORCH_PRICE = 150;
 export const LEGENDARY_ARMOR_PRICE = 30000;
 
 export const SELL_SFX_ID = "sellSfx";
+
+export const TEMPLATE_TARGET = "target";
+export const TEMPLATE_DAMAGE = "damage";
+export const TEMPLATE_NAME = "name";
