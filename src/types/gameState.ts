@@ -131,7 +131,7 @@ export interface Creature {
   hasTurn?: boolean;
   subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
   isEnhanced: boolean;
-  id?: string;
+  id: string;
 }
 
 export interface Enemy {
@@ -185,7 +185,7 @@ export interface Battle {
   enemy: Enemy;
   player: Player;
   turn: TURN_STATES;
-  messages: Array<Message | string>;
+  messages: Message[];
   reward: null | Reward;
 }
 

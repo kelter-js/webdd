@@ -4,7 +4,12 @@ import sniper from "../../../../assets/avatars/sniper.png";
 import medic from "../../../../assets/avatars/medic.png";
 import skeleton from "../../../../assets/avatars/dead.png";
 import tank from "../../../../assets/avatars/tank.png";
-import { Battle, Statistics } from "../../../../types/gameState";
+import {
+  Battle,
+  GameStateData,
+  Statistics,
+  StoreState,
+} from "../../../../types/gameState";
 import { getRandom } from "../../../../utils";
 import { calculateCritDamage } from "../../../../stores/constants";
 import {
@@ -15,6 +20,9 @@ import {
 import { EFFECTS } from "../../../../entities/effects";
 import { DamageData } from "../../types";
 import { generatePlayerMessage } from "../../utils";
+import { ENEMIES } from "../../../../entities";
+import { POTION_TYPES } from "../../../../entities/consumables";
+import { getPotionHealth } from "../../../../stores/utils";
 
 export const getUnitAvatarSrc = (unitType: CLASSES, isDead: boolean) => {
   if (isDead) {
@@ -81,7 +89,11 @@ export const calculateDamage = (
         },
         messages: [
           ...battleModel.messages,
-          generatePlayerMessage(source, targetEnemy.type, 0, true),
+          {
+            message: generatePlayerMessage(source, targetEnemy.type, 0, true),
+            attackerName: source,
+            attackerType: "Player",
+          },
         ],
       },
       damageModel: [
@@ -355,7 +367,16 @@ export const calculateDamage = (
     });
 
     if (isSuccess) {
-      damage = 9999;
+      const isTargetMainBoss =
+        targetEnemy.type === ENEMIES.SIN_ICON_TIER_1 ||
+        targetEnemy.type === ENEMIES.GENERAL_TIER_1 ||
+        targetEnemy.type === ENEMIES.MERGED_MASS_TIER_1;
+
+      if (isTargetMainBoss) {
+        damage += Math.round((damage / 100) * 15);
+      } else {
+        damage = 9999;
+      }
     }
   }
 
@@ -450,7 +471,11 @@ export const calculateDamage = (
 
   battleModelCopy.messages = [
     ...battleModelCopy.messages,
-    generatePlayerMessage(source, targetEnemy.type, damage),
+    {
+      message: generatePlayerMessage(source, targetEnemy.type, damage),
+      attackerName: source,
+      attackerType: "Player",
+    },
   ];
 
   if (hasRichochette) {

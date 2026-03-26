@@ -26,7 +26,7 @@ export const MAX_AMOUNT_OF_ITEMS_TO_SELL = 12;
 
 // Изначально даётся 10 очков - каждый лвл по 3 очка
 // формула рассчета урона исходя из брони на персонаже
-function getFinalDamage(rawDamage: number, armor: number) {
+export function getFinalDamage(rawDamage: number, armor: number) {
   const K = 30; // Балансный коэффициент
   const totalDefense = armor;
 
@@ -40,27 +40,19 @@ function getFinalDamage(rawDamage: number, armor: number) {
   return Math.max(1, Math.round(damage));
 }
 // формула рассчета шанса уворота
-function getEvasionChance(agility: number) {
-  // Твой текущий расчет рейтинга (Agility * 4)
-  const evasionRating = agility * 0.4;
-
+export function calculateFinalEvasion(totalEvasion: number): number {
   // Коэффициент "мягкого капа".
-  // При рейтинге 60 (15 ловкости) шанс будет 50%.
   const K = 60;
 
-  // Рассчитываем шанс (от 0 до 1)
-  const chance = evasionRating / (evasionRating + K);
+  // Рассчитываем шанс по гиперболической кривой (от 0 до 1)
+  // Формула: x / (x + K)
+  const chance = totalEvasion / (totalEvasion + K);
 
-  // Устанавливаем жесткий лимит (Hard Cap),
-  // чтобы даже самый удачливый игрок иногда получал урон (например, макс. 80%)
+  // Жесткий лимит (Hard Cap) в 80%
   const maxChance = 0.8;
 
   return Math.min(chance, maxChance);
 }
-
-// пример использования, возвращает ф-ия от 0.1 до 1.0
-// const chance = getEvasionChance(character.agility); // допустим, вернет 0.4
-// if (Math.random() < chance)
 
 export function calculateCritDamage(rawDamage: number, critMultiplier: number) {
   // Просто умножаем урон на множитель

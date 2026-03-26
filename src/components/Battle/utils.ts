@@ -54,13 +54,14 @@ import { Battle, Creature, Statistics } from "../../types/gameState";
 import { DamageData } from "./types";
 import { AI_CATEGORIES } from "../../entities/ai";
 import { ENEMIES } from "../../entities";
-import { CREATURE_NAME_MAP } from "../../constants/creatures";
+import { CREATURE_NAME_MAP, getEnemyPhrase } from "../../constants/creatures";
 import { CHARACTER_MESSAGES } from "../../constants/characters";
 import {
   TEMPLATE_DAMAGE,
   TEMPLATE_NAME,
   TEMPLATE_TARGET,
 } from "../../constants";
+import { calculateFinalEvasion, getFinalDamage } from "../../stores/constants";
 
 // ключи - айди существа - значение это путь к изображению с существом
 export const CREATURE_ID_TO_IMAGE_MAP = {};
@@ -276,39 +277,180 @@ export const getBattleBackground = (tier: number) => {
   }
 };
 
+const removeTurnFromTarget = (target: string, enemyParty: Creature[]) =>
+  enemyParty.map((enemy) =>
+    enemy.id === target ? { ...enemy, hasTurn: false } : enemy,
+  );
+
 export const calculateAiDamage = (
   battleModel: Battle,
   statistics: Record<string, Statistics>,
   source: Creature,
 ): { model: Battle; damageModel: DamageData[] | null } => {
-  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_1) {
-  }
-
-  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_2) {
-  }
-
-  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_3) {
-  }
-
-  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_1) {
-  }
-
-  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_2) {
-  }
-
-  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_3) {
-  }
-
+  // просто атакуют
   if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
+    // список живых игроков
+    const party = battleModel.player.party.filter(
+      (player) => player.currentHealth > 0,
+    );
+
+    // если никого нет - сюда не должны вообще попадать - но выходим из функции
+    if (party.length === 0) {
+      return { model: battleModel, damageModel: null };
+    }
+
+    // берем рандомного игрока
+    const randomPlayerIndex = getRandom(0, party.length - 1);
+    // данные рандомного игрока, создаём копию модели с которой дальше работаем
+    const playerData = { ...party[randomPlayerIndex] };
+    const playerStatistics = statistics[playerData.name];
+
+    // если по каким-то причинам нет игрока или статистики по нему - выходим
+    if (!playerData || !playerStatistics) {
+      return { model: battleModel, damageModel: null };
+    }
+    // высчитываем шанс промахнуться по игроку
+    const evasionChance = calculateFinalEvasion(playerStatistics.evasionChance);
+    // получаем читаемо имя персонажа
+    const enemyName = CREATURE_NAME_MAP[source.type];
+    // проверяем, промах ли это
+    if (Math.random() < evasionChance) {
+      return {
+        model: {
+          ...battleModel,
+          enemy: {
+            ...battleModel.enemy,
+            party: removeTurnFromTarget(source.id, battleModel.enemy.party),
+          },
+          messages: [
+            ...battleModel.messages,
+            {
+              message: getEnemyPhrase(
+                playerData.name,
+                0,
+                source.type,
+                false,
+                true,
+              ),
+              attackerName: enemyName,
+              attackerType: "Enemy",
+            },
+          ],
+        },
+        damageModel: [
+          {
+            target: playerData.name,
+            damage: null,
+            isCritical: false,
+            isEvasion: true,
+            shouldPlayDeathAnimation: false,
+          },
+        ],
+      };
+    }
+
+    const initialDamage = getRandom(source.minDmg, source.maxDmg);
+    const damageAfterArmorReduction = getFinalDamage(
+      initialDamage,
+      playerStatistics.defense,
+    );
+
+    let isPlayerDead = false;
+
+    const newModel = {
+      ...battleModel,
+      enemy: {
+        ...battleModel.enemy,
+        party: removeTurnFromTarget(source.id, battleModel.enemy.party),
+      },
+      player: {
+        ...battleModel.player,
+        party: battleModel.player.party.map((player) => {
+          if (player.name === playerData.name) {
+            const currentHealth = player.currentHealth;
+            const newPlayerHealth = Math.max(
+              0,
+              currentHealth - damageAfterArmorReduction,
+            );
+
+            if (newPlayerHealth === 0) {
+              isPlayerDead = true;
+            }
+
+            return {
+              ...player,
+              currentHealth: newPlayerHealth,
+            };
+          }
+
+          return player;
+        }),
+      },
+    };
+
+    return {
+      model: {
+        ...newModel,
+        messages: [
+          ...battleModel.messages,
+          {
+            message: getEnemyPhrase(
+              playerData.name,
+              damageAfterArmorReduction,
+              source.type,
+              isPlayerDead,
+              false,
+            ),
+            attackerName: enemyName,
+            attackerType: "Enemy",
+          },
+        ],
+      },
+      damageModel: [
+        {
+          target: playerData.name,
+          damage: damageAfterArmorReduction,
+          isCritical: false,
+          isEvasion: false,
+          shouldPlayDeathAnimation: isPlayerDead,
+        },
+      ],
+    };
   }
 
+  // могут вешать bleed
   if (source.aiPackage === AI_CATEGORIES.TIER_2) {
   }
 
+  // могут вешать bleed/fire/хилить себя
   if (source.aiPackage === AI_CATEGORIES.TIER_3) {
   }
 
-  return { model: {} as Battle, damageModel: [] };
+  // может вешать bleed
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_1) {
+  }
+
+  // может вешать bleed и fire
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_2) {
+  }
+
+  // может вешать bleed/fire/stun/хилить себя/выбирает в таргет лоухп
+  if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_3) {
+  }
+
+  // может хилить себя
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_1) {
+  }
+
+  // хилит себя - вешает стан
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_2) {
+  }
+
+  // может вешать bleed/fire/stun/хилить себя/выбирает в таргет лоухп
+  if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_3) {
+  }
+
+  return { model: battleModel, damageModel: [] };
 };
 
 export const generatePlayerMessage = (

@@ -592,7 +592,11 @@ export const generateBattle = ({
     enemy: { effects: {}, party: [] },
     turn,
     messages: [
-      `${turn === TURN_STATES.PLAYER_TURN ? "Игрок" : "Противник"} ходит первым`,
+      {
+        message: `${turn === TURN_STATES.PLAYER_TURN ? "Игрок" : "Противник"} ходит первым`,
+        attackerName: "System",
+        attackerType: "Player",
+      },
     ],
     reward: null,
   };

@@ -19,6 +19,17 @@ import staticBgTier2_9 from "../../assets/static/dungeon_hallway/tier_2/image (9
 import staticBgTier2_10 from "../../assets/static/dungeon_hallway/tier_2/image (10).jpg";
 import staticBgTier2_11 from "../../assets/static/dungeon_hallway/tier_2/image (11).jpg";
 
+import staticBgTier3_1 from "../../assets/static/dungeon_hallway/tier_3/image (1).jpg";
+import staticBgTier3_2 from "../../assets/static/dungeon_hallway/tier_3/image (2).jpg";
+import staticBgTier3_3 from "../../assets/static/dungeon_hallway/tier_3/image (3).jpg";
+import staticBgTier3_4 from "../../assets/static/dungeon_hallway/tier_3/image (4).jpg";
+import staticBgTier3_5 from "../../assets/static/dungeon_hallway/tier_3/image (5).jpg";
+import staticBgTier3_6 from "../../assets/static/dungeon_hallway/tier_3/image (6).jpg";
+import staticBgTier3_7 from "../../assets/static/dungeon_hallway/tier_3/image (7).jpg";
+import staticBgTier3_8 from "../../assets/static/dungeon_hallway/tier_3/image (8).jpg";
+import staticBgTier3_9 from "../../assets/static/dungeon_hallway/tier_3/image (9).jpg";
+import staticBgTier3_10 from "../../assets/static/dungeon_hallway/tier_3/image (10).jpg";
+
 import { getRandom } from "../../utils";
 
 const firstTierStaticBackgrounds = [
@@ -46,6 +57,19 @@ const secondTierStaticBackgrounds = [
   staticBgTier2_11,
 ];
 
+const thirdTierStaticBackgrounds = [
+  staticBgTier3_1,
+  staticBgTier3_2,
+  staticBgTier3_3,
+  staticBgTier3_4,
+  staticBgTier3_5,
+  staticBgTier3_6,
+  staticBgTier3_7,
+  staticBgTier3_8,
+  staticBgTier3_9,
+  staticBgTier3_10,
+];
+
 export const getDungeonBackgroundByTier = (tier: number) => {
   switch (tier) {
     case 1: {
@@ -65,8 +89,11 @@ export const getDungeonBackgroundByTier = (tier: number) => {
     }
 
     case 3: {
-      // MOCK
-      return staticBgTier1;
+      const randomImageIndex = getRandom(
+        0,
+        thirdTierStaticBackgrounds.length - 1,
+      );
+      return thirdTierStaticBackgrounds[randomImageIndex];
     }
 
     default: {

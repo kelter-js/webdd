@@ -1,3 +1,4 @@
+import { MEDIC_PERKS } from "../../../constants/perks";
 import { POTION_TYPES } from "../../../entities/consumables";
 import { Battle } from "../../../types/gameState";
 import { getPotionHealth } from "../../utils";
@@ -13,8 +14,17 @@ export const consumePotion =
       const stats = state.statistics?.[characterName];
       if (!stats) return state;
 
-      const potionPercentage = getPotionHealth(potion);
       const maxHealth = stats.maxHealth;
+      const hasPotionEnhancementPerk = state.player.party.find((player) =>
+        Boolean(
+          player.perksList.find(
+            (perk) => perk.id === MEDIC_PERKS.FORTIFICATION,
+          ),
+        ),
+      );
+
+      const potionPercentage =
+        getPotionHealth(potion) + (hasPotionEnhancementPerk ? 15 : 0);
 
       const newState = {
         ...state,

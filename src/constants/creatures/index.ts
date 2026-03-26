@@ -366,7 +366,7 @@ export interface EnemyPrototypeData {
   aiPackage: AI_CATEGORIES;
   pictureSrc: string;
   audioSrc: string;
-  baseModel: Omit<Creature, "aiPackage">;
+  baseModel: Omit<Creature, "aiPackage" | "id">;
 }
 
 export type EnemyInitialData = Record<ENEMIES, EnemyPrototypeData>;
