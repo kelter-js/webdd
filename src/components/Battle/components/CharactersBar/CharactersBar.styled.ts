@@ -91,7 +91,7 @@ export const Divider = styled("div")`
 
 export const CharacterControls = styled("div")`
   position: absolute;
-  left: 50px;
+  left: 15px;
   top: 25px;
   display: flex;
   flex-direction: column;

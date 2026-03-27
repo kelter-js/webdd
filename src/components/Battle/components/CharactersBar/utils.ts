@@ -6,13 +6,17 @@ import skeleton from "../../../../assets/avatars/dead.png";
 import tank from "../../../../assets/avatars/tank.png";
 import {
   Battle,
+  Creature,
+  Effects,
   GameStateData,
+  PERK_ID_DATA,
   Statistics,
   StoreState,
 } from "../../../../types/gameState";
 import { getRandom } from "../../../../utils";
 import { calculateCritDamage } from "../../../../stores/constants";
 import {
+  ABILITY_PERKS,
   MEDIC_PERKS,
   SNIPER_PERKS,
   TANK_PERKS,
@@ -23,6 +27,7 @@ import { generatePlayerMessage } from "../../utils";
 import { ENEMIES } from "../../../../entities";
 import { POTION_TYPES } from "../../../../entities/consumables";
 import { getPotionHealth } from "../../../../stores/utils";
+import { duration } from "@mui/material";
 
 export const getUnitAvatarSrc = (unitType: CLASSES, isDead: boolean) => {
   if (isDead) {
@@ -57,13 +62,11 @@ export const calculateDamage = (
   battleModel: Battle,
   statistics: Record<string, Statistics>,
   source: string,
-  target: string,
-  magSize: Record<string, number>,
+  target: Creature,
+  magSize: number,
 ): { model: Battle; damageModel: DamageData[] | null } => {
   const isTargetEvading = getRandom(1, 100);
-  const targetEnemy = battleModel.enemy.party.find(
-    (enemy) => enemy.id === target,
-  );
+  const targetEnemy = target;
   const sourcePlayer = statistics[source];
 
   const playerData = battleModel.player.party.find(
@@ -98,7 +101,7 @@ export const calculateDamage = (
       },
       damageModel: [
         {
-          target,
+          target: target.id,
           damage: null,
           isCritical: false,
           isEvasion: true,
@@ -120,10 +123,10 @@ export const calculateDamage = (
   const enemyEffectsCopy = battleModelCopy.enemy.effects;
   const playerEffectsCopy = battleModelCopy.player.effects;
 
-  if (!enemyEffectsCopy[target]) {
-    enemyEffectsCopy[target] = { hasTriggered: true, list: [] };
+  if (!enemyEffectsCopy[target.id]) {
+    enemyEffectsCopy[target.id] = { hasTriggered: true, list: [] };
   } else {
-    enemyEffectsCopy[target].list = [...enemyEffectsCopy[target].list];
+    enemyEffectsCopy[target.id].list = [...enemyEffectsCopy[target.id].list];
   }
 
   if (!playerEffectsCopy[source]) {
@@ -162,8 +165,8 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(15);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list = [
-          ...enemyEffectsCopy[target].list.filter(
+        enemyEffectsCopy[target.id].list = [
+          ...enemyEffectsCopy[target.id].list.filter(
             (item) => item.type !== EFFECTS.STUN,
           ),
           { type: EFFECTS.STUN, duration: 1 },
@@ -209,8 +212,8 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(10);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list = [
-          ...enemyEffectsCopy[target].list.filter(
+        enemyEffectsCopy[target.id].list = [
+          ...enemyEffectsCopy[target.id].list.filter(
             (item) => item.type !== EFFECTS.BROKE,
           ),
           {
@@ -229,8 +232,8 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(15);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list = [
-          ...enemyEffectsCopy[target].list.filter(
+        enemyEffectsCopy[target.id].list = [
+          ...enemyEffectsCopy[target.id].list.filter(
             (item) => item.type !== EFFECTS.BLEED,
           ),
           {
@@ -255,8 +258,8 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(10);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list = [
-          ...enemyEffectsCopy[target].list.filter(
+        enemyEffectsCopy[target.id].list = [
+          ...enemyEffectsCopy[target.id].list.filter(
             (item) => item.type !== EFFECTS.WEAKNESS,
           ),
           {
@@ -302,8 +305,8 @@ export const calculateDamage = (
       const isSuccess = isSuccessRoll(15);
 
       if (isSuccess) {
-        enemyEffectsCopy[target].list = [
-          ...enemyEffectsCopy[target].list.filter(
+        enemyEffectsCopy[target.id].list = [
+          ...enemyEffectsCopy[target.id].list.filter(
             (item) => item.type !== EFFECTS.STUN,
           ),
           {
@@ -339,7 +342,7 @@ export const calculateDamage = (
   }
 
   if (
-    enemyEffectsCopy[target].list.find(
+    enemyEffectsCopy[target.id].list.find(
       (effect) => effect.type === EFFECTS.BROKE,
     )
   ) {
@@ -383,13 +386,13 @@ export const calculateDamage = (
   let shouldPlayDeathAnimation = false;
 
   const initialTargetEnemy = battleModel.enemy.party.find(
-    (enemy) => enemy.id === target,
+    (enemy) => enemy.id === target.id,
   );
 
   battleModelCopy.enemy = {
     ...battleModelCopy.enemy,
     party: battleModelCopy.enemy.party.map((enemy) => {
-      const isTarget = enemy.id === target;
+      const isTarget = enemy.id === target.id;
 
       if (isTarget) {
         const newHp = Math.max(enemy.hp - damage, 0);
@@ -444,7 +447,7 @@ export const calculateDamage = (
           currentHealth: Math.min(health, sourcePlayer.maxHealth),
           hasTurn: isInspired,
           currentAmountOfRounds: reloader
-            ? magSize[player.name]
+            ? magSize
             : Math.max(
                 0,
                 (player.currentAmountOfRounds || 0) -
@@ -461,7 +464,7 @@ export const calculateDamage = (
       }
 
       if (reloader) {
-        playerModel.currentAmountOfRounds = magSize[player.name];
+        playerModel.currentAmountOfRounds = magSize;
       }
 
       return playerModel;
@@ -482,7 +485,7 @@ export const calculateDamage = (
     return {
       model: battleModelCopy,
       damageModel: battleModelCopy.enemy.party.map((enemy) => {
-        const isSameTarget = enemy.id === target;
+        const isSameTarget = enemy.id === target.id;
         const initialEnemyModel = battleModel.enemy.party.find(
           (initialEnemy) => initialEnemy.id === enemy.id,
         );
@@ -504,7 +507,7 @@ export const calculateDamage = (
     model: battleModelCopy,
     damageModel: [
       {
-        target,
+        target: target.id,
         damage,
         isCritical: isCrit,
         isEvasion: false,
@@ -512,4 +515,88 @@ export const calculateDamage = (
       },
     ],
   };
+};
+
+export const getBattleStateAfterAbilityUsage = (
+  battle: Battle,
+  ability: PERK_ID_DATA,
+  character: string,
+  statistics: Record<string, Statistics>,
+) => {
+  if (ability === MEDIC_PERKS.HEAL_ALL) {
+    return {
+      ...battle,
+
+      player: {
+        ...battle.player,
+        effects: {
+          ...battle.player.effects,
+          [character]: {
+            ...(battle.player.effects[character] || {}),
+            list: [
+              ...battle.player.effects[character]?.list,
+              { type: EFFECTS.HEAL_ALL_FATIGUE, duration: 2 },
+            ],
+          },
+        },
+        party: battle.player.party.map((player) => {
+          const playerStatistics = statistics[player.name];
+          const maxHealth = playerStatistics.maxHealth;
+          const newHealth =
+            player.currentHealth + Math.round((maxHealth / 100) * 30);
+          const hasTurn = player.name !== character;
+
+          return {
+            ...player,
+            currentHealth: Math.min(maxHealth, newHealth),
+            hasTurn: hasTurn,
+          };
+        }),
+      },
+    };
+  }
+
+  if (ability === TANK_PERKS.LAST_STAND) {
+    return {
+      ...battle,
+
+      player: {
+        ...battle.player,
+        effects: {
+          ...battle.player.effects,
+          [character]: {
+            ...(battle.player.effects[character] || {}),
+            list: [
+              ...battle.player.effects[character]?.list,
+              { type: EFFECTS.LAST_STAND_FATIGUE, duration: 4 },
+              { type: EFFECTS.LAST_STAND, duration: 2 },
+            ],
+          },
+        },
+      },
+    };
+  }
+
+  if (ability === SNIPER_PERKS.INSTAKILL) {
+    return {
+      ...battle,
+
+      player: {
+        ...battle.player,
+        effects: {
+          ...battle.player.effects,
+          [character]: {
+            ...(battle.player.effects[character] || {}),
+            list: [
+              ...battle.player.effects[character]?.list,
+              { type: EFFECTS.INSTA_KILL_FATIGUE, duration: 2 },
+              { type: EFFECTS.INSTA_KILL, duration: 1 },
+            ],
+          },
+        },
+      },
+    };
+  }
+
+  return battle;
 };

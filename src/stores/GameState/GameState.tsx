@@ -459,7 +459,10 @@ export const useGameState = create<StoreState>()(
           ...state,
           player: {
             ...state.player,
-
+            party: state.player.party.map((playerData) => ({
+              ...playerData,
+              level: 15,
+            })),
             gold: state.player.gold + 50000,
             collected: [[RESOURCES.ORE, "30"]],
             // currentTier: 3,

@@ -62,13 +62,7 @@ import {
   TEMPLATE_TARGET,
 } from "../../constants";
 import { calculateFinalEvasion, getFinalDamage } from "../../stores/constants";
-
-// ключи - айди существа - значение это путь к изображению с существом
-export const CREATURE_ID_TO_IMAGE_MAP = {};
-
-// каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
-// ключи - айди существа - значение это путь к звуку с существом
-export const CREATURE_ID_TO_SOUND_MAP = {};
+import { EFFECTS } from "../../entities/effects";
 
 // каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
 // ключи - айди существа - значение это путь к коллбэкам логики существа

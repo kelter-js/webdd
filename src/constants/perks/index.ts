@@ -39,7 +39,7 @@ export const TANK_PERKS_DESCRIPTIONS = {
     "10% шанс совершить фронтальную атаку, которая нанесет урон всем врагам на поле",
 
   [TANK_PERKS.LAST_STAND]:
-    "Активная способность: снижает весь получаемый урон на 15% на следующие два раунда.",
+    "Активная способность: снижает весь получаемый урон на 15% на следующие два раунда. Перезарядка 4 хода",
   [TANK_PERKS.SCARLESS]:
     "Пассивная способность: c 10% шансом ваши атаки вызовут эффект лечения вас и ваших сопартийцев на половину от значения нанесенного урона",
 } as const;
@@ -90,6 +90,7 @@ export const TANK_PERKS_DATA: Record<string, PerkData[]> = {
       id: TANK_PERKS.LAST_STAND,
       description: TANK_PERKS_DESCRIPTIONS[TANK_PERKS.LAST_STAND],
       isAbility: true,
+      title: "Ни шагу назад!",
     },
     {
       id: TANK_PERKS.SCARLESS,
@@ -189,6 +190,7 @@ export const SNIPER_PERKS_DATA: Record<string, PerkData[]> = {
       id: SNIPER_PERKS.INSTAKILL,
       description: SNIPER_PERKS_DESCRIPTIONS[SNIPER_PERKS.INSTAKILL],
       isAbility: true,
+      title: "Инстакилл",
     },
     {
       id: SNIPER_PERKS.BREACHER,
@@ -256,12 +258,10 @@ export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {
     {
       id: MEDIC_PERKS.BLEED,
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.BLEED],
-      isAbility: true,
     },
     {
       id: MEDIC_PERKS.HEAL,
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.HEAL],
-      isAbility: true,
     },
   ],
   thirdTier: [
@@ -288,6 +288,7 @@ export const MEDIC_PERKS_DATA: Record<string, PerkData[]> = {
     {
       id: MEDIC_PERKS.HEAL_ALL,
       description: MEDIC_PERKS_DESCRIPTIONS[MEDIC_PERKS.HEAL_ALL],
+      title: "Вдохновение",
       isAbility: true,
     },
     {
@@ -353,3 +354,9 @@ export const SECOND_PERK_LEVEL_REQUIREMENT = 6;
 export const THIRD_PERK_LEVEL_REQUIREMENT = 9;
 export const FOURTH_PERK_LEVEL_REQUIREMENT = 12;
 export const FIFTH_PERK_LEVEL_REQUIREMENT = 15;
+
+export const ABILITY_PERKS = [
+  TANK_PERKS.LAST_STAND,
+  MEDIC_PERKS.HEAL_ALL,
+  SNIPER_PERKS.INSTAKILL,
+];

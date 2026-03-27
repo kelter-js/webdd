@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Stack } from "@mui/material";
 import encounter from "../../assets/hospital_encounter.png";
 import { CharactersBar } from "./components/CharactersBar";
@@ -19,6 +19,7 @@ import { calculateAiDamage, getBattleBackground } from "./utils";
 import { DamageData } from "./types";
 import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
 import { AnimatePresence } from "framer-motion";
+import { calculateDamage } from "./components/CharactersBar/utils";
 
 const getLayoutCoordinates = (enemiesAmount?: number) => {
   console.log("enemiesAmount", enemiesAmount);
@@ -235,6 +236,59 @@ export const BattleContainer = () => {
     }
   };
 
+  const handlePlayerAttack = useCallback(
+    (newState?: Battle) => {
+      const stateSource = newState ?? battle;
+
+      if (
+        stateSource &&
+        statistics &&
+        selectedPlayer &&
+        !isShooting &&
+        stateSource?.enemy.party[selectedEnemy]
+      ) {
+        const { model, damageModel } = calculateDamage(
+          stateSource,
+          statistics,
+          selectedPlayer?.name,
+          stateSource?.enemy.party[selectedEnemy],
+          magSizesMap[selectedPlayer?.name],
+        );
+
+        tempBattleModel.current = model;
+
+        setBattleDamageModel(damageModel);
+        setShooting(true);
+      }
+    },
+    [
+      battle,
+      statistics,
+      selectedPlayer,
+      selectedEnemy,
+      magSizesMap,
+      isShooting,
+    ],
+  );
+
+  useEffect(() => {
+    const handleKeyBindings = (event: KeyboardEvent) => {
+      if (
+        event.code === "KeyF" &&
+        battle?.turn === TURN_STATES.PLAYER_TURN &&
+        !isShooting
+      ) {
+        handlePlayerAttack();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyBindings);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyBindings);
+    };
+  }, [handlePlayerAttack, battle?.turn, isShooting]);
+
   // useEffect(() => {
   //   // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
 
@@ -307,6 +361,7 @@ export const BattleContainer = () => {
           battle?.turn === TURN_STATES.ENEMY_TURN && damage ? damage : null
         }
         damageTarget={battle?.player.party[0].name ?? null}
+        onAttack={handlePlayerAttack}
       />
 
       {battle?.enemy?.party?.map((item, index, self) => (

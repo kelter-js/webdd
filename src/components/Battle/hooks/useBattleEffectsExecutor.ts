@@ -68,7 +68,7 @@ export const useBattleEffectsExecutor = ({
               currentHp = Math.max(0, currentHp - (enemyCopy.maxHP / 100) * 10);
             }
 
-            if (effectsMap[EFFECTS.HEAL] && !effectsMap[EFFECTS.HEAL_IMMUNE]) {
+            if (effectsMap[EFFECTS.HEAL] && !effectsMap[EFFECTS.HEAL_FATIGUE]) {
               currentHp = Math.min(
                 enemyCopy.maxHP,
                 currentHp + (enemyCopy.maxHP / 100) * 10,

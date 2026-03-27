@@ -53,75 +53,43 @@ export const useGlobalListeners = () => {
       ROOM_TYPES.END;
 
   const getNextTargetIndex = () => {
-    const aliveEnemies =
-      battle?.enemy?.party?.filter((enemy) => enemy.hp > 0)?.length || 0;
+    const party = battle?.enemy?.party;
 
-    console.log("aliveEnemies", aliveEnemies);
-    if (aliveEnemies <= 1) {
-      return 0;
+    if (!party || party.length === 0) {
+      return selectedEnemy;
     }
 
-    switch (aliveEnemies) {
-      case 2: {
-        if (selectedEnemy === 1) {
-          return 0;
-        }
+    const length = party.length;
 
-        return 1;
-      }
+    for (let i = 1; i <= length; i++) {
+      const nextIndex = (selectedEnemy + i) % length;
 
-      case 3: {
-        if (selectedEnemy === 1) {
-          return 2;
-        }
-
-        if (selectedEnemy === 2) {
-          return 0;
-        }
-
-        return 1;
-      }
-
-      default: {
-        return 0;
+      if (party[nextIndex].hp > 0) {
+        return nextIndex;
       }
     }
+
+    return selectedEnemy;
   };
 
-  const getPreviousTargetIndex = () => {
-    const aliveEnemies =
-      battle?.enemy?.party?.filter((enemy) => enemy.hp > 0)?.length || 0;
+  const getPrevTargetIndex = () => {
+    const party = battle?.enemy?.party;
 
-    console.log("aliveEnemies", aliveEnemies);
-    if (aliveEnemies <= 1) {
-      return 0;
+    if (!party || party.length === 0) {
+      return selectedEnemy;
     }
 
-    switch (aliveEnemies) {
-      case 2: {
-        if (selectedEnemy === 1) {
-          return 0;
-        }
+    const length = party.length;
 
-        return 1;
-      }
+    for (let i = 1; i <= length; i++) {
+      const nextIndex = (selectedEnemy - i + length) % length;
 
-      case 3: {
-        if (selectedEnemy === 1) {
-          return 0;
-        }
-
-        if (selectedEnemy === 2) {
-          return 1;
-        }
-
-        return 2;
-      }
-
-      default: {
-        return 0;
+      if (party[nextIndex].hp > 0) {
+        return nextIndex;
       }
     }
+
+    return selectedEnemy;
   };
 
   useEffect(() => {
@@ -192,8 +160,8 @@ export const useGlobalListeners = () => {
           battle?.turn === TURN_STATES.PLAYER_TURN &&
           (battle?.enemy?.party?.length || 0) > 1
         ) {
-          console.log("we fire ", getPreviousTargetIndex());
-          setSelectedEnemy(getPreviousTargetIndex());
+          console.log("we fire ", getPrevTargetIndex());
+          setSelectedEnemy(getPrevTargetIndex());
         }
 
         if (
