@@ -61,8 +61,6 @@ export const BattleContainer = () => {
 
   useHandleBattleEnd();
 
-  const handleAttackEnd = () => setAttackingEnemyId(null);
-
   const [isFirstRender, setFirstRender] = useState(true);
   const resetFirstRender = () => setFirstRender(false);
 
@@ -98,65 +96,6 @@ export const BattleContainer = () => {
     );
   }, [gear, party]);
 
-  // const onTurnEnd = () => {
-  //   setDamage(0);
-  //   setTarget(null);
-
-  //   if (battle?.turn === TURN_STATES.PLAYER_TURN) {
-  //     setShooting(false);
-  //     const newBattleModel: Battle = {
-  //       ...battle,
-  //       player: {
-  //         ...battle.player,
-  //         effects: {
-  //           [selectedPlayer?.name]: {
-  //             ...battle.player.effects[selectedPlayer?.name],
-  //             hasTriggered: false,
-  //           },
-  //         },
-  //         party: battle.player.party.map((player) =>
-  //           player.name === selectedPlayer?.name
-  //             ? {
-  //                 ...player,
-  //                 hasTurn: false,
-  //                 currentAmountOfRounds: Math.max(
-  //                   0,
-  //                   (player.currentAmountOfRounds || 0) -
-  //                     magSizesMap[selectedPlayer.name] || 1,
-  //                 ),
-  //               }
-  //             : player,
-  //         ),
-  //       },
-  //     };
-  //     setNewBattleModel(newBattleModel);
-  //     handleSelectNextPlayer(newBattleModel.player.party);
-  //   } else {
-  //     const newBattleModel: Battle = {
-  //       ...battle,
-  //       enemy: {
-  //         ...battle.enemy,
-  //         effects: {
-  //           [currentEnemy?.id]: {
-  //             ...battle.enemy.effects[currentEnemy?.id],
-  //             hasTriggered: false,
-  //           },
-  //         },
-  //         party: battle.enemy.party.map((creature) =>
-  //           creature.id === currentEnemy?.id
-  //             ? {
-  //                 ...creature,
-  //                 hasTurn: false,
-  //               }
-  //             : creature,
-  //         ),
-  //       },
-  //     };
-  //     setNewBattleModel(newBattleModel);
-  //     handleSelectNextEnemy(newBattleModel.enemy.party);
-  //   }
-  // };
-
   // когда буду писать логику нанесения урона и в принципе действия игрока - нужно учесть что нужны флаг - критический ли урон
   // а также чтобы у нас коллбэк действий возвращал кол-во урона для его отображения
 
@@ -168,13 +107,8 @@ export const BattleContainer = () => {
   // флаги анимации атаки и
   const [isShooting, setShooting] = useState(false);
 
-  // отвечает за то, какой персонаж получает урон
-  const [target, setTarget] = useState<number | null>(null);
   // отвечает за то, что противник должен проиграть анимацию атаки
   const [attackingEnemyId, setAttackingEnemyId] = useState<string | null>(null);
-
-  // общие флаги - крит и урон
-  const [damage, setDamage] = useState(0);
 
   // эта модель будет замещать собой все остальные состояния кроме флагов атаки
   const [battleDamageModel, setBattleDamageModel] = useState<
@@ -182,10 +116,6 @@ export const BattleContainer = () => {
   >(null);
 
   const tempBattleModel = useRef<null | Battle>(null);
-
-  const resetShooting = () => setShooting(false);
-
-  const handleClearDamage = () => setDamage(0);
 
   const enemyLayout = getLayoutCoordinates(battle?.enemy?.party?.length);
 
@@ -195,9 +125,12 @@ export const BattleContainer = () => {
   );
 
   const resetAnimations = () => {
+    console.log("DO WE FIRE AT ALL?");
     // если это урон от эффекта
     if (tempBattleModel.current) {
       const model = tempBattleModel.current;
+      console.log("DO WE FIRE AT ALL? AND WE HERE?", model);
+      console.log("DO WE FIRE AT ALL? AND WE HERE?", attackingEnemyId);
 
       if (
         battleDamageModel &&
@@ -221,7 +154,6 @@ export const BattleContainer = () => {
 
         setAttackingEnemyId(null);
         tempBattleModel.current = null;
-        return;
       }
 
       if (battle?.turn === TURN_STATES.PLAYER_TURN) {
@@ -229,12 +161,16 @@ export const BattleContainer = () => {
 
         setShooting(false);
         tempBattleModel.current = null;
-        return;
       }
+
+      console.log("DO WE FIRE AT ALL? AND WE HERE? TOOO!");
 
       setBattleDamageModel(null);
     }
   };
+
+  const isPlayerTurnAvailable =
+    battle?.player?.effects[selectedPlayer?.name || ""]?.hasTriggered;
 
   const handlePlayerAttack = useCallback(
     (newState?: Battle) => {
@@ -245,7 +181,8 @@ export const BattleContainer = () => {
         statistics &&
         selectedPlayer &&
         !isShooting &&
-        stateSource?.enemy.party[selectedEnemy]
+        stateSource?.enemy.party[selectedEnemy] &&
+        isPlayerTurnAvailable
       ) {
         const { model, damageModel } = calculateDamage(
           stateSource,
@@ -268,6 +205,7 @@ export const BattleContainer = () => {
       selectedEnemy,
       magSizesMap,
       isShooting,
+      isPlayerTurnAvailable,
     ],
   );
 
@@ -289,37 +227,56 @@ export const BattleContainer = () => {
     };
   }, [handlePlayerAttack, battle?.turn, isShooting]);
 
-  // useEffect(() => {
-  //   // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
+  console.log("battleDamageModel", battleDamageModel);
 
-  //   if (
-  //     !showDices &&
-  //     !nextTurn &&
-  //     battle?.turn === TURN_STATES.ENEMY_TURN &&
-  //     currentEnemy &&
-  //     !attackingEnemyId &&
-  //     battle &&
-  //     statistics
-  //   ) {
-  //     const { damageModel, model } = calculateAiDamage(
-  //       battle,
-  //       statistics,
-  //       currentEnemy,
-  //     );
+  useEffect(() => {
+    // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
+    console.log(
+      "is it is",
+      !showDices &&
+        !nextTurn &&
+        battle?.turn === TURN_STATES.ENEMY_TURN &&
+        currentEnemy &&
+        !attackingEnemyId &&
+        battle &&
+        statistics &&
+        battle?.enemy?.effects[currentEnemy?.id]?.hasTriggered,
+    );
+    console.log(
+      "battle.enemy.effects[currentEnemy.id].hasTriggered",
+      battle?.enemy?.effects[currentEnemy?.id || ""]?.hasTriggered,
+    );
+    if (
+      !showDices &&
+      !nextTurn &&
+      battle?.turn === TURN_STATES.ENEMY_TURN &&
+      currentEnemy &&
+      !attackingEnemyId &&
+      battle &&
+      statistics &&
+      battle.enemy.effects[currentEnemy.id].hasTriggered
+    ) {
+      console.log("are we here basically once?");
+      const { damageModel, model } = calculateAiDamage(
+        battle,
+        statistics,
+        currentEnemy,
+      );
+      console.log("are we here basically once?model", model);
 
-  //     tempBattleModel.current = model;
-  //     setBattleDamageModel(damageModel);
-  //     setAttackingEnemyId(currentEnemy.id!);
-  //   }
-  // }, [
-  //   battle,
-  //   statistics,
-  //   battle?.turn,
-  //   currentEnemy,
-  //   attackingEnemyId,
-  //   showDices,
-  //   nextTurn,
-  // ]);
+      tempBattleModel.current = model;
+      setBattleDamageModel(damageModel);
+      setAttackingEnemyId(currentEnemy.id!);
+    }
+  }, [
+    battle,
+    statistics,
+    battle?.turn,
+    currentEnemy,
+    attackingEnemyId,
+    showDices,
+    nextTurn,
+  ]);
 
   const handleUpdateEffectState = (
     battleModel: Battle,
@@ -354,40 +311,53 @@ export const BattleContainer = () => {
 
       <CharactersBar
         selectedPlayer={selectedPlayer}
-        setSelectedPlayer={setSelectedPlayer}
-        damageTargetIndex={target}
         selectedNextPlayer={handleSelectNextPlayer}
-        damageReceived={
-          battle?.turn === TURN_STATES.ENEMY_TURN && damage ? damage : null
+        damageModel={
+          battle?.turn === TURN_STATES.ENEMY_TURN ? battleDamageModel : null
         }
-        damageTarget={battle?.player.party[0].name ?? null}
+        onResetAnimation={resetAnimations}
         onAttack={handlePlayerAttack}
+        isPlayerTurnAvailable={Boolean(isPlayerTurnAvailable)}
       />
 
-      {battle?.enemy?.party?.map((item, index, self) => (
-        <Enemy
-          key={index}
-          damage={damage}
-          isCritical
-          index={index}
-          onDamageAnimationEnd={handleClearDamage}
-          layout={enemyLayout[index]}
-          isAttacking={item.id === attackingEnemyId}
-          onAttackEnd={handleAttackEnd}
-          isSelected={
-            battle?.turn === TURN_STATES.PLAYER_TURN &&
-            index === selectedEnemy &&
-            !isShooting &&
-            self.length > 1
-          }
-        />
-      ))}
+      {battle?.enemy?.party?.map((item, index, self) => {
+        const currentBattleDamageModel =
+          battle.turn === TURN_STATES.PLAYER_TURN &&
+          battleDamageModel &&
+          battleDamageModel.find((damage) => damage.target === item.id);
+
+        const { damage, isCritical, isEvasion, shouldPlayDeathAnimation } =
+          currentBattleDamageModel || {};
+
+        return (
+          <Enemy
+            type={item.type}
+            isUnderAttack={Boolean(currentBattleDamageModel)}
+            shouldPlayDeathAnimation={Boolean(shouldPlayDeathAnimation)}
+            key={index}
+            damage={damage}
+            isCritical={isCritical}
+            index={index}
+            onDamageAnimationEnd={resetAnimations}
+            layout={enemyLayout[index]}
+            isAttacking={item.id === attackingEnemyId}
+            onAttackEnd={resetAnimations}
+            isEvasion={Boolean(isEvasion)}
+            isSelected={
+              battle?.turn === TURN_STATES.PLAYER_TURN &&
+              index === selectedEnemy &&
+              !isShooting &&
+              self.length > 1
+            }
+          />
+        );
+      })}
 
       {isShooting && (
         <ShootingEffect
           sourceId={selectedPlayer?.name || ""}
           targetId={`enemy-${selectedEnemy}`}
-          onComplete={resetShooting}
+          onComplete={resetAnimations}
           shots={selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] : 1}
         />
       )}

@@ -20,6 +20,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   damage,
   isCritical,
   containerId,
+  isEvasion,
 }) => {
   const addDamageNumber = (damage: number) => {
     const container = document.getElementById(containerId ?? "image-container");
@@ -95,7 +96,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
           transition={{ duration: 1.5, ease: "easeOut" }}
           onAnimationComplete={removeDamageNumber}
         >
-          {damageNumber}
+          {isEvasion ? "ПРОМАХ" : damageNumber}
         </DamageNumber>
 
         {/* CRIT! позиционируем относительно цифры */}

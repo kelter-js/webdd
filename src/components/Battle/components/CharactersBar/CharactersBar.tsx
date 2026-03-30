@@ -35,27 +35,22 @@ const POTION_SFX = "consumePotionSfx";
 
 export const CharactersBar: FC<CharactersBarProps> = ({
   selectedPlayer,
-  setSelectedPlayer,
-  damageTargetIndex,
+  onResetAnimation,
   selectedNextPlayer,
-  damageReceived,
-  damageTarget,
+  isPlayerTurnAvailable,
   onAttack,
+  damageModel,
 }) => {
   // нужно написать хук кастомный, принимает массив клавиш и коллбэки на их нажатие и юзать тту для применения атаки
   // импортнуть и загенерить аватары, реализовать разметку и стили для оружия в руках/хп/атака
   const {
-    // mock
-    player: { battle, consumables },
+    player: { battle },
     statistics,
     endTurn,
     consumePotion,
     updateBattle,
   } = useGameState();
-  // коллбэк открытия и UI для инвентаря предметов для употребления
-  // коллбэк открытия и UI для навыков
-  // коллбэк для окончания хода
-  // коллбэк для атаки
+
   const party = battle?.player?.party || [];
   const isEnemyTurn = battle?.turn === TURN_STATES.ENEMY_TURN;
 
@@ -71,11 +66,6 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   // const isDamaged = !!damageFlags[partyMember.name];
   // const isSelected = partyMember.name === selectedPlayer?.name;
 
-  const handleTurnEnd = () => {
-    // mock
-    endTurn();
-  };
-
   const handleConsumePotion = (potion: POTION_TYPES) => {
     if (selectedPlayer?.name) {
       console.log("do we trigger?");
@@ -83,6 +73,8 @@ export const CharactersBar: FC<CharactersBarProps> = ({
       consumePotion(selectedPlayer?.name, potion, selectedNextPlayer);
     }
   };
+
+  console.log("isPlayerTurnAvailable", isPlayerTurnAvailable);
 
   const playerAbility = useMemo(() => {
     if (!selectedPlayer) return null;
@@ -176,10 +168,17 @@ export const CharactersBar: FC<CharactersBarProps> = ({
       </S.CharacterControls>
 
       <S.AvatarsContainer>
-        {party.map((partyMember, index) => {
-          const handleChangeSelection = () => setSelectedPlayer(partyMember);
+        {party.map((partyMember) => {
+          const currentDamageData = damageModel
+            ? damageModel.find(
+                (damageData) => damageData.target === partyMember.name,
+              )
+            : null;
 
-          const isDamaged = damageTargetIndex === index;
+          const { damage, isCritical, isEvasion, target } =
+            currentDamageData || {};
+
+          const isDamaged = Boolean(currentDamageData);
 
           const hasTurn = partyMember.hasTurn;
 
@@ -210,7 +209,6 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                   }}
                   hasTurn={hasTurn}
                   isDead={isDead}
-                  onAnimationComplete={() => {}} // Коллбэк на окончание анимации
                 >
                   <S.AvatarImg
                     src={getUnitAvatarSrc(partyMember.characterClass, isDead)}
@@ -277,22 +275,33 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
                 {isDead && <S.Divider />}
               </S.CharacterContainer>
+
+              {((Boolean(damage) && damage !== null) || isEvasion) && (
+                <DamageEffect
+                  isEvasion={Boolean(isEvasion)}
+                  damage={damage || 0}
+                  isCritical={isCritical}
+                  containerId={target ? `${target}-id` : undefined}
+                />
+              )}
             </div>
           );
         })}
-        {damageReceived && (
-          <DamageEffect
-            damage={damageReceived}
-            isCritical={true}
-            onDamageAnimationEnd={() => "damage is over"}
-            containerId={damageTarget ? `${damageTarget}-id` : undefined}
-          />
-        )}
       </S.AvatarsContainer>
 
       <S.BattleControls>
-        <Button onClick={() => onAttack()}>Атаковать</Button>
-        <Button onClick={handleTurnEnd}>Закончить ход</Button>
+        <Button
+          disabled={!isPlayerTurnAvailable}
+          variant="text"
+          onClick={() => onAttack()}
+        >
+          <StartGameText
+            variant="h5"
+            sx={{ opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important` }}
+          >
+            Атаковать
+          </StartGameText>
+        </Button>
       </S.BattleControls>
     </S.Container>
   );

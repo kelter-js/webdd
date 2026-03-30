@@ -1,3 +1,5 @@
+import { ENEMIES } from "../../../../entities";
+
 export interface FragmentProps {
   dx: string;
   dy: string;
@@ -15,7 +17,8 @@ export interface FragmentData {
 }
 
 export interface EnemyProps {
-  damage?: number;
+  type: ENEMIES;
+  damage?: number | null;
   isCritical?: boolean;
   onDamageAnimationEnd?: VoidFunction;
   layout: string;
@@ -23,4 +26,7 @@ export interface EnemyProps {
   isSelected: boolean;
   index: number;
   onAttackEnd: VoidFunction;
+  isUnderAttack: boolean;
+  isEvasion: boolean;
+  shouldPlayDeathAnimation: boolean;
 }

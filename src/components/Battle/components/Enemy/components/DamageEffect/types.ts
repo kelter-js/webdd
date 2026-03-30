@@ -13,4 +13,5 @@ export interface DamageEffectProps extends Pick<
 > {
   damage: number;
   containerId?: string;
+  isEvasion: boolean;
 }

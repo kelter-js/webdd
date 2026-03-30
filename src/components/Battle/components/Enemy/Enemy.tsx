@@ -10,8 +10,26 @@ import { DamageEffect } from "./components/DamageEffect";
 import { RENDER_LOCATIONS } from "../../../../entities";
 import { Icons } from "../../../../common";
 
+const DEFAULT_ANIMATION_STATE = { x: "-50%", scale: 1, y: 0, rotate: 0 };
+
+const variants = {
+  idle: DEFAULT_ANIMATION_STATE,
+
+  attack: {
+    scale: [1, 0.95, 1.3, 1],
+    y: [0, -20, 100, 0],
+    x: "-50%",
+  },
+
+  hit: {
+    x: ["-50%", "-55%", "-45%", "-52%", "-48%", "-50%"],
+    rotate: [0, -2, 2, -2, 2, 0],
+    filter: ["brightness(1)", "brightness(1.8)", "brightness(1)"],
+  },
+};
+
 export const Enemy: FC<EnemyProps> = ({
-  damage = 0,
+  damage = null,
   onDamageAnimationEnd,
   isCritical,
   layout,
@@ -19,23 +37,19 @@ export const Enemy: FC<EnemyProps> = ({
   onAttackEnd,
   isSelected = false,
   index,
+  isUnderAttack,
+  isEvasion,
+  shouldPlayDeathAnimation,
+  type,
 }) => {
-  const {
-    player: { battle },
-    setLocationState,
-    // endbattle коллбэк
-  } = useGameState();
+  const isEnemyDead = shouldPlayDeathAnimation;
 
-  const isEnemyDead = Boolean(battle?.reward);
+  console.log("type", type);
+  console.log("isAttacking", isAttacking);
 
-  // const enemySource = getSource(battle?.enemy?.type);
-  const enemySource = useGetEnemyImage();
+  const enemySource = useGetEnemyImage(type);
 
   const fragmentsRef = useRef<FragmentData[] | null>(null);
-
-  const handleEndBattle = () => {
-    setLocationState(RENDER_LOCATIONS.DUNGEON);
-  };
 
   if (!fragmentsRef.current) {
     const frags: FragmentData[] = [];
@@ -59,38 +73,42 @@ export const Enemy: FC<EnemyProps> = ({
   }
 
   console.log("isSelected", layout);
+  console.log("isAttacking", isAttacking);
 
   return (
     <Container
       id={`enemy-${index}`}
       left={layout}
-      initial={{ x: "-50%", scale: 1, y: 0 }}
+      initial={DEFAULT_ANIMATION_STATE}
       animate={
-        isAttacking
-          ? {
-              // 1. Слегка оттягивается назад (замах)
-              // 2. Резко прыгает вперед (удар)
-              // 3. Возвращается
-              scale: [1, 0.95, 1.3, 1],
-              y: [0, -20, 100, 0], // Отрицательный y — это движение вверх (назад)
-              x: "-50%",
-            }
-          : { x: "-50%", scale: 1, y: 0 }
+        shouldPlayDeathAnimation
+          ? "idle"
+          : isAttacking
+            ? "attack"
+            : isUnderAttack
+              ? "hit"
+              : "idle"
       }
+      variants={variants}
       transition={
-        isAttacking
-          ? {
-              duration: 0.6,
-              // times сопоставляет моменты анимации (0..1)
-              // 0.2 - конец замаха, 0.4 - пик удара, 1 - возврат
-              times: [0, 0.2, 0.4, 1],
-              ease: "easeInOut",
-            }
-          : { duration: 0.3 }
+        shouldPlayDeathAnimation
+          ? DEFAULT_ANIMATION_STATE
+          : isAttacking
+            ? {
+                duration: 0.6,
+                times: [0, 0.2, 0.4, 1],
+                ease: "easeInOut",
+              }
+            : isUnderAttack
+              ? {
+                  duration: 0.4, // Тряска должна быть быстрой
+                  ease: "linear",
+                }
+              : { duration: 0.3 }
       }
-      onAnimationComplete={() => {
-        if (isAttacking && onAttackEnd) {
-          onAttackEnd();
+      onAnimationComplete={(definition) => {
+        if (definition === "attack" && !shouldPlayDeathAnimation) {
+          onAttackEnd?.();
         }
       }}
     >
@@ -100,7 +118,11 @@ export const Enemy: FC<EnemyProps> = ({
           data={frag}
           imgSrc={enemySource}
           animated={isEnemyDead}
-          onAnimationEnd={handleEndBattle}
+          onAnimationComplete={() => {
+            if (isEnemyDead && index === 0 && shouldPlayDeathAnimation) {
+              onAttackEnd();
+            }
+          }}
         />
       ))}
 
@@ -110,11 +132,11 @@ export const Enemy: FC<EnemyProps> = ({
         </TargetContainer>
       )}
 
-      {Boolean(damage) && (
+      {((Boolean(damage) && damage !== null) || isEvasion) && (
         <DamageEffect
-          damage={damage}
+          isEvasion={isEvasion}
+          damage={damage || 0}
           isCritical={isCritical}
-          onDamageAnimationEnd={onDamageAnimationEnd}
         />
       )}
     </Container>

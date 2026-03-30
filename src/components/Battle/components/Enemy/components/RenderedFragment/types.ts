@@ -4,5 +4,5 @@ export interface RenderedFragmentProps {
   data: FragmentData;
   imgSrc: string;
   animated: boolean;
-  onAnimationEnd: VoidFunction;
+  onAnimationComplete: VoidFunction;
 }

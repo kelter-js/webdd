@@ -117,6 +117,7 @@ export const useBattleEffectsExecutor = ({
               if (needToToggleEnemy) {
                 toggleNextEnemy(newBattleModel);
               } else {
+                console.log("are we here? newBattleModel", newBattleModel);
                 updateBattle(newBattleModel);
               }
             } else {

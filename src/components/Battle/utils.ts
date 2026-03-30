@@ -271,10 +271,13 @@ export const getBattleBackground = (tier: number) => {
   }
 };
 
-const removeTurnFromTarget = (target: string, enemyParty: Creature[]) =>
-  enemyParty.map((enemy) =>
+const removeTurnFromTarget = (target: string, enemyParty: Creature[]) => {
+  console.log("target is", target);
+  console.log("enemyParty is", enemyParty);
+  return enemyParty.map((enemy) =>
     enemy.id === target ? { ...enemy, hasTurn: false } : enemy,
   );
+};
 
 export const calculateAiDamage = (
   battleModel: Battle,
@@ -282,6 +285,7 @@ export const calculateAiDamage = (
   source: Creature,
 ): { model: Battle; damageModel: DamageData[] | null } => {
   // просто атакуют
+  console.log("source", source);
   if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
     // список живых игроков
     const party = battleModel.player.party.filter(
@@ -459,11 +463,13 @@ export const generatePlayerMessage = (
 
   const enemyName = CREATURE_NAME_MAP[target];
   const messageIndex = getRandom(0, CHARACTER_MESSAGES.length - 1);
-  const message = CHARACTER_MESSAGES[messageIndex];
+  let message = CHARACTER_MESSAGES[messageIndex];
 
-  message.replace(TEMPLATE_NAME, name);
-  message.replace(TEMPLATE_TARGET, enemyName);
-  message.replace(TEMPLATE_DAMAGE, String(damage));
+  console.log("message", message);
+
+  message = message.replace(TEMPLATE_NAME, name);
+  message = message.replace(TEMPLATE_TARGET, enemyName);
+  message = message.replace(TEMPLATE_DAMAGE, String(damage));
 
   return message;
 };

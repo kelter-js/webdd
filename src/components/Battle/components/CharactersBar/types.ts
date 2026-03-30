@@ -1,15 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
 import { Battle, BattleCharacterModel } from "../../../../types/gameState";
 import { PerkData } from "../../../../types";
+import { DamageData } from "../../types";
 
 export interface CharactersBarProps {
   selectedPlayer?: BattleCharacterModel;
-  setSelectedPlayer: Dispatch<SetStateAction<BattleCharacterModel | undefined>>;
-  damageTargetIndex: number | null;
+
+  damageModel: DamageData[] | null;
   selectedNextPlayer: (party: Battle) => void;
-  damageReceived: number | null;
-  damageTarget: string | null;
   onAttack: (battle?: Battle) => void;
+  onResetAnimation: VoidFunction;
+  isPlayerTurnAvailable: boolean;
 }
 
 export interface AbilityData extends PerkData {

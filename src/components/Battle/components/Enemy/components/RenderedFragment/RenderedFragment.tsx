@@ -6,14 +6,14 @@ export const RenderedFragment: FC<RenderedFragmentProps> = ({
   data,
   imgSrc,
   animated,
-  onAnimationEnd,
+  onAnimationComplete,
 }) => (
   <Fragment
     dx={data.dx}
     dy={data.dy}
     imgSrc={imgSrc}
     animated={animated}
-    onAnimationEnd={onAnimationEnd}
+    onAnimationEnd={onAnimationComplete}
     style={{
       left: `${data.left}px`,
       top: `${data.top}px`,

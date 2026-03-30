@@ -1,3 +1,4 @@
+import { RENDER_LOCATIONS } from "../../../entities";
 import { Reward } from "../../../types/gameState";
 import { StoreSet } from "./types";
 // FIXME типизация
@@ -8,6 +9,8 @@ export const setReward = (set: StoreSet) => (reward: Reward) => {
     if (copiedState.player.battle) {
       copiedState.player.battle = { ...copiedState.player.battle, reward };
     }
+
+    copiedState.player.locationState = RENDER_LOCATIONS.DUNGEON;
 
     return copiedState;
   });

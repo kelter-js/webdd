@@ -48,6 +48,7 @@ import {
 } from "../constants/creatures";
 import { DUNGEONS, QUEST_STATUSES } from "../entities";
 import { v4 } from "uuid";
+import { getPotionDescriptionByType } from "../utils/getPotionDescriptionByType";
 // import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
 // FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
 // _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
@@ -118,6 +119,7 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
       currentTier,
       isSpecial > SPECIAL_ITEM_CHANCE_WITHOUT_FIGHT,
     );
+    console.log("item result", result);
 
     return {
       result,
@@ -129,10 +131,12 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
   if (roll < WITHOUT_FIGHT_POTION_CHANCE) {
     const result = generatePotion(currentTier, 100);
 
+    console.log("item generatePotion", result);
+
     return {
       result,
       type: RewardTypes.POTION,
-      message: `Вы получили: ${result?.amount || 1} ${result?.type}`,
+      message: `Вы получили: ${result?.amount || 1} ${getPotionDescriptionByType(result?.type!)}`,
     };
   }
 
@@ -148,6 +152,8 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
 
   if (roll > WITHOUT_FIGHT_JUNK_CHANCE) {
     const result = getRandomJunkByTier(currentTier);
+
+    console.log("item getRandomJunkByTier", result);
 
     return {
       result,
