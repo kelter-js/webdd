@@ -21,6 +21,7 @@ export enum BUILDING_NAMES {
   GHOST = "GHOST",
   TUTOR = "TUTOR",
   SHOOTING = "SHOOTING",
+  FINAL_DIALOGUE = "FINAL_DIALOGUE",
 }
 
 export const LOCATIONS = {

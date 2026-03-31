@@ -7,7 +7,7 @@ import { BattleLog } from "./components/BattleLog";
 import { Enemy } from "./components/Enemy";
 import { useAppState, useGameState } from "../../stores";
 import { DiceRollModal, TurnIndicator } from "../../common";
-import { TURN_STATES } from "../../entities";
+import { ENEMIES, TURN_STATES } from "../../entities";
 import { usePlayerTurnIsOver } from "./hooks/usePlayerTurnIsOver";
 import { usePlayerControl } from "./hooks/usePlayerControl";
 import { useHandleBattleEnd } from "./hooks/useHandleBattleEnd";
@@ -20,6 +20,11 @@ import { DamageData } from "./types";
 import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
 import { AnimatePresence } from "framer-motion";
 import { calculateDamage } from "./components/CharactersBar/utils";
+import { DIALOGUE_IDS } from "../../entities/dialogues";
+import { BUILDING_NAMES } from "../../constants";
+import { useGetDialogue } from "../../hooks";
+import { Dialogue } from "../Dialogue";
+import { getNextTargetIndex, getPrevTargetIndex } from "../../utils/getTargets";
 
 const getLayoutCoordinates = (enemiesAmount?: number) => {
   console.log("enemiesAmount", enemiesAmount);
@@ -45,7 +50,13 @@ const getLayoutCoordinates = (enemiesAmount?: number) => {
 
 export const BattleContainer = () => {
   // SelectedEnemy - выбранный противник
-  const { isFading, selectedEnemy } = useAppState();
+  const {
+    isFading,
+    selectedEnemy,
+    setSelectedEnemy,
+    setDialogueOpen,
+    isDialogueOpen,
+  } = useAppState();
 
   const {
     isDiceRequiredRoll,
@@ -70,10 +81,22 @@ export const BattleContainer = () => {
     isFirstRender,
     resetFirstRender,
   );
+
+  useEffect(() => {
+    if (
+      battle?.enemy.party[0].type === ENEMIES.MERGED_MASS_TIER_1 &&
+      !isDialogueOpen
+    ) {
+      setDialogueOpen(BUILDING_NAMES.FINAL_DIALOGUE);
+    }
+  }, [battle?.enemy.party, isDialogueOpen]);
+
+  const dialogTree = useGetDialogue(isDialogueOpen);
+
   console.log("showDices", showDices);
   console.log("isDiceRequiredRoll", isDiceRequiredRoll);
   console.log("nextTurn", nextTurn);
-  console.log("ифее", battle?.turn);
+  console.log("gear", gear);
 
   const {
     selectedPlayer,
@@ -166,15 +189,31 @@ export const BattleContainer = () => {
       console.log("DO WE FIRE AT ALL? AND WE HERE? TOOO!");
 
       setBattleDamageModel(null);
+      setSelectedEnemy(getPrevTargetIndex(selectedEnemy, battle?.enemy.party));
     }
   };
 
   const isPlayerTurnAvailable =
     battle?.player?.effects[selectedPlayer?.name || ""]?.hasTriggered;
 
+  console.log("battleDamageModel", battleDamageModel);
+  console.log("magSizesMap", magSizesMap);
+  console.log("selectedPlayer", selectedPlayer);
+  console.log(
+    "magSizesMap[selectedPlayer?.name]",
+    magSizesMap[selectedPlayer?.name || ""],
+  );
+
   const handlePlayerAttack = useCallback(
     (newState?: Battle) => {
       const stateSource = newState ?? battle;
+      console.log("START");
+      console.log("isShooting", isShooting);
+      console.log("isPlayerTurnAvailable", isPlayerTurnAvailable);
+      console.log(
+        "stateSource?.enemy.party[selectedEnemy]",
+        stateSource?.enemy.party[selectedEnemy],
+      );
 
       if (
         stateSource &&
@@ -229,23 +268,26 @@ export const BattleContainer = () => {
 
   console.log("battleDamageModel", battleDamageModel);
 
+  const handleUpdateEffectState = (
+    battleModel: Battle,
+    damageModel: DamageData,
+  ) => {
+    tempBattleModel.current = battleModel;
+    setBattleDamageModel([damageModel]);
+  };
+
+  const isApplyingEffects = useBattleEffectsExecutor({
+    selectedCharacter: selectedPlayer?.name,
+    selectedEnemy: currentEnemy?.id,
+    isReadyToTrigger: !showDices && !nextTurn,
+    toggleNextEnemy: handleSelectNextEnemy,
+    toggleNextPlayer: handleSelectNextPlayer,
+    updateDamageModel: handleUpdateEffectState,
+  });
+
   useEffect(() => {
     // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
-    console.log(
-      "is it is",
-      !showDices &&
-        !nextTurn &&
-        battle?.turn === TURN_STATES.ENEMY_TURN &&
-        currentEnemy &&
-        !attackingEnemyId &&
-        battle &&
-        statistics &&
-        battle?.enemy?.effects[currentEnemy?.id]?.hasTriggered,
-    );
-    console.log(
-      "battle.enemy.effects[currentEnemy.id].hasTriggered",
-      battle?.enemy?.effects[currentEnemy?.id || ""]?.hasTriggered,
-    );
+
     if (
       !showDices &&
       !nextTurn &&
@@ -254,15 +296,20 @@ export const BattleContainer = () => {
       !attackingEnemyId &&
       battle &&
       statistics &&
-      battle.enemy.effects[currentEnemy.id].hasTriggered
+      battle.enemy.effects[currentEnemy.id].hasTriggered &&
+      !isApplyingEffects &&
+      !dialogTree
     ) {
-      console.log("are we here basically once?");
       const { damageModel, model } = calculateAiDamage(
         battle,
         statistics,
         currentEnemy,
       );
-      console.log("are we here basically once?model", model);
+
+      if (damageModel && damageModel[0]?.isHealing) {
+        handleSelectNextEnemy(model);
+        return;
+      }
 
       tempBattleModel.current = model;
       setBattleDamageModel(damageModel);
@@ -276,24 +323,20 @@ export const BattleContainer = () => {
     attackingEnemyId,
     showDices,
     nextTurn,
+    isApplyingEffects,
+    dialogTree,
   ]);
 
-  const handleUpdateEffectState = (
-    battleModel: Battle,
-    damageModel: DamageData,
-  ) => {
-    tempBattleModel.current = battleModel;
-    setBattleDamageModel([damageModel]);
-  };
+  useEffect(() => {
+    if (
+      battle?.enemy.party[selectedEnemy] &&
+      battle?.enemy.party[selectedEnemy].hp <= 0
+    ) {
+      setSelectedEnemy(getPrevTargetIndex(selectedEnemy, battle?.enemy.party));
+    }
+  }, [selectedEnemy, battle?.enemy.party]);
 
-  useBattleEffectsExecutor({
-    selectedCharacter: selectedPlayer?.name,
-    selectedEnemy: currentEnemy?.id,
-    isReadyToTrigger: !showDices && !nextTurn,
-    toggleNextEnemy: handleSelectNextEnemy,
-    toggleNextPlayer: handleSelectNextPlayer,
-    updateDamageModel: handleUpdateEffectState,
-  });
+  console.log("selectedEnemy", selectedEnemy);
 
   return (
     <Stack
@@ -317,7 +360,9 @@ export const BattleContainer = () => {
         }
         onResetAnimation={resetAnimations}
         onAttack={handlePlayerAttack}
-        isPlayerTurnAvailable={Boolean(isPlayerTurnAvailable)}
+        isPlayerTurnAvailable={Boolean(
+          isPlayerTurnAvailable && !isApplyingEffects && !dialogTree,
+        )}
       />
 
       {battle?.enemy?.party?.map((item, index, self) => {
@@ -328,6 +373,10 @@ export const BattleContainer = () => {
 
         const { damage, isCritical, isEvasion, shouldPlayDeathAnimation } =
           currentBattleDamageModel || {};
+
+        if (item.hp <= 0) {
+          return null;
+        }
 
         return (
           <Enemy
@@ -358,7 +407,9 @@ export const BattleContainer = () => {
           sourceId={selectedPlayer?.name || ""}
           targetId={`enemy-${selectedEnemy}`}
           onComplete={resetAnimations}
-          shots={selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] : 1}
+          shots={
+            selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] || 1 : 1
+          }
         />
       )}
 
@@ -371,6 +422,10 @@ export const BattleContainer = () => {
               : "Ход Игрока"
           }
         />
+      )}
+
+      {isApplyingEffects && !showDices && nextTurn && (
+        <TurnIndicator show={isApplyingEffects} text={"Применяем эффекты..."} />
       )}
 
       <AnimatePresence
@@ -387,6 +442,8 @@ export const BattleContainer = () => {
           />
         )}
       </AnimatePresence>
+
+      {dialogTree && <Dialogue dialogueTree={dialogTree} />}
     </Stack>
   );
 };

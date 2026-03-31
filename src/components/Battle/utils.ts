@@ -50,7 +50,14 @@ import staticBgTier3_7 from "../../assets/static/dungeon_hallway/battle_tier_3/i
 import staticBgTier3_8 from "../../assets/static/dungeon_hallway/battle_tier_3/image (8).jpg";
 import staticBgTier3_9 from "../../assets/static/dungeon_hallway/battle_tier_3/image (9).jpg";
 import staticBgTier3_10 from "../../assets/static/dungeon_hallway/battle_tier_3/image (10).jpg";
-import { Battle, Creature, Statistics } from "../../types/gameState";
+import {
+  Battle,
+  BattleCharacterModel,
+  BattleEffects,
+  Creature,
+  Effects,
+  Statistics,
+} from "../../types/gameState";
 import { DamageData } from "./types";
 import { AI_CATEGORIES } from "../../entities/ai";
 import { ENEMIES } from "../../entities";
@@ -63,6 +70,7 @@ import {
 } from "../../constants";
 import { calculateFinalEvasion, getFinalDamage } from "../../stores/constants";
 import { EFFECTS } from "../../entities/effects";
+import { CLASSES } from "../../entities/characterClasses";
 
 // каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
 // ключи - айди существа - значение это путь к коллбэкам логики существа
@@ -271,133 +279,137 @@ export const getBattleBackground = (tier: number) => {
   }
 };
 
-const removeTurnFromTarget = (target: string, enemyParty: Creature[]) => {
+const removeTurnFromTarget = (
+  target: string,
+  enemyParty: Creature[],
+  healAmount?: number,
+) => {
   console.log("target is", target);
   console.log("enemyParty is", enemyParty);
   return enemyParty.map((enemy) =>
-    enemy.id === target ? { ...enemy, hasTurn: false } : enemy,
+    enemy.id === target
+      ? {
+          ...enemy,
+          hasTurn: false,
+          hp: healAmount
+            ? Math.min(enemy.hp + healAmount, enemy.maxHP)
+            : enemy.hp,
+        }
+      : enemy,
   );
 };
 
-export const calculateAiDamage = (
-  battleModel: Battle,
-  statistics: Record<string, Statistics>,
-  source: Creature,
+const calculateDamageModelByAi = (
+  {
+    battleModel,
+    statistics,
+    source,
+    effectsToApply,
+    hasAbilityToHitTwoMember,
+    requiredHeal,
+  }: {
+    battleModel: Battle;
+    statistics: Record<string, Statistics>;
+    source: Creature;
+    effectsToApply?: Effects[];
+    hasAbilityToHitTwoMember?: boolean;
+    requiredHeal?: boolean;
+  },
+  // нужно добавить ещё один аргумент, который заставить наносить урон по нескольким противникам - для боссов
 ): { model: Battle; damageModel: DamageData[] | null } => {
-  // просто атакуют
-  console.log("source", source);
-  if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
-    // список живых игроков
-    const party = battleModel.player.party.filter(
-      (player) => player.currentHealth > 0,
-    );
+  const enemyName = CREATURE_NAME_MAP[source.type];
 
-    // если никого нет - сюда не должны вообще попадать - но выходим из функции
-    if (party.length === 0) {
-      return { model: battleModel, damageModel: null };
-    }
-
-    // берем рандомного игрока
-    const randomPlayerIndex = getRandom(0, party.length - 1);
-    // данные рандомного игрока, создаём копию модели с которой дальше работаем
-    const playerData = { ...party[randomPlayerIndex] };
-    const playerStatistics = statistics[playerData.name];
-
-    // если по каким-то причинам нет игрока или статистики по нему - выходим
-    if (!playerData || !playerStatistics) {
-      return { model: battleModel, damageModel: null };
-    }
-    // высчитываем шанс промахнуться по игроку
-    const evasionChance = calculateFinalEvasion(playerStatistics.evasionChance);
-    // получаем читаемо имя персонажа
-    const enemyName = CREATURE_NAME_MAP[source.type];
-    // проверяем, промах ли это
-    if (Math.random() < evasionChance) {
-      return {
-        model: {
-          ...battleModel,
-          enemy: {
-            ...battleModel.enemy,
-            party: removeTurnFromTarget(source.id, battleModel.enemy.party),
-          },
-          messages: [
-            ...battleModel.messages,
-            {
-              message: getEnemyPhrase(
-                playerData.name,
-                0,
-                source.type,
-                false,
-                true,
-              ),
-              attackerName: enemyName,
-              attackerType: "Enemy",
-            },
-          ],
-        },
-        damageModel: [
-          {
-            target: playerData.name,
-            damage: null,
-            isCritical: false,
-            isEvasion: true,
-            shouldPlayDeathAnimation: false,
-          },
-        ],
-      };
-    }
-
-    const initialDamage = getRandom(source.minDmg, source.maxDmg);
-    const damageAfterArmorReduction = getFinalDamage(
-      initialDamage,
-      playerStatistics.defense,
-    );
-
-    let isPlayerDead = false;
-
-    const newModel = {
-      ...battleModel,
-      enemy: {
-        ...battleModel.enemy,
-        party: removeTurnFromTarget(source.id, battleModel.enemy.party),
-      },
-      player: {
-        ...battleModel.player,
-        party: battleModel.player.party.map((player) => {
-          if (player.name === playerData.name) {
-            const currentHealth = player.currentHealth;
-            const newPlayerHealth = Math.max(
-              0,
-              currentHealth - damageAfterArmorReduction,
-            );
-
-            if (newPlayerHealth === 0) {
-              isPlayerDead = true;
-            }
-
-            return {
-              ...player,
-              currentHealth: newPlayerHealth,
-            };
-          }
-
-          return player;
-        }),
-      },
-    };
+  if (requiredHeal) {
+    const healAmount = Math.round((source.maxHP / 100) * 15);
 
     return {
       model: {
-        ...newModel,
+        ...battleModel,
+        enemy: {
+          ...battleModel.enemy,
+          party: removeTurnFromTarget(
+            source.id,
+            battleModel.enemy.party,
+            healAmount,
+          ),
+          effects: {
+            ...battleModel.enemy.effects,
+            [source.id]: {
+              ...battleModel.enemy.effects[source.id],
+              list: [
+                ...battleModel.enemy.effects[source.id].list.filter(
+                  (effect) =>
+                    effect.type !== EFFECTS.HEAL &&
+                    effect.type !== EFFECTS.HEAL_FATIGUE,
+                ),
+                { duration: 2, type: EFFECTS.HEAL_FATIGUE },
+                { duration: 1, type: EFFECTS.HEAL },
+              ],
+            },
+          },
+        },
+        messages: [
+          ...battleModel.messages,
+          {
+            message: `${enemyName} излечивается на ${healAmount} единицы.`,
+            attackerName: enemyName,
+            attackerType: "Enemy",
+          },
+        ],
+      },
+      damageModel: [
+        {
+          isHealing: true,
+          target: "",
+          damage: null,
+          isCritical: false,
+          isEvasion: false,
+          shouldPlayDeathAnimation: false,
+        },
+      ],
+    };
+  }
+
+  const party = battleModel.player.party.filter(
+    (player) => player.currentHealth > 0,
+  );
+
+  // если никого нет - сюда не должны вообще попадать - но выходим из функции
+  if (party.length === 0) {
+    return { model: battleModel, damageModel: null };
+  }
+
+  // берем рандомного игрока
+  const randomPlayerIndex = getRandom(0, party.length - 1);
+  // данные рандомного игрока, создаём копию модели с которой дальше работаем
+  const playerData = { ...party[randomPlayerIndex] };
+  const playerStatistics = statistics[playerData.name];
+
+  // если по каким-то причинам нет игрока или статистики по нему - выходим
+  if (!playerData || !playerStatistics) {
+    return { model: battleModel, damageModel: null };
+  }
+  // высчитываем шанс промахнуться по игроку
+  const evasionChance = calculateFinalEvasion(playerStatistics.evasionChance);
+  // получаем читаемо имя персонажа
+  // проверяем, промах ли это
+  if (Math.random() < evasionChance) {
+    return {
+      model: {
+        ...battleModel,
+        enemy: {
+          ...battleModel.enemy,
+          party: removeTurnFromTarget(source.id, battleModel.enemy.party),
+        },
         messages: [
           ...battleModel.messages,
           {
             message: getEnemyPhrase(
               playerData.name,
-              damageAfterArmorReduction,
+              0,
               source.type,
-              isPlayerDead,
               false,
+              true,
             ),
             attackerName: enemyName,
             attackerType: "Enemy",
@@ -407,21 +419,253 @@ export const calculateAiDamage = (
       damageModel: [
         {
           target: playerData.name,
-          damage: damageAfterArmorReduction,
+          damage: null,
           isCritical: false,
-          isEvasion: false,
-          shouldPlayDeathAnimation: isPlayerDead,
+          isEvasion: true,
+          shouldPlayDeathAnimation: false,
         },
       ],
     };
   }
 
+  const initialDamage = getRandom(source.minDmg, source.maxDmg);
+  let damageAfterArmorReduction = getFinalDamage(
+    initialDamage,
+    playerStatistics.defense,
+  );
+
+  if (
+    playerData.characterClass === CLASSES.TANK &&
+    battleModel.player.effects[playerData.name].list.find(
+      (effect) => effect.type === EFFECTS.LAST_STAND,
+    )
+  ) {
+    damageAfterArmorReduction -= Math.round(
+      (damageAfterArmorReduction / 100) * 15,
+    );
+  }
+
+  if (
+    battleModel.player.effects[playerData.name].list.find(
+      (effect) => effect.type === EFFECTS.BROKE,
+    )
+  ) {
+    damageAfterArmorReduction += Math.round(
+      (playerStatistics.maxHealth / 100) * 5,
+    );
+  }
+
+  if (
+    battleModel.enemy.effects[source.id].list.find(
+      (effect) => effect.type === EFFECTS.WEAKNESS,
+    )
+  ) {
+    damageAfterArmorReduction -= Math.round(
+      (damageAfterArmorReduction / 100) * 10,
+    );
+  }
+
+  let isPlayerDead = false;
+
+  let secondTarget: BattleCharacterModel | null = null;
+
+  if (hasAbilityToHitTwoMember) {
+    const otherPlayers = battleModel.player.party.filter(
+      (p) => p.name !== playerData.name && p.currentHealth > 0,
+    );
+
+    if (otherPlayers.length > 0) {
+      secondTarget = otherPlayers[getRandom(0, otherPlayers.length - 1)];
+    }
+  }
+
+  const newModel = {
+    ...battleModel,
+    enemy: {
+      ...battleModel.enemy,
+      party: removeTurnFromTarget(source.id, battleModel.enemy.party),
+    },
+    player: {
+      ...battleModel.player,
+      party: battleModel.player.party.map((player) => {
+        if (player.name === playerData.name) {
+          const currentHealth = player.currentHealth;
+          const newPlayerHealth = Math.max(
+            0,
+            currentHealth - damageAfterArmorReduction,
+          );
+
+          if (newPlayerHealth === 0) {
+            isPlayerDead = true;
+          }
+
+          return {
+            ...player,
+            currentHealth: newPlayerHealth,
+          };
+        } else if (secondTarget?.name === player.name) {
+          const currentHealth = player.currentHealth;
+          const newPlayerHealth = Math.max(
+            0,
+            currentHealth - damageAfterArmorReduction / 2,
+          );
+
+          if (newPlayerHealth === 0) {
+            isPlayerDead = true;
+          }
+
+          return {
+            ...player,
+            currentHealth: newPlayerHealth,
+          };
+        }
+
+        return player;
+      }),
+
+      effects: {
+        ...battleModel.player.effects,
+        [playerData.name]: {
+          ...battleModel.player.effects[playerData.name],
+          list: [
+            ...battleModel.player.effects[playerData.name].list.filter(
+              (effect) => {
+                return !effectsToApply?.find(
+                  (applyEffect) => applyEffect.type === effect.type,
+                );
+              },
+            ),
+            ...(effectsToApply ?? []),
+          ],
+        },
+      },
+    },
+  };
+
+  const messages = [
+    ...battleModel.messages,
+    {
+      message: getEnemyPhrase(
+        playerData.name,
+        damageAfterArmorReduction,
+        source.type,
+        isPlayerDead,
+        false,
+      ),
+      attackerName: enemyName,
+      attackerType: "Enemy",
+    },
+  ];
+
+  const damageModel = [
+    {
+      target: playerData.name,
+      damage: damageAfterArmorReduction,
+      isCritical: false,
+      isEvasion: false,
+      shouldPlayDeathAnimation: isPlayerDead,
+    },
+  ];
+
+  if (secondTarget) {
+    const halfDamage = damageAfterArmorReduction / 2;
+    const isTargetDead = secondTarget.currentHealth - halfDamage <= 0;
+
+    messages.push({
+      message: getEnemyPhrase(
+        secondTarget.name,
+        halfDamage,
+        source.type,
+        isTargetDead,
+        false,
+      ),
+      attackerName: enemyName,
+      attackerType: "Enemy",
+    });
+
+    damageModel.push({
+      target: secondTarget.name,
+      damage: halfDamage,
+      isCritical: false,
+      isEvasion: false,
+      shouldPlayDeathAnimation: isTargetDead,
+    });
+  }
+
+  return {
+    model: {
+      ...newModel,
+      messages,
+    },
+    damageModel: damageModel,
+  };
+};
+
+const BLEED_ROLL_TIER_2_CHANCE = 10;
+const BLEED_ROLL_TIER_3_CHANCE = 15;
+const FIRE_ROLL_TIER_3_CHANCE = 15;
+const TIER_2_CRITICAL_HP = 30;
+
+export const calculateAiDamage = (
+  battleModel: Battle,
+  statistics: Record<string, Statistics>,
+  source: Creature,
+): { model: Battle; damageModel: DamageData[] | null } => {
+  // просто атакуют
+  console.log("source", source);
+  // для других категорий нужно учесть эффект HEAL_IMMUNE
+  if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
+    // список живых игроков
+    return calculateDamageModelByAi({ battleModel, statistics, source });
+  }
+
   // могут вешать bleed
   if (source.aiPackage === AI_CATEGORIES.TIER_2) {
+    const bleedRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    if (bleedRoll < BLEED_ROLL_TIER_2_CHANCE) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+    });
   }
 
   // могут вешать bleed/fire/хилить себя
   if (source.aiPackage === AI_CATEGORIES.TIER_3) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+    const isLowHp =
+      source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
+      !battleModel.enemy.effects[source.id].list.find(
+        (effect) => effect.type === EFFECTS.HEAL_FATIGUE,
+      );
+
+    if (bleedRoll < BLEED_ROLL_TIER_3_CHANCE && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (
+      fireRoll < FIRE_ROLL_TIER_3_CHANCE &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+      requiredHeal: isLowHp,
+    });
   }
 
   // может вешать bleed

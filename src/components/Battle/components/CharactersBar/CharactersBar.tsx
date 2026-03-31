@@ -108,7 +108,9 @@ export const CharactersBar: FC<CharactersBarProps> = ({
         )) ||
       (ability.id === MEDIC_PERKS.HEAL_ALL &&
         !effectsList?.find(
-          (effect) => effect.type === EFFECTS.HEAL_ALL_FATIGUE,
+          (effect) =>
+            effect.type === EFFECTS.HEAL_ALL_FATIGUE ||
+            effect.type === EFFECTS.HEAL_IMMUNE,
         )) ||
       (ability.id === SNIPER_PERKS.INSTAKILL &&
         !effectsList?.find(

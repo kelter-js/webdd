@@ -8,6 +8,7 @@ import { usePlayer } from "../contexts/Player";
 import { SELL_SFX_ID } from "../constants";
 import sellSfx from "../assets/audio/sell.mp3";
 import { TURN_STATES } from "../entities";
+import { getNextTargetIndex, getPrevTargetIndex } from "../utils/getTargets";
 
 // REFACTORING CHECKED ✅
 
@@ -51,46 +52,6 @@ export const useGlobalListeners = () => {
     location?.dungeon?.length &&
     location?.dungeon[location?.position?.x][location?.position?.y]?.type ===
       ROOM_TYPES.END;
-
-  const getNextTargetIndex = () => {
-    const party = battle?.enemy?.party;
-
-    if (!party || party.length === 0) {
-      return selectedEnemy;
-    }
-
-    const length = party.length;
-
-    for (let i = 1; i <= length; i++) {
-      const nextIndex = (selectedEnemy + i) % length;
-
-      if (party[nextIndex].hp > 0) {
-        return nextIndex;
-      }
-    }
-
-    return selectedEnemy;
-  };
-
-  const getPrevTargetIndex = () => {
-    const party = battle?.enemy?.party;
-
-    if (!party || party.length === 0) {
-      return selectedEnemy;
-    }
-
-    const length = party.length;
-
-    for (let i = 1; i <= length; i++) {
-      const nextIndex = (selectedEnemy - i + length) % length;
-
-      if (party[nextIndex].hp > 0) {
-        return nextIndex;
-      }
-    }
-
-    return selectedEnemy;
-  };
 
   useEffect(() => {
     const handleKeyBindings = (event: KeyboardEvent) => {
@@ -160,8 +121,9 @@ export const useGlobalListeners = () => {
           battle?.turn === TURN_STATES.PLAYER_TURN &&
           (battle?.enemy?.party?.length || 0) > 1
         ) {
-          console.log("we fire ", getPrevTargetIndex());
-          setSelectedEnemy(getPrevTargetIndex());
+          setSelectedEnemy(
+            getPrevTargetIndex(selectedEnemy, battle.enemy.party),
+          );
         }
 
         if (
@@ -170,8 +132,9 @@ export const useGlobalListeners = () => {
           battle?.turn === TURN_STATES.PLAYER_TURN &&
           (battle?.enemy?.party?.length || 0) > 1
         ) {
-          console.log("we fire ", getNextTargetIndex());
-          setSelectedEnemy(getNextTargetIndex());
+          setSelectedEnemy(
+            getNextTargetIndex(selectedEnemy, battle.enemy.party),
+          );
         }
       }
     };

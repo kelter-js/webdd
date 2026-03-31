@@ -70,6 +70,7 @@ export const EFFECTS_DESCRIPTIONS = {
   [EFFECTS.HEAL]: "Лечение",
   [EFFECTS.BROKE]: "Беззащитность",
   [EFFECTS.INSPIRED]: "Вдохновение",
+  // кд на вызов абилки хилки себя на 3 хода
   [EFFECTS.HEAL_FATIGUE]: "Слабость после лечения",
   [EFFECTS.INSTA_KILL_FATIGUE]: "Восстановление инстакилла",
   [EFFECTS.INSTA_KILL]: "Инстакилл",

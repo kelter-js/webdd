@@ -6,17 +6,18 @@ import { useGameState } from "../stores";
 
 export const useGameOver = () => {
   const {
-    player: { party, name },
+    player: { battle, name },
     setGameOver,
   } = useGameState();
 
+  const party = (battle && battle.player && battle.player.party) || [];
   const [partyMember1, partyMember2, partyMember3] = party;
 
   useEffect(() => {
     // name - служит флагом того, что игра проинициализировалась
-    if (name) {
+    if (name && battle) {
       const isAllMembersDead = party.every(
-        (member) => member.currentHealth <= 0
+        (member) => member.currentHealth <= 0,
       );
 
       if (isAllMembersDead) {

@@ -4,5 +4,6 @@ export interface DamageData {
   isCritical: boolean;
   isEvasion: boolean;
   isEffect?: boolean;
+  isHealing?: boolean;
   shouldPlayDeathAnimation: boolean;
 }

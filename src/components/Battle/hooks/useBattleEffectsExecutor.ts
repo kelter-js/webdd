@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 import { EFFECTS } from "../../../entities/effects";
@@ -20,6 +20,8 @@ export const useBattleEffectsExecutor = ({
   updateDamageModel: (battleModel: Battle, damageModel: DamageData) => void;
   isReadyToTrigger: boolean;
 }) => {
+  const [isApplyingEffects, setApplyingEffects] = useState(false);
+
   const {
     player: { battle },
     updateBattle,
@@ -68,10 +70,10 @@ export const useBattleEffectsExecutor = ({
               currentHp = Math.max(0, currentHp - (enemyCopy.maxHP / 100) * 10);
             }
 
-            if (effectsMap[EFFECTS.HEAL] && !effectsMap[EFFECTS.HEAL_FATIGUE]) {
+            if (effectsMap[EFFECTS.HEAL]) {
               currentHp = Math.min(
                 enemyCopy.maxHP,
-                currentHp + (enemyCopy.maxHP / 100) * 10,
+                currentHp + (enemyCopy.maxHP / 100) * 15,
               );
             }
 
@@ -130,6 +132,12 @@ export const useBattleEffectsExecutor = ({
                 shouldPlayDeathAnimation: isDead,
               });
             }
+
+            setApplyingEffects(true);
+
+            setTimeout(() => {
+              setApplyingEffects(false);
+            }, 1000);
           }
         }
       } else if (
@@ -259,9 +267,17 @@ export const useBattleEffectsExecutor = ({
                 shouldPlayDeathAnimation: isDead,
               });
             }
+
+            setApplyingEffects(true);
+
+            setTimeout(() => {
+              setApplyingEffects(false);
+            }, 1000);
           }
         }
       }
     }
   }, [selectedCharacter, selectedEnemy, statistics, isReadyToTrigger]);
+
+  return isApplyingEffects;
 };

@@ -359,6 +359,14 @@ export const calculateDamage = (
 
   if (
     playerEffectsCopy[source].list.find(
+      (effect) => effect.type === EFFECTS.WEAKNESS,
+    )
+  ) {
+    damage -= Math.round((damage / 100) * 10);
+  }
+
+  if (
+    playerEffectsCopy[source].list.find(
       (effect) => effect.type === EFFECTS.INSTA_KILL,
     )
   ) {
@@ -427,6 +435,10 @@ export const calculateDamage = (
 
       const playerModel = { ...player };
 
+      const hasHealImmune = battleModelCopy.player.effects[
+        player.name
+      ].list.find((effect) => effect.type === EFFECTS.HEAL_IMMUNE);
+
       if (player.name === source) {
         let health = player.currentHealth;
 
@@ -444,7 +456,9 @@ export const calculateDamage = (
 
         return {
           ...player,
-          currentHealth: Math.min(health, sourcePlayer.maxHealth),
+          currentHealth: hasHealImmune
+            ? player.currentHealth
+            : Math.min(health, sourcePlayer.maxHealth),
           hasTurn: isInspired,
           currentAmountOfRounds: reloader
             ? magSize
@@ -456,7 +470,7 @@ export const calculateDamage = (
         };
       }
 
-      if (healAll) {
+      if (healAll && !hasHealImmune) {
         playerModel.currentHealth = Math.min(
           statistics[player.name].maxHealth,
           player.currentHealth + healAllPercentage,
@@ -542,6 +556,7 @@ export const getBattleStateAfterAbilityUsage = (
         party: battle.player.party.map((player) => {
           const playerStatistics = statistics[player.name];
           const maxHealth = playerStatistics.maxHealth;
+
           const newHealth =
             player.currentHealth + Math.round((maxHealth / 100) * 30);
           const hasTurn = player.name !== character;
