@@ -5,10 +5,17 @@ import { FragmentData, EnemyProps } from "./types";
 import { cols, fragHeight, fragWidth, rows } from "./constants";
 import { useGameState } from "../../../../stores/GameState";
 import { RenderedFragment } from "./components";
-import { Container, TargetContainer } from "./Enemy.styled";
+import { Container, HealthBar, TargetContainer } from "./Enemy.styled";
 import { DamageEffect } from "./components/DamageEffect";
-import { RENDER_LOCATIONS } from "../../../../entities";
-import { Icons } from "../../../../common";
+import { ENEMIES, RENDER_LOCATIONS } from "../../../../entities";
+import { Icons, Tooltip } from "../../../../common";
+import { Stack, Typography } from "@mui/material";
+import { StartGameText } from "../../../CraftModal/TradeModal.styled";
+import { CREATURE_NAME_MAP } from "../../../../constants/creatures";
+import {
+  EFFECTS_DESCRIPTIONS,
+  EFFECTS_ICONS,
+} from "../../../../entities/effects";
 
 const DEFAULT_ANIMATION_STATE = { x: "-50%", scale: 1, y: 0, rotate: 0 };
 
@@ -31,6 +38,7 @@ const variants = {
 export const Enemy: FC<EnemyProps> = ({
   damage = null,
   onDamageAnimationEnd,
+  effectsList,
   isCritical,
   layout,
   isAttacking = false,
@@ -40,14 +48,14 @@ export const Enemy: FC<EnemyProps> = ({
   isUnderAttack,
   isEvasion,
   shouldPlayDeathAnimation,
-  type,
+  creature,
 }) => {
   const isEnemyDead = shouldPlayDeathAnimation;
 
-  console.log("type", type);
+  console.log("type", creature.type);
   console.log("isAttacking", isAttacking);
 
-  const enemySource = useGetEnemyImage(type);
+  const enemySource = useGetEnemyImage(creature.type);
 
   const fragmentsRef = useRef<FragmentData[] | null>(null);
 
@@ -76,69 +84,106 @@ export const Enemy: FC<EnemyProps> = ({
   console.log("isAttacking", isAttacking);
 
   return (
-    <Container
-      id={`enemy-${index}`}
-      left={layout}
-      initial={DEFAULT_ANIMATION_STATE}
-      animate={
-        shouldPlayDeathAnimation
-          ? "idle"
-          : isAttacking
-            ? "attack"
-            : isUnderAttack
-              ? "hit"
-              : "idle"
-      }
-      variants={variants}
-      transition={
-        shouldPlayDeathAnimation
-          ? DEFAULT_ANIMATION_STATE
-          : isAttacking
-            ? {
-                duration: 0.6,
-                times: [0, 0.2, 0.4, 1],
-                ease: "easeInOut",
-              }
-            : isUnderAttack
-              ? {
-                  duration: 0.4, // Тряска должна быть быстрой
-                  ease: "linear",
-                }
-              : { duration: 0.3 }
-      }
-      onAnimationComplete={(definition) => {
-        if (definition === "attack" && !shouldPlayDeathAnimation) {
-          onAttackEnd?.();
+    <div>
+      <Container
+        id={`enemy-${index}`}
+        left={layout}
+        initial={DEFAULT_ANIMATION_STATE}
+        animate={
+          shouldPlayDeathAnimation
+            ? "idle"
+            : isAttacking
+              ? "attack"
+              : isUnderAttack
+                ? "hit"
+                : "idle"
         }
-      }}
-    >
-      {fragmentsRef.current?.map((frag) => (
-        <RenderedFragment
-          key={frag.key}
-          data={frag}
-          imgSrc={enemySource}
-          animated={isEnemyDead}
-          onAnimationComplete={() => {
-            if (isEnemyDead && index === 0 && shouldPlayDeathAnimation) {
-              onAttackEnd();
-            }
-          }}
-        />
-      ))}
+        variants={variants}
+        transition={
+          shouldPlayDeathAnimation
+            ? DEFAULT_ANIMATION_STATE
+            : isAttacking
+              ? {
+                  duration: 0.6,
+                  times: [0, 0.2, 0.4, 1],
+                  ease: "easeInOut",
+                }
+              : isUnderAttack
+                ? {
+                    duration: 0.4, // Тряска должна быть быстрой
+                    ease: "linear",
+                  }
+                : { duration: 0.3 }
+        }
+        onAnimationComplete={(definition) => {
+          if (definition === "attack" && !shouldPlayDeathAnimation) {
+            onAttackEnd?.();
+          }
+        }}
+      >
+        {fragmentsRef.current?.map((frag) => (
+          <RenderedFragment
+            key={frag.key}
+            data={frag}
+            imgSrc={enemySource}
+            animated={isEnemyDead}
+            onAnimationComplete={() => {
+              if (isEnemyDead && index === 0 && shouldPlayDeathAnimation) {
+                onAttackEnd();
+              }
+            }}
+          />
+        ))}
 
-      {isSelected && !isEnemyDead && (
-        <TargetContainer>
-          <Icons.Target />
-        </TargetContainer>
-      )}
+        {isSelected && !isEnemyDead && (
+          <TargetContainer>
+            <Icons.Target />
+          </TargetContainer>
+        )}
 
+        <Stack
+          position="absolute"
+          bottom={0}
+          left="50%"
+          sx={{ transform: "translate(-50%, 0)", zIndex: 999999999 }}
+        >
+          <StartGameText disabled={false} variant="h4">
+            {CREATURE_NAME_MAP[creature.type]}
+
+            <HealthBar>
+              <div
+                style={{
+                  width: `${Math.round((creature.maxHP / 100) * creature.hp)}%`,
+                  height: "15px",
+                }}
+              />
+            </HealthBar>
+
+            <Stack flexWrap="wrap" gap={0.5} direction="row" mt={1}>
+              {effectsList.map((effect) => (
+                <Tooltip
+                  title={`${EFFECTS_DESCRIPTIONS[effect.type]}: ${effect.duration}`}
+                >
+                  <div>
+                    <img
+                      style={{ width: "20px", height: "20px" }}
+                      src={EFFECTS_ICONS[effect.type]}
+                    />
+                  </div>
+                </Tooltip>
+              ))}
+            </Stack>
+          </StartGameText>
+        </Stack>
+      </Container>
       {((Boolean(damage) && damage !== null) || isEvasion) && (
         <DamageEffect
           isEvasion={isEvasion}
           damage={damage || 0}
           isCritical={isCritical}
+          containerId={`enemy-${index}`}
         />
       )}
-    </Container>
+    </div>
   );
 };

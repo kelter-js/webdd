@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { DamageInstance, DamageEffectProps } from "./types";
@@ -13,7 +13,6 @@ import {
   getDamageAnimationConfig,
   getDamageInitialAnimationConfig,
 } from "./constants";
-import { createPortal } from "react-dom";
 
 export const DamageEffect: FC<DamageEffectProps> = ({
   onDamageAnimationEnd,
@@ -22,8 +21,39 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   containerId,
   isEvasion,
 }) => {
-  const addDamageNumber = (damage: number) => {
-    const container = document.getElementById(containerId ?? "image-container");
+  const [damageNumbers, setDamageNumbers] = useState<DamageInstance | null>(
+    null,
+  );
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    // containerId теперь обязательный, но на всякий случай проверяем
+    if (!containerId) {
+      console.warn("DamageEffect: containerId is required");
+      return;
+    }
+
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+      console.warn(
+        `DamageEffect: Container with id "${containerId}" not found`,
+      );
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+
+    // Позиционируем снизу контейнера
+    const bottomX = containerRect.left + containerRect.width / 2;
+    const bottomY = containerRect.top + containerRect.height - 20;
+
+    setPosition({
+      x: bottomX,
+      y: bottomY,
+    });
 
     const newDamage: DamageInstance = {
       id: Date.now() + Math.random(),
@@ -32,80 +62,64 @@ export const DamageEffect: FC<DamageEffectProps> = ({
       y: 0,
     };
 
-    if (!container) {
-      return newDamage;
-    }
-
-    const containerRect = container.getBoundingClientRect();
-
-    // Рандомные координаты в пределах контейнера врага, но выше центра
-    const randomX =
-      Math.random() * containerRect.width * 0.6 + containerRect.width * 0.2;
-    const randomY = Math.random() * containerRect.height * 0.3;
-
-    newDamage.x = randomX;
-    newDamage.y = randomY;
-
-    return newDamage;
-  };
-
-  const [damageNumbers, setDamageNumbers] = useState<DamageInstance | null>(
-    addDamageNumber(damage),
-  );
+    setDamageNumbers(newDamage);
+  }, [damage, containerId]);
 
   const removeDamageNumber = () => {
     setDamageNumbers(null);
-
+    setPosition(null);
     onDamageAnimationEnd?.();
   };
 
   const handleAllAnimationsComplete = () => {
-    // Вызываем коллбэк когда все анимации урона завершены
     onDamageAnimationEnd?.();
   };
 
-  const { id, x, y, damage: damageNumber } = damageNumbers || {};
+  const { id, damage: damageNumber } = damageNumbers || {};
 
-  const container = useMemo(() => {
-    if (containerId) {
-      const element = document.getElementById(containerId);
-
-      if (element) {
-        return element.getBoundingClientRect();
-      }
-
-      return null;
-    }
-
+  // Если нет позиции или цифр, не рендерим
+  if (!position || !damageNumbers) {
     return null;
-  }, [containerId]);
+  }
 
   return (
     <AnimatePresence onExitComplete={handleAllAnimationsComplete}>
       <NumbersContainer
         key={id}
-        hasId={!!container}
-        x={container?.left}
-        y={container?.top}
+        style={{
+          position: "fixed",
+          left: position.x,
+          top: position.y,
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+          zIndex: 999999999,
+        }}
       >
         <DamageNumber
           as={motion.div}
-          initial={getDamageInitialAnimationConfig(x, y)}
-          animate={getDamageAnimationConfig(x, y)}
+          initial={getDamageInitialAnimationConfig(0, 0)}
+          animate={getDamageAnimationConfig(0, 0)}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
           onAnimationComplete={removeDamageNumber}
+          style={{
+            position: "relative",
+            whiteSpace: "nowrap",
+          }}
         >
           {isEvasion ? "ПРОМАХ" : damageNumber}
         </DamageNumber>
 
-        {/* CRIT! позиционируем относительно цифры */}
-        {isCritical && (
+        {isCritical && !isEvasion && (
           <CriticalText
             as={motion.div}
-            initial={getCriticalInitialAnimationConfig(x, y)}
-            animate={getCriticalAnimationConfig(x, y)}
-            transition={{ duration: 1.8, ease: "easeOut" }}
+            initial={getCriticalInitialAnimationConfig(0, 0)}
+            animate={getCriticalAnimationConfig(0, 0)}
+            transition={{ duration: 1.1, ease: "easeOut" }}
+            style={{
+              position: "relative",
+              whiteSpace: "nowrap",
+            }}
           >
             CRIT!
           </CriticalText>

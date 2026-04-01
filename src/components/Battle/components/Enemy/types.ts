@@ -1,4 +1,5 @@
 import { ENEMIES } from "../../../../entities";
+import { Creature, Effects } from "../../../../types/gameState";
 
 export interface FragmentProps {
   dx: string;
@@ -17,7 +18,7 @@ export interface FragmentData {
 }
 
 export interface EnemyProps {
-  type: ENEMIES;
+  creature: Creature;
   damage?: number | null;
   isCritical?: boolean;
   onDamageAnimationEnd?: VoidFunction;
@@ -29,4 +30,5 @@ export interface EnemyProps {
   isUnderAttack: boolean;
   isEvasion: boolean;
   shouldPlayDeathAnimation: boolean;
+  effectsList: Effects[];
 }

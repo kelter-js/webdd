@@ -20,7 +20,7 @@ import { DamageData } from "./types";
 import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
 import { AnimatePresence } from "framer-motion";
 import { calculateDamage } from "./components/CharactersBar/utils";
-import { DIALOGUE_IDS } from "../../entities/dialogues";
+import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
 import { BUILDING_NAMES } from "../../constants";
 import { useGetDialogue } from "../../hooks";
 import { Dialogue } from "../Dialogue";
@@ -61,7 +61,7 @@ export const BattleContainer = () => {
   const {
     isDiceRequiredRoll,
     turnOffDices,
-    player: { battle, party, currentTier, location },
+    player: { battle, party, currentTier, location, dialogFlags },
     updateBattle,
     killEnemy,
     statistics,
@@ -85,7 +85,8 @@ export const BattleContainer = () => {
   useEffect(() => {
     if (
       battle?.enemy.party[0].type === ENEMIES.MERGED_MASS_TIER_1 &&
-      !isDialogueOpen
+      !isDialogueOpen &&
+      !dialogFlags.includes(DIALOGUE_FLAGS.FINAL_DIALOG_ENDED)
     ) {
       setDialogueOpen(BUILDING_NAMES.FINAL_DIALOGUE);
     }
@@ -365,22 +366,24 @@ export const BattleContainer = () => {
         )}
       />
 
-      {battle?.enemy?.party?.map((item, index, self) => {
+      {battle?.enemy?.party?.map((creature, index, self) => {
+        if (creature.hp <= 0) {
+          return null;
+        }
+
         const currentBattleDamageModel =
           battle.turn === TURN_STATES.PLAYER_TURN &&
           battleDamageModel &&
-          battleDamageModel.find((damage) => damage.target === item.id);
+          battleDamageModel.find((damage) => damage.target === creature.id);
 
         const { damage, isCritical, isEvasion, shouldPlayDeathAnimation } =
           currentBattleDamageModel || {};
 
-        if (item.hp <= 0) {
-          return null;
-        }
+        const effects = battle.enemy.effects[creature.id];
 
         return (
           <Enemy
-            type={item.type}
+            creature={creature}
             isUnderAttack={Boolean(currentBattleDamageModel)}
             shouldPlayDeathAnimation={Boolean(shouldPlayDeathAnimation)}
             key={index}
@@ -389,7 +392,7 @@ export const BattleContainer = () => {
             index={index}
             onDamageAnimationEnd={resetAnimations}
             layout={enemyLayout[index]}
-            isAttacking={item.id === attackingEnemyId}
+            isAttacking={creature.id === attackingEnemyId}
             onAttackEnd={resetAnimations}
             isEvasion={Boolean(isEvasion)}
             isSelected={
@@ -398,6 +401,7 @@ export const BattleContainer = () => {
               !isShooting &&
               self.length > 1
             }
+            effectsList={effects.list}
           />
         );
       })}
@@ -423,10 +427,10 @@ export const BattleContainer = () => {
           }
         />
       )}
-
-      {isApplyingEffects && !showDices && nextTurn && (
-        <TurnIndicator show={isApplyingEffects} text={"Применяем эффекты..."} />
-      )}
+      {/* 
+      {isApplyingEffects && !showDices && !nextTurn && (
+        <TurnIndicator show={isApplyingEffects} text="Применяем эффекты..." />
+      )} */}
 
       <AnimatePresence
         onExitComplete={() => {

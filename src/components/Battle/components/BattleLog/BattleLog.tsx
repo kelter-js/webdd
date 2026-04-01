@@ -2,17 +2,27 @@ import logsScreen from "../../../../assets/static/logs.png";
 import { LogsContainer, MessagesContainer } from "./BattleLog.styled";
 import { Typography } from "@mui/material";
 import { useGameState } from "../../../../stores/GameState/GameState";
+import { useEffect, useRef } from "react";
 
 export const BattleLog = () => {
   const {
     player: { battle },
   } = useGameState();
 
+  const containerElement = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerElement.current) {
+      const containerScrollHeight = containerElement.current?.scrollHeight;
+      containerElement.current.scrollTop = containerScrollHeight;
+    }
+  }, [battle?.messages?.length]);
+
   return (
     <LogsContainer>
       <img src={logsScreen} />
       {battle?.messages?.length && (
-        <MessagesContainer>
+        <MessagesContainer ref={containerElement}>
           {(battle?.messages).map((item, index) => (
             <div key={index}>
               <Typography

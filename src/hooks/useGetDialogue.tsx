@@ -18,6 +18,7 @@ import {
   FINAL_FAIL_TEXT,
   FINAL_TEXT,
   tutorDialog,
+  finalDialog,
   FINAL_DEFAULT_OPTIONS_SHOOTING,
   shootingDialog,
   FINAL_FAIL_TEXT_SHOOTING,
@@ -407,6 +408,9 @@ export const useGetDialogue = (npc: string | null) => {
 
         return tutorDialog;
       }
+
+      case BUILDING_NAMES.FINAL_DIALOGUE:
+        return finalDialog;
 
       default:
         return null;

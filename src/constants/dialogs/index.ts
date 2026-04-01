@@ -9,6 +9,7 @@ import priest from "../../assets/npc/priest.png";
 import tutor from "../../assets/npc/tutor.png";
 import starcounter from "../../assets/npc/starcounter.png";
 import watchmen from "../../assets/npc/watchmen.png";
+import mergedMass from "../../assets/npc/merged_mass.png";
 import shooter from "../../assets/npc/shooter.png";
 import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
@@ -1000,6 +1001,55 @@ export const traderDialog: DialogueTree = {
           id: DIALOGUE_IDS.BUY_BAG_IMPROVEMENT,
         },
         { text: "У меня нет такой суммы при себе.", nextNode: "end" },
+      ],
+    },
+  },
+};
+
+export const finalDialog: DialogueTree = {
+  id: BUILDING_NAMES.SHOP,
+  src: mergedMass,
+  name: "Дмитрий Александрович",
+  startNode: "welcome",
+  nodes: {
+    welcome: {
+      text: "Вот мы и встретились. Знаете, я догадывался что, что-то подобное могло произойти. Мерзкие, поганые, вечно сующие свой нос туда, куда не следует. Неужели я так много хотел, просто вернуть ее, побыть снова с Кларой?..",
+      options: [
+        {
+          text: "[слушать]",
+          nextNode: "next1",
+        },
+      ],
+    },
+
+    next1: {
+      text: "Вы никого никогда не любили, если вы не в состоянии понять меня. Понять моё состояние. Вы знаете, что такое настоящая любовь?.. В вас есть хотя бы частичка эмпатии?.. Ненавижу, костьми лягу здесь и там, но не дам разрушить проект всей моей жизни, я всё отдал этому",
+      options: [
+        {
+          text: "[слушать]",
+          nextNode: "next2",
+        },
+      ],
+    },
+
+    next2: {
+      text: "Всё потеряло краски, смысл, только реализация этой идеи подпитывала меня все эти годы. Мне противно жить и находиться среди вас, кто говорит что любит, и тут же способен ударить, объясняя это 'любовью'...",
+      options: [
+        {
+          text: "Ты ведь безумен, ты опасен. Ты слышал себя... со стороны?.. Скорбь затмила твой взгляд, мысли запутались, ты людей погубил ради себя, ради своей мечты, боль, что ты испытал - ты в многократном размере подарил другим. Ты бешеное животное.",
+          nextNode: "finalNode",
+        },
+      ],
+    },
+
+    finalNode: {
+      text: "ХВАТИТ. Я пытался воззвать вас к голосу разума, думал вы способны на диалог, мы поймём друг друга, но видимо не судьба. В этом мире правлю я.",
+      options: [
+        {
+          text: "[приготовиться к бою]",
+          nextNode: "end",
+          flags: [DIALOGUE_FLAGS.FINAL_DIALOG_ENDED],
+        },
       ],
     },
   },

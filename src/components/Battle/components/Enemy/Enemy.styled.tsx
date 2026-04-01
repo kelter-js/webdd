@@ -47,3 +47,19 @@ export const Fragment = styled("div", {
     },
   },
 }));
+
+export const HealthBar = styled("div")(({ theme }) => ({
+  background: "#2a1a1a",
+  borderRadius: "4px",
+  boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.4)",
+  width: "100px",
+  height: "15px",
+
+  /* Заполнение (HP) */
+  "& > div": {
+    background: "linear-gradient(90deg, #e34d4d, #ff6b6b)",
+    borderRadius: "4px",
+    boxShadow: "0 0 6px rgba(227, 77, 77, 0.4)",
+    transition: "width 0.3s ease",
+  },
+}));
