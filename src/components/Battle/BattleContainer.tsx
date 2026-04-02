@@ -25,10 +25,12 @@ import { BUILDING_NAMES } from "../../constants";
 import { useGetDialogue } from "../../hooks";
 import { Dialogue } from "../Dialogue";
 import { getNextTargetIndex, getPrevTargetIndex } from "../../utils/getTargets";
+import { usePlayer } from "../../contexts/Player";
+import attackSfx from "../../assets/audio/enemy_attack.mp3";
+
+const ENEMY_ATTACK_SFX = "enemyAttack";
 
 const getLayoutCoordinates = (enemiesAmount?: number) => {
-  console.log("enemiesAmount", enemiesAmount);
-
   switch (enemiesAmount) {
     case 3: {
       return ["25%", "50%", "75%"];
@@ -197,24 +199,9 @@ export const BattleContainer = () => {
   const isPlayerTurnAvailable =
     battle?.player?.effects[selectedPlayer?.name || ""]?.hasTriggered;
 
-  console.log("battleDamageModel", battleDamageModel);
-  console.log("magSizesMap", magSizesMap);
-  console.log("selectedPlayer", selectedPlayer);
-  console.log(
-    "magSizesMap[selectedPlayer?.name]",
-    magSizesMap[selectedPlayer?.name || ""],
-  );
-
   const handlePlayerAttack = useCallback(
     (newState?: Battle) => {
       const stateSource = newState ?? battle;
-      console.log("START");
-      console.log("isShooting", isShooting);
-      console.log("isPlayerTurnAvailable", isPlayerTurnAvailable);
-      console.log(
-        "stateSource?.enemy.party[selectedEnemy]",
-        stateSource?.enemy.party[selectedEnemy],
-      );
 
       if (
         stateSource &&
@@ -286,6 +273,8 @@ export const BattleContainer = () => {
     updateDamageModel: handleUpdateEffectState,
   });
 
+  const { handleSetSrc } = usePlayer();
+
   useEffect(() => {
     // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
 
@@ -306,6 +295,8 @@ export const BattleContainer = () => {
         statistics,
         currentEnemy,
       );
+
+      handleSetSrc(ENEMY_ATTACK_SFX, attackSfx);
 
       if (damageModel && damageModel[0]?.isHealing) {
         handleSelectNextEnemy(model);

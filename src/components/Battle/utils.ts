@@ -307,6 +307,7 @@ const calculateDamageModelByAi = (
     effectsToApply,
     hasAbilityToHitTwoMember,
     requiredHeal,
+    focusLowHpMembers,
   }: {
     battleModel: Battle;
     statistics: Record<string, Statistics>;
@@ -314,6 +315,7 @@ const calculateDamageModelByAi = (
     effectsToApply?: Effects[];
     hasAbilityToHitTwoMember?: boolean;
     requiredHeal?: boolean;
+    focusLowHpMembers?: boolean;
   },
   // нужно добавить ещё один аргумент, который заставить наносить урон по нескольким противникам - для боссов
 ): { model: Battle; damageModel: DamageData[] | null } => {
@@ -380,9 +382,23 @@ const calculateDamageModelByAi = (
   }
 
   // берем рандомного игрока
+
   const randomPlayerIndex = getRandom(0, party.length - 1);
   // данные рандомного игрока, создаём копию модели с которой дальше работаем
-  const playerData = { ...party[randomPlayerIndex] };
+  let playerData: BattleCharacterModel;
+
+  if (focusLowHpMembers) {
+    const playerSortedByHealth = party.reduce<BattleCharacterModel>(
+      (lowest, current) =>
+        current.currentHealth < lowest.currentHealth ? current : lowest,
+      party[0],
+    );
+
+    playerData = { ...playerSortedByHealth };
+  } else {
+    playerData = { ...party[randomPlayerIndex] };
+  }
+
   const playerStatistics = statistics[playerData.name];
 
   // если по каким-то причинам нет игрока или статистики по нему - выходим
@@ -601,6 +617,10 @@ const calculateDamageModelByAi = (
   };
 };
 
+const BLEED_ROLL_MINIBOSS_TIER_1 = 5;
+const ROLL_MINIBOSS_TIER_2 = 15;
+const ROLL_MINIBOSS_TIER_3 = 25;
+
 const BLEED_ROLL_TIER_2_CHANCE = 10;
 const BLEED_ROLL_TIER_3_CHANCE = 15;
 const FIRE_ROLL_TIER_3_CHANCE = 15;
@@ -641,6 +661,7 @@ export const calculateAiDamage = (
     const bleedRoll = getRandom(1, 100);
     const fireRoll = getRandom(1, 100);
     const effectsToApply: Effects[] = [];
+
     const isLowHp =
       source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
       !battleModel.enemy.effects[source.id].list.find(
@@ -670,14 +691,85 @@ export const calculateAiDamage = (
 
   // может вешать bleed
   if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_1) {
+    const bleedRoll = getRandom(1, 100);
+
+    const effectsToApply: Effects[] = [];
+
+    if (bleedRoll < BLEED_ROLL_MINIBOSS_TIER_1) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+    });
   }
 
   // может вешать bleed и fire
   if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_2) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    if (bleedRoll < ROLL_MINIBOSS_TIER_2) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (fireRoll < ROLL_MINIBOSS_TIER_2 && effectsToApply.length === 0) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+    });
   }
 
   // может вешать bleed/fire/stun/хилить себя/выбирает в таргет лоухп
   if (source.aiPackage === AI_CATEGORIES.MINIBOSS_TIER_3) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const stunRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    const isLowHp =
+      source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
+      !battleModel.enemy.effects[source.id].list.find(
+        (effect) => effect.type === EFFECTS.HEAL_FATIGUE,
+      );
+
+    if (bleedRoll < ROLL_MINIBOSS_TIER_3 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (
+      fireRoll < ROLL_MINIBOSS_TIER_3 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    if (
+      stunRoll < ROLL_MINIBOSS_TIER_3 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.STUN, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+      requiredHeal: isLowHp,
+      focusLowHpMembers: true,
+    });
   }
 
   // может хилить себя
