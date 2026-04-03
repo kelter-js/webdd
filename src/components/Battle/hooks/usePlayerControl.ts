@@ -12,8 +12,8 @@ import { TURN_STATES } from "../../../entities";
 
 export const usePlayerControl = () => {
   const {
-    player: { battle, party: mockParty },
-    setGameOver,
+    player: { battle },
+
     updateBattle,
   } = useGameState();
 
@@ -164,7 +164,6 @@ export const usePlayerControl = () => {
 
   return {
     selectedPlayer,
-    setSelectedPlayer,
     handleSelectNextPlayer,
     currentEnemy,
     handleSelectNextEnemy,

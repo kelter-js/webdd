@@ -53,7 +53,8 @@ export const HealthBar = styled("div")(({ theme }) => ({
   borderRadius: "4px",
   boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.4)",
   width: "100px",
-  height: "15px",
+  height: "25px",
+  marginTop: theme.spacing(0.5),
 
   /* Заполнение (HP) */
   "& > div": {

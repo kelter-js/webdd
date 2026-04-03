@@ -545,11 +545,10 @@ const calculateDamageModelByAi = (
           ...battleModel.player.effects[playerData.name],
           list: [
             ...battleModel.player.effects[playerData.name].list.filter(
-              (effect) => {
-                return !effectsToApply?.find(
+              (effect) =>
+                !effectsToApply?.find(
                   (applyEffect) => applyEffect.type === effect.type,
-                );
-              },
+                ),
             ),
             ...(effectsToApply ?? []),
           ],
@@ -618,6 +617,9 @@ const calculateDamageModelByAi = (
 };
 
 const BLEED_ROLL_MINIBOSS_TIER_1 = 5;
+const ROLL_BOSS_TIER_1 = 10;
+const ROLL_BOSS_TIER_2 = 15;
+const ROLL_BOSS_TIER_3 = 20;
 const ROLL_MINIBOSS_TIER_2 = 15;
 const ROLL_MINIBOSS_TIER_3 = 25;
 
@@ -774,14 +776,173 @@ export const calculateAiDamage = (
 
   // может хилить себя
   if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_1) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const stunRoll = getRandom(1, 100);
+    const weaknessRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    const isLowHp =
+      source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
+      !battleModel.enemy.effects[source.id].list.find(
+        (effect) => effect.type === EFFECTS.HEAL_FATIGUE,
+      );
+
+    if (bleedRoll < ROLL_BOSS_TIER_1 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (
+      fireRoll < ROLL_BOSS_TIER_1 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    if (
+      stunRoll < ROLL_BOSS_TIER_1 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.STUN, duration: 2 });
+    }
+
+    if (
+      weaknessRoll < ROLL_BOSS_TIER_1 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.WEAKNESS, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+      requiredHeal: isLowHp,
+      focusLowHpMembers: true,
+    });
   }
 
   // хилит себя - вешает стан
   if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_2) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const stunRoll = getRandom(1, 100);
+    const weaknessRoll = getRandom(1, 100);
+    const healImmuneRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    const isLowHp =
+      source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
+      !battleModel.enemy.effects[source.id].list.find(
+        (effect) => effect.type === EFFECTS.HEAL_FATIGUE,
+      );
+
+    if (bleedRoll < ROLL_BOSS_TIER_2 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (
+      fireRoll < ROLL_BOSS_TIER_2 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    if (
+      stunRoll < ROLL_BOSS_TIER_2 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.STUN, duration: 2 });
+    }
+
+    if (weaknessRoll < ROLL_BOSS_TIER_2 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.WEAKNESS, duration: 2 });
+    }
+
+    if (
+      healImmuneRoll < ROLL_BOSS_TIER_2 &&
+      !isLowHp &&
+      effectsToApply.length < 2
+    ) {
+      effectsToApply.push({ type: EFFECTS.HEAL_IMMUNE, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+      requiredHeal: isLowHp,
+      focusLowHpMembers: true,
+    });
   }
 
   // может вешать bleed/fire/stun/хилить себя/выбирает в таргет лоухп
   if (source.aiPackage === AI_CATEGORIES.BOSS_TIER_3) {
+    const bleedRoll = getRandom(1, 100);
+    const fireRoll = getRandom(1, 100);
+    const stunRoll = getRandom(1, 100);
+    const weaknessRoll = getRandom(1, 100);
+    const healImmuneRoll = getRandom(1, 100);
+    const brokeRoll = getRandom(1, 100);
+    const effectsToApply: Effects[] = [];
+
+    const isLowHp =
+      source.hp < Math.round((source.maxHP / 100) * TIER_2_CRITICAL_HP) &&
+      !battleModel.enemy.effects[source.id].list.find(
+        (effect) => effect.type === EFFECTS.HEAL_FATIGUE,
+      );
+
+    if (bleedRoll < ROLL_BOSS_TIER_3 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
+    }
+
+    if (
+      fireRoll < ROLL_BOSS_TIER_3 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.FIRE, duration: 2 });
+    }
+
+    if (
+      stunRoll < ROLL_BOSS_TIER_3 &&
+      effectsToApply.length === 0 &&
+      !isLowHp
+    ) {
+      effectsToApply.push({ type: EFFECTS.STUN, duration: 2 });
+    }
+
+    if (weaknessRoll < ROLL_BOSS_TIER_3 && !isLowHp) {
+      effectsToApply.push({ type: EFFECTS.WEAKNESS, duration: 2 });
+    }
+
+    if (
+      healImmuneRoll < ROLL_BOSS_TIER_3 &&
+      !isLowHp &&
+      effectsToApply.length < 2
+    ) {
+      effectsToApply.push({ type: EFFECTS.HEAL_IMMUNE, duration: 2 });
+    }
+
+    if (brokeRoll < ROLL_BOSS_TIER_3 && !isLowHp && effectsToApply.length < 3) {
+      effectsToApply.push({ type: EFFECTS.BROKE, duration: 2 });
+    }
+
+    return calculateDamageModelByAi({
+      battleModel,
+      statistics,
+      source,
+      effectsToApply,
+      requiredHeal: isLowHp,
+      focusLowHpMembers: true,
+    });
   }
 
   return { model: battleModel, damageModel: [] };

@@ -18,7 +18,7 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
 
 // Стилизованный MenuItem
 export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-  fontFamily: "Cormorant Unicase",
+  fontFamily: "inherit",
   textTransform: "uppercase",
   fontSize: "0.9rem",
   letterSpacing: "0.5px",
@@ -41,7 +41,7 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
-  fontFamily: "Cormorant Unicase",
+  fontFamily: "inherit",
   textTransform: "uppercase",
   letterSpacing: "0.5px",
   border: "1px solid #c0a080",

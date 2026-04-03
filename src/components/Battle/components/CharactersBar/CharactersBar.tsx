@@ -1,9 +1,8 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useMemo } from "react";
 import { useGameState } from "../../../../stores/GameState/GameState";
-import * as S from "./CharactersBar.styled";
+
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { AbilityData, CharactersBarProps } from "./types";
-import { getRandom } from "../../../../utils";
+import { CharactersBarProps } from "./types";
 import { Icons, Tooltip } from "../../../../common";
 import { getBattleStateAfterAbilityUsage, getUnitAvatarSrc } from "./utils";
 import { POTION_TYPES } from "../../../../entities/consumables";
@@ -22,7 +21,6 @@ import {
   TANK_PERKS,
   TANK_PERKS_DATA,
 } from "../../../../constants/perks";
-import { PerkData } from "../../../../types";
 import {
   EFFECTS,
   EFFECTS_DESCRIPTIONS,
@@ -30,23 +28,20 @@ import {
 } from "../../../../entities/effects";
 import { PERK_ID_DATA } from "../../../../types/gameState";
 import { StartGameText } from "../../../Initiate/components/SetNameModal/SetNameModal.styled";
+import * as S from "./CharactersBar.styled";
 
 const POTION_SFX = "consumePotionSfx";
 
 export const CharactersBar: FC<CharactersBarProps> = ({
   selectedPlayer,
-  onResetAnimation,
   selectedNextPlayer,
   isPlayerTurnAvailable,
   onAttack,
   damageModel,
 }) => {
-  // нужно написать хук кастомный, принимает массив клавиш и коллбэки на их нажатие и юзать тту для применения атаки
-  // импортнуть и загенерить аватары, реализовать разметку и стили для оружия в руках/хп/атака
   const {
     player: { battle },
     statistics,
-    endTurn,
     consumePotion,
     updateBattle,
   } = useGameState();
@@ -56,25 +51,16 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
   const { handleSetSrc } = usePlayer();
 
-  console.log("battle", battle);
-  console.log("statistics", statistics);
-
   if (!party) {
     return null;
   }
 
-  // const isDamaged = !!damageFlags[partyMember.name];
-  // const isSelected = partyMember.name === selectedPlayer?.name;
-
   const handleConsumePotion = (potion: POTION_TYPES) => {
     if (selectedPlayer?.name) {
-      console.log("do we trigger?");
       handleSetSrc(POTION_SFX, potionSfx);
       consumePotion(selectedPlayer?.name, potion, selectedNextPlayer);
     }
   };
-
-  console.log("isPlayerTurnAvailable", isPlayerTurnAvailable);
 
   const playerAbility = useMemo(() => {
     if (!selectedPlayer) return null;
@@ -101,18 +87,20 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
     const effectsList = battle?.player.effects[selectedPlayer.name].list;
 
+    const { id } = ability;
+
     const isPerkDisabled =
-      (ability.id === TANK_PERKS.LAST_STAND &&
+      (id === TANK_PERKS.LAST_STAND &&
         !effectsList?.find(
           (effect) => effect.type === EFFECTS.LAST_STAND_FATIGUE,
         )) ||
-      (ability.id === MEDIC_PERKS.HEAL_ALL &&
+      (id === MEDIC_PERKS.HEAL_ALL &&
         !effectsList?.find(
           (effect) =>
             effect.type === EFFECTS.HEAL_ALL_FATIGUE ||
             effect.type === EFFECTS.HEAL_IMMUNE,
         )) ||
-      (ability.id === SNIPER_PERKS.INSTAKILL &&
+      (id === SNIPER_PERKS.INSTAKILL &&
         !effectsList?.find(
           (effect) => effect.type === EFFECTS.INSTA_KILL_FATIGUE,
         ));
@@ -298,10 +286,25 @@ export const CharactersBar: FC<CharactersBarProps> = ({
           onClick={() => onAttack()}
         >
           <StartGameText
-            variant="h5"
-            sx={{ opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important` }}
+            sx={{
+              fontFamily: "inherit",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              border: "1px solid #c0a080",
+              color: "#e0c0a0",
+              backgroundColor: "rgba(30, 20, 10, 0.9)",
+              padding: (theme) => theme.spacing(1, 2),
+              opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important`,
+
+              "&:hover": {
+                backgroundColor: "rgba(30, 20, 10, 0.95)",
+                border: "1px solid #ffd700",
+                color: "#ffd700",
+              },
+            }}
+            variant="h6"
           >
-            Атаковать
+            Атаковать (F)
           </StartGameText>
         </Button>
       </S.BattleControls>

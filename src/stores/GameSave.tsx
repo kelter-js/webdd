@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, PersistOptions } from "zustand/middleware";
 
 import { PersistedState, StorageValue, StoreState } from "../types/gameSave";
-import { DEFAULT_GAME_SAVE, DEFAULT_GAME_SAVES } from "./constants";
+
 import { reviver } from "./utils";
 
 // Define persistence configuration
@@ -88,6 +88,6 @@ export const useGameSaves = create<StoreState>()(
           },
         })),
     }),
-    persistConfig
-  )
+    persistConfig,
+  ),
 );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 import { EFFECTS } from "../../../entities/effects";
@@ -20,8 +20,6 @@ export const useBattleEffectsExecutor = ({
   updateDamageModel: (battleModel: Battle, damageModel: DamageData) => void;
   isReadyToTrigger: boolean;
 }) => {
-  const [isApplyingEffects, setApplyingEffects] = useState(false);
-
   const {
     player: { battle },
     updateBattle,
@@ -132,12 +130,6 @@ export const useBattleEffectsExecutor = ({
                 shouldPlayDeathAnimation: isDead,
               });
             }
-
-            setApplyingEffects(true);
-
-            setTimeout(() => {
-              setApplyingEffects(false);
-            }, 1000);
           }
         }
       } else if (
@@ -267,17 +259,9 @@ export const useBattleEffectsExecutor = ({
                 shouldPlayDeathAnimation: isDead,
               });
             }
-
-            setApplyingEffects(true);
-
-            setTimeout(() => {
-              setApplyingEffects(false);
-            }, 1000);
           }
         }
       }
     }
   }, [selectedCharacter, selectedEnemy, statistics, isReadyToTrigger]);
-
-  return isApplyingEffects;
 };

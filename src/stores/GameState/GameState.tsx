@@ -1,41 +1,21 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { RENDER_LOCATIONS } from "../../entities";
 import {
-  BATTLE_STATES,
-  BATTLE_TARGET,
-  RENDER_LOCATIONS,
-  TURN_STATES,
-  ECONOMIC_TYPES,
-  DUNGEONS,
-} from "../../entities";
-import {
-  SNIPER_BASE_MODEL,
   DEFAULT_GAME_STATE,
-  MEDIC_BASE_MODEL,
   MAX_ENCOUNTER_CHANCE,
   MIN_ENCOUNTER_CHANCE,
-  TANK_BASE_MODEL,
   SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 } from "../constants";
 import {
   BattleGenerationProps,
-  calculateStatistics,
   generateBattle,
-  getBattleState,
   getEncounterRoll,
   getFirstTurn,
   getRandomRewardWithoutFight,
-  increaseCharacterStat,
 } from "../utils";
-import {
-  Battle,
-  Creature,
-  Enemy,
-  Item,
-  Player,
-  StoreState,
-} from "../../types/gameState";
+import { Battle, Enemy, Item, Player, StoreState } from "../../types/gameState";
 import { ROOM_TYPES } from "../../entities/room";
 import { POTION_TYPES } from "../../entities/consumables";
 import { persistConfig } from "./config";
@@ -94,15 +74,12 @@ import {
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
-import {
-  ENCOUNTER_MAP,
-  generateSpecialEncounter,
-} from "../../utils/generateSpecialEncounter";
-import { FLAGS } from "../../constants";
+import { generateSpecialEncounter } from "../../utils/generateSpecialEncounter";
+
 import { RESOURCES } from "../../entities/resources";
 import { RewardTypes } from "../../types";
 import { JUNK_TYPES } from "../../entities/junk";
-import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
+
 import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 
 // Create the store

@@ -1,4 +1,6 @@
+import { v4 } from "uuid";
 import { CLASSES } from "../../../entities/characterClasses";
+import { Item } from "../../../types/gameState";
 import { getRandomName } from "../../../utils/getRandomName";
 import {
   SNIPER_BASE_MODEL,
@@ -6,6 +8,16 @@ import {
   TANK_BASE_MODEL,
 } from "../../constants";
 import { StoreSet } from "./types";
+import { BNTI_TIER_1 } from "../../../constants/armor";
+import { GALVION_TIER_1 } from "../../../constants/helmets";
+import {
+  MP155_TIER_1,
+  MP5SD_TIER_1,
+  SV98_TIER_1,
+} from "../../../constants/guns";
+import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
+import { memoizeItem } from "../../../utils/memoizeItem";
+import { POTION_TYPES } from "../../../entities/consumables";
 
 const CLASSES_MAP = {
   [CLASSES.SNIPER]: SNIPER_BASE_MODEL,
@@ -21,6 +33,27 @@ const getOtherClassModelsList = (selectedClass: CLASSES) =>
   classList
     .filter((classes) => classes !== selectedClass)
     .map((characterClass) => CLASSES_MAP[characterClass]);
+
+const TANK_DEFAULT_GEAR: Item[] = [
+  { ...BNTI_TIER_1, gearId: v4() },
+  { ...GALVION_TIER_1, gearId: v4() },
+  { ...MP155_TIER_1, gearId: v4() },
+];
+const MEDIC_DEFAULT_GEAR: Item[] = [
+  { ...BNTI_TIER_1, gearId: v4() },
+  { ...GALVION_TIER_1, gearId: v4() },
+  { ...MP5SD_TIER_1, gearId: v4() },
+];
+const SNIPER_DEFAULT_GEAR: Item[] = [
+  { ...BNTI_TIER_1, gearId: v4() },
+  { ...GALVION_TIER_1, gearId: v4() },
+  { ...SV98_TIER_1, gearId: v4() },
+];
+const GEAR_BY_CLASS_MAP = {
+  [CLASSES.SNIPER]: SNIPER_DEFAULT_GEAR,
+  [CLASSES.MEDIC]: MEDIC_DEFAULT_GEAR,
+  [CLASSES.TANK]: TANK_DEFAULT_GEAR,
+};
 
 // FIXME типизация
 export const setPlayerName =
@@ -63,6 +96,30 @@ export const setPlayerName =
         },
       ];
 
-      return { player: { ...state.player, name, party } };
+      const gear = Object.fromEntries(
+        party.map(({ name, characterClass }) => [
+          name,
+          GEAR_BY_CLASS_MAP[characterClass],
+        ]),
+      );
+
+      const memoizedGear = Object.fromEntries(
+        Object.entries(gear).map(([name, gearInventory]) => [
+          name,
+          gearInventory.map(memoizeItem),
+        ]),
+      );
+
+      return rebuildDerivedState({
+        ...state,
+        player: {
+          ...state.player,
+          name,
+          party,
+          gear_memoized: memoizedGear,
+          consumables: [[POTION_TYPES.SMALL_HEALTH_POTION, "10"]],
+        },
+        gear,
+      });
     });
   };

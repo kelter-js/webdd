@@ -145,35 +145,44 @@ export const Enemy: FC<EnemyProps> = ({
           position="absolute"
           bottom={0}
           left="50%"
+          alignItems="center"
+          justifyContent="center"
           sx={{ transform: "translate(-50%, 0)", zIndex: 999999999 }}
         >
           <StartGameText disabled={false} variant="h4">
             {CREATURE_NAME_MAP[creature.type]}
-
-            <HealthBar>
-              <div
-                style={{
-                  width: `${Math.round((creature.maxHP / 100) * creature.hp)}%`,
-                  height: "15px",
-                }}
-              />
-            </HealthBar>
-
-            <Stack flexWrap="wrap" gap={0.5} direction="row" mt={1}>
-              {effectsList.map((effect) => (
-                <Tooltip
-                  title={`${EFFECTS_DESCRIPTIONS[effect.type]}: ${effect.duration}`}
-                >
-                  <div>
-                    <img
-                      style={{ width: "20px", height: "20px" }}
-                      src={EFFECTS_ICONS[effect.type]}
-                    />
-                  </div>
-                </Tooltip>
-              ))}
-            </Stack>
           </StartGameText>
+
+          <HealthBar>
+            <div
+              style={{
+                width:
+                  creature.hp === creature.maxHP
+                    ? "100%"
+                    : `${Math.round((creature.hp / creature.maxHP) * 100)}%`,
+                height: "25px",
+              }}
+            >
+              <Typography variant="body1" fontFamily="inherit" color="black">
+                {creature.hp}/{creature.maxHP}
+              </Typography>
+            </div>
+          </HealthBar>
+
+          <Stack flexWrap="wrap" gap={0.5} direction="row" mt={1}>
+            {effectsList.map((effect) => (
+              <Tooltip
+                title={`${EFFECTS_DESCRIPTIONS[effect.type]}: ${effect.duration}`}
+              >
+                <div>
+                  <img
+                    style={{ width: "20px", height: "20px" }}
+                    src={EFFECTS_ICONS[effect.type]}
+                  />
+                </div>
+              </Tooltip>
+            ))}
+          </Stack>
         </Stack>
       </Container>
       {((Boolean(damage) && damage !== null) || isEvasion) && (
