@@ -25,7 +25,7 @@ export const generatePotion = (tier: number, additionalChance: number = 0) => {
     extra,
   ].sort((a, b) => a - b);
 
-  if (roll > low) {
+  if (roll < low) {
     return {
       ...POTION_PRESET,
       type: POTION_TYPES.EXTRA_LARGE_HEALTH_POTION,
@@ -36,7 +36,7 @@ export const generatePotion = (tier: number, additionalChance: number = 0) => {
     };
   }
 
-  if (roll > middle) {
+  if (roll < middle) {
     return {
       ...POTION_PRESET,
       type: POTION_TYPES.LARGE_HEALTH_POTION,
@@ -47,7 +47,7 @@ export const generatePotion = (tier: number, additionalChance: number = 0) => {
     };
   }
 
-  if (roll > high) {
+  if (roll < high) {
     return {
       ...POTION_PRESET,
       type: POTION_TYPES.MEDIUM_HEALTH_POTION,
@@ -58,7 +58,7 @@ export const generatePotion = (tier: number, additionalChance: number = 0) => {
     };
   }
 
-  if (roll > highest) {
+  if (roll < highest) {
     return {
       ...POTION_PRESET,
       type: POTION_TYPES.SMALL_HEALTH_POTION,

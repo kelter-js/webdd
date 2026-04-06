@@ -35,27 +35,12 @@ export const App = () => {
   useScrollbarWidth();
 
   const {
-    player: {
-      name,
-
-      sliderId,
-      flags,
-
-      dialogFlags,
-    },
-
+    player: { name, sliderId, flags, dialogFlags },
     initiateState,
-
     killEnemy,
   } = useGameState();
 
-  const {
-    setFading,
-    isFading,
-
-    isNewGame,
-    setDialogueOpen,
-  } = useAppState();
+  const { setFading, isFading, isNewGame, setDialogueOpen } = useAppState();
 
   useGlobalListeners();
 
@@ -121,10 +106,19 @@ export const App = () => {
   );
 };
 
-// 04.04
-// прилизать UI инвентаря с его drag-n-drop секциями более антуражно
-// пройтись по разными элементам интерфейса, посмотреть на конситентность, отрефачить стейт
-// начать экспорт оружия и sfx
+// добавить отображение иконок для инвентаря, окна продажи покупки, окна крафта, в окне боя отображать иконку оружия
+
+// 08.04
+// добавить арты для оружия
+
+// 07.04
+// сгенерировать арты для артефактов
+// добавить арты для брони
+
+// 06.04
+// прилизать UI инвентаря с его drag-n-drop секциями более антуражно - done
+// пройтись по разными элементам интерфейса, посмотреть на конситентность, отрефачить стейт - done
+// добавить арты для шлема - done
 
 // 03.04
 // прописать ии боссу 1 тир - done

@@ -24,6 +24,11 @@ export const ViewManager = () => {
     locationState !== RENDER_LOCATIONS.SPECIAL_ENCOUNTER &&
     !sliderId;
 
+  const isMenuVisible =
+    locationState !== RENDER_LOCATIONS.DUNGEON && isServiceLayoutVisible;
+
+  console.log("locationState", locationState);
+
   return (
     <Shake>
       {/* <DiceRollModal /> */}
@@ -36,7 +41,7 @@ export const ViewManager = () => {
       {locationState === RENDER_LOCATIONS.SPECIAL_ENCOUNTER && (
         <SpecialEncounterContainer />
       )}
-      {isServiceLayoutVisible && <MenuLayout />}
+      {isMenuVisible && <MenuLayout />}
       {isServiceLayoutVisible && <InfoBar />}
       {pushLeveledUpList.length !== 0 && <LevelUp />}
     </Shake>

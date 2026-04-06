@@ -1,6 +1,60 @@
 import { BASE_ITEMS_ID } from "../items";
 import { GEAR_SLOTS } from "../../entities/gear";
 
+import galvion1 from "../../assets/gear/helmets/galvion (1).png";
+import galvion2 from "../../assets/gear/helmets/galvion (2).png";
+import galvion3 from "../../assets/gear/helmets/galvion (3).png";
+
+import hjelm1 from "../../assets/gear/helmets/hjelm (1).png";
+import hjelm2 from "../../assets/gear/helmets/hjelm (2).png";
+import hjelm3 from "../../assets/gear/helmets/hjelm (3).png";
+
+import altyn1 from "../../assets/gear/helmets/altyn (1).png";
+import altyn2 from "../../assets/gear/helmets/altyn (2).png";
+import altyn3 from "../../assets/gear/helmets/altyn (3).png";
+
+import maska1 from "../../assets/gear/helmets/maska (1).png";
+import maska2 from "../../assets/gear/helmets/maska (2).png";
+import maska3 from "../../assets/gear/helmets/maska (3).png";
+
+import devtac1 from "../../assets/gear/helmets/devtac (1).png";
+import devtac2 from "../../assets/gear/helmets/devtac (2).png";
+import devtac3 from "../../assets/gear/helmets/devtac (3).png";
+
+import respirator1 from "../../assets/gear/helmets/respirator (1).png";
+import respirator2 from "../../assets/gear/helmets/respirator (2).png";
+import respirator3 from "../../assets/gear/helmets/respirator (3).png";
+
+import cqcm from "../../assets/gear/helmets/cqcm.png";
+
+export const HELMETS_ICON_SOURCES = {
+  [BASE_ITEMS_ID.GALVION_TIER_1]: galvion1,
+  [BASE_ITEMS_ID.GALVION_TIER_2]: galvion2,
+  [BASE_ITEMS_ID.GALVION_TIER_3]: galvion3,
+
+  [BASE_ITEMS_ID.HJELM_TIER_1]: hjelm1,
+  [BASE_ITEMS_ID.HJELM_TIER_2]: hjelm2,
+  [BASE_ITEMS_ID.HJELM_TIER_3]: hjelm3,
+
+  [BASE_ITEMS_ID.ALTYN_TIER_1]: altyn1,
+  [BASE_ITEMS_ID.ALTYN_TIER_2]: altyn2,
+  [BASE_ITEMS_ID.ALTYN_TIER_3]: altyn3,
+
+  [BASE_ITEMS_ID.MASKA_TIER_1]: maska1,
+  [BASE_ITEMS_ID.MASKA_TIER_2]: maska2,
+  [BASE_ITEMS_ID.MASKA_TIER_3]: maska3,
+
+  [BASE_ITEMS_ID.RONIN_HELMET_TIER_1]: devtac1,
+  [BASE_ITEMS_ID.RONIN_HELMET_TIER_2]: devtac2,
+  [BASE_ITEMS_ID.RONIN_HELMET_TIER_3]: devtac3,
+
+  [BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1]: respirator1,
+  [BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2]: respirator2,
+  [BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_3]: respirator3,
+
+  [BASE_ITEMS_ID.CQCM_DEFENSE_ATOMIC_TIER_1]: cqcm,
+};
+
 // СИЛЬНЫЙ
 export const GALVION_TIER_1 = {
   name: "Galvion Caiman",

@@ -111,7 +111,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
         height: 100,
         width: 150,
         flexGrow: 1,
-        opacity: canDrop ? 0.5 : isDragging ? 0 : 1,
+        opacity: canDrop ? 0.5 : isDragging ? 0 : !item ? 0.3 : 1,
         cursor: "pointer",
       }}
     >

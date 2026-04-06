@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useState, useRef, useEffect, useMemo } from "react";
 
 import { originalHeight, originalWidth } from "./constants";
 import { ImageMapHighlightProps } from "./types";
@@ -21,6 +21,38 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
 
   // Оригинальные размеры изображения и координаты
 
+  const mapCoordinates = useMemo(() => {
+    return coords.map((_, index) => {
+      const handleMouseEnter = () => {
+        if (!isDialogueOpen) {
+          setHoveredArea(index);
+        }
+      };
+
+      const handleMouseLeave = () => {
+        if (!isDialogueOpen) {
+          setHoveredArea(null);
+        }
+      };
+
+      const handleAreaClick = () => {
+        onOpen(coords[index].name, index);
+      };
+
+      return (
+        <area
+          key={index}
+          shape="poly"
+          coords={coords[index].coords}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleAreaClick}
+          href="#"
+        />
+      );
+    });
+  }, [coords, isDialogueOpen, onOpen]);
+
   return (
     <div className="image-map-container" ref={containerRef}>
       <div className="image-wrapper">
@@ -33,38 +65,7 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
           onLoad={() => window.dispatchEvent(new Event("resize"))}
         />
 
-        <map name="image-map">
-          {coords.map((_, index) => {
-            const handleMouseEnter = () => {
-              if (!isDialogueOpen) {
-                setHoveredArea(index);
-              }
-            };
-
-            const handleMouseLeave = () => {
-              if (!isDialogueOpen) {
-                setHoveredArea(null);
-              }
-            };
-
-            const handleAreaClick = () => {
-              onOpen(coords[index].name, index);
-              alert(`index: ${index}`);
-            };
-
-            return (
-              <area
-                key={index}
-                shape="poly"
-                coords={coords[index].coords}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={handleAreaClick}
-                href="#"
-              />
-            );
-          })}
-        </map>
+        <map name="image-map">{mapCoordinates}</map>
 
         <svg
           className="highlight-overlay"

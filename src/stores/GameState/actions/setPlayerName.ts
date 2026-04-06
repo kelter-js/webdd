@@ -118,6 +118,8 @@ export const setPlayerName =
           party,
           gear_memoized: memoizedGear,
           consumables: [[POTION_TYPES.SMALL_HEALTH_POTION, "10"]],
+          torches: 15,
+          gold: 1000,
         },
         gear,
       });
