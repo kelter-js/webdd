@@ -1,6 +1,60 @@
 import { GEAR_SLOTS } from "../../entities/gear";
 import { BASE_ITEMS_ID } from "../items";
 
+import bnti1 from "../../assets/gear/armor/bnti (1).png";
+import bnti2 from "../../assets/gear/armor/bnti (2).png";
+import bnti3 from "../../assets/gear/armor/bnti (3).png";
+
+import npp1 from "../../assets/gear/armor/npp (1).png";
+import npp2 from "../../assets/gear/armor/npp (2).png";
+import npp3 from "../../assets/gear/armor/npp (3).png";
+
+import iotv1 from "../../assets/gear/armor/iotv (1).png";
+import iotv2 from "../../assets/gear/armor/iotv (2).png";
+import iotv3 from "../../assets/gear/armor/iotv (3).png";
+
+import fort1 from "../../assets/gear/armor/fort (1).png";
+import fort2 from "../../assets/gear/armor/fort (2).png";
+import fort3 from "../../assets/gear/armor/fort (3).png";
+
+import nfm1 from "../../assets/gear/armor/nfm (1).png";
+import nfm2 from "../../assets/gear/armor/nfm (2).png";
+import nfm3 from "../../assets/gear/armor/nfm (3).png";
+
+import redut1 from "../../assets/gear/armor/redut (1).png";
+import redut2 from "../../assets/gear/armor/redut (2).png";
+import redut3 from "../../assets/gear/armor/redut (3).png";
+
+import osrpey from "../../assets/gear/armor/osrpey.png";
+
+export const ARMOR_ICON_SOURCES = {
+  [BASE_ITEMS_ID.BNTI_TIER_1]: bnti1,
+  [BASE_ITEMS_ID.BNTI_TIER_2]: bnti2,
+  [BASE_ITEMS_ID.BNTI_TIER_3]: bnti3,
+
+  [BASE_ITEMS_ID.NPP_TIER_1]: npp1,
+  [BASE_ITEMS_ID.NPP_TIER_2]: npp2,
+  [BASE_ITEMS_ID.NPP_TIER_3]: npp3,
+
+  [BASE_ITEMS_ID.IOTV_TIER_1]: iotv1,
+  [BASE_ITEMS_ID.IOTV_TIER_2]: iotv2,
+  [BASE_ITEMS_ID.IOTV_TIER_3]: iotv3,
+
+  [BASE_ITEMS_ID.FORT_TIER_1]: fort1,
+  [BASE_ITEMS_ID.FORT_TIER_2]: fort2,
+  [BASE_ITEMS_ID.FORT_TIER_3]: fort3,
+
+  [BASE_ITEMS_ID.NFM_TIER_1]: nfm1,
+  [BASE_ITEMS_ID.NFM_TIER_2]: nfm2,
+  [BASE_ITEMS_ID.NFM_TIER_3]: nfm3,
+
+  [BASE_ITEMS_ID.REDUT_TIER_1]: redut1,
+  [BASE_ITEMS_ID.REDUT_TIER_2]: redut2,
+  [BASE_ITEMS_ID.REDUT_TIER_3]: redut3,
+
+  [BASE_ITEMS_ID.OSPREY_TIER_1]: osrpey,
+};
+
 console.log("BASE_ITEMS_ID", BASE_ITEMS_ID);
 
 export const BNTI_TIER_1 = {

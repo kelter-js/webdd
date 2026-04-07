@@ -1,13 +1,37 @@
 import { GEAR_SLOTS } from "../../entities/gear";
 import { EFFECT_TYPES } from "../../types/gameState";
 import { BASE_ITEMS_ID } from "../items";
+import healthOrb1 from "../../assets/gear/artifacts/health_orb (1).png";
+import healthOrb2 from "../../assets/gear/artifacts/health_orb (1).png";
+import healthOrb3 from "../../assets/gear/artifacts/health_orb (1).png";
 
-// артефакт увеличивающий хп - PHOTO
-// артефакт увеличивающий урон - soul
-// артефакт увеличивающий защиту - руда
+import bulletNecklace1 from "../../assets/gear/artifacts/bullet_necklace_1.png";
+import bulletNecklace2 from "../../assets/gear/artifacts/bullet_necklace_2.png";
+import bulletNecklace3 from "../../assets/gear/artifacts/bullet_necklace_3.png";
 
-// артефакт со спешиал энкаунтера даёт и урон и хп и защиту но немного
-// ещё один артефакт легендарный будет давать перк отхила c атаки
+import leadCloak1 from "../../assets/gear/artifacts/lead_cloak_1.png";
+import leadCloak2 from "../../assets/gear/artifacts/lead_cloak_2.png";
+import leadCloak3 from "../../assets/gear/artifacts/lead_cloak_3.png";
+
+import chaosChalice from "../../assets/gear/artifacts/chaos_chalice.png";
+import vampireRing from "../../assets/gear/artifacts/vampire_ring.png";
+
+export const ARTIFACT_ICON_SOURCES = {
+  [BASE_ITEMS_ID.HEALTH_ORB_TIER_1]: healthOrb1,
+  [BASE_ITEMS_ID.HEALTH_ORB_TIER_2]: healthOrb2,
+  [BASE_ITEMS_ID.HEALTH_ORB_TIER_3]: healthOrb3,
+
+  [BASE_ITEMS_ID.BULLET_NECKLACE_TIER_1]: bulletNecklace1,
+  [BASE_ITEMS_ID.BULLET_NECKLACE_TIER_2]: bulletNecklace2,
+  [BASE_ITEMS_ID.BULLET_NECKLACE_TIER_3]: bulletNecklace3,
+
+  [BASE_ITEMS_ID.LEAD_CLOAK_TIER_1]: leadCloak1,
+  [BASE_ITEMS_ID.LEAD_CLOAK_TIER_2]: leadCloak2,
+  [BASE_ITEMS_ID.LEAD_CLOAK_TIER_3]: leadCloak3,
+
+  [BASE_ITEMS_ID.CHAOS_CHALICE_TIER_1]: chaosChalice,
+  [BASE_ITEMS_ID.VAMPIRE_RING_TIER_1]: vampireRing,
+};
 
 export const HEALTH_ORB_TIER_1 = {
   name: "Кристалл здоровья",
