@@ -3,34 +3,176 @@ import { GUN_TYPES } from "../../entities/guns";
 import { Item } from "../../types/gameState";
 import { BASE_ITEMS_ID } from "../items";
 
-// FIXME: возможные эффекты на оружии в текущий момент - увеличение кол-ва патронов в магазине
-// увеличение шанса крита
-// увеличение силы крита
-// эффект с некоторым шансом может быть на 3 тире
+import sv98_1 from "../../assets/gear/weapons/sv98_1.png";
+import sv98_2 from "../../assets/gear/weapons/sv98_2.png";
+import sv98_3 from "../../assets/gear/weapons/sv98_3.png";
 
-// SMG 1 - MP5SD
-// SMG 2 - FN P90S
-// SMG 1 - KRISS VECTOR
+import dvl_1 from "../../assets/gear/weapons/dvl_1.png";
+import dvl_2 from "../../assets/gear/weapons/dvl_2.png";
+import dvl_3 from "../../assets/gear/weapons/dvl_3.png";
 
-// PISTOL 1 - GLOCK 17
-// PISTOL 2 - FN 57
-// PISTOL 3 - DEAGLE
+import axmc_1 from "../../assets/gear/weapons/axmc_1.png";
+import axmc_2 from "../../assets/gear/weapons/axmc_2.png";
+import axmc_3 from "../../assets/gear/weapons/axmc_3.png";
 
-// SHOTGUN 1 - MP-155
-// SHOTGUN 2 - Remington Model 870
-// SHOTGUN 3 - saiga 12
+import mp155_1 from "../../assets/gear/weapons/mp155_1.png";
+import mp155_2 from "../../assets/gear/weapons/mp155_2.png";
+import mp155_3 from "../../assets/gear/weapons/mp155_3.png";
 
-// ASSAULT 1 - AK-12
-// ASSAULT 2 - M4A1
-// ASSAULT 3 - SA-58
+import m870_1 from "../../assets/gear/weapons/m870_1.png";
+import m870_2 from "../../assets/gear/weapons/m870_2.png";
+import m870_3 from "../../assets/gear/weapons/m870_3.png";
 
-// MACHINE GUN 1 - RPK
-// MACHINE GUN 2 - PKM
-// MACHINE GUN 3 - M60
+import saiga_1 from "../../assets/gear/weapons/saiga_1.png";
+import saiga_2 from "../../assets/gear/weapons/saiga_2.png";
+import saiga_3 from "../../assets/gear/weapons/saiga_3.png";
 
-// SNIPER 1 - SV-98
-// SNIPER 2 - ДВЛ-10
-// SNIPER 3 - AXMC .338
+import aa12 from "../../assets/gear/weapons/aa12.png";
+
+import ak12_1 from "../../assets/gear/weapons/ak12_1.png";
+import ak12_2 from "../../assets/gear/weapons/ak12_2.png";
+import ak12_3 from "../../assets/gear/weapons/ak12_3.png";
+
+import m4_1 from "../../assets/gear/weapons/m4_1.png";
+import m4_2 from "../../assets/gear/weapons/m4_2.png";
+import m4_3 from "../../assets/gear/weapons/m4_3.png";
+
+import sa58_1 from "../../assets/gear/weapons/sa58_1.png";
+import sa58_2 from "../../assets/gear/weapons/sa58_2.png";
+import sa58_3 from "../../assets/gear/weapons/sa58_3.png";
+
+import mk18 from "../../assets/gear/weapons/mk18.png";
+
+import mp_1 from "../../assets/gear/weapons/mp_1.png";
+import mp_2 from "../../assets/gear/weapons/mp_2.png";
+import mp_3 from "../../assets/gear/weapons/mp_3.png";
+
+import p90_1 from "../../assets/gear/weapons/p90_1.png";
+import p90_2 from "../../assets/gear/weapons/p90_2.png";
+import p90_3 from "../../assets/gear/weapons/p90_3.png";
+
+import vector_1 from "../../assets/gear/weapons/vector_1.png";
+import vector_2 from "../../assets/gear/weapons/vector_2.png";
+import vector_3 from "../../assets/gear/weapons/vector_3.png";
+
+import veresk from "../../assets/gear/weapons/veresk.png";
+
+import glock_1 from "../../assets/gear/weapons/glock_1.png";
+import glock_2 from "../../assets/gear/weapons/glock_2.png";
+import glock_3 from "../../assets/gear/weapons/glock_3.png";
+
+import fn57_1 from "../../assets/gear/weapons/fn57_1.png";
+import fn57_2 from "../../assets/gear/weapons/fn57_2.png";
+import fn57_3 from "../../assets/gear/weapons/fn57_3.png";
+
+import deagle_1 from "../../assets/gear/weapons/deagle_1.png";
+import deagle_2 from "../../assets/gear/weapons/deagle_2.png";
+import deagle_3 from "../../assets/gear/weapons/deagle_3.png";
+
+import rpd_1 from "../../assets/gear/weapons/rpd_1.png";
+import rpd_2 from "../../assets/gear/weapons/rpd_2.png";
+import rpd_3 from "../../assets/gear/weapons/rpd_3.png";
+
+import m60_1 from "../../assets/gear/weapons/m60_1.png";
+import m60_2 from "../../assets/gear/weapons/m60_2.png";
+import m60_3 from "../../assets/gear/weapons/m60_3.png";
+
+import pkm_1 from "../../assets/gear/weapons/pkm_1.png";
+import pkm_2 from "../../assets/gear/weapons/pkm_2.png";
+import pkm_3 from "../../assets/gear/weapons/pkm_3.png";
+
+import axmcSfx from "../../assets/audio/weapons/axmc.mp3";
+import sv98Sfx from "../../assets/audio/weapons/sv98.mp3";
+
+export const WEAPONS_SFX_SOURCES = {
+  [BASE_ITEMS_ID.SV98_TIER_1]: sv98Sfx,
+  [BASE_ITEMS_ID.SV98_TIER_2]: sv98Sfx,
+  [BASE_ITEMS_ID.SV98_TIER_3]: sv98Sfx,
+
+  [BASE_ITEMS_ID.AXMC_TIER_1]: axmcSfx,
+  [BASE_ITEMS_ID.AXMC_TIER_2]: axmcSfx,
+  [BASE_ITEMS_ID.AXMC_TIER_3]: axmcSfx,
+};
+
+export const WEAPONS_ICON_SOURCES = {
+  [BASE_ITEMS_ID.SV98_TIER_1]: sv98_1,
+  [BASE_ITEMS_ID.SV98_TIER_2]: sv98_2,
+  [BASE_ITEMS_ID.SV98_TIER_3]: sv98_3,
+
+  [BASE_ITEMS_ID.DLV10_TIER_1]: dvl_1,
+  [BASE_ITEMS_ID.DLV10_TIER_2]: dvl_2,
+  [BASE_ITEMS_ID.DLV10_TIER_3]: dvl_3,
+
+  [BASE_ITEMS_ID.AXMC_TIER_1]: axmc_1,
+  [BASE_ITEMS_ID.AXMC_TIER_2]: axmc_2,
+  [BASE_ITEMS_ID.AXMC_TIER_3]: axmc_3,
+
+  [BASE_ITEMS_ID.MP155_TIER_1]: mp155_1,
+  [BASE_ITEMS_ID.MP155_TIER_2]: mp155_2,
+  [BASE_ITEMS_ID.MP155_TIER_3]: mp155_3,
+
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_1]: m870_1,
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_2]: m870_2,
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_3]: m870_3,
+
+  [BASE_ITEMS_ID.SAIGA_TIER_1]: saiga_1,
+  [BASE_ITEMS_ID.SAIGA_TIER_2]: saiga_2,
+  [BASE_ITEMS_ID.SAIGA_TIER_3]: saiga_3,
+
+  [BASE_ITEMS_ID.AA12_TIER_1]: aa12,
+
+  [BASE_ITEMS_ID.AK_12_TIER_1]: ak12_1,
+  [BASE_ITEMS_ID.AK_12_TIER_2]: ak12_2,
+  [BASE_ITEMS_ID.AK_12_TIER_3]: ak12_3,
+
+  [BASE_ITEMS_ID.M4A1_TIER_1]: m4_1,
+  [BASE_ITEMS_ID.M4A1_TIER_2]: m4_2,
+  [BASE_ITEMS_ID.M4A1_TIER_3]: m4_3,
+
+  [BASE_ITEMS_ID.SA58_TIER_1]: sa58_1,
+  [BASE_ITEMS_ID.SA58_TIER_2]: sa58_2,
+  [BASE_ITEMS_ID.SA58_TIER_3]: sa58_3,
+
+  [BASE_ITEMS_ID.SWORD_MK18_TIER_1]: mk18,
+
+  [BASE_ITEMS_ID.MP5SD_TIER_1]: mp_1,
+  [BASE_ITEMS_ID.MP5SD_TIER_2]: mp_2,
+  [BASE_ITEMS_ID.MP5SD_TIER_3]: mp_3,
+
+  [BASE_ITEMS_ID.FN_P90S_TIER_1]: p90_1,
+  [BASE_ITEMS_ID.FN_P90S_TIER_2]: p90_2,
+  [BASE_ITEMS_ID.FN_P90S_TIER_3]: p90_3,
+
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_1]: vector_1,
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_2]: vector_2,
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_3]: vector_3,
+
+  [BASE_ITEMS_ID.VERESK_TIER_1]: veresk,
+
+  [BASE_ITEMS_ID.GLOCK_17_TIER_1]: glock_1,
+  [BASE_ITEMS_ID.GLOCK_17_TIER_2]: glock_2,
+  [BASE_ITEMS_ID.GLOCK_17_TIER_3]: glock_3,
+
+  [BASE_ITEMS_ID.FN_57_TIER_1]: fn57_1,
+  [BASE_ITEMS_ID.FN_57_TIER_2]: fn57_2,
+  [BASE_ITEMS_ID.FN_57_TIER_3]: fn57_3,
+
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_1]: deagle_1,
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_2]: deagle_2,
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_3]: deagle_3,
+
+  [BASE_ITEMS_ID.RPD_TIER_1]: rpd_1,
+  [BASE_ITEMS_ID.RPD_TIER_2]: rpd_2,
+  [BASE_ITEMS_ID.RPD_TIER_3]: rpd_3,
+
+  [BASE_ITEMS_ID.M60_TIER_1]: m60_1,
+  [BASE_ITEMS_ID.M60_TIER_2]: m60_2,
+  [BASE_ITEMS_ID.M60_TIER_3]: m60_3,
+
+  [BASE_ITEMS_ID.PKM_TIER_1]: pkm_1,
+  [BASE_ITEMS_ID.PKM_TIER_2]: pkm_2,
+  [BASE_ITEMS_ID.PKM_TIER_3]: pkm_3,
+};
 
 // !!! СНАЙПЕРКИ
 export const SV98_TIER_1: Omit<Item, "gearId"> = {
