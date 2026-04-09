@@ -83,6 +83,25 @@ import pkm_3 from "../../assets/gear/weapons/pkm_3.png";
 
 import axmcSfx from "../../assets/audio/weapons/axmc.mp3";
 import sv98Sfx from "../../assets/audio/weapons/sv98.mp3";
+import dvlSfx from "../../assets/audio/weapons/dvl.mp3";
+import mp155Sfx from "../../assets/audio/weapons/mp155.mp3";
+import m870Sfx from "../../assets/audio/weapons/m870.mp3";
+import saigaSfx from "../../assets/audio/weapons/saiga.mp3";
+import ak12Sfx from "../../assets/audio/weapons/ak12.mp3";
+import aa12Sfx from "../../assets/audio/weapons/aa12.mp3";
+import m4a1Sfx from "../../assets/audio/weapons/m4a1.mp3";
+import sa58Sfx from "../../assets/audio/weapons/sa58.mp3";
+import mk18Sfx from "../../assets/audio/weapons/mk18.mp3";
+import mp5sdSfx from "../../assets/audio/weapons/mp5sd.mp3";
+import p90Sfx from "../../assets/audio/weapons/p90.mp3";
+import vectorSfx from "../../assets/audio/weapons/vector.mp3";
+import vereskSfx from "../../assets/audio/weapons/veresk.mp3";
+import glockSfx from "../../assets/audio/weapons/glock.mp3";
+import fn57Sfx from "../../assets/audio/weapons/fn57.mp3";
+import deagleSfx from "../../assets/audio/weapons/deagle.mp3";
+import rpdSfx from "../../assets/audio/weapons/rpd.mp3";
+import m60Sfx from "../../assets/audio/weapons/m60.mp3";
+import pkmSfx from "../../assets/audio/weapons/pkm.mp3";
 
 export const WEAPONS_SFX_SOURCES = {
   [BASE_ITEMS_ID.SV98_TIER_1]: sv98Sfx,
@@ -92,7 +111,79 @@ export const WEAPONS_SFX_SOURCES = {
   [BASE_ITEMS_ID.AXMC_TIER_1]: axmcSfx,
   [BASE_ITEMS_ID.AXMC_TIER_2]: axmcSfx,
   [BASE_ITEMS_ID.AXMC_TIER_3]: axmcSfx,
+
+  [BASE_ITEMS_ID.DLV10_TIER_1]: dvlSfx,
+  [BASE_ITEMS_ID.DLV10_TIER_2]: dvlSfx,
+  [BASE_ITEMS_ID.DLV10_TIER_3]: dvlSfx,
+
+  [BASE_ITEMS_ID.MP155_TIER_1]: mp155Sfx,
+  [BASE_ITEMS_ID.MP155_TIER_2]: mp155Sfx,
+  [BASE_ITEMS_ID.MP155_TIER_3]: mp155Sfx,
+
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_1]: m870Sfx,
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_2]: m870Sfx,
+  [BASE_ITEMS_ID.REMINGTON_870_TIER_3]: m870Sfx,
+
+  [BASE_ITEMS_ID.SAIGA_TIER_1]: saigaSfx,
+  [BASE_ITEMS_ID.SAIGA_TIER_2]: saigaSfx,
+  [BASE_ITEMS_ID.SAIGA_TIER_3]: saigaSfx,
+
+  [BASE_ITEMS_ID.AK_12_TIER_1]: ak12Sfx,
+  [BASE_ITEMS_ID.AK_12_TIER_2]: ak12Sfx,
+  [BASE_ITEMS_ID.AK_12_TIER_3]: ak12Sfx,
+
+  [BASE_ITEMS_ID.AA12_TIER_1]: aa12Sfx,
+
+  [BASE_ITEMS_ID.M4A1_TIER_1]: m4a1Sfx,
+  [BASE_ITEMS_ID.M4A1_TIER_2]: m4a1Sfx,
+  [BASE_ITEMS_ID.M4A1_TIER_3]: m4a1Sfx,
+
+  [BASE_ITEMS_ID.SA58_TIER_1]: sa58Sfx,
+  [BASE_ITEMS_ID.SA58_TIER_2]: sa58Sfx,
+  [BASE_ITEMS_ID.SA58_TIER_3]: sa58Sfx,
+
+  [BASE_ITEMS_ID.MP5SD_TIER_1]: mp5sdSfx,
+  [BASE_ITEMS_ID.MP5SD_TIER_2]: mp5sdSfx,
+  [BASE_ITEMS_ID.MP5SD_TIER_3]: mp5sdSfx,
+
+  [BASE_ITEMS_ID.SWORD_MK18_TIER_1]: mk18Sfx,
+
+  [BASE_ITEMS_ID.FN_P90S_TIER_1]: p90Sfx,
+  [BASE_ITEMS_ID.FN_P90S_TIER_2]: p90Sfx,
+  [BASE_ITEMS_ID.FN_P90S_TIER_3]: p90Sfx,
+
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_1]: vectorSfx,
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_2]: vectorSfx,
+  [BASE_ITEMS_ID.KRISS_VECTOR_TIER_3]: vectorSfx,
+
+  [BASE_ITEMS_ID.VERESK_TIER_1]: vereskSfx,
+
+  [BASE_ITEMS_ID.GLOCK_17_TIER_1]: glockSfx,
+  [BASE_ITEMS_ID.GLOCK_17_TIER_2]: glockSfx,
+  [BASE_ITEMS_ID.GLOCK_17_TIER_3]: glockSfx,
+
+  [BASE_ITEMS_ID.FN_57_TIER_1]: fn57Sfx,
+  [BASE_ITEMS_ID.FN_57_TIER_2]: fn57Sfx,
+  [BASE_ITEMS_ID.FN_57_TIER_3]: fn57Sfx,
+
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_1]: deagleSfx,
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_2]: deagleSfx,
+  [BASE_ITEMS_ID.DESERT_EAGLE_TIER_3]: deagleSfx,
+
+  [BASE_ITEMS_ID.RPD_TIER_1]: rpdSfx,
+  [BASE_ITEMS_ID.RPD_TIER_2]: rpdSfx,
+  [BASE_ITEMS_ID.RPD_TIER_3]: rpdSfx,
+
+  [BASE_ITEMS_ID.M60_TIER_1]: m60Sfx,
+  [BASE_ITEMS_ID.M60_TIER_2]: m60Sfx,
+  [BASE_ITEMS_ID.M60_TIER_3]: m60Sfx,
+
+  [BASE_ITEMS_ID.PKM_TIER_1]: pkmSfx,
+  [BASE_ITEMS_ID.PKM_TIER_2]: pkmSfx,
+  [BASE_ITEMS_ID.PKM_TIER_3]: pkmSfx,
 };
+
+// MK18, PKM
 
 export const WEAPONS_ICON_SOURCES = {
   [BASE_ITEMS_ID.SV98_TIER_1]: sv98_1,
