@@ -43,6 +43,7 @@ import { resetGame } from "./resetGame";
 import { setBattle } from "./setBattle";
 import { buyCamera } from "./buyCamera";
 import { equipItem } from "./equipItem";
+import { craftItem } from "./craftItem";
 import { setState } from "./setState";
 import { healTeam } from "./healTeam";
 import { sellJunk } from "./sellJunk";
@@ -96,6 +97,7 @@ export {
   setBattle,
   buyCamera,
   equipItem,
+  craftItem,
   setState,
   healTeam,
   sellJunk,

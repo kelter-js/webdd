@@ -10,6 +10,7 @@ import emptySlot from "../../../../../../assets/static/empty_slot.png";
 import { createPortal } from "react-dom";
 
 import { ItemDataModal } from "../../../../../../common/ItemDataModal/ItemDataModal";
+import { getItemIcon } from "../../../../../../utils/getItemIcon";
 
 export const ShopItem: FC<ShopItemProps> = ({
   isHovered,
@@ -96,6 +97,12 @@ export const ShopItem: FC<ShopItemProps> = ({
   const itemRef = useRef<HTMLDivElement>(null);
   const floatingRef = useRef<HTMLDivElement>(null);
 
+  const itemIcon = useMemo(() => {
+    if (itemData?.type && itemData?.baseId) {
+      return getItemIcon(itemData.type, itemData.baseId);
+    }
+  }, [itemData?.type, itemData?.baseId]);
+
   return (
     <ShopItemContainer
       isEmptySlot={!itemData}
@@ -111,6 +118,18 @@ export const ShopItem: FC<ShopItemProps> = ({
       }}
     >
       <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
+      <img
+        src={itemIcon}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          objectFit: "contain",
+        }}
+      />
 
       {itemData &&
         itemRef.current &&

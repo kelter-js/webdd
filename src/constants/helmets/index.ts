@@ -5,9 +5,9 @@ import galvion1 from "../../assets/gear/helmets/galvion (1).png";
 import galvion2 from "../../assets/gear/helmets/galvion (2).png";
 import galvion3 from "../../assets/gear/helmets/galvion (3).png";
 
-import hjelm1 from "../../assets/gear/helmets/hjelm (1).png";
-import hjelm2 from "../../assets/gear/helmets/hjelm (2).png";
-import hjelm3 from "../../assets/gear/helmets/hjelm (3).png";
+import hjelm1 from "../../assets/gear/helmets/hjlem (1).png";
+import hjelm2 from "../../assets/gear/helmets/hjlem (2).png";
+import hjelm3 from "../../assets/gear/helmets/hjlem (3).png";
 
 import altyn1 from "../../assets/gear/helmets/altyn (1).png";
 import altyn2 from "../../assets/gear/helmets/altyn (2).png";

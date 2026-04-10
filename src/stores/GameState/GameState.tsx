@@ -71,6 +71,7 @@ import {
   startSpecialEncounterGame,
   updateSpecialEncounter,
   resetQuest,
+  craftItem,
 } from "./actions";
 import { getRandom } from "../../utils";
 import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
@@ -362,6 +363,7 @@ export const useGameState = create<StoreState>()(
       removeItemFromGear: removeItemFromGear(set),
       updateFlags: updateFlags(set),
       increaseAgility: increaseAgility(set),
+      craftItem: craftItem(set),
       handleExitSpecialEncounter: handleExitSpecialEncounter(set),
       updateSpecialEncounter: updateSpecialEncounter(set),
       startSpecialEncounterGame: startSpecialEncounterGame(set),

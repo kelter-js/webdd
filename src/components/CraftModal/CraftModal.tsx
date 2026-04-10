@@ -2,28 +2,43 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { GameModal } from "../GameModal";
 
 import { useAppState, useGameState } from "../../stores";
-import { GameStateData, Item } from "../../types/gameState";
+import { Item } from "../../types/gameState";
 import { RECEIPTS } from "../../constants/receipts";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import craftBg from "../../assets/static/craft.png";
 
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { StartGameText } from "../Initiate/components/SetNameModal/SetNameModal.styled";
 import { HoldProgressButton } from "./components/HoldProgressButton";
 import { Icons } from "../../common";
-import { CraftFunctionType } from "../../types";
 import { CraftDrop } from "./components/CraftDrop";
-import { generateRandomItem } from "../Battle/utils";
+
 import { useSnackbar } from "../../contexts/Snackbar";
 
 export const CraftModal = () => {
-  const { player } = useGameState();
+  const { player, craftItem } = useGameState();
   const { toggleCraftMenu } = useAppState();
   const [craftedItem, setCraftedItem] = useState<null | Item>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleClearCraftedResult = () => setCraftedItem(null);
   const { showSnackbar } = useSnackbar();
+  const [result, setResult] = useState<null | string | Item>(null);
+
+  useEffect(() => {
+    if (result) {
+      if (typeof result === "string") {
+        showSnackbar(result);
+      } else {
+        setCraftedItem(result);
+      }
+    }
+
+    const timerId = setTimeout(() => {
+      setResult(null);
+    }, 1500);
+
+    return () => clearTimeout(timerId);
+  }, [result]);
 
   const psRef = useRef(null);
 
@@ -48,22 +63,14 @@ export const CraftModal = () => {
   const currentCraftData = RECEIPTS[selectedIndex];
 
   const handleCraft = () => {
+    console.log("AER EW INVOKED?");
     const { state, item } = currentCraftData.create(player);
 
-    if (item) {
-      if (typeof item === "string") {
-        showSnackbar(item);
-      } else {
-        setCraftedItem(item);
-      }
-    }
+    console.log("state", state);
 
-    // mock
-    // нужна функция обновления состояния игрока - из useGameState
-    // внутри action из useGameState нужно делать ещё две вещи - обновлять инвентарь если receipt.type === item, который не memoized а обычный, а ещё
-    // понадобится пересчет статов - ведь мы могли снять вещь
-    // доработать рецепты - возвращать модель, в которой модель обновленного стейта + флаг, что мы взяли вещь из гира персонажа - и ориентируясь на этот флаг осуществлять пересчет статов
-    // чтобы не делать лишние вычисления
+    setResult(item);
+
+    craftItem(state);
   };
 
   const isCraftButtonDisabled = useMemo(
@@ -71,11 +78,7 @@ export const CraftModal = () => {
     [player, currentCraftData.isDisabled],
   );
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCraftedItem(generateRandomItem(1));
-    }, 1000);
-  }, []);
+  console.log("currentCraftData", currentCraftData);
 
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>
@@ -141,13 +144,101 @@ export const CraftModal = () => {
             }}
           />
           <Stack gap={3} mb={8}>
-            <Stack border="1px solid #5a3020"></Stack>
-            <Stack border="1px solid #5a3020"></Stack>
-            <Stack border="1px solid #5a3020"></Stack>
+            <Stack
+              border="1px solid #5a3020"
+              sx={{
+                position: "absolute",
+                right: "151px",
+                top: "44px",
+                height: "107px",
+                width: "151px",
+              }}
+            >
+              <img
+                src={currentCraftData.sourceItemIcon}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  objectFit: "contain",
+                }}
+              />
+            </Stack>
+            <Stack
+              border="1px solid #5a3020"
+              sx={{
+                position: "absolute",
+                right: "333px",
+                top: "44px",
+                height: "107px",
+                width: "151px",
+              }}
+            >
+              <img
+                src={currentCraftData.sourceItemIcon}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  objectFit: "contain",
+                }}
+              />
+            </Stack>
+            <Stack
+              border="1px solid #5a3020"
+              sx={{
+                position: "absolute",
+                right: "522px",
+                top: "44px",
+                height: "107px",
+                width: "151px",
+              }}
+            >
+              <img
+                src={currentCraftData.sourceItemIcon}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  objectFit: "contain",
+                }}
+              />
+            </Stack>
           </Stack>
 
           <Stack>
-            <Stack border="1px solid #5a3020"></Stack>
+            <Stack
+              border="1px solid #5a3020"
+              sx={{
+                position: "absolute",
+                right: "265px",
+                top: "326px",
+                height: "180px",
+                width: "290px",
+              }}
+            >
+              <img
+                src={currentCraftData.targetItemIcon}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  objectFit: "contain",
+                }}
+              />
+            </Stack>
           </Stack>
 
           {currentCraftData?.goldRequiredToCraft && (

@@ -616,7 +616,7 @@ const calculateDamageModelByAi = (
   };
 };
 
-const BLEED_ROLL_MINIBOSS_TIER_1 = 5;
+const BLEED_ROLL_MINIBOSS_TIER_1 = 50;
 const ROLL_BOSS_TIER_1 = 10;
 const ROLL_BOSS_TIER_2 = 15;
 const ROLL_BOSS_TIER_3 = 20;
@@ -697,7 +697,7 @@ export const calculateAiDamage = (
 
     const effectsToApply: Effects[] = [];
 
-    if (bleedRoll < BLEED_ROLL_MINIBOSS_TIER_1) {
+    if (bleedRoll > BLEED_ROLL_MINIBOSS_TIER_1) {
       effectsToApply.push({ type: EFFECTS.BLEED, duration: 2 });
     }
 

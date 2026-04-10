@@ -2,11 +2,12 @@ import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useGameState } from "../../../../stores";
 import emptySlot from "../../../../assets/static/empty_slot.png";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SELL_SFX_ID } from "../../../../constants";
 import sellSfx from "../../../../assets/audio/sell.mp3";
 import { usePlayer } from "../../../../contexts/Player";
 import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
+import { getItemIcon } from "../../../../utils/getItemIcon";
 
 export const SellList = () => {
   const { inventory, sellItem } = useGameState();
@@ -51,6 +52,15 @@ export const SellList = () => {
   }, [currentItemToSellData, sellItem]);
 
   const hasEmptyInventory = inventory?.length === 0;
+
+  const itemIcon = useMemo(() => {
+    if (currentItemToSellData?.type && currentItemToSellData?.baseId) {
+      return getItemIcon(
+        currentItemToSellData.type,
+        currentItemToSellData.baseId,
+      );
+    }
+  }, [currentItemToSellData?.type, currentItemToSellData?.baseId]);
 
   return (
     <Stack gap={4} pt={6} px={5} direction="row">
@@ -112,7 +122,26 @@ export const SellList = () => {
       {!hasEmptyInventory && (
         <Stack gap={1}>
           <Stack gap={5} direction="row">
-            <img src={emptySlot} style={{ width: "190px", height: "190px" }} />
+            <div
+              style={{ width: "190px", height: "190px", position: "relative" }}
+            >
+              <img
+                src={emptySlot}
+                style={{ width: "190px", height: "190px" }}
+              />
+              <img
+                src={itemIcon}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
             <ItemDataModal item={currentItemToSellData} displayDescription />
           </Stack>
 

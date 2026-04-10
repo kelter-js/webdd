@@ -1,3 +1,5 @@
+import { BASE_ITEMS_ID } from "../../constants/items";
+import { GEAR_SLOTS } from "../../entities/gear";
 import { MIN_AMOUNT_OF_ITEMS_PER_ROW } from "./constants";
 
 //fixme: any заменить на тип предмета из инвентаря, когда будет этот тип

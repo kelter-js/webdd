@@ -1,4 +1,4 @@
-import { FC, useState, MouseEvent } from "react";
+import { FC, useState, MouseEvent, useMemo } from "react";
 import { InventoryCellProps } from "./types";
 import { Popper, Stack, Typography } from "@mui/material";
 import { useDrag, useDrop } from "react-dnd";
@@ -7,6 +7,7 @@ import emptySlot from "../../assets/static/empty_slot.png";
 import { Item } from "../../types/gameState";
 
 import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
+import { getItemIcon } from "../../utils/getItemIcon";
 
 export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
@@ -41,6 +42,12 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
 
   console.log("item", item);
 
+  const itemIcon = useMemo(() => {
+    if (item?.baseId) {
+      return getItemIcon(type, item.baseId);
+    }
+  }, [type, item?.baseId]);
+
   return (
     <Stack
       onMouseEnter={handleEnter}
@@ -59,7 +66,28 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
         cursor: "pointer",
       }}
     >
-      <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
+      <Stack
+        style={{
+          position: "relative",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        direction="row"
+      >
+        <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
+        <img
+          src={itemIcon}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            objectFit: "contain",
+          }}
+        />
+      </Stack>
 
       {item && anchorEl && (
         <ItemDataModal

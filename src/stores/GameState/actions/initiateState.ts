@@ -3,6 +3,7 @@ import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
 import { generateStoreItems } from "../../../utils/generateStoreItems";
 import { getItemPrice } from "../../../utils/getItemPrice";
 import { memoizeItem } from "../../../utils/memoizeItem";
+import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
 import { calculateStatistics } from "../../utils";
 import { StoreSet } from "./types";
 
@@ -54,6 +55,8 @@ export const initiateState = (set: StoreSet) => () =>
       });
     }
 
+    console.log("!!!stateCopy", stateCopy);
+
     // инициализируем хар-ки
     state.player.party.forEach((player) => {
       const characterGear = stateCopy.gear
@@ -66,5 +69,5 @@ export const initiateState = (set: StoreSet) => () =>
       );
     });
 
-    return stateCopy;
+    return rebuildDerivedState(stateCopy);
   });

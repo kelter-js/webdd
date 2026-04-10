@@ -345,6 +345,7 @@ export interface StoreState {
   addJunk: (junkToSell: JUNK_TYPES, amount: number) => void;
   sellJunk: VoidFunction;
   updateFlags: (flags: FLAGS) => void;
+  craftItem: (state: GameStateData) => void;
   setVolume: (volume: number) => void;
   startSpecialEncounterGame: (node?: string) => void;
   updateSpecialEncounter: (data: {
@@ -391,6 +392,7 @@ export type PersistedState = Omit<
   | "handleExitSpecialEncounter"
   | "isDiceRequiredRoll"
   | "isAutoSaveRequired"
+  | "craftItem"
   | "abilities"
   | "inventory"
   | "sell_inventory"

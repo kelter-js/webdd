@@ -9,6 +9,9 @@ import { BASE_ITEMS_ID } from "../items";
 import { v4 } from "uuid";
 import { dememoizeItem } from "../../utils/dememoizeItem";
 import { getPotionDescriptionByType } from "../../utils/getPotionDescriptionByType";
+import { HELMETS_ICON_SOURCES } from "../helmets";
+import { ARMOR_ICON_SOURCES } from "../armor";
+import { WEAPONS_ICON_SOURCES } from "../guns";
 
 const FIRST_TIER_MKII_UPGRADE_COST = 3000;
 const FIRST_TIER_MKIII_UPGRADE_COST = 6000;
@@ -123,7 +126,10 @@ export const RECEIPTS: ReceiptData[] = [
       let newConsumables = [...consumables];
       let isPotionAdded = false;
 
-      if (newConsumables.length > 1) {
+      console.log("newConsumables", newConsumables);
+
+      if (newConsumables.length > 0) {
+        console.log("aer we");
         newConsumables = newConsumables.map((consumable) => {
           const [potionType, amount] = consumable;
 
@@ -142,6 +148,8 @@ export const RECEIPTS: ReceiptData[] = [
         if (!isPotionAdded) {
           newConsumables.push([POTION_TYPES.MEDIUM_HEALTH_POTION, "1"]);
         }
+
+        console.log("newConsumables", newConsumables);
       }
 
       const newState = { ...state, consumables: newConsumables };
@@ -181,7 +189,7 @@ export const RECEIPTS: ReceiptData[] = [
       let newConsumables = [...consumables];
       let isPotionAdded = false;
 
-      if (newConsumables.length > 1) {
+      if (newConsumables.length > 0) {
         newConsumables = newConsumables.map((consumable) => {
           const [potionType, amount] = consumable;
 
@@ -240,7 +248,7 @@ export const RECEIPTS: ReceiptData[] = [
       let newConsumables = [...consumables];
       let isPotionAdded = false;
 
-      if (newConsumables.length > 1) {
+      if (newConsumables.length > 0) {
         newConsumables = newConsumables.map((consumable) => {
           const [potionType, amount] = consumable;
 
@@ -290,8 +298,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "БНТИ MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.BNTI_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.BNTI_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -310,8 +318,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "БНТИ MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.BNTI_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.BNTI_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -330,8 +338,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "NPP MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NPP_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NPP_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -350,8 +358,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "NPP MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NPP_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NPP_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
@@ -372,8 +380,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "IOTV MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.IOTV_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.IOTV_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -392,8 +400,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "IOTV MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.IOTV_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.IOTV_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -412,8 +420,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FORT MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.FORT_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.FORT_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -432,8 +440,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FORT MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.FORT_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.FORT_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
@@ -454,8 +462,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "NFM MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NFM_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NFM_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -474,8 +482,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "NFM MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NFM_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.NFM_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -494,8 +502,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "REDUT MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.REDUT_TIER_1],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.REDUT_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -514,8 +522,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "REDUT MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.REDUT_TIER_2],
+    targetItemIcon: ARMOR_ICON_SOURCES[BASE_ITEMS_ID.REDUT_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
 
@@ -536,8 +544,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "Galvion MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.GALVION_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.GALVION_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -556,8 +564,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Galvion MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.GALVION_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.GALVION_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -576,8 +584,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "HJELM MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.HJELM_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.HJELM_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -596,8 +604,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "HJELM MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.HJELM_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.HJELM_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
 
@@ -618,8 +626,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Altyn MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.ALTYN_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.ALTYN_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -638,8 +646,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Altyn MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.ALTYN_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.ALTYN_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -658,8 +666,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Maska MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.MASKA_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.MASKA_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -678,8 +686,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Maska MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.MASKA_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.MASKA_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
 
@@ -700,8 +708,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_HELMET_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_HELMET_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -720,8 +728,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_HELMET_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_HELMET_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -740,8 +748,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin Respirator MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_1],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -760,8 +768,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Ronin Respirator MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_2],
+    targetItemIcon: HELMETS_ICON_SOURCES[BASE_ITEMS_ID.RONIN_RESPIRATOR_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ДРОБОВИКИ
@@ -781,8 +789,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "MP-155 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP155_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP155_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -801,8 +809,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "MP-155 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP155_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP155_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -821,8 +829,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Remington 870 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.REMINGTON_870_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.REMINGTON_870_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -841,8 +849,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Remington 870 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.REMINGTON_870_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.REMINGTON_870_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -861,8 +869,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Saiga-12 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SAIGA_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SAIGA_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -881,8 +889,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Saiga-12 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SAIGA_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SAIGA_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // СНАЙПЕРСКИЕ ВИНТОВКИ
@@ -902,8 +910,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "СВ-98 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SV98_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SV98_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -922,8 +930,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "СВ-98 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SV98_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SV98_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -942,8 +950,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "ДВЛ-10 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DLV10_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DLV10_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -962,8 +970,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "ДВЛ-10 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DLV10_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DLV10_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -982,8 +990,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "AXMC MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AXMC_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AXMC_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1002,8 +1010,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "AXMC MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AXMC_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AXMC_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ПУЛЕМЕТЫ
@@ -1019,8 +1027,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "РПД MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.RPD_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.RPD_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -1039,8 +1047,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "РПД MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.RPD_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.RPD_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1059,8 +1067,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "M60 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M60_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M60_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1079,8 +1087,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "M60 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M60_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M60_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1099,8 +1107,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "ПКМ MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.PKM_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.PKM_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1119,8 +1127,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "ПКМ MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.PKM_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.PKM_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   // ШТУРМОВЫЕ ВИНТОВКИ
@@ -1140,8 +1148,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "АК-12 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AK_12_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AK_12_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -1160,8 +1168,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "АК-12 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AK_12_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.AK_12_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1180,8 +1188,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "M4A1 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M4A1_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M4A1_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1200,8 +1208,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "M4A1 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M4A1_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.M4A1_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1220,8 +1228,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "SA-58 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SA58_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SA58_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1240,8 +1248,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "SA-58 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SA58_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.SA58_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1260,8 +1268,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "MP5SD MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP5SD_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP5SD_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -1280,8 +1288,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "MP5SD MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP5SD_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.MP5SD_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1300,8 +1308,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN P90S MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_P90S_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_P90S_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1320,8 +1328,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN P90S MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_P90S_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_P90S_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1340,8 +1348,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "KRISS VECTOR MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.KRISS_VECTOR_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.KRISS_VECTOR_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1360,8 +1368,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "KRISS VECTOR MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.KRISS_VECTOR_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.KRISS_VECTOR_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1380,8 +1388,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKII_UPGRADE_COST,
       ),
     title: "Glock 17 MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.GLOCK_17_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.GLOCK_17_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKII_UPGRADE_COST,
   },
   {
@@ -1400,8 +1408,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Glock 17 MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.GLOCK_17_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.GLOCK_17_TIER_3],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1420,8 +1428,8 @@ export const RECEIPTS: ReceiptData[] = [
         FIRST_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN Five Seven MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_57_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_57_TIER_2],
     goldRequiredToCraft: FIRST_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1440,8 +1448,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "FN Five Seven MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_57_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.FN_57_TIER_3],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1460,8 +1468,8 @@ export const RECEIPTS: ReceiptData[] = [
         SECOND_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Desert Eagle MK II",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DESERT_EAGLE_TIER_1],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DESERT_EAGLE_TIER_2],
     goldRequiredToCraft: SECOND_TIER_MKIII_UPGRADE_COST,
   },
   {
@@ -1480,8 +1488,8 @@ export const RECEIPTS: ReceiptData[] = [
         THIRD_TIER_MKIII_UPGRADE_COST,
       ),
     title: "Desert Eagle MK III",
-    sourceItemIcon: "",
-    targetItemIcon: "",
+    sourceItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DESERT_EAGLE_TIER_2],
+    targetItemIcon: WEAPONS_ICON_SOURCES[BASE_ITEMS_ID.DESERT_EAGLE_TIER_3],
     goldRequiredToCraft: THIRD_TIER_MKIII_UPGRADE_COST,
   },
 ];

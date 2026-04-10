@@ -25,7 +25,7 @@ import redut1 from "../../assets/gear/armor/redut (1).png";
 import redut2 from "../../assets/gear/armor/redut (2).png";
 import redut3 from "../../assets/gear/armor/redut (3).png";
 
-import osrpey from "../../assets/gear/armor/osrpey.png";
+import osrpey from "../../assets/gear/armor/osprey.png";
 
 export const ARMOR_ICON_SOURCES = {
   [BASE_ITEMS_ID.BNTI_TIER_1]: bnti1,

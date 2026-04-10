@@ -12,7 +12,7 @@ import { usePlayerControl } from "./hooks/usePlayerControl";
 import { useHandleBattleEnd } from "./hooks/useHandleBattleEnd";
 import { ShootingEffect } from "./components/ShootingEffect";
 import { GEAR_SLOTS } from "../../entities/gear";
-import { Battle } from "../../types/gameState";
+import { Battle, Creature } from "../../types/gameState";
 import { calculateAiDamage, getBattleBackground } from "./utils";
 import { DamageData } from "./types";
 import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
@@ -25,27 +25,37 @@ import { Dialogue } from "../Dialogue";
 import { getPrevTargetIndex } from "../../utils/getTargets";
 import { usePlayer } from "../../contexts/Player";
 import attackSfx from "../../assets/audio/enemy_attack.mp3";
+import { WEAPONS_SFX_SOURCES } from "../../constants/guns";
 
 const ENEMY_ATTACK_SFX = "enemyAttack";
+const PLAYER_ATTACK_SFX = "playerAttack";
+const DEFAULT_CENTER = "50%";
 
-const getLayoutCoordinates = (enemiesAmount?: number) => {
-  switch (enemiesAmount) {
-    case 3: {
-      return ["25%", "50%", "75%"];
-    }
-
-    case 2: {
-      return ["25%", "75%"];
-    }
-
-    case 1: {
-      return ["50%"];
-    }
-
-    default: {
-      return ["50%"];
-    }
+const getLayoutCoordinates = (enemiesAmount?: Creature[]) => {
+  if (!enemiesAmount) {
+    return null;
   }
+
+  const aliveEnemyPartyMembers = enemiesAmount.filter((enemy) => enemy.hp > 0);
+
+  let counter = 25;
+
+  return aliveEnemyPartyMembers.reduce<{ [id: string]: string }>(
+    (acc, item, _, self) => {
+      if (self.length === 1) {
+        acc[item.id] = DEFAULT_CENTER;
+      } else if (self.length === 2) {
+        acc[item.id] = `${counter}%`;
+        counter += 50;
+      } else {
+        acc[item.id] = `${counter}%`;
+        counter += 25;
+      }
+
+      return acc;
+    },
+    {},
+  );
 };
 
 export const BattleContainer = () => {
@@ -59,6 +69,7 @@ export const BattleContainer = () => {
     player: { battle, party, currentTier, location, dialogFlags },
     statistics,
     gear,
+    updateBattle,
   } = useGameState();
 
   const [showDices, setShowDices] = useState(isDiceRequiredRoll);
@@ -96,14 +107,33 @@ export const BattleContainer = () => {
 
   const magSizesMap = useMemo(() => {
     if (!gear) {
-      return Object.fromEntries(party.map((item) => [item.name, 1]));
+      return Object.fromEntries(
+        party.map((item) => [
+          item.name,
+          {
+            magSize: 1,
+            baseId: null,
+            roundsPerTurn: null,
+          },
+        ]),
+      );
     }
 
     return Object.fromEntries(
-      Object.entries(gear).map(([key, value]) => [
-        key,
-        value.find((item) => item.type === GEAR_SLOTS.WEAPON)?.magSize || 1,
-      ]),
+      Object.entries(gear).map(([key, value]) => {
+        const currentWeapon = value.find(
+          (item) => item.type === GEAR_SLOTS.WEAPON,
+        );
+
+        return [
+          key,
+          {
+            magSize: currentWeapon?.magSize || 1,
+            baseId: currentWeapon?.baseId || null,
+            roundsPerTurn: currentWeapon?.bulletsPerTurn || null,
+          },
+        ];
+      }),
     );
   }, [gear, party]);
 
@@ -121,12 +151,11 @@ export const BattleContainer = () => {
   const tempBattleModel = useRef<null | Battle>(null);
 
   const enemyLayout = useMemo(
-    () =>
-      getLayoutCoordinates(
-        battle?.enemy?.party?.filter((enemy) => enemy.hp > 0)?.length,
-      ),
+    () => getLayoutCoordinates(battle?.enemy?.party),
     [battle?.enemy?.party],
   );
+
+  console.log("enemyLayout", enemyLayout);
 
   const currentBackground = useMemo(
     () => getBattleBackground(location?.dungeonLevel || currentTier),
@@ -143,11 +172,8 @@ export const BattleContainer = () => {
         battleDamageModel.length === 1 &&
         battleDamageModel[0].isEffect
       ) {
-        if (battle?.turn === TURN_STATES.ENEMY_TURN) {
-          handleSelectNextEnemy(model);
-        } else {
-          handleSelectNextPlayer(model);
-        }
+        console.log("so we work on effects?");
+        updateBattle(model);
 
         setBattleDamageModel(null);
 
@@ -177,6 +203,8 @@ export const BattleContainer = () => {
   const isPlayerTurnAvailable =
     battle?.player?.effects[selectedPlayer?.name || ""]?.hasTriggered;
 
+  const { handleSetSrc } = usePlayer();
+
   const handlePlayerAttack = useCallback(
     (newState?: Battle) => {
       const stateSource = newState ?? battle;
@@ -194,10 +222,23 @@ export const BattleContainer = () => {
           statistics,
           selectedPlayer?.name,
           stateSource?.enemy.party[selectedEnemy],
-          magSizesMap[selectedPlayer?.name],
+          magSizesMap[selectedPlayer?.name]?.magSize,
         );
 
         tempBattleModel.current = model;
+
+        const playerGearModel = selectedPlayer?.name
+          ? magSizesMap[selectedPlayer?.name].baseId
+          : null;
+
+        if (playerGearModel) {
+          handleSetSrc(
+            PLAYER_ATTACK_SFX,
+            WEAPONS_SFX_SOURCES[
+              playerGearModel as keyof typeof WEAPONS_SFX_SOURCES
+            ],
+          );
+        }
 
         setBattleDamageModel(damageModel);
         setShooting(true);
@@ -236,6 +277,8 @@ export const BattleContainer = () => {
     battleModel: Battle,
     damageModel: DamageData,
   ) => {
+    console.log("effect damage model is: ", damageModel);
+    console.log("effect battleModel model is: ", battleModel);
     tempBattleModel.current = battleModel;
     setBattleDamageModel([damageModel]);
   };
@@ -248,8 +291,6 @@ export const BattleContainer = () => {
     toggleNextPlayer: handleSelectNextPlayer,
     updateDamageModel: handleUpdateEffectState,
   });
-
-  const { handleSetSrc } = usePlayer();
 
   useEffect(() => {
     // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
@@ -318,11 +359,14 @@ export const BattleContainer = () => {
       <CharactersBar
         selectedPlayer={selectedPlayer}
         selectedNextPlayer={handleSelectNextPlayer}
-        damageModel={
-          battle?.turn === TURN_STATES.ENEMY_TURN ? battleDamageModel : null
-        }
+        damageModel={battleDamageModel}
         onAttack={handlePlayerAttack}
         isPlayerTurnAvailable={Boolean(isPlayerTurnAvailable && !dialogTree)}
+        onDamageReceiveAnimationEnd={
+          battleDamageModel && battleDamageModel[0].isEffect
+            ? resetAnimations
+            : null
+        }
       />
 
       {battle?.enemy?.party?.map((creature, index, self) => {
@@ -331,7 +375,6 @@ export const BattleContainer = () => {
         }
 
         const currentBattleDamageModel =
-          battle.turn === TURN_STATES.PLAYER_TURN &&
           battleDamageModel &&
           battleDamageModel.find((damage) => damage.target === creature.id);
 
@@ -345,12 +388,12 @@ export const BattleContainer = () => {
             creature={creature}
             isUnderAttack={Boolean(currentBattleDamageModel)}
             shouldPlayDeathAnimation={Boolean(shouldPlayDeathAnimation)}
-            key={index}
+            key={creature.id}
             damage={damage}
             isCritical={isCritical}
             index={index}
             onDamageAnimationEnd={resetAnimations}
-            layout={enemyLayout[index]}
+            layout={enemyLayout ? enemyLayout[creature.id] : DEFAULT_CENTER}
             isAttacking={creature.id === attackingEnemyId}
             onAttackEnd={resetAnimations}
             isEvasion={Boolean(isEvasion)}
@@ -371,7 +414,9 @@ export const BattleContainer = () => {
           targetId={`enemy-${selectedEnemy}`}
           onComplete={resetAnimations}
           shots={
-            selectedPlayer?.name ? magSizesMap[selectedPlayer?.name] || 1 : 1
+            selectedPlayer?.name
+              ? magSizesMap[selectedPlayer?.name].roundsPerTurn || 1
+              : 1
           }
         />
       )}

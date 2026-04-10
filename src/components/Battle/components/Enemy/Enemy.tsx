@@ -149,7 +149,11 @@ export const Enemy: FC<EnemyProps> = ({
           justifyContent="center"
           sx={{ transform: "translate(-50%, 0)", zIndex: 999999999 }}
         >
-          <StartGameText disabled={false} variant="h4">
+          <StartGameText
+            disabled={false}
+            variant="h4"
+            sx={{ backgroundColor: "rgba(30, 20, 10, 0.9)" }}
+          >
             {CREATURE_NAME_MAP[creature.type]}
           </StartGameText>
 

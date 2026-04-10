@@ -136,6 +136,7 @@ export const useBattleEffectsExecutor = ({
         battle?.turn === TURN_STATES.PLAYER_TURN &&
         selectedCharacter
       ) {
+        console.log("but we are her?");
         const {
           player: { effects },
         } = battle;
@@ -145,6 +146,7 @@ export const useBattleEffectsExecutor = ({
           effects[selectedCharacter] &&
           !effects[selectedCharacter].hasTriggered
         ) {
+          console.log("BUT WE ALSO HERE??");
           const effectsMap = Object.fromEntries(
             effects[selectedCharacter].list.map((effect) => [
               effect.type,
@@ -157,6 +159,7 @@ export const useBattleEffectsExecutor = ({
           );
 
           if (player) {
+            console.log("and also player has been found?");
             const playerCopy = { ...player };
             let needToTogglePlayer = false;
 
@@ -241,7 +244,8 @@ export const useBattleEffectsExecutor = ({
                 ),
               },
             };
-
+            console.log("currentHp", currentHp);
+            console.log("needToTogglePlayer", needToTogglePlayer);
             // если не изменилось ХП - значит урона не было - а просто нужно обновить флаги
             if (currentHp === player.currentHealth) {
               if (needToTogglePlayer) {
@@ -250,6 +254,7 @@ export const useBattleEffectsExecutor = ({
                 updateBattle(newBattleModel);
               }
             } else {
+              console.log("SO MODEL CHANGES REQUIRED?");
               updateDamageModel(newBattleModel, {
                 target: selectedCharacter,
                 damage: player.currentHealth - currentHp,

@@ -38,6 +38,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   isPlayerTurnAvailable,
   onAttack,
   damageModel,
+  onDamageReceiveAnimationEnd,
 }) => {
   const {
     player: { battle },
@@ -219,7 +220,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                       <Tooltip title="Урон">
                         <Stack direction="column" alignItems="center">
                           <Icons.Attack size={40} />
-                          <Typography fontFamily="inherit">
+                          <Typography fontFamily="inherit" whiteSpace="pre">
                             {`${characterStats?.minAttack ?? 12} - ${characterStats?.maxAttack ?? 15}`}
                           </Typography>
                         </Stack>
@@ -272,6 +273,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                   damage={damage || 0}
                   isCritical={isCritical}
                   containerId={target ? `${target}-id` : undefined}
+                  onDamageAnimationEnd={() => onDamageReceiveAnimationEnd?.()}
                 />
               )}
             </div>

@@ -9,6 +9,7 @@ export interface CharactersBarProps {
   selectedNextPlayer: (party: Battle) => void;
   onAttack: (battle?: Battle) => void;
   isPlayerTurnAvailable: boolean;
+  onDamageReceiveAnimationEnd: VoidFunction | null;
 }
 
 export interface AbilityData extends PerkData {

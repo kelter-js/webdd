@@ -4,6 +4,7 @@ import { Box, Typography, Button } from "@mui/material";
 
 import { CraftDropProps } from "./types";
 import { GEAR_SLOTS } from "../../../../entities/gear";
+import { getItemIcon } from "../../../../utils/getItemIcon";
 
 export const CraftDrop: FC<CraftDropProps> = ({ item, onClose }) => {
   if (!item) return null;
@@ -18,6 +19,7 @@ export const CraftDrop: FC<CraftDropProps> = ({ item, onClose }) => {
     minValue,
     bulletsPerTurn,
     type,
+    baseId,
   } = item;
 
   return (
@@ -55,11 +57,12 @@ export const CraftDrop: FC<CraftDropProps> = ({ item, onClose }) => {
             }}
           >
             <img
-              src={item.iconSrc}
+              src={getItemIcon(type, baseId)}
               style={{
                 width: 64,
                 height: 64,
                 alignSelf: "center",
+                objectFit: "contain",
               }}
             />
 

@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { FC, useState, MouseEvent } from "react";
+import { FC, useState, MouseEvent, useMemo } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { InventoryCellProps } from "./types";
 import { useGameState } from "../../stores";
@@ -8,6 +8,7 @@ import { GEAR_SLOTS } from "../../entities/gear";
 import { CLASS_GUN_RESTRICTIONS } from "../../constants/characters";
 import frame from "../../assets/static/gear_slot_frame.png";
 import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
+import { getItemIcon } from "../../utils/getItemIcon";
 
 export interface DragItemWithMeta {
   characterName?: string;
@@ -97,7 +98,11 @@ export const CharacterCell: FC<InventoryCellProps> = ({
     console.log("isDragging CHARACTER CELL", isDragging);
   }
 
-  // useAutoScroll(isDragging);
+  const itemIcon = useMemo(() => {
+    if (item?.baseId) {
+      return getItemIcon(type, item.baseId);
+    }
+  }, [type, item?.baseId]);
 
   return (
     <Stack
@@ -108,10 +113,11 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       sx={{
+        position: "relative",
         height: 100,
         width: 150,
         flexGrow: 1,
-        opacity: canDrop ? 0.5 : isDragging ? 0 : !item ? 0.3 : 1,
+        opacity: canDrop ? 0.8 : isDragging ? 0 : !item ? 0.3 : 1,
         cursor: "pointer",
       }}
     >
@@ -123,6 +129,18 @@ export const CharacterCell: FC<InventoryCellProps> = ({
           position: "relative",
           left: "-21px",
           top: "-30px",
+        }}
+      />
+      <img
+        src={itemIcon}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          objectFit: "contain",
         }}
       />
       {item && anchorEl && (
