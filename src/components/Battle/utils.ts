@@ -160,11 +160,9 @@ export const getRandomJunkByTier = (currentTier: number) => {
 };
 
 export const getRandomResources = () => {
-  const amountOfResourceTypes = getRandom(1, ALL_RESOURCES_TYPE.length);
-
   const resourcesPool: RESOURCES[] = [];
 
-  ALL_RESOURCES_TYPE.slice(0, amountOfResourceTypes).forEach((resource) => {
+  ALL_RESOURCES_TYPE.forEach((resource) => {
     const rollForDoubleResources = getRandom(0, 100);
 
     if (rollForDoubleResources > 50) {

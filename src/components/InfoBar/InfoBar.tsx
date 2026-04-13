@@ -11,6 +11,9 @@ import { getPotionDescriptionByType } from "../../utils/getPotionDescriptionByTy
 import { ExclamationBlink } from "../../common/ExclamationBlink/ExclamationBlink";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { StyledSlider } from "../../common/styled.index";
+import { useGetResourceState } from "./useGetResourceState";
+import { getResourceIcon } from "../../utils/getResourceIcon";
+import { RESOURCES } from "../../entities/resources";
 
 export const InfoBar = () => {
   const {
@@ -45,6 +48,8 @@ export const InfoBar = () => {
 
   const { title, icon } = getQuestInfo(quest?.type);
   const [player1, player2, player3] = party;
+
+  const { ore, treasures, soul } = useGetResourceState();
 
   const { charactersWithPointsToSpend, deadCharacter } = useMemo(() => {
     return party.reduce<{
@@ -141,6 +146,39 @@ export const InfoBar = () => {
         </S.StatContainer>
       )}
 
+      {ore && (
+        <S.StatContainer>
+          <Tooltip title="Собрано руды">
+            <Stack alignItems="center" direction="row">
+              {ore?.collected} / {ore?.required}
+              {getResourceIcon(RESOURCES.ORE, 35)}
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      )}
+
+      {soul && (
+        <S.StatContainer>
+          <Tooltip title="Собрано частей тел">
+            <Stack alignItems="center" direction="row">
+              {soul?.collected} / {soul?.required}
+              {getResourceIcon(RESOURCES.PARTS, 35)}
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      )}
+
+      {treasures && (
+        <S.StatContainer>
+          <Tooltip title="Собрано сокровищ">
+            <Stack alignItems="center" direction="row">
+              {treasures?.collected} / {treasures?.required}
+              {getResourceIcon(RESOURCES.OLD_WORLD_TREASURES, 35)}
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      )}
+
       {economic && (
         <S.StatContainer>
           <Tooltip title={getEconomicInfo(economic)}>
@@ -195,84 +233,7 @@ export const InfoBar = () => {
           {icon}
         </S.StatContainer>
       )}
-      {/* пока под вопросом как выводить список consumables */}
-      {/* <StatContainer></StatContainer> */}
     </S.ModalContent>,
-    document.getElementById("root")!, // или document.getElementById('root')
+    document.getElementById("root")!,
   );
-
-  // return (
-  //   <S.ModalContent>
-  //     <S.StatContainer>
-  //       <Tooltip title="Малые зелья здоровья">
-  //         <Stack alignItems="center" direction="row">
-  //           {gold}
-  //           <Icons.HealthPotionClassic />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     <S.StatContainer>
-  //       <Tooltip title="Средние зелья здоровья">
-  //         <Stack alignItems="center" direction="row">
-  //           {gold}
-  //           <Icons.HealthPotionBulbous />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     <S.StatContainer>
-  //       <Tooltip title="Большие зелья здоровья">
-  //         <Stack alignItems="center" direction="row">
-  //           {gold}
-  //           <Icons.HealthPotionCrystal />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     <S.StatContainer>
-  //       <Tooltip title="Ритуальные зелья здоровья">
-  //         <Stack alignItems="center" direction="row">
-  //           {gold}
-  //           <Icons.HealthPotionRitual />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     <S.StatContainer>
-  //       <Tooltip title={getEconomicInfo(economic)}>
-  //         <Stack alignItems="center" direction="row">
-  //           <Icons.EconomyOrnament />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     {Boolean(charactersWithPointsToSpend.length) &&
-  //       charactersWithPointsToSpend.map((item) => (
-  //         <Tooltip title={`${item} имеет нераспределенные очки`} key={item}>
-  //           <S.StatContainer onClick={toggleCharacterPanel}>
-  //             <Icons.LeveledUpCharacter />
-  //           </S.StatContainer>
-  //         </Tooltip>
-  //       ))}
-  //     <S.StatContainer>
-  //       <Tooltip title="Факела">
-  //         <Stack alignItems="center" direction="row">
-  //           {torches} <Icons.TorchIcon />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     <S.StatContainer>
-  //       <Tooltip title="Золото">
-  //         <Stack alignItems="center" direction="row">
-  //           {gold}
-  //           <Icons.GoldIcon />
-  //         </Stack>
-  //       </Tooltip>
-  //     </S.StatContainer>
-  //     {quest && (
-  //       <S.StatContainer>
-  //         <S.BarStatusText>{title}</S.BarStatusText>
-  //         {icon}
-  //       </S.StatContainer>
-  //     )}
-  //     {/* пока под вопросом как выводить список consumables */}
-  //     {/* <StatContainer></StatContainer> */}
-  //   </S.ModalContent>
-  // );
 };

@@ -280,7 +280,7 @@ export const MEDIC_BASE_MODEL = {
   characterClass: CLASSES.MEDIC,
 };
 
-export const SPECIAL_ENCOUNTER_DEFAULT_CHANCE = 5;
+export const SPECIAL_ENCOUNTER_DEFAULT_CHANCE = 1;
 
 export const DEFAULT_GAME_STATE: GameStateData = {
   party: [],
