@@ -5,6 +5,7 @@ export interface FragmentProps {
   dx: string;
   dy: string;
   animated: boolean;
+  isBoss: boolean;
   imgSrc: string;
 }
 
@@ -21,7 +22,8 @@ export interface EnemyProps {
   creature: Creature;
   damage?: number | null;
   isCritical?: boolean;
-  onDamageAnimationEnd?: VoidFunction;
+  isHealing?: boolean;
+  onDamageAnimationEnd?: VoidFunction | null;
   layout: string;
   isAttacking: boolean;
   isSelected: boolean;

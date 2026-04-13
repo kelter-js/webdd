@@ -3,12 +3,13 @@ import { FragmentProps } from "./types";
 import { motion } from "framer-motion";
 
 export const Container = styled(motion.div, {
-  shouldForwardProp: (prop: PropertyKey) => !["left"].includes(prop as string),
-})<{ left: string }>(({ left }) => ({
+  shouldForwardProp: (prop: PropertyKey) =>
+    !["left", "isBoss"].includes(prop as string),
+})<{ left: string; isBoss: boolean }>(({ left, isBoss }) => ({
   position: "absolute",
-  width: "408px",
-  height: "555px",
-  overflow: "hidden",
+  width: isBoss ? "650px" : "408px",
+  height: isBoss ? "754px" : "555px",
+  overflow: "visible",
   textAlign: "center",
   zIndex: 99999999,
   left: left,
@@ -26,13 +27,13 @@ export const TargetContainer = styled("div")`
 // Стилизованный фрагмент
 export const Fragment = styled("div", {
   shouldForwardProp: (prop: PropertyKey) =>
-    !["dx", "dy", "animated", "imgSrc"].includes(prop as string),
-})<FragmentProps>(({ dx, dy, animated, imgSrc }) => ({
+    !["dx", "dy", "animated", "imgSrc", "isBoss"].includes(prop as string),
+})<FragmentProps>(({ dx, dy, animated, imgSrc, isBoss }) => ({
   position: "absolute",
-  width: `${408 / 12}px`,
-  height: `${612 / 12}px`,
+  width: `${(isBoss ? 650 : 408) / 12}px`,
+  height: `${(isBoss ? 854 : 612) / 12}px`,
   backgroundImage: `url(${imgSrc})`,
-  backgroundSize: "408px 612px",
+  backgroundSize: `${isBoss ? "650px" : "408px"} ${isBoss ? "854px" : "612px"}`,
   transformOrigin: "center",
   "--dx": dx,
   "--dy": dy,

@@ -14,6 +14,7 @@ import { POTION_TYPES } from "../../../../../../entities/consumables";
 import { useGameState } from "../../../../../../stores";
 import { getPotionDescriptionByType } from "../../../../../../utils/getPotionDescriptionByType";
 import { StyledButton, StyledMenu, StyledMenuItem } from "./PotionsList.styled";
+import { wait } from "../../../../../../utils";
 
 export const PotionsList: FC<PotionsListProps> = ({
   onPotionClick,
@@ -34,16 +35,14 @@ export const PotionsList: FC<PotionsListProps> = ({
   };
 
   // Обработчик ухода мыши с кнопки
-  const handleMouseLeave = () => {
+  const handleMouseLeave = async () => {
     // Не закрываем сразу, даем возможность переместиться на меню
-    setTimeout(() => {
-      // Проверяем, не наведена ли мышь на меню
-      const menuElement = document.getElementById("styled-hover-menu");
-      if (menuElement && menuElement.matches(":hover")) {
-        return; // Если мышь на меню - не закрываем
-      }
-      handleClose();
-    }, 100);
+    await wait(100);
+    const menuElement = document.getElementById("styled-hover-menu");
+    if (menuElement && menuElement.matches(":hover")) {
+      return; // Если мышь на меню - не закрываем
+    }
+    handleClose();
   };
 
   // Обработчик наведения на меню

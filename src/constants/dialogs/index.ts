@@ -308,6 +308,7 @@ export const tutorDialog: DialogueTree = {
           id: DIALOGUE_IDS.STOP_TUTOR_TIER_2,
         },
       ],
+      flags: [DIALOGUE_FLAGS.TUTOR_TIER_2_ENDED],
     },
 
     welcome_tier_3: {
@@ -330,6 +331,7 @@ export const tutorDialog: DialogueTree = {
           id: DIALOGUE_IDS.STOP_TUTOR_TIER_3,
         },
       ],
+      flags: [DIALOGUE_FLAGS.TUTOR_TIER_3_ENDED],
     },
   },
 };

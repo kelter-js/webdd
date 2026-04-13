@@ -89,14 +89,14 @@ export const CREATURE_ID_TO_NAME_MAP = {};
 
 export const getGoldByTier = (currentTier: number, isSpecial?: boolean) => {
   if (currentTier === 1) {
-    return getRandom(75, isSpecial ? 200 : 150);
+    return getRandom(200, isSpecial ? 400 : 550);
   }
 
   if (currentTier === 2) {
-    return getRandom(150, isSpecial ? 275 : 225);
+    return getRandom(300, isSpecial ? 500 : 750);
   }
 
-  return getRandom(225, isSpecial ? 350 : 300);
+  return getRandom(500, isSpecial ? 1000 : 1500);
 };
 
 export const getRandomPotionByTier = (currentTier: number) => {
@@ -344,7 +344,7 @@ const calculateDamageModelByAi = (
                     effect.type !== EFFECTS.HEAL &&
                     effect.type !== EFFECTS.HEAL_FATIGUE,
                 ),
-                { duration: 2, type: EFFECTS.HEAL_FATIGUE },
+                { duration: 5, type: EFFECTS.HEAL_FATIGUE },
                 { duration: 1, type: EFFECTS.HEAL },
               ],
             },

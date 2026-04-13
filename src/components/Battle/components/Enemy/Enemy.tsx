@@ -2,7 +2,14 @@ import { FC, useRef } from "react";
 
 import { useGetEnemyImage } from "../../hooks/useGetEnemyImage";
 import { FragmentData, EnemyProps } from "./types";
-import { cols, fragHeight, fragWidth, rows } from "./constants";
+import {
+  cols,
+  fragHeight,
+  fragWidth,
+  rows,
+  bossFragWidth,
+  bossFragHeight,
+} from "./constants";
 import { useGameState } from "../../../../stores/GameState";
 import { RenderedFragment } from "./components";
 import { Container, HealthBar, TargetContainer } from "./Enemy.styled";
@@ -11,7 +18,7 @@ import { ENEMIES, RENDER_LOCATIONS } from "../../../../entities";
 import { Icons, Tooltip } from "../../../../common";
 import { Stack, Typography } from "@mui/material";
 import { StartGameText } from "../../../CraftModal/TradeModal.styled";
-import { CREATURE_NAME_MAP } from "../../../../constants/creatures";
+import { CREATURE_NAME_MAP, CREATURES } from "../../../../constants/creatures";
 import {
   EFFECTS_DESCRIPTIONS,
   EFFECTS_ICONS,
@@ -59,6 +66,11 @@ export const Enemy: FC<EnemyProps> = ({
 
   const fragmentsRef = useRef<FragmentData[] | null>(null);
 
+  const isBoss =
+    creature.type === ENEMIES.SIN_ICON_TIER_1 ||
+    creature.type === ENEMIES.GENERAL_TIER_1 ||
+    creature.type === ENEMIES.MERGED_MASS_TIER_1;
+
   if (!fragmentsRef.current) {
     const frags: FragmentData[] = [];
 
@@ -68,9 +80,9 @@ export const Enemy: FC<EnemyProps> = ({
         const dy = `${(Math.random() - 0.5) * 800}px`;
         frags.push({
           key: `${x}-${y}`,
-          left: x * fragWidth,
-          top: y * fragHeight,
-          backgroundPosition: `-${x * fragWidth}px -${y * fragHeight}px`,
+          left: x * (isBoss ? bossFragWidth : fragWidth),
+          top: y * (isBoss ? bossFragHeight : fragHeight),
+          backgroundPosition: `-${x * (isBoss ? bossFragWidth : fragWidth)}px -${y * (isBoss ? bossFragHeight : fragHeight)}px`,
           dx,
           dy,
         });
@@ -98,6 +110,7 @@ export const Enemy: FC<EnemyProps> = ({
                 ? "hit"
                 : "idle"
         }
+        isBoss={isBoss}
         variants={variants}
         transition={
           shouldPlayDeathAnimation
@@ -123,6 +136,7 @@ export const Enemy: FC<EnemyProps> = ({
       >
         {fragmentsRef.current?.map((frag) => (
           <RenderedFragment
+            isBoss={isBoss}
             key={frag.key}
             data={frag}
             imgSrc={enemySource}
@@ -195,6 +209,7 @@ export const Enemy: FC<EnemyProps> = ({
           damage={damage || 0}
           isCritical={isCritical}
           containerId={`enemy-${index}`}
+          onDamageAnimationEnd={onDamageAnimationEnd}
         />
       )}
     </div>

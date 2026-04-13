@@ -7,8 +7,10 @@ export const RenderedFragment: FC<RenderedFragmentProps> = ({
   imgSrc,
   animated,
   onAnimationComplete,
+  isBoss,
 }) => (
   <Fragment
+    isBoss={isBoss}
     dx={data.dx}
     dy={data.dy}
     imgSrc={imgSrc}

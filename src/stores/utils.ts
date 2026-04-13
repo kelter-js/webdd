@@ -189,14 +189,14 @@ export const getExpByQuest = (currentTier: number) => {
 
 export const getGoldByQuest = (currentTier: number) => {
   if (currentTier === 1) {
-    return 1000;
+    return 2500;
   }
 
   if (currentTier === 2) {
-    return 3000;
+    return 6500;
   }
 
-  return 4000;
+  return 8000;
 };
 
 const CHANCE_TO_SPAWN_ITEM_AS_REWARD = 50;

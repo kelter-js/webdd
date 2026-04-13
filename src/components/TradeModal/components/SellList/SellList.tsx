@@ -15,11 +15,11 @@ export const SellList = () => {
   const scrollListElement = useRef<any>(null);
   console.log("inventory", inventory);
 
-  const currentItemToSellData = (inventory || [])[selectedIndex];
+  const currentItemToSellData = (inventory || [])[selectedIndex] || {};
   const { handleSetSrc } = usePlayer();
 
   const handleSellItem = () => {
-    sellItem(currentItemToSellData.gearId);
+    sellItem(currentItemToSellData?.gearId);
     setSelectedIndex(0);
     handleSetSrc(SELL_SFX_ID, sellSfx);
     setTimeout(() => {
@@ -151,7 +151,7 @@ export const SellList = () => {
             </Typography>
 
             <Typography fontFamily="inherit" variant="h5">
-              {currentItemToSellData.price}
+              {currentItemToSellData?.price}
             </Typography>
           </Stack>
 

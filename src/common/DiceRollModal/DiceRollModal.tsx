@@ -19,6 +19,7 @@ import {
 } from "./constants";
 import { DiceRollModalProps, DicesData } from "./types";
 import { DiceRollContainer } from "./DiceRollFramer.styled";
+import { wait } from "../../utils";
 
 // REFACTORING CHECKED ✅
 
@@ -62,11 +63,10 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({
               style={DICE_STYLES}
               animate={isRolling ? DICE_ROLL_ANIMATE : DICE_ROLL_STATIC_ANIMATE}
               transition={DICE_TRANSITION}
-              onAnimationComplete={() => {
+              onAnimationComplete={async () => {
                 if (!isRolling) {
-                  setTimeout(() => {
-                    onAnimationEnd();
-                  }, 600); // пауза чтобы увидеть результат
+                  await wait(600);
+                  onAnimationEnd();
                 }
               }}
             >

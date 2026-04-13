@@ -16,7 +16,7 @@ import { getFlagStoryBossByTier } from "../../../utils/getFlagStoryBossByTier";
 
 export const useHandleBattleEnd = () => {
   const {
-    player: { battle, currentTier, hasCamera, location },
+    player: { battle, currentTier, location },
     setReward,
   } = useGameState();
 
@@ -56,10 +56,6 @@ export const useHandleBattleEnd = () => {
                 creature.isEnhanced,
               ),
             );
-          }
-
-          if (hasCamera) {
-            // вызываем ф-ию из стора для обновления счетчика
           }
 
           return acc;

@@ -1,23 +1,40 @@
 import { styled } from "@mui/system";
 import { motion } from "framer-motion";
 
-export const DamageNumber = styled(motion.div)`
-  position: absolute;
-  font-size: 32px;
-  font-weight: 900;
-  pointer-events: none;
-  z-index: 999999999;
-  font-family: "Arial Black", sans-serif;
+type DamageNumberProps = {
+  isHealing?: boolean;
+};
 
-  /* Borderlands стиль - желтый/оранжевый с черной обводкой */
-  color: #ffd700;
-  -webkit-text-stroke: 2px #000000;
-  text-stroke: 2px #000000;
-  text-shadow:
-    0 0 10px #ff4500,
-    0 0 20px #ff0000;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
-`;
+export const DamageNumber = styled(motion.div, {
+  shouldForwardProp: (prop: string) => !["isHealing"].includes(prop),
+})<DamageNumberProps>(({ isHealing = false }) => ({
+  position: "absolute",
+  fontSize: "32px",
+  fontWeight: 900,
+  pointerEvents: "none",
+  zIndex: 999999999,
+  fontFamily: '"Arial Black", sans-serif',
+
+  // 🎨 Цвет
+  color: isHealing ? "#00ff88" : "#ffd700",
+
+  WebkitTextStroke: "2px #000000",
+  textStroke: "2px #000000",
+
+  textShadow: isHealing
+    ? `
+      0 0 10px #00ff88,
+      0 0 20px #00cc66
+    `
+    : `
+      0 0 10px #ff4500,
+      0 0 20px #ff0000
+    `,
+
+  filter: isHealing
+    ? "drop-shadow(0 2px 4px rgba(0, 80, 0, 0.7))"
+    : "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))",
+}));
 
 export const CriticalText = styled(motion.div)`
   font-size: 20px;

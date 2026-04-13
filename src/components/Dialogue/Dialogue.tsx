@@ -58,9 +58,7 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
   };
 
   // const { text, options, flags } = nodes[currentNode];
-  const { text, options, flags } = nodes[currentNode];
-  console.log("flags", flags);
-  console.log("nodes", nodes);
+  const { text, options, flags } = currentNode ? nodes[currentNode] : {};
 
   const handleOptionClick = ({ nextNode, id }: DialogueOption) => {
     if (flags?.length) {
@@ -76,7 +74,6 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
     }
 
     if (id === DIALOGUE_IDS.HEAL) {
-      console.log("but we r here?");
       handleSetSrc(HEAL_SFX_ID, healSfx);
       healTeam();
     }
@@ -264,10 +261,10 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
           {name}
         </S.SpeakerName>
 
-        <TextHolder text={text} />
+        {text && <TextHolder text={text} />}
 
         <Stack gap={2}>
-          {options.map((option, index) => (
+          {options?.map((option, index) => (
             <S.ContinueButton
               key={`${option.nextNode}-${index}`}
               onClick={() => handleOptionClick(option)}

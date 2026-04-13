@@ -29,6 +29,8 @@ import {
 import { PERK_ID_DATA } from "../../../../types/gameState";
 import { StartGameText } from "../../../Initiate/components/SetNameModal/SetNameModal.styled";
 import * as S from "./CharactersBar.styled";
+import { WEAPONS_ICON_SOURCES } from "../../../../constants/guns";
+import { GEAR_SLOTS } from "../../../../entities/gear";
 
 const POTION_SFX = "consumePotionSfx";
 
@@ -39,12 +41,15 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   onAttack,
   damageModel,
   onDamageReceiveAnimationEnd,
+  onReload,
+  currentMaxMagSize,
 }) => {
   const {
     player: { battle },
     statistics,
     consumePotion,
     updateBattle,
+    gear,
   } = useGameState();
 
   const party = battle?.player?.party || [];
@@ -176,6 +181,18 @@ export const CharactersBar: FC<CharactersBarProps> = ({
           const isDead = partyMember.currentHealth <= 0;
 
           const characterStats = (statistics || {})[partyMember.name];
+          const currentCharacterGear =
+            gear &&
+            gear[partyMember.name] &&
+            gear[partyMember.name].find(
+              (item) => item.type === GEAR_SLOTS.WEAPON,
+            );
+
+          const weaponIcon = currentCharacterGear
+            ? WEAPONS_ICON_SOURCES[
+                currentCharacterGear.baseId as keyof typeof WEAPONS_ICON_SOURCES
+              ]
+            : null;
 
           const effectsList =
             battle?.player?.effects[partyMember.name]?.list || [];
@@ -212,9 +229,32 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                       minWidth: 150,
                       height: 110,
                       border: "2px solid purple",
+                      position: "relative",
                     }}
-                  />
+                  >
+                    {weaponIcon && (
+                      <img
+                        src={weaponIcon}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    )}
 
+                    {currentMaxMagSize[partyMember.name].magSize && (
+                      <Typography
+                        fontFamily="inherit"
+                        whiteSpace="pre"
+                        position="absolute"
+                        zIndex={99999999}
+                        top="0px"
+                      >
+                        {`${partyMember?.currentAmountOfRounds} / ${currentMaxMagSize[partyMember.name].magSize}`}
+                      </Typography>
+                    )}
+                  </div>
                   <Stack sx={{ pb: 1, width: "100%", mr: 1 }}>
                     <Stack direction="row" gap={1} justifyContent="center">
                       <Tooltip title="Урон">
@@ -285,7 +325,13 @@ export const CharactersBar: FC<CharactersBarProps> = ({
         <Button
           disabled={!isPlayerTurnAvailable}
           variant="text"
-          onClick={() => onAttack()}
+          onClick={() => {
+            if ((selectedPlayer?.currentAmountOfRounds || 0) <= 0) {
+              onReload();
+            } else {
+              onAttack();
+            }
+          }}
         >
           <StartGameText
             sx={{

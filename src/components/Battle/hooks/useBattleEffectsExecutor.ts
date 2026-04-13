@@ -121,14 +121,27 @@ export const useBattleEffectsExecutor = ({
                 updateBattle(newBattleModel);
               }
             } else {
-              updateDamageModel(newBattleModel, {
-                target: selectedEnemy,
-                damage: enemy.hp - currentHp,
-                isCritical: false,
-                isEvasion: false,
-                isEffect: true,
-                shouldPlayDeathAnimation: isDead,
-              });
+              console.log("or we here??");
+              if (currentHp < enemy.hp) {
+                updateDamageModel(newBattleModel, {
+                  target: selectedEnemy,
+                  damage: enemy.hp - currentHp,
+                  isCritical: false,
+                  isEvasion: false,
+                  isEffect: true,
+                  shouldPlayDeathAnimation: isDead,
+                });
+              } else {
+                updateDamageModel(newBattleModel, {
+                  target: selectedEnemy,
+                  damage: currentHp - enemy.hp,
+                  isCritical: false,
+                  isEvasion: false,
+                  isEffect: true,
+                  isHealing: true,
+                  shouldPlayDeathAnimation: isDead,
+                });
+              }
             }
           }
         }

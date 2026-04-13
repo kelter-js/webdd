@@ -33,7 +33,7 @@ export const CLASS_DESCRIPTIONS = {
 export const CHARACTER_MESSAGES = [
   `${TEMPLATE_NAME} попадает выстрелом по ${TEMPLATE_TARGET} причиняя тому ${TEMPLATE_DAMAGE} урона`,
   `Выравнивая дыхание, успокаивая дрожь рук и хорошенько прицеливаясь, ${TEMPLATE_NAME} попадает по ${TEMPLATE_TARGET} нанося ${TEMPLATE_DAMAGE} урона`,
-  `В пылу боя, ${TEMPLATE_NAME} пытается устранить возникший клин, дрожащими руками ему удается это сделать в последний момент, осуществляя ряд выстрелов наносит ${TEMPLATE_DAMAGE} урона по ${TEMPLATE_NAME}`,
+  `В пылу боя, ${TEMPLATE_NAME} пытается устранить возникший клин, дрожащими руками ему удается это сделать в последний момент, осуществляя ряд выстрелов, он наносит ${TEMPLATE_DAMAGE} урона.`,
   `Поглядывая себе под ноги и следя за окружением, ${TEMPLATE_NAME} выпускает очередь в ${TEMPLATE_TARGET}, даруя ему ${TEMPLATE_DAMAGE} урона`,
   `Выкрикивая что-то нечленораздельное, ${TEMPLATE_NAME} наносит ${TEMPLATE_TARGET} ${TEMPLATE_DAMAGE} урона`,
   `Выцеливая сухожилия, ${TEMPLATE_NAME} стреляет в ${TEMPLATE_TARGET}, нанося ${TEMPLATE_DAMAGE} урона`,

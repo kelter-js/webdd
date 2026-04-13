@@ -255,6 +255,28 @@ export const BattleContainer = () => {
     ],
   );
 
+  const handlePlayerReload = () => {
+    if (battle) {
+      handleSelectNextPlayer({
+        ...battle,
+        player: {
+          ...battle.player,
+          party: battle.player.party.map((player) => {
+            const playerCopy = { ...player };
+
+            if (player.name === selectedPlayer?.name) {
+              playerCopy.currentAmountOfRounds =
+                magSizesMap[player.name]?.magSize || 1;
+              playerCopy.hasTurn = false;
+            }
+
+            return playerCopy;
+          }),
+        },
+      });
+    }
+  };
+
   useEffect(() => {
     const handleKeyBindings = (event: KeyboardEvent) => {
       if (
@@ -367,6 +389,8 @@ export const BattleContainer = () => {
             ? resetAnimations
             : null
         }
+        onReload={handlePlayerReload}
+        currentMaxMagSize={magSizesMap}
       />
 
       {battle?.enemy?.party?.map((creature, index, self) => {
@@ -378,8 +402,13 @@ export const BattleContainer = () => {
           battleDamageModel &&
           battleDamageModel.find((damage) => damage.target === creature.id);
 
-        const { damage, isCritical, isEvasion, shouldPlayDeathAnimation } =
-          currentBattleDamageModel || {};
+        const {
+          damage,
+          isCritical,
+          isEvasion,
+          shouldPlayDeathAnimation,
+          isHealing,
+        } = currentBattleDamageModel || {};
 
         const effects = battle.enemy.effects[creature.id];
 
@@ -392,7 +421,11 @@ export const BattleContainer = () => {
             damage={damage}
             isCritical={isCritical}
             index={index}
-            onDamageAnimationEnd={resetAnimations}
+            onDamageAnimationEnd={
+              battleDamageModel && battleDamageModel[0].isEffect
+                ? resetAnimations
+                : null
+            }
             layout={enemyLayout ? enemyLayout[creature.id] : DEFAULT_CENTER}
             isAttacking={creature.id === attackingEnemyId}
             onAttackEnd={resetAnimations}
@@ -403,6 +436,7 @@ export const BattleContainer = () => {
               !isShooting &&
               self.length > 1
             }
+            isHealing={isHealing}
             effectsList={effects.list}
           />
         );

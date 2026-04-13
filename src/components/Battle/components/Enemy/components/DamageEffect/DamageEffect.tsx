@@ -20,6 +20,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   isCritical,
   containerId,
   isEvasion,
+  isHealing,
 }) => {
   const [damageNumbers, setDamageNumbers] = useState<DamageInstance | null>(
     null,
@@ -107,7 +108,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
             whiteSpace: "nowrap",
           }}
         >
-          {isEvasion ? "ПРОМАХ" : damageNumber}
+          {isEvasion ? "ПРОМАХ" : isHealing ? `+${damageNumber}` : damageNumber}
         </DamageNumber>
 
         {isCritical && !isEvasion && (
