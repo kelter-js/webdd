@@ -140,6 +140,9 @@ export const CharactersBar: FC<CharactersBarProps> = ({
     }
   };
 
+  const currentPlayerHasNoAmmo =
+    (selectedPlayer?.currentAmountOfRounds || 0) <= 0;
+
   return (
     <S.Container>
       <S.CharacterControls>
@@ -326,7 +329,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
           disabled={!isPlayerTurnAvailable}
           variant="text"
           onClick={() => {
-            if ((selectedPlayer?.currentAmountOfRounds || 0) <= 0) {
+            if (currentPlayerHasNoAmmo) {
               onReload();
             } else {
               onAttack();
@@ -352,7 +355,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
             }}
             variant="h6"
           >
-            Атаковать (F)
+            {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
           </StartGameText>
         </Button>
       </S.BattleControls>

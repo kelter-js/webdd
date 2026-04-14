@@ -150,10 +150,6 @@ export const usePlayerControl = () => {
         (character) => character.currentHealth > 0 && character.hasTurn,
       );
 
-      // ТАКАЯ проверка должна быть, тут МОК
-      // .filter((character) => character.currentHealth > 0 && character.hasTurn);
-
-      console.log("readyToBattlePartyMembers", readyToBattlePartyMembers);
       if (readyToBattlePartyMembers.length === 0) {
         setSelectedPlayer(undefined);
       } else {

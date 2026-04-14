@@ -282,8 +282,6 @@ const removeTurnFromTarget = (
   enemyParty: Creature[],
   healAmount?: number,
 ) => {
-  console.log("target is", target);
-  console.log("enemyParty is", enemyParty);
   return enemyParty.map((enemy) =>
     enemy.id === target
       ? {
@@ -632,7 +630,7 @@ export const calculateAiDamage = (
   source: Creature,
 ): { model: Battle; damageModel: DamageData[] | null } => {
   // просто атакуют
-  console.log("source", source);
+
   // для других категорий нужно учесть эффект HEAL_IMMUNE
   if (source.aiPackage === AI_CATEGORIES.DEFAULT) {
     // список живых игроков
@@ -959,8 +957,6 @@ export const generatePlayerMessage = (
   const enemyName = CREATURE_NAME_MAP[target];
   const messageIndex = getRandom(0, CHARACTER_MESSAGES.length - 1);
   let message = CHARACTER_MESSAGES[messageIndex];
-
-  console.log("message", message);
 
   message = message.replace(TEMPLATE_NAME, name);
   message = message.replace(TEMPLATE_TARGET, enemyName);

@@ -56,11 +56,7 @@ export const AlmanacModal = () => {
           src: isUnlocked ? unlocked : locked,
         };
       });
-    // здесь нужно добавить маппинг - для изображений unlocked или locked
   }, [pageHeader, page, player]);
-
-  console.log("creaturesToRender", creaturesToRender);
-  console.log("page", page);
 
   return (
     <GameModal onClose={toggleAlmanac} withoutPadding withoutScrolls>
@@ -77,7 +73,7 @@ export const AlmanacModal = () => {
               transform: "rotate(180deg)",
               zIndex: 500,
               "&:active": {
-                boxShadow: "none", // убирает эффект нажатия
+                boxShadow: "none",
               },
               "& .MuiTouchRipple-root": {
                 display: "none",
@@ -100,7 +96,7 @@ export const AlmanacModal = () => {
               right: 85,
               zIndex: 500,
               "&:active": {
-                boxShadow: "none", // убирает эффект нажатия
+                boxShadow: "none",
               },
               "& .MuiTouchRipple-root": {
                 display: "none",

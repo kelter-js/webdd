@@ -19,6 +19,13 @@ export const resetQuest = (set: StoreSet) => () => {
         experience: player.experience + exp,
       }));
 
+      if (
+        copyState.player.location &&
+        copyState.player.location?.isQuestCompleted
+      ) {
+        copyState.player.location.isQuestCompleted = false;
+      }
+
       if (item) {
         copyState.player.inventory_memoized.push(memoizeItem(item));
 

@@ -126,10 +126,7 @@ export const RECEIPTS: ReceiptData[] = [
       let newConsumables = [...consumables];
       let isPotionAdded = false;
 
-      console.log("newConsumables", newConsumables);
-
       if (newConsumables.length > 0) {
-        console.log("aer we");
         newConsumables = newConsumables.map((consumable) => {
           const [potionType, amount] = consumable;
 
@@ -148,8 +145,6 @@ export const RECEIPTS: ReceiptData[] = [
         if (!isPotionAdded) {
           newConsumables.push([POTION_TYPES.MEDIUM_HEALTH_POTION, "1"]);
         }
-
-        console.log("newConsumables", newConsumables);
       }
 
       const newState = { ...state, consumables: newConsumables };

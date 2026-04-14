@@ -63,12 +63,9 @@ export const generateItem = (
 };
 
 export const generateStoreItem = (tier: number) => {
-  console.log("tier", tier);
   const { hasNextTier, enhanced, currentTier } = getChancesByTier(tier);
-  console.log("hasNextTier", hasNextTier);
 
   const rollForItem = getRandom(1, 100);
-  console.log("rollForItem", rollForItem);
 
   if (hasNextTier > rollForItem) {
     if (tier === 1) {
@@ -82,7 +79,6 @@ export const generateStoreItem = (tier: number) => {
 
   if (currentTier > rollForItem) {
     if (tier === 1) {
-      console.log(" SO WE ARE HERE?!?@#?!@");
       return generateItem(ALL_ITEMS_TIER_1, enhanced, ALL_ITEMS_RARE_TIER_1);
     }
 

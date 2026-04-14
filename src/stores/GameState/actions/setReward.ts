@@ -5,7 +5,6 @@ import { StoreSet } from "./types";
 export const setReward = (set: StoreSet) => (reward: Reward) => {
   set((state) => {
     const copiedState = { ...state, player: { ...state.player } };
-    console.log("incoming reward", reward);
 
     if (!copiedState.player.battle) {
       copiedState.player.battle = {} as Battle;
@@ -17,8 +16,6 @@ export const setReward = (set: StoreSet) => (reward: Reward) => {
     };
 
     copiedState.player.locationState = RENDER_LOCATIONS.DUNGEON;
-
-    console.log("copiedState", copiedState);
 
     return copiedState;
   });

@@ -23,8 +23,6 @@ export const BuyTorches = () => {
     gold,
   );
 
-  console.log("isAffordable", isAffordable);
-
   const handleIncreaseTorchesAmount = (e: ChangeEvent<HTMLInputElement>) =>
     setAmountOfTorches(Number(e.target.value));
 

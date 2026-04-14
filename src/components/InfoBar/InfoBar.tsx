@@ -14,6 +14,8 @@ import { StyledSlider } from "../../common/styled.index";
 import { useGetResourceState } from "./useGetResourceState";
 import { getResourceIcon } from "../../utils/getResourceIcon";
 import { RESOURCES } from "../../entities/resources";
+import { DEFAULT_BAG_SIZE } from "../../constants";
+import bagIcon from "../../assets/minigame/bag.png";
 
 export const InfoBar = () => {
   const {
@@ -25,10 +27,15 @@ export const InfoBar = () => {
       party,
       economic,
       volume: storageVolume,
+      resourcesBagLevel,
+      resources,
     },
+    statistics,
     toggleCharacterPanel,
     setVolume: setVolumeInStorage,
   } = useGameState();
+
+  const currentBagMaxSize = DEFAULT_BAG_SIZE * resourcesBagLevel;
 
   const [isVolumeVisible, setVolumeVisible] = useState(false);
 
@@ -51,32 +58,51 @@ export const InfoBar = () => {
 
   const { ore, treasures, soul } = useGetResourceState();
 
-  const { charactersWithPointsToSpend, deadCharacter } = useMemo(() => {
-    return party.reduce<{
-      charactersWithPointsToSpend: string[];
-      deadCharacter: string[];
-    }>(
-      (acc, character) => {
-        if (character.points) {
-          acc.charactersWithPointsToSpend.push(character.name);
-        }
+  const { charactersWithPointsToSpend, deadCharacter, aliveCharacters } =
+    useMemo(() => {
+      return party.reduce<{
+        charactersWithPointsToSpend: string[];
+        deadCharacter: string[];
+        aliveCharacters: { currentHp: number; maxHp: number; name: string }[];
+      }>(
+        (acc, character) => {
+          if (character.points) {
+            acc.charactersWithPointsToSpend.push(character.name);
+          }
 
-        if (character.currentHealth <= 0) {
-          acc.deadCharacter.push(character.name);
-        }
+          if (character.currentHealth <= 0) {
+            acc.deadCharacter.push(character.name);
+          } else {
+            const maxHp = statistics
+              ? statistics[character.name].maxHealth
+              : null;
 
-        return acc;
-      },
-      { charactersWithPointsToSpend: [], deadCharacter: [] },
-    );
-  }, [
-    player1?.points,
-    player2?.points,
-    player3?.points,
-    player1?.currentHealth,
-    player2?.currentHealth,
-    player3?.currentHealth,
-  ]);
+            if (maxHp) {
+              acc.aliveCharacters.push({
+                currentHp: character.currentHealth,
+                maxHp,
+                name: character.name,
+              });
+            }
+          }
+
+          return acc;
+        },
+        {
+          charactersWithPointsToSpend: [],
+          deadCharacter: [],
+          aliveCharacters: [],
+        },
+      );
+    }, [
+      player1?.points,
+      player2?.points,
+      player3?.points,
+      player1?.currentHealth,
+      player2?.currentHealth,
+      player3?.currentHealth,
+      statistics,
+    ]);
 
   return createPortal(
     <S.ModalContent>
@@ -120,6 +146,26 @@ export const InfoBar = () => {
           </Box>
         )}
       </Box>
+
+      <S.StatContainer>
+        <Tooltip title="Занято ячеек ресурсов">
+          <Stack alignItems="center" direction="row">
+            {resources.length} / {currentBagMaxSize}
+            <img src={bagIcon} style={{ width: 35, height: 35 }} />
+          </Stack>
+        </Tooltip>
+      </S.StatContainer>
+
+      {aliveCharacters.map((character) => (
+        <S.StatContainer>
+          <Tooltip title={`Здоровье ${character.name}`}>
+            <Stack alignItems="center" direction="row">
+              {character.currentHp} / {character.maxHp}
+              <Icons.Health size={40} />
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      ))}
 
       {consumables?.map((consumable) => {
         const [potionType, amount] = consumable;

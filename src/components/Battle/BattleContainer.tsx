@@ -155,8 +155,6 @@ export const BattleContainer = () => {
     [battle?.enemy?.party],
   );
 
-  console.log("enemyLayout", enemyLayout);
-
   const currentBackground = useMemo(
     () => getBattleBackground(location?.dungeonLevel || currentTier),
     [location?.dungeonLevel, currentTier],
@@ -172,7 +170,6 @@ export const BattleContainer = () => {
         battleDamageModel.length === 1 &&
         battleDamageModel[0].isEffect
       ) {
-        console.log("so we work on effects?");
         updateBattle(model);
 
         setBattleDamageModel(null);
@@ -284,7 +281,11 @@ export const BattleContainer = () => {
         battle?.turn === TURN_STATES.PLAYER_TURN &&
         !isShooting
       ) {
-        handlePlayerAttack();
+        if ((selectedPlayer?.currentAmountOfRounds ?? 0) > 0) {
+          handlePlayerAttack();
+        } else {
+          handlePlayerReload();
+        }
       }
     };
 
@@ -293,14 +294,12 @@ export const BattleContainer = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyBindings);
     };
-  }, [handlePlayerAttack, battle?.turn, isShooting]);
+  }, [handlePlayerAttack, battle?.turn, isShooting, handlePlayerReload]);
 
   const handleUpdateEffectState = (
     battleModel: Battle,
     damageModel: DamageData,
   ) => {
-    console.log("effect damage model is: ", damageModel);
-    console.log("effect battleModel model is: ", battleModel);
     tempBattleModel.current = battleModel;
     setBattleDamageModel([damageModel]);
   };

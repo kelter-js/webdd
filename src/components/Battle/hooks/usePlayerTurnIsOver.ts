@@ -22,8 +22,6 @@ export const usePlayerTurnIsOver = (
   const messages = battle?.messages;
 
   useEffect(() => {
-    console.log("inside turner:", showDices);
-    console.log("messages", messages);
     if (!battle || showDices || !isAudioEnabled) return;
 
     // если уже идёт анимация смены хода — не запускаем повторно
@@ -34,7 +32,6 @@ export const usePlayerTurnIsOver = (
     if (currentTurn === TURN_STATES.PLAYER_TURN) {
       const playerHasTurns =
         playerParty?.some((m) => m.hasTurn && m.currentHealth > 0) ?? false;
-      console.log("playerHasTurns", playerHasTurns);
 
       if (!playerHasTurns) {
         upcomingTurn = TURN_STATES.ENEMY_TURN;
@@ -50,8 +47,6 @@ export const usePlayerTurnIsOver = (
       }
     }
 
-    console.log("upcomingTurn", upcomingTurn);
-
     if (!upcomingTurn) {
       if (isFirstRender && currentTurn) {
         setNextTurn(currentTurn);
@@ -65,15 +60,12 @@ export const usePlayerTurnIsOver = (
       return;
     }
 
-    const fakeTimerId1 = setTimeout(() => {
-      console.log("so does timeout fire?");
+    setTimeout(() => {
       setBattleTurn(upcomingTurn);
       setNextTurn(null);
     }, 900);
 
     setNextTurn(upcomingTurn);
-
-    // return () => clearTimeout(fakeTimerId1);
   }, [
     battle,
     currentTurn,

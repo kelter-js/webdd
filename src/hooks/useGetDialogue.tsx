@@ -57,16 +57,6 @@ export const useGetDialogue = (npc: string | null) => {
     location,
   } = player;
 
-  console.log("dialogFlags", dialogFlags);
-
-  // через флаги - определяем какие диалоги могут быть как должны начинаться
-  // через ID в опциях - определяем какие должны быть отработаны коллбэки, пример -
-  // {
-  // text: "Покажи что есть в наличии",
-  // nextNode: "end",
-  // id: DIALOGUE_IDS.TAVERN_BUY,
-  // }
-
   const { toggleEconomicModal, setDialogueOpen } = useAppState();
 
   const dialogue = useMemo(() => {

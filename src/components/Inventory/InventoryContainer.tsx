@@ -24,7 +24,6 @@ export const InventoryContainer = () => {
     ],
     drop: (draggedItem) => {
       const { item, characterName } = draggedItem;
-      console.log("item !!!", item);
 
       if (characterName && item) {
         removeItemFromGear(characterName, item?.gearId);
@@ -37,7 +36,7 @@ export const InventoryContainer = () => {
 
   const inventoryList = inventory || [];
   const isEmptyInventory = inventoryList.length === 0;
-  console.log("inventoryList", inventoryList);
+
   return (
     <OverlayScrollbarsComponent
       options={{

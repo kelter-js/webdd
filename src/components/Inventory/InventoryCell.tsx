@@ -36,12 +36,6 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
     }),
   });
 
-  if (isDragging) {
-    console.log("isDragging", isDragging);
-  }
-
-  console.log("item", item);
-
   const itemIcon = useMemo(() => {
     if (item?.baseId) {
       return getItemIcon(type, item.baseId);

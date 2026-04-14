@@ -84,9 +84,6 @@ export const handleExitDungeon = (set: StoreSet) => () => {
         stateCopy.player.location?.dungeonLevel || stateCopy.player.currentTier,
       );
 
-      console.log("newItem", newItem);
-      console.log("newInventory", newInventory);
-
       newInventory.push(newItem);
 
       newMemoizedInventory = newInventory.map((item) => memoizeItem(item));
@@ -105,7 +102,6 @@ export const handleExitDungeon = (set: StoreSet) => () => {
 
     // при выходе из подземелья обновляем ассортимент предметов
     const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
-    console.log("itemsToBuy in state", itemsToBuy);
 
     stateCopy.sell_inventory = itemsToBuy.map((item) => {
       const itemPrice = getItemPrice(item, stateCopy.player.currentTier);
@@ -116,8 +112,6 @@ export const handleExitDungeon = (set: StoreSet) => () => {
 
     // Каждый раз когда покидаем данж - увеличиваем шанс на получение спешиал энкаунтера
     stateCopy.player.specialEncounterChance += SPECIAL_ENCOUNTER_DEFAULT_CHANCE;
-
-    console.log("stateCopy", stateCopy);
 
     return stateCopy;
   });

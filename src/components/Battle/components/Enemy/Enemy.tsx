@@ -9,6 +9,8 @@ import {
   rows,
   bossFragWidth,
   bossFragHeight,
+  bossRows,
+  bossCols,
 } from "./constants";
 import { useGameState } from "../../../../stores/GameState";
 import { RenderedFragment } from "./components";
@@ -59,9 +61,6 @@ export const Enemy: FC<EnemyProps> = ({
 }) => {
   const isEnemyDead = shouldPlayDeathAnimation;
 
-  console.log("type", creature.type);
-  console.log("isAttacking", isAttacking);
-
   const enemySource = useGetEnemyImage(creature.type);
 
   const fragmentsRef = useRef<FragmentData[] | null>(null);
@@ -91,9 +90,6 @@ export const Enemy: FC<EnemyProps> = ({
 
     fragmentsRef.current = frags;
   }
-
-  console.log("isSelected", layout);
-  console.log("isAttacking", isAttacking);
 
   return (
     <div>
@@ -134,20 +130,30 @@ export const Enemy: FC<EnemyProps> = ({
           }
         }}
       >
-        {fragmentsRef.current?.map((frag) => (
-          <RenderedFragment
-            isBoss={isBoss}
-            key={frag.key}
-            data={frag}
-            imgSrc={enemySource}
-            animated={isEnemyDead}
-            onAnimationComplete={() => {
-              if (isEnemyDead && index === 0 && shouldPlayDeathAnimation) {
-                onAttackEnd();
-              }
+        {shouldPlayDeathAnimation ? (
+          fragmentsRef.current?.map((frag) => (
+            <RenderedFragment
+              isBoss={isBoss}
+              key={frag.key}
+              data={frag}
+              imgSrc={enemySource}
+              animated={isEnemyDead}
+              onAnimationComplete={() => {
+                if (isEnemyDead && index === 0 && shouldPlayDeathAnimation) {
+                  onAttackEnd();
+                }
+              }}
+            />
+          ))
+        ) : (
+          <img
+            src={enemySource}
+            style={{
+              width: `${isBoss ? 650 : 408}px`,
+              height: `${isBoss ? 854 : 612}px`,
             }}
           />
-        ))}
+        )}
 
         {isSelected && !isEnemyDead && (
           <TargetContainer>

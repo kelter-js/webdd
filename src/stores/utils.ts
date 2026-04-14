@@ -121,7 +121,6 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
       currentTier,
       isSpecial > SPECIAL_ITEM_CHANCE_WITHOUT_FIGHT,
     );
-    console.log("item result", result);
 
     return {
       result,
@@ -158,8 +157,6 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
 
   if (roll > WITHOUT_FIGHT_JUNK_CHANCE) {
     const result = getRandomJunkByTier(currentTier);
-
-    console.log("item getRandomJunkByTier", result);
 
     return {
       result,
@@ -284,8 +281,6 @@ export const getFirstTurn = (
 
   const roll = getRandom(0, 100);
 
-  console.log("roll", roll);
-  console.log("enemyChance", enemyChance);
   return roll < enemyChance ? TURN_STATES.ENEMY_TURN : TURN_STATES.PLAYER_TURN;
 };
 

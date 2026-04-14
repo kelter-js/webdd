@@ -184,7 +184,6 @@ export const useGameState = create<StoreState>()(
                 const specialEncounter = generateSpecialEncounter(
                   copyState.player.flags,
                 );
-                console.log("are we here?", specialEncounter);
 
                 copyState.player.location.specialEncounter = specialEncounter;
 
@@ -282,7 +281,6 @@ export const useGameState = create<StoreState>()(
                                   const [potionType, amount] = potion;
 
                                   if (potionType === rewardPotion.type) {
-                                    console.log(Number(amount) + 1);
                                     return [
                                       potionType,
                                       `${Number(amount) + 1}`,

@@ -21,8 +21,6 @@ export const CharacterCell: FC<InventoryCellProps> = ({
   characterClass,
   name,
 }) => {
-  console.log("OUTSIDE ITEM", item);
-
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   const handleEnter = (event: MouseEvent<HTMLDivElement>) => {
@@ -64,7 +62,6 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       return false;
     },
     drop: (draggedItem: Item | undefined | null) => {
-      console.log("are we here/???");
       if (draggedItem && name) {
         equipItem(draggedItem.gearId, name, type);
       }
@@ -89,14 +86,6 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       isDragging: monitor.isDragging(),
     }),
   });
-
-  if (canDrop) {
-    console.log("isOver", canDrop);
-  }
-
-  if (isDragging) {
-    console.log("isDragging CHARACTER CELL", isDragging);
-  }
 
   const itemIcon = useMemo(() => {
     if (item?.baseId) {

@@ -55,8 +55,6 @@ export const ARMOR_ICON_SOURCES = {
   [BASE_ITEMS_ID.OSPREY_TIER_1]: osrpey,
 };
 
-console.log("BASE_ITEMS_ID", BASE_ITEMS_ID);
-
 export const BNTI_TIER_1 = {
   name: "БНТИ",
   description:

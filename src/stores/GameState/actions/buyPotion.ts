@@ -30,7 +30,6 @@ export const buyPotion = (set: StoreSet) => (mainIndex: number) => {
           const [potionType, amount] = potion;
 
           if (potionType === type) {
-            console.log("so we fire?!!!", Number(amount) + 1);
             return [potionType, `${Number(amount) + 1}`];
           }
 
@@ -42,11 +41,9 @@ export const buyPotion = (set: StoreSet) => (mainIndex: number) => {
 
       if (potionsToBuy) {
         copyState.player.potionsToBuy = potionsToBuy.filter(
-          (_, index) => index !== mainIndex
+          (_, index) => index !== mainIndex,
         );
       }
-
-      console.log("copyState", copyState);
 
       return copyState;
     }

@@ -71,8 +71,6 @@ export const Settlement = () => {
 
   const hasQuestResults = quest && quest.status !== QUEST_STATUSES.INITIATED;
 
-  console.log("isDungeonModalOpen", isDungeonModalOpen);
-
   return (
     <>
       <ImageMapHighlight

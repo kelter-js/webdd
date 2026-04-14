@@ -100,7 +100,7 @@ export const CharacterControls = styled("div")`
 
 export const BattleControls = styled("div")`
   position: absolute;
-  right: 50px;
+  right: 5px;
   top: 25px;
   display: flex;
   flex-direction: column;

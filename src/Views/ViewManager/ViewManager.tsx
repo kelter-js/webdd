@@ -27,8 +27,6 @@ export const ViewManager = () => {
   const isMenuVisible =
     locationState !== RENDER_LOCATIONS.DUNGEON && isServiceLayoutVisible;
 
-  console.log("locationState", locationState);
-
   return (
     <Shake>
       {/* <DiceRollModal /> */}

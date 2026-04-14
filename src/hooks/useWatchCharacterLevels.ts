@@ -27,12 +27,8 @@ export const useWatchCharacterLevels = () => {
   const experienceMember1 = partyMember1?.experience;
   const experienceMember2 = partyMember2?.experience;
   const experienceMember3 = partyMember3?.experience;
-  console.log("experienceMember1", experienceMember1);
-  console.log("experienceMember2", experienceMember2);
-  console.log("experienceMember3", experienceMember3);
 
   useEffect(() => {
-    console.log("do we even trigger at all?");
     const charactersToUpdate = [...party];
 
     charactersToUpdate.forEach((character) => {
@@ -42,10 +38,8 @@ export const useWatchCharacterLevels = () => {
         character.level,
         characterDefaultExpAmount,
       );
-      console.log("expForNextLevel", expForNextLevel);
 
       if (character.experience >= expForNextLevel && expForNextLevel !== 0) {
-        console.log("are we even here?");
         levelUpCharacter(character.name, expForNextLevel);
         pushLeveledUpList({
           name: character.name,

@@ -36,8 +36,6 @@ export const initiateState = (set: StoreSet) => () =>
     if (!stateCopy.player.itemsToBuy) {
       const itemsToBuy = generateStoreItems(stateCopy.player.currentTier);
 
-      console.log("itemsToBuy in state", itemsToBuy);
-
       stateCopy.sell_inventory = itemsToBuy.map((item) => {
         const itemPrice = getItemPrice(item, stateCopy.player.currentTier);
         return { ...item, price: itemPrice };
@@ -54,8 +52,6 @@ export const initiateState = (set: StoreSet) => () =>
         return { ...dememeoizedItem, price: itemPrice };
       });
     }
-
-    console.log("!!!stateCopy", stateCopy);
 
     // инициализируем хар-ки
     state.player.party.forEach((player) => {

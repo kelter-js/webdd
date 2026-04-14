@@ -11,12 +11,9 @@ export const PerkList: FC<PerkListProps> = ({
   onSelect,
   characterClass,
 }) => {
-  console.log("perksList", perksList);
-  console.log("canAcquirePerk", canAcquirePerk);
-
   return perksList.map(({ id, description }, index) => {
     const isPerkSelected = selectedPerksList.includes(id);
-    console.log("isPerkSelected", isPerkSelected);
+
     return (
       <Tooltip
         key={id}

@@ -15,7 +15,6 @@ export const TextHolder: FC<TextHolderProps> = ({ text }) => {
   const { handleSetSrc, getPlayerRef } = usePlayer();
 
   const playerRef = getPlayerRef(DIALOGUE_AMBIENT_PLAYER_REF);
-  console.log("playerRef", playerRef);
 
   useEffect(() => {
     handleSetSrc(DIALOGUE_AMBIENT_PLAYER_REF, typewriteEffect);

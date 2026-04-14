@@ -352,9 +352,6 @@ export const getEnemyPhrase = (
   const dialogues = CREATURE_DIALOGUES[creature];
   let phrase = dialogues[getRandom(0, dialogues.length - 1)];
 
-  console.log("target", target);
-  console.log("damage", damage);
-
   phrase = phrase.replace(TEMPLATE_TARGET, target);
   phrase = phrase.replace(TEMPLATE_DAMAGE, String(damage));
 

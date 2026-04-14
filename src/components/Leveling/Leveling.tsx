@@ -58,7 +58,6 @@ export const CharacterCard: FC<CharacterCardProps> = ({
   };
 
   const handleAcquirePerk = (perkId: PERK_ID_DATA) => {
-    console.log("we fire?");
     acquirePerk(perkId, name);
   };
 

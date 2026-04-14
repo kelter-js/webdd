@@ -63,10 +63,7 @@ export const CraftModal = () => {
   const currentCraftData = RECEIPTS[selectedIndex];
 
   const handleCraft = () => {
-    console.log("AER EW INVOKED?");
     const { state, item } = currentCraftData.create(player);
-
-    console.log("state", state);
 
     setResult(item);
 
@@ -77,8 +74,6 @@ export const CraftModal = () => {
     () => currentCraftData?.isDisabled(player) || false,
     [player, currentCraftData.isDisabled],
   );
-
-  console.log("currentCraftData", currentCraftData);
 
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>

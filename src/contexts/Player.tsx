@@ -27,7 +27,7 @@ export const usePlayer = () => useContext(PlayerContext);
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const [players, setPlayers] = useState<AudioFilesData>({});
   const refs = useRef<Record<string, HTMLAudioElement | null>>({});
-  console.log("players", players);
+
   const {
     player: { volume },
   } = useGameState();
@@ -45,11 +45,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [volume, players]);
 
   const handleSetSrc = (id: string, newSrc: string, hasLoop = false) => {
-    console.log("ADDING", id, newSrc);
-
     setPlayers((prev) => {
-      console.log("PREV", prev);
-
       return {
         ...prev,
         [id]: {
@@ -79,8 +75,7 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
     () => ({ players, handleSetSrc, getPlayerRef, handleRemoveSrc }),
     [players],
   );
-  console.log("players", players);
-  console.log("refs.current", refs.current);
+
   return (
     <PlayerContext.Provider value={memoizedValue}>
       {Object.entries(players).map(([id, audioFile]) =>

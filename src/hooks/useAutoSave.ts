@@ -12,14 +12,12 @@ export const useAutoSave = () => {
   const { player } = useGameState();
 
   const handleAutoSave = useCallback(() => {
-    console.log("so we triggered?");
     autoSave(player);
     showSnackbar("Автосохранение");
   }, [player]);
 
   useEffect(() => {
     if (isAutoSaveRequired) {
-      console.log("so we triggered autosave??");
       toggleAutoSave();
       handleAutoSave();
     }

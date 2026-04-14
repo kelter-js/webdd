@@ -5,6 +5,7 @@ import { getDungeonDataByType } from "./utils";
 import { QuestCardProps } from "./types";
 import * as S from "./DungeonCard.styled";
 import { DUNGEONS } from "../../entities";
+import { DUNGEON_TYPES } from "../../Views/Settlement/constants";
 
 // REFACTORING CHECKED ✅
 
@@ -35,7 +36,11 @@ export const DungeonCard: FC<QuestCardProps> = ({
 
       <S.QuestCardTitle>{title}</S.QuestCardTitle>
 
-      <S.QuestCardDescription>{description}</S.QuestCardDescription>
+      <S.QuestCardDescription
+        fontSize={type === DUNGEONS.STORY ? "20px" : "14px !important"}
+      >
+        {description}
+      </S.QuestCardDescription>
     </S.QuestCardContainer>
   );
 };

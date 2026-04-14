@@ -93,13 +93,11 @@ export const Map = () => {
       location.type,
       QUEST_STATUSES.SUCCESS,
     );
-    console.log("reward", reward);
+
     setFading(true);
     setQuestData(reward);
     handleExitDungeon();
     setDungeon(null);
-
-    console.log("we win!");
   }, [
     toggleAutoSave,
     economic,

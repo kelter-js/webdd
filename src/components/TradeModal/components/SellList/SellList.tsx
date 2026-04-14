@@ -1,4 +1,4 @@
-import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useGameState } from "../../../../stores";
 import emptySlot from "../../../../assets/static/empty_slot.png";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
@@ -13,7 +13,6 @@ export const SellList = () => {
   const { inventory, sellItem } = useGameState();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const scrollListElement = useRef<any>(null);
-  console.log("inventory", inventory);
 
   const currentItemToSellData = (inventory || [])[selectedIndex] || {};
   const { handleSetSrc } = usePlayer();

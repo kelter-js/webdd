@@ -30,8 +30,6 @@ export const PotionsBuyModal = () => {
     }
   };
 
-  console.log("potionsToBuy", potionsToBuy);
-
   return (
     <GameModal onClose={handleCloseModal} width="500px" height="auto">
       <Stack position="relative">

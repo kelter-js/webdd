@@ -20,24 +20,12 @@ export const useSoundtrack = (loaded: boolean) => {
   } = useGameState();
 
   useEffect(() => {
-    const hasDungeonSoundtrack = Boolean(
-      getPlayerRef(AMBIENT_DUNGEON_SOUNDTRACK),
-    );
-    const hasSettlementSoundtrack = Boolean(
-      getPlayerRef(AMBIENT_SETTLEMENT_SOUNDTRACK),
-    );
-
-    console.log("locationState", locationState);
-    console.log("prevLocationState", prevLocationState);
-    console.log("hasDungeonSoundtrack", hasDungeonSoundtrack);
-
     if (
       (locationState === RENDER_LOCATIONS.DUNGEON ||
         prevLocationState === RENDER_LOCATIONS.DUNGEON) &&
       loaded &&
       isAudioEnabled
     ) {
-      console.log("so we are here?");
       handleRemoveSrc(AMBIENT_SETTLEMENT_SOUNDTRACK);
       handleRemoveSrc(AMBIENT_BATTLE_SOUNDTRACK);
       handleSetSrc(AMBIENT_DUNGEON_SOUNDTRACK, dungeonAmbient, true);
