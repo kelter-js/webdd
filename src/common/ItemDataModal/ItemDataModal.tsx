@@ -76,22 +76,24 @@ export const ItemDataModal: FC<ItemDataModalProps> = ({
 
         {displayDescription && (
           <Typography fontFamily="inherit" variant="h6">
-            Выстрелов за один ход: {description}
+            {description}
           </Typography>
         )}
 
-        <Stack
-          direction="row"
-          gap={1}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <div>{getIconByType(type!)}</div>
+        {type !== GEAR_SLOTS.ARTIFACT && (
+          <Stack
+            direction="row"
+            gap={1}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <div>{getIconByType(type!)}</div>
 
-          <Typography fontFamily="inherit" variant="h6">
-            {minValue && `${minValue} - `} {value}
-          </Typography>
-        </Stack>
+            <Typography fontFamily="inherit" variant="h6">
+              {minValue && `${minValue} - `} {value}
+            </Typography>
+          </Stack>
+        )}
 
         {gold && (
           <Typography

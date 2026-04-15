@@ -2,8 +2,8 @@ import { GEAR_SLOTS } from "../../entities/gear";
 import { EFFECT_TYPES } from "../../types/gameState";
 import { BASE_ITEMS_ID } from "../items";
 import healthOrb1 from "../../assets/gear/artifacts/health_orb (1).png";
-import healthOrb2 from "../../assets/gear/artifacts/health_orb (1).png";
-import healthOrb3 from "../../assets/gear/artifacts/health_orb (1).png";
+import healthOrb2 from "../../assets/gear/artifacts/health_orb (2).png";
+import healthOrb3 from "../../assets/gear/artifacts/health_orb (3).png";
 
 import bulletNecklace1 from "../../assets/gear/artifacts/bullet_necklace_1.png";
 import bulletNecklace2 from "../../assets/gear/artifacts/bullet_necklace_2.png";
@@ -83,7 +83,7 @@ export const BULLET_NECKLACE_TIER_1 = {
   type: GEAR_SLOTS.ARTIFACT,
   tier: 1,
   value: 5,
-  baseId: BASE_ITEMS_ID.HEALTH_ORB_TIER_1,
+  baseId: BASE_ITEMS_ID.BULLET_NECKLACE_TIER_1,
   price: 2000,
   overAllTier: 1,
   effectType: EFFECT_TYPES.ATTACK,

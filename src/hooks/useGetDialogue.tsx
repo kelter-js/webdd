@@ -218,6 +218,13 @@ export const useGetDialogue = (npc: string | null) => {
           }
         }
 
+        if (player.resourcesBagLevel !== 1) {
+          traderDialog.nodes.welcome.options =
+            traderDialog.nodes.welcome.options.filter(
+              (option) => option.id !== DIALOGUE_IDS.IMPROVE_BAG_INTRO,
+            );
+        }
+
         return traderDialog;
 
       case BUILDING_NAMES.MEDICAL_STATION: {

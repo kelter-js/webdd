@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, ChangeEvent } from "react";
 import { GameModal } from "../GameModal";
 
 import { useAppState, useGameState } from "../../stores";
@@ -13,6 +13,11 @@ import { Icons } from "../../common";
 import { CraftDrop } from "./components/CraftDrop";
 
 import { useSnackbar } from "../../contexts/Snackbar";
+import { NameField } from "../Initiate/components/SetNameModal/SetNameModal.styled";
+import {
+  NAME_FIELD_INPUT_PROPS,
+  NAME_FIELD_LABEL_PROPS,
+} from "../Initiate/components/SetNameModal/input-styles-config";
 
 export const CraftModal = () => {
   const { player, craftItem } = useGameState();
@@ -23,6 +28,10 @@ export const CraftModal = () => {
   const handleClearCraftedResult = () => setCraftedItem(null);
   const { showSnackbar } = useSnackbar();
   const [result, setResult] = useState<null | string | Item>(null);
+  const [search, setSearch] = useState("");
+
+  const handleUpdateSearch = (e: ChangeEvent<HTMLInputElement>) =>
+    setSearch(e.target.value);
 
   useEffect(() => {
     if (result) {
@@ -75,6 +84,18 @@ export const CraftModal = () => {
     [player, currentCraftData.isDisabled],
   );
 
+  const receiptsList = useMemo(() => {
+    if (search) {
+      const normalizedSearchValue = search.toLocaleLowerCase();
+
+      return RECEIPTS.filter((receipt) =>
+        receipt.title.toLocaleLowerCase().includes(normalizedSearchValue),
+      );
+    }
+
+    return RECEIPTS;
+  }, [search]);
+
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>
       <Stack gap={2} direction="row" p={2} height="675px">
@@ -102,7 +123,18 @@ export const CraftModal = () => {
           }}
         >
           <Stack gap={1} width="100%" pr={0.5}>
-            {RECEIPTS.map((receipt, index) => {
+            <NameField
+              value={search}
+              onChange={handleUpdateSearch}
+              hasNoAttemptsLeft={true}
+              label="Название рецепта"
+              variant="outlined"
+              fullWidth
+              InputProps={NAME_FIELD_INPUT_PROPS}
+              InputLabelProps={NAME_FIELD_LABEL_PROPS}
+            />
+
+            {receiptsList.map((receipt, index) => {
               return (
                 <Typography
                   fontFamily="inherit"

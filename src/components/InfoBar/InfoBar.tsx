@@ -73,9 +73,10 @@ export const InfoBar = () => {
           if (character.currentHealth <= 0) {
             acc.deadCharacter.push(character.name);
           } else {
-            const maxHp = statistics
-              ? statistics[character.name].maxHealth
-              : null;
+            const maxHp =
+              statistics && statistics[character?.name]
+                ? statistics[character?.name]?.maxHealth
+                : null;
 
             if (maxHp) {
               acc.aliveCharacters.push({

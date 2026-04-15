@@ -14,7 +14,7 @@ export const sellJunk = (set: StoreSet) => () => {
       return acc;
     }, 0);
 
-    stateCopy.player.gold += goldAmount;
+    stateCopy.player.gold += Math.abs(goldAmount);
     stateCopy.player.junk = [];
 
     return stateCopy;
