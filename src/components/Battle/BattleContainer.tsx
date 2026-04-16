@@ -74,6 +74,8 @@ export const BattleContainer = () => {
 
   const [showDices, setShowDices] = useState(isDiceRequiredRoll);
 
+  console.log("battle", battle);
+
   useHandleBattleEnd();
 
   const [isFirstRender, setFirstRender] = useState(true);
@@ -206,19 +208,35 @@ export const BattleContainer = () => {
     (newState?: Battle) => {
       const stateSource = newState ?? battle;
 
+      console.log("and we here? stateSource", stateSource);
+      console.log("and we here? statistics", statistics);
+      console.log("and we here? selectedPlayer", selectedPlayer);
+      console.log("and we here? !isShooting", !isShooting);
+      console.log("and we here? selectedEnemy", selectedEnemy);
+      console.log(
+        "and we here? stateSource?.enemy.party[selectedEnemy]",
+        stateSource?.enemy.party[selectedEnemy],
+      );
+      console.log("and we here? isPlayerTurnAvailable", isPlayerTurnAvailable);
+      const enemyData =
+        stateSource?.enemy?.party?.length === 1
+          ? stateSource?.enemy.party[0]
+          : stateSource?.enemy.party[selectedEnemy];
+
       if (
         stateSource &&
         statistics &&
         selectedPlayer &&
         !isShooting &&
-        stateSource?.enemy.party[selectedEnemy] &&
+        enemyData &&
         isPlayerTurnAvailable
       ) {
+        console.log("and we here? inside");
         const { model, damageModel } = calculateDamage(
           stateSource,
           statistics,
           selectedPlayer?.name,
-          stateSource?.enemy.party[selectedEnemy],
+          enemyData,
           magSizesMap[selectedPlayer?.name]?.magSize,
         );
 

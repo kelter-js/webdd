@@ -44,7 +44,13 @@ export const consumePotion =
           battle: {
             ...battle,
             player: {
-              ...battle.player,
+              effects: {
+                ...battle.player.effects,
+                [characterName]: {
+                  ...battle.player.effects[characterName],
+                  hasTriggered: false,
+                },
+              },
               party: battle.player.party.map((character) => {
                 if (character.name !== characterName) return character;
 

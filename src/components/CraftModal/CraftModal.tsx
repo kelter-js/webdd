@@ -69,8 +69,6 @@ export const CraftModal = () => {
     };
   }, [RECEIPTS, selectedIndex]); // или когда меняется selectedIndex / размер окна и т.д.
 
-  const currentCraftData = RECEIPTS[selectedIndex];
-
   const handleCraft = () => {
     const { state, item } = currentCraftData.create(player);
 
@@ -78,11 +76,6 @@ export const CraftModal = () => {
 
     craftItem(state);
   };
-
-  const isCraftButtonDisabled = useMemo(
-    () => currentCraftData?.isDisabled(player) || false,
-    [player, currentCraftData.isDisabled],
-  );
 
   const receiptsList = useMemo(() => {
     if (search) {
@@ -95,6 +88,13 @@ export const CraftModal = () => {
 
     return RECEIPTS;
   }, [search]);
+
+  const currentCraftData = receiptsList[selectedIndex];
+
+  const isCraftButtonDisabled = useMemo(
+    () => currentCraftData?.isDisabled(player) || false,
+    [player, currentCraftData.isDisabled],
+  );
 
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>

@@ -143,13 +143,20 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   const currentPlayerHasNoAmmo =
     (selectedPlayer?.currentAmountOfRounds || 0) <= 0;
 
+  const isPotionsListDisabled = Boolean(
+    isEnemyTurn ||
+    (selectedPlayer?.name &&
+      battle?.player.effects[selectedPlayer?.name]?.list.find(
+        (effect) => effect.type === EFFECTS.HEAL_IMMUNE,
+      )),
+  );
+
   return (
     <S.Container>
       <S.CharacterControls>
-        <PotionsList
-          onPotionClick={handleConsumePotion}
-          disabled={isEnemyTurn}
-        />
+        {!isPotionsListDisabled && (
+          <PotionsList onPotionClick={handleConsumePotion} />
+        )}
         {playerAbility && (
           <Tooltip title={playerAbility.description}>
             <div>
@@ -324,41 +331,43 @@ export const CharactersBar: FC<CharactersBarProps> = ({
         })}
       </S.AvatarsContainer>
 
-      <S.BattleControls>
-        <Button
-          disabled={!isPlayerTurnAvailable}
-          variant="text"
-          onClick={() => {
-            if (currentPlayerHasNoAmmo) {
-              onReload();
-            } else {
-              onAttack();
-            }
-          }}
-        >
-          <StartGameText
-            sx={{
-              fontFamily: "inherit",
-              textTransform: "uppercase",
-              letterSpacing: "0.5px",
-              border: "1px solid #c0a080",
-              color: "#e0c0a0",
-              backgroundColor: "rgba(30, 20, 10, 0.9)",
-              padding: (theme) => theme.spacing(1, 2),
-              opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important`,
-
-              "&:hover": {
-                backgroundColor: "rgba(30, 20, 10, 0.95)",
-                border: "1px solid #ffd700",
-                color: "#ffd700",
-              },
+      {battle?.turn === TURN_STATES.PLAYER_TURN && (
+        <S.BattleControls>
+          <Button
+            disabled={!isPlayerTurnAvailable}
+            variant="text"
+            onClick={() => {
+              if (currentPlayerHasNoAmmo) {
+                onReload();
+              } else {
+                onAttack();
+              }
             }}
-            variant="h6"
           >
-            {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
-          </StartGameText>
-        </Button>
-      </S.BattleControls>
+            <StartGameText
+              sx={{
+                fontFamily: "inherit",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                border: "1px solid #c0a080",
+                color: "#e0c0a0",
+                backgroundColor: "rgba(30, 20, 10, 0.9)",
+                padding: (theme) => theme.spacing(1, 2),
+                opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important`,
+
+                "&:hover": {
+                  backgroundColor: "rgba(30, 20, 10, 0.95)",
+                  border: "1px solid #ffd700",
+                  color: "#ffd700",
+                },
+              }}
+              variant="h6"
+            >
+              {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
+            </StartGameText>
+          </Button>
+        </S.BattleControls>
+      )}
     </S.Container>
   );
 };

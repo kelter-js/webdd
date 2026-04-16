@@ -6,13 +6,9 @@ import { QuestResults } from "../../components/QuestResults";
 import { useGetDialogue, useGetLocation } from "../../hooks";
 
 import { Dialogue } from "../../components/Dialogue";
-import { BUILDING_NAMES, LOCATION_NAMES } from "../../constants";
+import { BUILDING_NAMES } from "../../constants";
 import { useAppState, useGameState } from "../../stores";
-import {
-  AVAILABLE_ECONOMIC_TYPES,
-  AVAILABLE_QUESTS_TYPES,
-  DUNGEON_TYPES,
-} from "./constants";
+import { AVAILABLE_ECONOMIC_TYPES, AVAILABLE_QUESTS_TYPES } from "./constants";
 import { GameModal } from "../../components/GameModal";
 import { QuestCard } from "../../components/QuestCard";
 import { EconomicCard } from "../../components/EconomicCard";
@@ -20,7 +16,7 @@ import { PotionsBuyModal } from "../../components/PotionsBuyModal";
 import { AlmanacModal } from "../../components/AlmanacModal";
 import { TradeModal } from "../../components/TradeModal";
 import { CraftModal } from "../../components/CraftModal";
-import { DungeonCard, DungeonContainer } from "../../components/DungeonCard";
+import { DungeonContainer } from "../../components/DungeonCard";
 import { BuyTorches } from "../../components/BuyTorches";
 
 export const Settlement = () => {

@@ -27,6 +27,8 @@ export const useBattleEffectsExecutor = ({
   } = useGameState();
 
   useEffect(() => {
+    console.log("effector isReadyToTrigger", isReadyToTrigger);
+    console.log("effector battle", battle);
     if (battle && isReadyToTrigger) {
       if (battle?.turn === TURN_STATES.ENEMY_TURN && selectedEnemy) {
         const {

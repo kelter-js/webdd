@@ -8,12 +8,12 @@ export const Container = styled(motion.div, {
 })<{ left: string; isBoss: boolean }>(({ left, isBoss }) => ({
   position: "absolute",
   width: isBoss ? "650px" : "408px",
-  height: isBoss ? "754px" : "555px",
+  height: isBoss ? "704px" : "555px",
   overflow: "visible",
   textAlign: "center",
   zIndex: 99999999,
   left: left,
-  top: "0%", // вертикальное смещение выше центра
+  top: isBoss ? "-2%" : "0%", // вертикальное смещение выше центра
 }));
 
 export const TargetContainer = styled("div")`

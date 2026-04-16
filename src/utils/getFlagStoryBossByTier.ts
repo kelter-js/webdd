@@ -5,7 +5,7 @@ export const getFlagStoryBossByTier = (currentTier: number) => {
     return FLAGS.FIRST_STORY_BOSS_VICTORY;
   }
 
-  if (currentTier === 1) {
+  if (currentTier === 2) {
     return FLAGS.SECOND_STORY_BOSS_VICTORY;
   }
 

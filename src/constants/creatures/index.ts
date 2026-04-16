@@ -387,7 +387,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 15,
       minDmg: 1,
       maxDmg: 3,
-      exp: 50,
+      exp: 150,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_1,
       isEnhanced: false,
@@ -409,7 +409,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 25,
       minDmg: 2,
       maxDmg: 4,
-      exp: 70,
+      exp: 170,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_2,
       isEnhanced: false,
@@ -431,7 +431,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 35,
       minDmg: 3,
       maxDmg: 5,
-      exp: 100,
+      exp: 200,
       evasionChance: 5,
       type: ENEMIES.SPIDER_TIER_3,
       isEnhanced: false,
@@ -454,7 +454,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 40,
       minDmg: 3,
       maxDmg: 5,
-      exp: 120,
+      exp: 150,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_1,
       isEnhanced: false,
@@ -476,7 +476,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 55,
       minDmg: 4,
       maxDmg: 7,
-      exp: 150,
+      exp: 200,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_2,
       isEnhanced: false,
@@ -498,7 +498,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 70,
       minDmg: 5,
       maxDmg: 9,
-      exp: 180,
+      exp: 250,
       evasionChance: 5,
       type: ENEMIES.TORSO_TIER_3,
       isEnhanced: false,
@@ -521,7 +521,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 75,
       minDmg: 5,
       maxDmg: 8,
-      exp: 200,
+      exp: 225,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_1,
       isEnhanced: false,
@@ -543,7 +543,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 100,
       minDmg: 6,
       maxDmg: 10,
-      exp: 240,
+      exp: 250,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_2,
       isEnhanced: false,
@@ -565,7 +565,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 130,
       minDmg: 8,
       maxDmg: 12,
-      exp: 300,
+      exp: 275,
       evasionChance: 5,
       type: ENEMIES.WATCHER_TIER_3,
       isEnhanced: false,
@@ -745,7 +745,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 80,
       minDmg: 7,
       maxDmg: 12,
-      exp: 200,
+      exp: 300,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_1,
       isEnhanced: false,
@@ -767,7 +767,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 100,
       minDmg: 9,
       maxDmg: 15,
-      exp: 250,
+      exp: 350,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_2,
       isEnhanced: false,
@@ -789,7 +789,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 130,
       minDmg: 11,
       maxDmg: 18,
-      exp: 300,
+      exp: 400,
       evasionChance: 10,
       type: ENEMIES.SOLDIER_TIER_3,
       isEnhanced: false,
@@ -812,7 +812,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 150,
       minDmg: 10,
       maxDmg: 16,
-      exp: 350,
+      exp: 400,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_1,
       isEnhanced: false,
@@ -830,11 +830,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 180,
-      maxHP: 180,
+      hp: 160,
+      maxHP: 160,
       minDmg: 12,
       maxDmg: 20,
-      exp: 400,
+      exp: 450,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_2,
       isEnhanced: false,
@@ -852,11 +852,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 220,
-      maxHP: 220,
+      hp: 200,
+      maxHP: 200,
       minDmg: 15,
       maxDmg: 25,
-      exp: 480,
+      exp: 500,
       evasionChance: 10,
       type: ENEMIES.FIREFIGHTER_TIER_3,
       isEnhanced: false,
@@ -875,11 +875,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 280,
-      maxHP: 280,
+      hp: 220,
+      maxHP: 220,
       minDmg: 13,
       maxDmg: 22,
-      exp: 600,
+      exp: 650,
       evasionChance: 10,
       type: ENEMIES.SNEAKER_TIER_1,
       isEnhanced: false,
@@ -897,11 +897,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 350,
-      maxHP: 350,
+      hp: 240,
+      maxHP: 240,
       minDmg: 17,
       maxDmg: 28,
-      exp: 750,
+      exp: 700,
       evasionChance: 10,
       type: ENEMIES.SNEAKER_TIER_2,
       isEnhanced: false,
@@ -919,8 +919,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 450,
-      maxHP: 450,
+      hp: 260,
+      maxHP: 260,
       minDmg: 22,
       maxDmg: 35,
       exp: 900,
@@ -942,8 +942,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 400,
-      maxHP: 400,
+      hp: 240,
+      maxHP: 240,
       minDmg: 18,
       maxDmg: 28,
       exp: 900,
@@ -965,8 +965,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 500,
-      maxHP: 500,
+      hp: 260,
+      maxHP: 260,
       minDmg: 22,
       maxDmg: 35,
       exp: 1100,
@@ -988,8 +988,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 650,
-      maxHP: 650,
+      hp: 280,
+      maxHP: 280,
       minDmg: 28,
       maxDmg: 42,
       exp: 1350,
@@ -1011,8 +1011,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 650,
-      maxHP: 650,
+      hp: 450,
+      maxHP: 450,
       minDmg: 25,
       maxDmg: 40,
       exp: 1500,
@@ -1034,8 +1034,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 850,
-      maxHP: 850,
+      hp: 500,
+      maxHP: 500,
       minDmg: 32,
       maxDmg: 50,
       exp: 1800,
@@ -1057,8 +1057,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1100,
-      maxHP: 1100,
+      hp: 550,
+      maxHP: 550,
       minDmg: 40,
       maxDmg: 65,
       exp: 2200,
@@ -1080,8 +1080,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1800,
-      maxHP: 1800,
+      hp: 1250,
+      maxHP: 1250,
       minDmg: 50,
       maxDmg: 80,
       exp: 4000,
@@ -1107,7 +1107,7 @@ export const CREATURES: EnemyInitialData = {
       maxHP: 250,
       minDmg: 18,
       maxDmg: 28,
-      exp: 500,
+      exp: 750,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_1,
       isEnhanced: false,
@@ -1125,11 +1125,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 320,
-      maxHP: 320,
+      hp: 270,
+      maxHP: 270,
       minDmg: 22,
       maxDmg: 35,
-      exp: 650,
+      exp: 800,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_2,
       isEnhanced: false,
@@ -1147,11 +1147,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 400,
-      maxHP: 400,
+      hp: 290,
+      maxHP: 290,
       minDmg: 28,
       maxDmg: 42,
-      exp: 800,
+      exp: 850,
       evasionChance: 15,
       type: ENEMIES.ALL_SEEING_TIER_3,
       isEnhanced: false,
@@ -1169,11 +1169,11 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 400,
-      maxHP: 400,
+      hp: 270,
+      maxHP: 270,
       minDmg: 25,
       maxDmg: 45,
-      exp: 850,
+      exp: 900,
       evasionChance: 15,
       type: ENEMIES.KNIGHT_TIER_1,
       isEnhanced: false,
@@ -1191,8 +1191,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 500,
-      maxHP: 500,
+      hp: 290,
+      maxHP: 290,
       minDmg: 35,
       maxDmg: 55,
       exp: 1000,
@@ -1213,8 +1213,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 650,
-      maxHP: 650,
+      hp: 310,
+      maxHP: 310,
       minDmg: 45,
       maxDmg: 70,
       exp: 1200,
@@ -1235,8 +1235,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 700,
-      maxHP: 700,
+      hp: 290,
+      maxHP: 290,
       minDmg: 30,
       maxDmg: 50,
       exp: 1500,
@@ -1257,8 +1257,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 900,
-      maxHP: 900,
+      hp: 310,
+      maxHP: 310,
       minDmg: 40,
       maxDmg: 65,
       exp: 1800,
@@ -1279,8 +1279,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1200,
-      maxHP: 1200,
+      hp: 330,
+      maxHP: 330,
       minDmg: 55,
       maxDmg: 85,
       exp: 2200,
@@ -1301,8 +1301,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1000,
-      maxHP: 1000,
+      hp: 310,
+      maxHP: 310,
       minDmg: 45,
       maxDmg: 75,
       exp: 2500,
@@ -1323,8 +1323,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1300,
-      maxHP: 1300,
+      hp: 330,
+      maxHP: 330,
       minDmg: 60,
       maxDmg: 95,
       exp: 3000,
@@ -1345,8 +1345,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1700,
-      maxHP: 1700,
+      hp: 350,
+      maxHP: 350,
       minDmg: 75,
       maxDmg: 120,
       exp: 3600,
@@ -1367,8 +1367,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 1800,
-      maxHP: 1800,
+      hp: 350,
+      maxHP: 350,
       minDmg: 60,
       maxDmg: 100,
       exp: 5000,
@@ -1389,8 +1389,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 2400,
-      maxHP: 2400,
+      hp: 400,
+      maxHP: 400,
       minDmg: 80,
       maxDmg: 130,
       exp: 6500,
@@ -1411,8 +1411,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 3200,
-      maxHP: 3200,
+      hp: 450,
+      maxHP: 450,
       minDmg: 110,
       maxDmg: 180,
       exp: 8000,
@@ -1433,8 +1433,8 @@ export const CREATURES: EnemyInitialData = {
 
     // другие данные по типу хп и прочего
     baseModel: {
-      hp: 5000,
-      maxHP: 5000,
+      hp: 2500,
+      maxHP: 2500,
       minDmg: 130,
       maxDmg: 220,
       exp: 15000,
