@@ -30,8 +30,9 @@ export const CraftModal = () => {
   const [result, setResult] = useState<null | string | Item>(null);
   const [search, setSearch] = useState("");
 
-  const handleUpdateSearch = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleUpdateSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+  };
 
   useEffect(() => {
     if (result) {
@@ -93,7 +94,7 @@ export const CraftModal = () => {
 
   const isCraftButtonDisabled = useMemo(
     () => currentCraftData?.isDisabled(player) || false,
-    [player, currentCraftData.isDisabled],
+    [player, currentCraftData?.isDisabled],
   );
 
   return (
@@ -160,141 +161,146 @@ export const CraftModal = () => {
           </Stack>
         </OverlayScrollbarsComponent>
 
-        <Stack alignItems="center" justifyContent="center" width="100%">
-          <img
-            src={craftBg}
-            style={{
-              position: "absolute",
-              width: 815,
-              height: 630,
-              top: "-22px",
-            }}
-          />
-          <Stack gap={3} mb={8}>
-            <Stack
-              border="1px solid #5a3020"
-              sx={{
+        {currentCraftData && (
+          <Stack alignItems="center" justifyContent="center" width="100%">
+            <img
+              src={craftBg}
+              style={{
                 position: "absolute",
-                right: "151px",
-                top: "44px",
-                height: "107px",
-                width: "151px",
+                width: 815,
+                height: 630,
+                top: "-22px",
               }}
-            >
-              <img
-                src={currentCraftData.sourceItemIcon}
-                style={{
-                  width: "100%",
-                  height: "100%",
+            />
+            <Stack gap={3} mb={8}>
+              <Stack
+                border="1px solid #5a3020"
+                sx={{
                   position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  objectFit: "contain",
+                  right: "151px",
+                  top: "44px",
+                  height: "107px",
+                  width: "151px",
                 }}
-              />
-            </Stack>
-            <Stack
-              border="1px solid #5a3020"
-              sx={{
-                position: "absolute",
-                right: "333px",
-                top: "44px",
-                height: "107px",
-                width: "151px",
-              }}
-            >
-              <img
-                src={currentCraftData.sourceItemIcon}
-                style={{
-                  width: "100%",
-                  height: "100%",
+              >
+                <img
+                  src={currentCraftData?.sourceItemIcon}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    objectFit: "contain",
+                  }}
+                />
+              </Stack>
+              <Stack
+                border="1px solid #5a3020"
+                sx={{
                   position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  objectFit: "contain",
+                  right: "333px",
+                  top: "44px",
+                  height: "107px",
+                  width: "151px",
                 }}
-              />
-            </Stack>
-            <Stack
-              border="1px solid #5a3020"
-              sx={{
-                position: "absolute",
-                right: "522px",
-                top: "44px",
-                height: "107px",
-                width: "151px",
-              }}
-            >
-              <img
-                src={currentCraftData.sourceItemIcon}
-                style={{
-                  width: "100%",
-                  height: "100%",
+              >
+                <img
+                  src={currentCraftData?.sourceItemIcon}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    objectFit: "contain",
+                  }}
+                />
+              </Stack>
+              <Stack
+                border="1px solid #5a3020"
+                sx={{
                   position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  objectFit: "contain",
+                  right: "522px",
+                  top: "44px",
+                  height: "107px",
+                  width: "151px",
                 }}
-              />
+              >
+                <img
+                  src={currentCraftData?.sourceItemIcon}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    objectFit: "contain",
+                  }}
+                />
+              </Stack>
             </Stack>
+
+            <Stack>
+              <Stack
+                border="1px solid #5a3020"
+                sx={{
+                  position: "absolute",
+                  right: "265px",
+                  top: "326px",
+                  height: "180px",
+                  width: "290px",
+                }}
+              >
+                <img
+                  src={currentCraftData?.targetItemIcon}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                    objectFit: "contain",
+                  }}
+                />
+              </Stack>
+            </Stack>
+
+            {currentCraftData?.goldRequiredToCraft && (
+              <Typography
+                position="absolute"
+                bottom="90px"
+                fontFamily="inherit"
+                display="flex"
+                alignItems="center"
+                gap={1}
+                variant="h4"
+              >
+                Требуется: {currentCraftData?.goldRequiredToCraft}{" "}
+                <Icons.GoldIcon />
+              </Typography>
+            )}
+
+            {craftedItem && (
+              <CraftDrop
+                item={craftedItem}
+                onClose={handleClearCraftedResult}
+              />
+            )}
+
+            <HoldProgressButton
+              sx={{ mt: "auto" }}
+              onComplete={handleCraft}
+              disabled={isCraftButtonDisabled}
+            >
+              Создать
+            </HoldProgressButton>
           </Stack>
-
-          <Stack>
-            <Stack
-              border="1px solid #5a3020"
-              sx={{
-                position: "absolute",
-                right: "265px",
-                top: "326px",
-                height: "180px",
-                width: "290px",
-              }}
-            >
-              <img
-                src={currentCraftData.targetItemIcon}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  objectFit: "contain",
-                }}
-              />
-            </Stack>
-          </Stack>
-
-          {currentCraftData?.goldRequiredToCraft && (
-            <Typography
-              position="absolute"
-              bottom="90px"
-              fontFamily="inherit"
-              display="flex"
-              alignItems="center"
-              gap={1}
-              variant="h4"
-            >
-              Требуется: {currentCraftData?.goldRequiredToCraft}{" "}
-              <Icons.GoldIcon />
-            </Typography>
-          )}
-
-          {craftedItem && (
-            <CraftDrop item={craftedItem} onClose={handleClearCraftedResult} />
-          )}
-
-          <HoldProgressButton
-            sx={{ mt: "auto" }}
-            onComplete={handleCraft}
-            disabled={isCraftButtonDisabled}
-          >
-            Создать
-          </HoldProgressButton>
-        </Stack>
+        )}
       </Stack>
     </GameModal>
   );

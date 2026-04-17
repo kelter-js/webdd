@@ -1050,9 +1050,9 @@ export const finalDialog: DialogueTree = {
         {
           text: "[приготовиться к бою]",
           nextNode: "end",
-          flags: [DIALOGUE_FLAGS.FINAL_DIALOG_ENDED],
         },
       ],
+      flags: [DIALOGUE_FLAGS.FINAL_DIALOG_ENDED],
     },
   },
 };

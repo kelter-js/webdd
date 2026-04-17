@@ -68,6 +68,7 @@ export const BattleContainer = () => {
     turnOffDices,
     player: { battle, party, currentTier, location, dialogFlags },
     statistics,
+    initiateState,
     gear,
     updateBattle,
   } = useGameState();
@@ -97,6 +98,22 @@ export const BattleContainer = () => {
       setDialogueOpen(BUILDING_NAMES.FINAL_DIALOGUE);
     }
   }, [battle?.enemy.party, isDialogueOpen]);
+
+  useEffect(() => {
+    const [player1, player2, player3] = battle?.player.party || [];
+
+    if (
+      player1 &&
+      player2 &&
+      player3 &&
+      (!statistics ||
+        !statistics[player1.name] ||
+        !statistics[player2.name] ||
+        !statistics[player3.name])
+    ) {
+      initiateState();
+    }
+  }, [statistics, battle, initiateState]);
 
   const dialogTree = useGetDialogue(isDialogueOpen);
 
@@ -297,7 +314,10 @@ export const BattleContainer = () => {
       if (
         event.code === "KeyF" &&
         battle?.turn === TURN_STATES.PLAYER_TURN &&
-        !isShooting
+        !isShooting &&
+        isPlayerTurnAvailable &&
+        !showDices &&
+        !isDiceRequiredRoll
       ) {
         if ((selectedPlayer?.currentAmountOfRounds ?? 0) > 0) {
           handlePlayerAttack();
@@ -312,7 +332,15 @@ export const BattleContainer = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyBindings);
     };
-  }, [handlePlayerAttack, battle?.turn, isShooting, handlePlayerReload]);
+  }, [
+    handlePlayerAttack,
+    battle?.turn,
+    isShooting,
+    handlePlayerReload,
+    isPlayerTurnAvailable,
+    showDices,
+    isDiceRequiredRoll,
+  ]);
 
   const handleUpdateEffectState = (
     battleModel: Battle,
@@ -333,6 +361,12 @@ export const BattleContainer = () => {
 
   useEffect(() => {
     // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
+    console.log("some? currentEnemy", currentEnemy);
+    console.log("some? battle", battle);
+    console.log(
+      "some? battle.enemy.effects[currentEnemy.id].hasTriggered",
+      battle?.enemy.effects[currentEnemy?.id ?? 0]?.hasTriggered,
+    );
 
     if (
       !showDices &&
@@ -345,6 +379,7 @@ export const BattleContainer = () => {
       battle.enemy.effects[currentEnemy.id].hasTriggered &&
       !dialogTree
     ) {
+      console.log("are we INSIDE AI ATTACK LOGIC?");
       const { damageModel, model } = calculateAiDamage(
         battle,
         statistics,
@@ -411,7 +446,7 @@ export const BattleContainer = () => {
       />
 
       {battle?.enemy?.party?.map((creature, index, self) => {
-        if (creature.hp <= 0) {
+        if (creature.hp <= 0 || dialogTree) {
           return null;
         }
 

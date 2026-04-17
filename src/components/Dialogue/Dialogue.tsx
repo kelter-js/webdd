@@ -256,7 +256,11 @@ export const Dialogue: FC<DialogueProps> = ({ dialogueTree }) => {
       }}
     >
       <S.DialogueModal>
-        <S.Avatar src={src} alt="npc_avatar" />
+        <S.Avatar
+          src={src}
+          alt="npc_avatar"
+          style={{ width: 150, height: 150 }}
+        />
         <S.SpeakerName variant="h5" sx={{ textTransform: "uppercase" }}>
           {name}
         </S.SpeakerName>

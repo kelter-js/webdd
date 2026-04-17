@@ -150,7 +150,7 @@ export const Enemy: FC<EnemyProps> = ({
             src={enemySource}
             style={{
               width: `${isBoss ? 650 : 408}px`,
-              height: `${isBoss ? 854 : 612}px`,
+              height: `${isBoss ? 800 : 612}px`,
             }}
           />
         )}

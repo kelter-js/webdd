@@ -24,6 +24,7 @@ export const useGlobalListeners = () => {
     setSelectedEnemy,
     isAudioEnabled,
     isTradeModalOpen,
+    isCraftMenuOpen,
   } = useAppState();
 
   const {
@@ -101,7 +102,9 @@ export const useGlobalListeners = () => {
           event.code === "KeyI" &&
           locationState !== RENDER_LOCATIONS.BATTLE
         ) {
-          toggleInventory();
+          if (!isCraftMenuOpen) {
+            toggleInventory();
+          }
         }
 
         if (event.code === "KeyR" && isTradeModalOpen) {
@@ -159,5 +162,6 @@ export const useGlobalListeners = () => {
     isAudioEnabled,
     location?.specialEncounter,
     isTradeModalOpen,
+    isCraftMenuOpen,
   ]);
 };

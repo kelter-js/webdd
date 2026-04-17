@@ -31,9 +31,9 @@ export const Fragment = styled("div", {
 })<FragmentProps>(({ dx, dy, animated, imgSrc, isBoss }) => ({
   position: "absolute",
   width: `${(isBoss ? 650 : 408) / 12}px`,
-  height: `${(isBoss ? 854 : 612) / 12}px`,
+  height: `${(isBoss ? 800 : 612) / 12}px`,
   backgroundImage: `url(${imgSrc})`,
-  backgroundSize: `${isBoss ? "650px" : "408px"} ${isBoss ? "854px" : "612px"}`,
+  backgroundSize: `${isBoss ? "650px" : "408px"} ${isBoss ? "800" : "612px"}`,
   transformOrigin: "center",
   "--dx": dx,
   "--dy": dy,

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 import { EFFECTS } from "../../../entities/effects";
@@ -27,8 +27,6 @@ export const useBattleEffectsExecutor = ({
   } = useGameState();
 
   useEffect(() => {
-    console.log("effector isReadyToTrigger", isReadyToTrigger);
-    console.log("effector battle", battle);
     if (battle && isReadyToTrigger) {
       if (battle?.turn === TURN_STATES.ENEMY_TURN && selectedEnemy) {
         const {
@@ -276,5 +274,5 @@ export const useBattleEffectsExecutor = ({
         }
       }
     }
-  }, [selectedCharacter, selectedEnemy, statistics, isReadyToTrigger]);
+  }, [selectedCharacter, selectedEnemy, statistics, isReadyToTrigger, battle]);
 };

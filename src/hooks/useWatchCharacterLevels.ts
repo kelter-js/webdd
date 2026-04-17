@@ -8,7 +8,7 @@ const expForLevel = (level: number, baseExp: number) => {
 
   // Используем квадратичную функцию с замедлением на высоких уровнях
   // Множитель: level * (level - 1) / 1.8 вместо /2
-  const multiplier = (level * (level - 1)) / 1.8;
+  const multiplier = (level * (level - 1)) / 3;
 
   // Добавляем небольшой линейный рост для сглаживания
   const linearBonus = level * baseExp * 0.1;

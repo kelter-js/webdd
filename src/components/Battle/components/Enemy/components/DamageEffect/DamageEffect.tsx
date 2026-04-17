@@ -64,15 +64,11 @@ export const DamageEffect: FC<DamageEffectProps> = ({
     };
 
     setDamageNumbers(newDamage);
-  }, [damage, containerId]);
+  }, [damage, containerId, isEvasion]);
 
   const removeDamageNumber = () => {
     setDamageNumbers(null);
     setPosition(null);
-    onDamageAnimationEnd?.();
-  };
-
-  const handleAllAnimationsComplete = () => {
     onDamageAnimationEnd?.();
   };
 
@@ -84,7 +80,7 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   }
 
   return (
-    <AnimatePresence onExitComplete={handleAllAnimationsComplete}>
+    <AnimatePresence>
       <NumbersContainer
         key={id}
         style={{

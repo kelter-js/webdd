@@ -3,15 +3,16 @@ import { resetDialogs } from "../../constants/dialogs";
 import { useAppState, useGameState } from "../../stores";
 import { Text, Container } from "./End.styled";
 import { DIALOGUE_FLAGS } from "../../entities/dialogues";
+import { FLAGS } from "../../constants";
 
 export const End = () => {
   const {
     resetGame,
-    player: { dialogFlags },
+    player: { flags },
   } = useGameState();
   const { reset } = useAppState();
 
-  if (!dialogFlags.includes(DIALOGUE_FLAGS.FINAL_DIALOG_ENDED)) {
+  if (!flags.includes(FLAGS.THIRD_STORY_BOSS_VICTORY)) {
     return null;
   }
 

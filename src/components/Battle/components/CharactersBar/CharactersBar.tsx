@@ -317,7 +317,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                 {isDead && <S.Divider />}
               </S.CharacterContainer>
 
-              {((Boolean(damage) && damage !== null) || isEvasion) && (
+              {currentDamageData !== null && (
                 <DamageEffect
                   isEvasion={Boolean(isEvasion)}
                   damage={damage || 0}

@@ -21,7 +21,7 @@ const getEndRoomTypeByCounter = (counter: number, isQuest?: boolean) => {
   if (
     counter === FIRST_TIER_DUNGEONS_AMOUNT ||
     counter === SECOND_TIER_DUNGEONS_AMOUNT ||
-    counter === THIRD_TIER_DUNGEONS_AMOUNT
+    counter >= THIRD_TIER_DUNGEONS_AMOUNT
   ) {
     return ROOM_TYPES.STORY_BOSS;
   }
