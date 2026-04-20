@@ -6,12 +6,13 @@ import { FadeContainer } from "./ScreenFade.styled";
 
 // REFACTORING CHECKED ✅
 
+const timeout_config = { enter: 100, exit: 500 };
+
 export const ScreenFade: FC<ScreenFadeProps> = ({
   isVisible,
   onFadeComplete,
   duration = 1000,
   color = "rgb(0, 0, 0)",
-  timeout,
 }) => {
   const [internalVisible, setInternalVisible] = useState(isVisible);
 
@@ -34,7 +35,7 @@ export const ScreenFade: FC<ScreenFadeProps> = ({
   }, [isVisible, duration, onFadeComplete]);
 
   return (
-    <Fade in={internalVisible} timeout={timeout ?? duration}>
+    <Fade in={internalVisible} timeout={timeout_config ?? duration}>
       <FadeContainer color={color} isVisible={isVisible} />
     </Fade>
   );

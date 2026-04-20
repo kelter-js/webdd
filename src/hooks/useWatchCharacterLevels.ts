@@ -3,7 +3,7 @@ import { useAppState, useGameState } from "../stores";
 import { DEFAULT_EXP_BY_CLASS_MAP } from "../stores/constants";
 import { v4 } from "uuid";
 
-const expForLevel = (level: number, baseExp: number) => {
+export const expForLevel = (level: number, baseExp: number) => {
   if (level === 1) return baseExp;
 
   // Используем квадратичную функцию с замедлением на высоких уровнях

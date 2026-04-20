@@ -1,11 +1,4 @@
-import {
-  Box,
-  styled,
-  TextField,
-  Modal,
-  Typography,
-  TextFieldProps,
-} from "@mui/material";
+import { Box, styled, Modal, Typography } from "@mui/material";
 
 export const ModalContent = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -37,33 +30,6 @@ export const ModalContainer = styled(Modal)(() => ({
     textTransform: "uppercase",
   },
 }));
-
-export const NameField = styled(TextField, {
-  shouldForwardProp: (prop) => prop !== "hasNoAttemptsLeft",
-})<{ hasNoAttemptsLeft: boolean } & TextFieldProps>(
-  ({ theme: { spacing }, hasNoAttemptsLeft }) => ({
-    marginBottom: spacing(1),
-    fontFamily: "Cormorant Unicase",
-    color: "#c08040",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: hasNoAttemptsLeft ? "#c08040" : "red",
-      },
-
-      "&:hover fieldset": {
-        borderColor: hasNoAttemptsLeft ? "#c08040" : "red",
-      },
-
-      "&.Mui-focused fieldset": {
-        borderColor: hasNoAttemptsLeft ? "#c08040" : "red",
-        borderWidth: 2,
-      },
-    },
-  }),
-);
 
 export const StartGameText = styled(Typography)(({ theme: { spacing } }) => ({
   width: "100%",

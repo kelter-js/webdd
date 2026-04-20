@@ -11,7 +11,7 @@ import { usePlayer } from "../../contexts/Player";
 import { SELL_SFX_ID } from "../../constants";
 
 export const TradeModal = () => {
-  const { toggleTradeModal } = useAppState();
+  const { toggleTradeModal, isTradeModalOpen } = useAppState();
   const [tab, setTab] = useState<TRADE_TYPES>(TRADE_TYPES.BUY);
 
   const {
@@ -20,6 +20,8 @@ export const TradeModal = () => {
   } = useGameState();
 
   const { handleSetSrc } = usePlayer();
+
+  if (!isTradeModalOpen) return null;
 
   const handleSellJunk = () => {
     sellJunk();

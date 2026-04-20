@@ -1,9 +1,9 @@
-import { FLAGS } from "../constants";
-import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
 import { DEFAULT_SPECIAL_ENCOUNTERS_LIST } from "../constants/special_encounters";
+import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
 import { getRandom } from "./getRandom";
+import { FLAGS } from "../constants";
 
-export const ENCOUNTER_MAP = {
+const ENCOUNTER_MAP = {
   [SPECIAL_ENCOUNTERS.GHOST]: FLAGS.SPECIAL_ENCOUNTER_GHOST,
   [SPECIAL_ENCOUNTERS.SHOOTING]: FLAGS.SPECIAL_ENCOUNTER_SHOOTING,
   [SPECIAL_ENCOUNTERS.TRADER]: FLAGS.SPECIAL_ENCOUNTER_TRADER,

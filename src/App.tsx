@@ -1,33 +1,30 @@
 import { useCallback, useEffect } from "react";
-import { ScreenFade } from "./components/ScreenFade";
-
-import { Initiate } from "./components/Initiate";
-
 import "overlayscrollbars/overlayscrollbars.css";
-import { ViewManager } from "./Views/ViewManager";
+
 import {
   useAutoSave,
   useGameTierWatcher,
   useGlobalListeners,
   usePreloadAllAssets,
   useScrollbarWidth,
+  useWatchCharacterLevels,
+  useTutorial,
+  useGameOver,
+  useSoundtrack,
 } from "./hooks";
-import { useAppState, useGameState } from "./stores";
-import { LoadingModal, GameOverScreen } from "./common";
-import { useGameOver } from "./hooks/useGameOver";
-
-import { StorySlide } from "./components/StorySlide";
-import { getSliderById } from "./utils/getSliderById";
-import { useSoundtrack } from "./hooks/useSoundtrack";
-import { BUILDING_NAMES, FLAGS } from "./constants";
 import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
+import { LoadingModal, GameOverScreen } from "./common";
+import { getSliderById } from "./utils";
 
-import { useWatchCharacterLevels } from "./hooks/useWatchCharacterLevels";
+import { ScreenFade } from "./components/ScreenFade";
+import { useAppState, useGameState } from "./stores";
+import { StorySlide } from "./components/StorySlide";
+import { BUILDING_NAMES, FLAGS } from "./constants";
+import { ViewManager } from "./Views/ViewManager";
+import { Initiate } from "./components/Initiate";
 import { DIALOGUE_FLAGS } from "./entities/dialogues";
-import { useTutorial } from "./hooks/useTutorial";
-import { End } from "./components/End";
 
-const timeout_config = { enter: 100, exit: 500 };
+import { End } from "./components/End";
 
 export const App = () => {
   const { progress, loaded } = usePreloadAllAssets();
@@ -72,11 +69,7 @@ export const App = () => {
   return (
     <>
       {loaded && (
-        <ScreenFade
-          isVisible={isFading}
-          onFadeComplete={handleRemoveFading}
-          timeout={timeout_config}
-        />
+        <ScreenFade isVisible={isFading} onFadeComplete={handleRemoveFading} />
       )}
 
       {!name && loaded && <Initiate />}
@@ -105,6 +98,12 @@ export const App = () => {
     </>
   );
 };
+
+// 20.04
+// вывести в инфобар кол-во посещенных подземелий и подземелий для следующего тира - done
+// вывести кол-во необходимого опыта и текущего опыта для каждого персонажа в infobar - done
+// реализовать поиск + фильтрацию в инвентаре - done
+// utils + views отрефачены
 
 // 14.04
 

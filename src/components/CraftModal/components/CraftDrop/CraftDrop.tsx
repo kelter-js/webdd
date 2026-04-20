@@ -4,7 +4,7 @@ import { Box, Typography, Button } from "@mui/material";
 
 import { CraftDropProps } from "./types";
 import { GEAR_SLOTS } from "../../../../entities/gear";
-import { getItemIcon } from "../../../../utils/getItemIcon";
+import { getItemIcon } from "../../../../utils";
 
 export const CraftDrop: FC<CraftDropProps> = ({ item, onClose }) => {
   if (!item) return null;

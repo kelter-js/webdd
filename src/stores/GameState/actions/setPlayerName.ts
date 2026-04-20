@@ -1,7 +1,6 @@
 import { v4 } from "uuid";
 import { CLASSES } from "../../../entities/characterClasses";
 import { Item } from "../../../types/gameState";
-import { getRandomName } from "../../../utils/getRandomName";
 import {
   SNIPER_BASE_MODEL,
   MEDIC_BASE_MODEL,
@@ -15,8 +14,11 @@ import {
   MP5SD_TIER_1,
   SV98_TIER_1,
 } from "../../../constants/guns";
-import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
-import { memoizeItem } from "../../../utils/memoizeItem";
+import {
+  rebuildDerivedState,
+  getRandomName,
+  memoizeItem,
+} from "../../../utils";
 import { POTION_TYPES } from "../../../entities/consumables";
 
 const CLASSES_MAP = {

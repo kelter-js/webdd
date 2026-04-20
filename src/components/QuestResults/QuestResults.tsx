@@ -17,6 +17,10 @@ export const QuestResults = () => {
 
   if (!quest) return null;
 
+  const hasQuestResults = quest && quest.status !== QUEST_STATUSES.INITIATED;
+
+  if (!hasQuestResults) return null;
+
   const isQuestSucceeded = status === QUEST_STATUSES.SUCCESS;
 
   return (

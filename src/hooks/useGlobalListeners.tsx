@@ -8,7 +8,7 @@ import { usePlayer } from "../contexts/Player";
 import { SELL_SFX_ID } from "../constants";
 import sellSfx from "../assets/audio/sell.mp3";
 import { TURN_STATES } from "../entities";
-import { getNextTargetIndex, getPrevTargetIndex } from "../utils/getTargets";
+import { getNextTargetIndex, getPrevTargetIndex } from "../utils";
 
 // REFACTORING CHECKED ✅
 

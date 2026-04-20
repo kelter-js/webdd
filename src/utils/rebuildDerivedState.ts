@@ -2,6 +2,7 @@ import { calculateStatistics } from "../stores/utils";
 import { StoreState } from "../types/gameState";
 import { dememoizeItem } from "./dememoizeItem";
 
+// ф-ия для рекалькуляции статов и обновления статистики вместе с инвентарем.
 export const rebuildDerivedState = (
   state: StoreState,
   characterName?: string,

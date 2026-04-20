@@ -7,9 +7,11 @@ import {
 } from "../../../constants";
 import { BASE_ITEMS_ID } from "../../../constants/items";
 import { RESOURCES } from "../../../entities/resources";
-import { getTotalAmountOfResourceByType } from "../../../utils/getTotalAmountOfResourceByType";
 import { StoreSet } from "./types";
-import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
+import {
+  rebuildDerivedState,
+  getTotalAmountOfResourceByType,
+} from "../../../utils";
 import { resetReleaseOptions } from "../../../constants/dialogs";
 import { MemoizedItem } from "../../../types";
 

@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import character from "../../../../assets/static/character_bg.png";
 import namePattern from "../../../../assets/static/inventory_name.png";
 import * as S from "../../Inventory.styled";
-import { CharacterCell } from "../../CharacterCell";
+import { CharacterCell } from "../CharacterCell/CharacterCell";
 import { GEAR_SLOTS } from "../../../../entities/gear";
 import { FC } from "react";
 import { CharacterGearProps } from "./types";

@@ -1,6 +1,6 @@
-import { MemoizedItem } from "../types";
-import { Item } from "../types/gameState";
 import { getBaseItemByBaseId } from "./getBaseItemByBaseId";
+import { Item } from "../types/gameState";
+import { MemoizedItem } from "../types";
 
 export const dememoizeItem = (item: MemoizedItem): Item => {
   const [baseId, itemId] = item;

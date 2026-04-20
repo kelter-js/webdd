@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { getPotionIcon } from "../../../utils/getPotionIcon";
+import { getPotionIcon } from "../../../utils";
 import { PotionProps } from "./types";
 import * as S from "./Potion.styled";
 import { Stack, Typography } from "@mui/material";

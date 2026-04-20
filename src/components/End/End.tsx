@@ -1,8 +1,7 @@
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import { resetDialogs } from "../../constants/dialogs";
 import { useAppState, useGameState } from "../../stores";
 import { Text, Container } from "./End.styled";
-import { DIALOGUE_FLAGS } from "../../entities/dialogues";
 import { FLAGS } from "../../constants";
 
 export const End = () => {

@@ -13,7 +13,7 @@ export const DungeonContainer = () => {
     player: { quest, currentTier },
   } = useGameState();
 
-  const { toggleDungeonModal } = useAppState();
+  const { toggleDungeonModal, isDungeonModalOpen } = useAppState();
 
   const [difficulty, setDifficulty] = useState(currentTier);
 
@@ -25,6 +25,8 @@ export const DungeonContainer = () => {
     () => DEFAULT_DIFFICULTIES.slice(0, currentTier),
     [currentTier],
   );
+
+  if (!isDungeonModalOpen) return null;
 
   const availableDungeonTypes = quest?.type
     ? [...DUNGEON_TYPES, quest?.type]

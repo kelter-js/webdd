@@ -1,19 +1,15 @@
 import { Stack } from "@mui/material";
 import { FC, useState, MouseEvent, useMemo } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { DragItemWithMeta } from "../../types";
+import { useGameState } from "../../../../stores";
+import { Item } from "../../../../types/gameState";
+import { GEAR_SLOTS } from "../../../../entities/gear";
+import { CLASS_GUN_RESTRICTIONS } from "../../../../constants/characters";
+import frame from "../../../../assets/static/gear_slot_frame.png";
+import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
+import { getItemIcon } from "../../../../utils";
 import { InventoryCellProps } from "./types";
-import { useGameState } from "../../stores";
-import { Item } from "../../types/gameState";
-import { GEAR_SLOTS } from "../../entities/gear";
-import { CLASS_GUN_RESTRICTIONS } from "../../constants/characters";
-import frame from "../../assets/static/gear_slot_frame.png";
-import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
-import { getItemIcon } from "../../utils/getItemIcon";
-
-export interface DragItemWithMeta {
-  characterName?: string;
-  item: Item | undefined | null;
-}
 
 export const CharacterCell: FC<InventoryCellProps> = ({
   type,
@@ -40,7 +36,6 @@ export const CharacterCell: FC<InventoryCellProps> = ({
     unknown,
     { canDrop: boolean }
   >(() => ({
-    //здесь будет определенный тип в завимости от слота - принимать только шлем например, или броню или оружие
     accept: type,
     canDrop: (item?: Item | null) => {
       if (item) {
@@ -67,7 +62,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
       }
     },
     collect: (monitor) => ({
-      canDrop: monitor.canDrop(), // результат canDrop
+      canDrop: monitor.canDrop(),
     }),
   }));
 
@@ -120,6 +115,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
           top: "-30px",
         }}
       />
+
       <img
         src={itemIcon}
         style={{
@@ -132,6 +128,7 @@ export const CharacterCell: FC<InventoryCellProps> = ({
           objectFit: "contain",
         }}
       />
+
       {item && anchorEl && (
         <ItemDataModal
           open={open}

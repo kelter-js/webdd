@@ -1,1 +1,9 @@
+import { GEAR_SLOTS } from "../../entities/gear";
+
 export const MIN_AMOUNT_OF_ITEMS_PER_ROW = 9;
+export const INVENTORY_ACCEPT_TYPES = [
+  GEAR_SLOTS.ARMOR,
+  GEAR_SLOTS.ARTIFACT,
+  GEAR_SLOTS.HELMET,
+  GEAR_SLOTS.WEAPON,
+];

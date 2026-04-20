@@ -1,45 +1,29 @@
-import { Stack } from "@mui/material";
-
 import { ImageMapHighlight } from "../../components/ImageMapHighlight";
-import { QUEST_STATUSES } from "../../entities/questStatuses";
+import { QuestModal } from "../../components/QuestModal/QuestModal";
+import { PotionsBuyModal } from "../../components/PotionsBuyModal";
+import { DungeonContainer } from "../../components/DungeonCard";
+import { EconimicModal } from "../../components/EconimicModal";
 import { QuestResults } from "../../components/QuestResults";
 import { useGetDialogue, useGetLocation } from "../../hooks";
-
-import { Dialogue } from "../../components/Dialogue";
-import { BUILDING_NAMES } from "../../constants";
-import { useAppState, useGameState } from "../../stores";
-import { AVAILABLE_ECONOMIC_TYPES, AVAILABLE_QUESTS_TYPES } from "./constants";
-import { GameModal } from "../../components/GameModal";
-import { QuestCard } from "../../components/QuestCard";
-import { EconomicCard } from "../../components/EconomicCard";
-import { PotionsBuyModal } from "../../components/PotionsBuyModal";
 import { AlmanacModal } from "../../components/AlmanacModal";
+import { useAppState, useGameState } from "../../stores";
 import { TradeModal } from "../../components/TradeModal";
 import { CraftModal } from "../../components/CraftModal";
-import { DungeonContainer } from "../../components/DungeonCard";
 import { BuyTorches } from "../../components/BuyTorches";
+import { Dialogue } from "../../components/Dialogue";
+import { BUILDING_NAMES } from "../../constants";
 
 export const Settlement = () => {
   const {
-    player: { quest, economic, currentTier },
-    generateDungeon,
+    player: { quest, currentTier },
   } = useGameState();
 
   const {
     isDialogueOpen,
     setDialogueOpen,
     toggleQuestModal,
-    isQuestModalOpen,
-    toggleEconomicModal,
-    isEconomicModalOpen,
-    isBuyPotionsModalOpen,
-    isAlmanacOpen,
-    isTradeModalOpen,
-    isCraftMenuOpen,
-    isTorchBuyOpen,
+
     toggleDungeonModal,
-    isDungeonModalOpen,
-    toggleAutoSave,
   } = useAppState();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
@@ -65,8 +49,6 @@ export const Settlement = () => {
     setDialogueOpen(building);
   };
 
-  const hasQuestResults = quest && quest.status !== QUEST_STATUSES.INITIATED;
-
   return (
     <>
       <ImageMapHighlight
@@ -78,35 +60,23 @@ export const Settlement = () => {
 
       {dialogTree && <Dialogue dialogueTree={dialogTree} />}
 
-      {hasQuestResults && <QuestResults />}
+      <QuestResults />
 
-      {isQuestModalOpen && (
-        <GameModal onClose={toggleQuestModal}>
-          <Stack direction="row" justifyContent="space-between">
-            {AVAILABLE_QUESTS_TYPES.map((type) => (
-              <QuestCard type={type} key={type} />
-            ))}
-          </Stack>
-        </GameModal>
-      )}
+      <QuestModal />
 
-      {isDungeonModalOpen && <DungeonContainer />}
+      <DungeonContainer />
 
-      {isBuyPotionsModalOpen && <PotionsBuyModal />}
-      {isAlmanacOpen && <AlmanacModal />}
-      {isTradeModalOpen && <TradeModal />}
-      {isCraftMenuOpen && <CraftModal />}
-      {isTorchBuyOpen && <BuyTorches />}
+      <PotionsBuyModal />
 
-      {isEconomicModalOpen && (
-        <GameModal onClose={() => toggleEconomicModal()}>
-          <Stack direction="row" justifyContent="space-between">
-            {AVAILABLE_ECONOMIC_TYPES.map((type) => (
-              <EconomicCard type={type} key={type} />
-            ))}
-          </Stack>
-        </GameModal>
-      )}
+      <AlmanacModal />
+
+      <TradeModal />
+
+      <CraftModal />
+
+      <BuyTorches />
+
+      <EconimicModal />
     </>
   );
 };

@@ -19,10 +19,6 @@ import { AlmanacCreature } from "./components/AlmanacCreature";
 const DISABLE_TEXT = "Эта страница пока что недоступна";
 const DEFAULT_PAGE_DISPLAY_AMOUNT = 2;
 const MAX_PAGE_COUNTER = 2;
-// DEFAULT_DATA_ARRAY.slice(page *DEFAULT_PAGE_DISPLAY_AMOUNT , page * DEFAULT_PAGE_DISPLAY_AMOUNT  + DEFAULT_PAGE_DISPLAY_AMOUNT  );
-// сначала - 0,2
-// потом 2,4
-// потом 4,6
 
 export const AlmanacModal = () => {
   const { player } = useGameState();
@@ -31,7 +27,7 @@ export const AlmanacModal = () => {
   const [pageHeader, setPageHeader] = useState(currentTier);
   const [page, setPage] = useState(0);
 
-  const { toggleAlmanac } = useAppState();
+  const { toggleAlmanac, isAlmanacOpen } = useAppState();
 
   const handleForward = () => setPage((state) => state + 1);
   const handleBackward = () => setPage((state) => state - 1);
@@ -57,6 +53,8 @@ export const AlmanacModal = () => {
         };
       });
   }, [pageHeader, page, player]);
+
+  if (!isAlmanacOpen) return null;
 
   return (
     <GameModal onClose={toggleAlmanac} withoutPadding withoutScrolls>

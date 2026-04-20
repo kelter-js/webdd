@@ -1,5 +1,4 @@
-import { getBaseItemByBaseId } from "../../../utils/getBaseItemByBaseId";
-import { memoizeItem } from "../../../utils/memoizeItem";
+import { memoizeItem, getBaseItemByBaseId } from "../../../utils";
 import { StoreSet } from "./types";
 // FIXME типизация
 export const buyItem = (set: StoreSet) => (itemId: string) => {

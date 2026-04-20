@@ -1,5 +1,5 @@
 import { dememoizeItem } from "../../../utils/dememoizeItem";
-import { memoizeItem } from "../../../utils/memoizeItem";
+import { memoizeItem } from "../../../utils";
 import { StoreSet } from "./types";
 
 export const resetQuest = (set: StoreSet) => () => {

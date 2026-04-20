@@ -1,6 +1,6 @@
-import { POTION_TYPES } from "../entities/consumables";
-import { MAX_AMOUNT_OF_POTIONS_TO_SELL } from "../stores/constants";
 import { getPotionPriceByTypeAndTier } from "./getPotionPriceByTypeAndTier";
+import { MAX_AMOUNT_OF_POTIONS_TO_SELL } from "../stores/constants";
+import { POTION_TYPES } from "../entities/consumables";
 import { getRandom } from "./getRandom";
 
 const SMALL_POTION_CHANCE = 50;
@@ -12,7 +12,7 @@ const START_RANGE = 1;
 const END_RANGE = 100;
 const POTION_PRESET = { amount: DEFAULT_SELL_AMOUNT_OF_POTIONS };
 
-export const generatePotion = (tier: number, additionalChance: number = 0) => {
+const generatePotion = (tier: number, additionalChance: number = 0) => {
   const roll = getRandom(START_RANGE, END_RANGE) + additionalChance;
   const medium = MEDIUM_POTION_CHANCE * tier;
   const large = LARGE_POTION_CHANCE * tier;

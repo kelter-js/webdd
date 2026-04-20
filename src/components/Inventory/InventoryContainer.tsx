@@ -1,27 +1,36 @@
-import { Fragment, RefObject } from "react";
+import { Fragment, RefObject, FC, useMemo } from "react";
 import { InventoryCell } from "./InventoryCell";
 import { useDrop } from "react-dnd";
 import { Stack, Typography } from "@mui/material";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useGameState } from "../../stores";
 import { GEAR_SLOTS } from "../../entities/gear";
-import { DragItemWithMeta } from "./CharacterCell";
+
 import * as S from "./Inventory.styled";
+import {
+  DragItemWithMeta,
+  InventoryContainerProps,
+  SORT_TYPES_BY_TIER,
+  SORT_TYPES_BY_UPGRADE,
+} from "./types";
+import { Item } from "../../types/gameState";
 
-export const InventoryContainer = () => {
+import { CLASS_GUN_RESTRICTIONS } from "../../constants/characters";
+import { INVENTORY_ACCEPT_TYPES } from "./constants";
+
+export const InventoryContainer: FC<InventoryContainerProps> = ({
+  searchTerm,
+  tier,
+  upgradeTier,
+  classFilter,
+}) => {
   const { inventory = [], removeItemFromGear } = useGameState();
-
   const [{ isOver }, drop] = useDrop<
     DragItemWithMeta,
     unknown,
     { isOver: boolean }
   >(() => ({
-    accept: [
-      GEAR_SLOTS.ARMOR,
-      GEAR_SLOTS.ARTIFACT,
-      GEAR_SLOTS.HELMET,
-      GEAR_SLOTS.WEAPON,
-    ],
+    accept: INVENTORY_ACCEPT_TYPES,
     drop: (draggedItem) => {
       const { item, characterName } = draggedItem;
 
@@ -34,7 +43,82 @@ export const InventoryContainer = () => {
     }),
   }));
 
-  const inventoryList = inventory || [];
+  const inventoryList = useMemo(() => {
+    if (!inventory) return [];
+
+    const normalizedSearchTerm = searchTerm?.toLocaleLowerCase();
+
+    return inventory.reduce<Item[]>((acc, item) => {
+      let isIncluded = false;
+
+      if (
+        normalizedSearchTerm &&
+        item.name.toLocaleLowerCase().includes(normalizedSearchTerm)
+      ) {
+        isIncluded = true;
+      }
+
+      if (tier) {
+        switch (tier) {
+          case SORT_TYPES_BY_TIER.FIRST: {
+            isIncluded = item.overAllTier === 1;
+            break;
+          }
+
+          case SORT_TYPES_BY_TIER.SECOND: {
+            isIncluded = item.overAllTier === 2;
+            break;
+          }
+
+          case SORT_TYPES_BY_TIER.THIRD: {
+            isIncluded = item.overAllTier === 3;
+            break;
+          }
+        }
+      }
+
+      if (upgradeTier) {
+        switch (upgradeTier) {
+          case SORT_TYPES_BY_UPGRADE.FIRST: {
+            isIncluded = item.tier === 1;
+            break;
+          }
+
+          case SORT_TYPES_BY_UPGRADE.SECOND: {
+            isIncluded = item.tier === 2;
+            break;
+          }
+
+          case SORT_TYPES_BY_UPGRADE.THIRD: {
+            isIncluded = item.tier === 3;
+            break;
+          }
+        }
+      }
+
+      if (classFilter) {
+        if (item.type === GEAR_SLOTS.WEAPON) {
+          isIncluded = CLASS_GUN_RESTRICTIONS[classFilter].includes(
+            item.gunType!,
+          );
+        } else {
+          isIncluded = false;
+        }
+      }
+
+      if (
+        isIncluded ||
+        (!normalizedSearchTerm && !tier && !upgradeTier && !classFilter)
+      ) {
+        acc.push(item);
+      }
+
+      return acc;
+    }, []);
+  }, [inventory, searchTerm, tier, upgradeTier, classFilter]);
+
+  console.log("inventoryList", inventoryList);
+
   const isEmptyInventory = inventoryList.length === 0;
 
   return (
@@ -121,6 +205,7 @@ export const InventoryContainer = () => {
             }}
           ></Stack>
         )}
+
         {isEmptyInventory && (
           <Typography variant="h4">Пустой инвентарь</Typography>
         )}

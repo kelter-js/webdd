@@ -1,5 +1,5 @@
 import { GameStateData } from "../../../types/gameState";
-import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
+import { rebuildDerivedState } from "../../../utils";
 import { StoreSet } from "./types";
 
 // FIXME типизация

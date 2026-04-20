@@ -3,16 +3,12 @@ import { useAppState, useGameState } from "../../stores";
 import { isTorchesAffordable } from "./utils";
 import { Button, Stack, Typography } from "@mui/material";
 import { TORCH_PRICE } from "../../constants";
-import { NameField } from "../Initiate/components/SetNameModal/SetNameModal.styled";
 import { GameModal } from "../GameModal";
-import {
-  NAME_FIELD_INPUT_PROPS,
-  NAME_FIELD_LABEL_PROPS,
-} from "../Initiate/components/SetNameModal/input-styles-config";
+import { SearchField } from "../../common/SearchField";
 
 export const BuyTorches = () => {
   const [amountOfTorches, setAmountOfTorches] = useState(1);
-  const { toggleTorchBuyMenu } = useAppState();
+  const { toggleTorchBuyMenu, isTorchBuyOpen } = useAppState();
   const {
     player: { gold },
     buyTorches,
@@ -22,6 +18,8 @@ export const BuyTorches = () => {
     amountOfTorches,
     gold,
   );
+
+  if (!isTorchBuyOpen) return null;
 
   const handleIncreaseTorchesAmount = (e: ChangeEvent<HTMLInputElement>) =>
     setAmountOfTorches(Number(e.target.value));
@@ -42,7 +40,7 @@ export const BuyTorches = () => {
           Итоговая стоимость: {finalPrice} золота
         </Typography>
 
-        <NameField
+        <SearchField
           type="number"
           value={amountOfTorches}
           onChange={handleIncreaseTorchesAmount}
@@ -50,9 +48,7 @@ export const BuyTorches = () => {
           label="Количество факелов"
           variant="outlined"
           fullWidth
-          InputProps={NAME_FIELD_INPUT_PROPS}
           inputProps={{ min: 0, max: 100 }}
-          InputLabelProps={NAME_FIELD_LABEL_PROPS}
         />
 
         <Button

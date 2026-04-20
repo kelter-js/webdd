@@ -7,7 +7,7 @@ import { SELL_SFX_ID } from "../../../../constants";
 import sellSfx from "../../../../assets/audio/sell.mp3";
 import { usePlayer } from "../../../../contexts/Player";
 import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
-import { getItemIcon } from "../../../../utils/getItemIcon";
+import { getItemIcon } from "../../../../utils";
 
 export const SellList = () => {
   const { inventory, sellItem } = useGameState();

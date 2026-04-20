@@ -14,6 +14,7 @@ import { FindItemIcon } from "./FindItem";
 import { Submachine } from "./Submachine";
 import { Critical } from "./Critical";
 import { Artifact } from "./Artifact";
+import { Dungeon } from "./Dungeon";
 import { Evasion } from "./Evasion";
 import { Jewelry } from "./Jewelry";
 import { TorchIcon } from "./Torch";
@@ -46,6 +47,7 @@ export {
   MachineGun,
   Submachine,
   Critical,
+  Dungeon,
   Evasion,
   Artifact,
   TorchIcon,

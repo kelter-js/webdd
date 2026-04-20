@@ -10,7 +10,7 @@ import sellSfx from "../../assets/audio/sell.mp3";
 import { SELL_SFX_ID } from "../../constants";
 
 export const PotionsBuyModal = () => {
-  const { toggleBuyPotionsModal } = useAppState();
+  const { toggleBuyPotionsModal, isBuyPotionsModalOpen } = useAppState();
   const { showSnackbar } = useSnackbar();
 
   const handleCloseModal = () => toggleBuyPotionsModal(false);
@@ -20,6 +20,8 @@ export const PotionsBuyModal = () => {
     player: { potionsToBuy, gold },
     buyPotion,
   } = useGameState();
+
+  if (!isBuyPotionsModalOpen) return null;
 
   const handleBuyPotion = (index: number) => {
     try {

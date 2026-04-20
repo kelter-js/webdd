@@ -38,10 +38,9 @@ import {
   SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
   THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
 } from "../constants";
-import { getImprovementPrice } from "../utils";
+import { getImprovementPrice, getTotalAmountOfResourceByType } from "../utils";
 import { useMemo } from "react";
 import { RESOURCES } from "../entities/resources";
-import { getTotalAmountOfResourceByType } from "../utils/getTotalAmountOfResourceByType";
 import { isEveryEnemyUnlocked } from "../components/AlmanacModal/utils";
 
 export const useGetDialogue = (npc: string | null) => {

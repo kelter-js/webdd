@@ -27,10 +27,10 @@ import {
   EFFECTS_ICONS,
 } from "../../../../entities/effects";
 import { PERK_ID_DATA } from "../../../../types/gameState";
-import { StartGameText } from "../../../Initiate/components/SetNameModal/SetNameModal.styled";
 import * as S from "./CharactersBar.styled";
 import { WEAPONS_ICON_SOURCES } from "../../../../constants/guns";
 import { GEAR_SLOTS } from "../../../../entities/gear";
+import { MainButtonText } from "../../../../common/styled.index";
 
 const POTION_SFX = "consumePotionSfx";
 
@@ -164,9 +164,9 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                 variant="text"
                 onClick={() => handleUseAbility(playerAbility.id)}
               >
-                <StartGameText variant="h5">
+                <MainButtonText variant="h5">
                   {playerAbility.title}
-                </StartGameText>
+                </MainButtonText>
               </Button>
             </div>
           </Tooltip>
@@ -344,7 +344,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
               }
             }}
           >
-            <StartGameText
+            <MainButtonText
               sx={{
                 fontFamily: "inherit",
                 textTransform: "uppercase",
@@ -364,7 +364,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
               variant="h6"
             >
               {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
-            </StartGameText>
+            </MainButtonText>
           </Button>
         </S.BattleControls>
       )}

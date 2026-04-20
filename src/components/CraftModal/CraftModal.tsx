@@ -13,15 +13,12 @@ import { Icons } from "../../common";
 import { CraftDrop } from "./components/CraftDrop";
 
 import { useSnackbar } from "../../contexts/Snackbar";
-import { NameField } from "../Initiate/components/SetNameModal/SetNameModal.styled";
-import {
-  NAME_FIELD_INPUT_PROPS,
-  NAME_FIELD_LABEL_PROPS,
-} from "../Initiate/components/SetNameModal/input-styles-config";
+
+import { SearchField } from "../../common/SearchField";
 
 export const CraftModal = () => {
   const { player, craftItem } = useGameState();
-  const { toggleCraftMenu } = useAppState();
+  const { toggleCraftMenu, isCraftMenuOpen } = useAppState();
   const [craftedItem, setCraftedItem] = useState<null | Item>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -68,7 +65,7 @@ export const CraftModal = () => {
       window.removeEventListener("resize", () => ps.update());
       clearTimeout(timer);
     };
-  }, [RECEIPTS, selectedIndex]); // или когда меняется selectedIndex / размер окна и т.д.
+  }, [RECEIPTS, selectedIndex]);
 
   const handleCraft = () => {
     const { state, item } = currentCraftData.create(player);
@@ -97,6 +94,8 @@ export const CraftModal = () => {
     [player, currentCraftData?.isDisabled],
   );
 
+  if (!isCraftMenuOpen) return null;
+
   return (
     <GameModal onClose={toggleCraftMenu} withoutPadding>
       <Stack gap={2} direction="row" p={2} height="675px">
@@ -124,15 +123,13 @@ export const CraftModal = () => {
           }}
         >
           <Stack gap={1} width="100%" pr={0.5}>
-            <NameField
+            <SearchField
               value={search}
               onChange={handleUpdateSearch}
               hasNoAttemptsLeft={true}
               label="Название рецепта"
               variant="outlined"
               fullWidth
-              InputProps={NAME_FIELD_INPUT_PROPS}
-              InputLabelProps={NAME_FIELD_LABEL_PROPS}
             />
 
             {receiptsList.map((receipt, index) => {

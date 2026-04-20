@@ -1,6 +1,5 @@
 import { Typography, styled } from "@mui/material";
 
-// Твой существующий стиль
 export const StartGameText = styled(Typography, {
   shouldForwardProp: (prop) => prop !== "disabled",
 })<{ disabled: boolean }>(({ theme: { spacing }, disabled }) => ({

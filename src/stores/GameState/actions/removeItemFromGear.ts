@@ -1,5 +1,4 @@
-import { dememoizeItem } from "../../../utils/dememoizeItem";
-import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
+import { rebuildDerivedState } from "../../../utils";
 import { StoreSet } from "./types";
 
 export const removeItemFromGear =

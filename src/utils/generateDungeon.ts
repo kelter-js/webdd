@@ -1,15 +1,15 @@
-import { DIRECTIONS } from "../entities/directions";
-import { DirectionTuple } from "./types";
-import { isDeadEnd } from "./";
-import { Room } from "../types";
-import { getRandom } from "./";
-import { ROOM_TYPES } from "../entities/room";
 import {
   FIRST_TIER_DUNGEONS_AMOUNT,
   SECOND_TIER_DUNGEONS_AMOUNT,
   THIRD_TIER_DUNGEONS_AMOUNT,
 } from "../constants";
+
+import { DIRECTIONS } from "../entities/directions";
+import { ROOM_TYPES } from "../entities/room";
+import { isDeadEnd, getRandom } from "./";
+import { DirectionTuple } from "./types";
 import { DUNGEONS } from "../entities";
+import { Room } from "../types";
 
 const MAX_ITERATIONS_COUNTER = 100000;
 

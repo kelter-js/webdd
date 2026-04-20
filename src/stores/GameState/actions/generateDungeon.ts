@@ -9,10 +9,6 @@ const DEFAULT_ATTEMPS_AMOUNT = 5;
 
 const getDungeonSizeByTier = (currentTier: number) => {
   if (currentTier === 3) {
-    return 7;
-  }
-
-  if (currentTier === 2) {
     return 6;
   }
 

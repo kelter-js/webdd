@@ -15,7 +15,7 @@ import {
   getFirstTurn,
   getRandomRewardWithoutFight,
 } from "../utils";
-import { Battle, Enemy, Item, Player, StoreState } from "../../types/gameState";
+import { Battle, Enemy, Item, StoreState } from "../../types/gameState";
 import { ROOM_TYPES } from "../../entities/room";
 import { POTION_TYPES } from "../../entities/consumables";
 import { persistConfig } from "./config";
@@ -73,15 +73,14 @@ import {
   resetQuest,
   craftItem,
 } from "./actions";
-import { getRandom } from "../../utils";
-import { isSpecialEncounter } from "../../utils/isSpecialEncounter";
-import { generateSpecialEncounter } from "../../utils/generateSpecialEncounter";
+import {
+  getRandom,
+  isSpecialEncounter,
+  generateSpecialEncounter,
+} from "../../utils";
 
-import { RESOURCES } from "../../entities/resources";
 import { RewardTypes } from "../../types";
 import { JUNK_TYPES } from "../../entities/junk";
-
-import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
 
 // Create the store
 export const useGameState = create<StoreState>()(
@@ -414,60 +413,6 @@ export const useGameState = create<StoreState>()(
                 ...(state.player.battle?.enemy || ({} as Enemy)),
                 party: (state.player.battle?.enemy?.party || []).map(
                   (enemy) => ({ ...enemy, hp: 0 }),
-                ),
-              },
-            },
-          },
-        })),
-
-      // ф-ии чисто для тестов
-      removePotions: () =>
-        set((state) => ({
-          ...state,
-          player: {
-            ...state.player,
-            consumables: [],
-          },
-        })),
-
-      // ф-ии чисто для тестов
-      cheatGold: () =>
-        set((state) => ({
-          ...state,
-          player: {
-            ...state.player,
-            party: state.player.party.map((playerData) => ({
-              ...playerData,
-              level: 15,
-            })),
-            gold: state.player.gold + 50000,
-            collected: [[RESOURCES.ORE, "30"]],
-            // currentTier: 3,
-            playStatistics: {
-              ...state.player.playStatistics,
-              kills: Object.values(ALMANAC_ENEMIES_GENERIC_TYPES).reduce(
-                (acc, type) => {
-                  acc[type] = 30;
-                  return acc;
-                },
-                {} as Record<ALMANAC_ENEMIES_GENERIC_TYPES, number>,
-              ),
-            },
-          },
-        })),
-
-      // ф-ии чисто для тестов
-      endTurn: () =>
-        set((state) => ({
-          ...state,
-          player: {
-            ...state.player,
-            battle: {
-              ...(state.player?.battle || ({} as Battle)),
-              player: {
-                ...(state.player?.battle?.player || ({} as Player)),
-                party: [...(state.player?.battle?.player.party || [])].map(
-                  (item) => ({ ...item, currentHealth: 0 }),
                 ),
               },
             },

@@ -1,13 +1,13 @@
 import { FC, useState, MouseEvent, useMemo } from "react";
-import { InventoryCellProps } from "./types";
-import { Popper, Stack, Typography } from "@mui/material";
-import { useDrag, useDrop } from "react-dnd";
+import { Stack } from "@mui/material";
+import { useDrag } from "react-dnd";
 
 import emptySlot from "../../assets/static/empty_slot.png";
 import { Item } from "../../types/gameState";
 
 import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
-import { getItemIcon } from "../../utils/getItemIcon";
+import { getItemIcon } from "../../utils";
+import { InventoryCellProps } from "./components/CharacterCell/types";
 
 export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);

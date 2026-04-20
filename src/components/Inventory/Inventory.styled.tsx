@@ -5,6 +5,7 @@ export const InventoryContainer = styled("div")`
   display: flex;
   flex-wrap: wrap;
   width: calc(100% - 64px);
+  height: 100%;
 
   margin: 0 32px;
   margin-top: 16px;

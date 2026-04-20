@@ -1,21 +1,29 @@
 import { useEffect, useMemo, useState } from "react";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 import { Icons, Tooltip } from "../../common";
 import { useGameState } from "../../stores";
-import { getEconomicInfo, getQuestInfo } from "./utils";
+import {
+  getDungeonCounterByTier,
+  getEconomicInfo,
+  getQuestInfo,
+} from "./utils";
 import * as S from "./InfoBar.styled";
 import { createPortal } from "react-dom";
-import { getPotionIcon } from "../../utils/getPotionIcon";
-import { getPotionDescriptionByType } from "../../utils/getPotionDescriptionByType";
 import { ExclamationBlink } from "../../common/ExclamationBlink/ExclamationBlink";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { StyledSlider } from "../../common/styled.index";
 import { useGetResourceState } from "./useGetResourceState";
-import { getResourceIcon } from "../../utils/getResourceIcon";
+import {
+  getResourceIcon,
+  getPotionIcon,
+  getPotionDescriptionByType,
+} from "../../utils";
 import { RESOURCES } from "../../entities/resources";
 import { DEFAULT_BAG_SIZE } from "../../constants";
 import bagIcon from "../../assets/minigame/bag.png";
+import { DEFAULT_EXP_BY_CLASS_MAP } from "../../stores/constants";
+import { expForLevel } from "../../hooks/useWatchCharacterLevels";
 
 export const InfoBar = () => {
   const {
@@ -29,6 +37,8 @@ export const InfoBar = () => {
       volume: storageVolume,
       resourcesBagLevel,
       resources,
+      playStatistics,
+      currentTier,
     },
     statistics,
     toggleCharacterPanel,
@@ -105,6 +115,22 @@ export const InfoBar = () => {
       statistics,
     ]);
 
+  const playersExp = useMemo(() => {
+    return party.map((player) => {
+      const characterDefaultExpAmount =
+        DEFAULT_EXP_BY_CLASS_MAP[player.characterClass];
+      const expForNextLevel = expForLevel(
+        player.level,
+        characterDefaultExpAmount,
+      );
+
+      return {
+        exp: `${player.experience}/${expForNextLevel}`,
+        name: player.name,
+      };
+    });
+  }, [player1, player2, player3]);
+
   return createPortal(
     <S.ModalContent>
       <Box
@@ -147,6 +173,40 @@ export const InfoBar = () => {
           </Box>
         )}
       </Box>
+
+      <S.StatContainer>
+        <Tooltip title="Продвижение по сюжету...">
+          <Stack alignItems="center" direction="row" gap={1}>
+            {playStatistics?.dungeonCounter} /
+            {getDungeonCounterByTier(currentTier)}
+            <Icons.Dungeon size={40} />
+          </Stack>
+        </Tooltip>
+      </S.StatContainer>
+
+      {playersExp.map(({ exp, name }) => (
+        <S.StatContainer key={name}>
+          <Tooltip title={`Текущий опыт ${name}`}>
+            <Stack alignItems="center" direction="row" gap={1}>
+              <Typography
+                sx={{
+                  color: "#c08040",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+                fontFamily="inherit"
+                fontSize={20}
+              >
+                EXP
+              </Typography>
+              <Typography fontSize={20} fontFamily="inherit">
+                {exp}
+              </Typography>
+            </Stack>
+          </Tooltip>
+        </S.StatContainer>
+      ))}
 
       <S.StatContainer>
         <Tooltip title="Занято ячеек ресурсов">

@@ -10,7 +10,7 @@ import emptySlot from "../../../../../../assets/static/empty_slot.png";
 import { createPortal } from "react-dom";
 
 import { ItemDataModal } from "../../../../../../common/ItemDataModal/ItemDataModal";
-import { getItemIcon } from "../../../../../../utils/getItemIcon";
+import { getItemIcon } from "../../../../../../utils";
 
 export const ShopItem: FC<ShopItemProps> = ({
   isHovered,

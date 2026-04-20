@@ -1,10 +1,6 @@
 import { ChangeEventHandler, KeyboardEvent, useState } from "react";
 import { Button, Stack } from "@mui/material";
 
-import {
-  NAME_FIELD_INPUT_PROPS,
-  NAME_FIELD_LABEL_PROPS,
-} from "./input-styles-config";
 import { useGameState, useAppState } from "../../../../stores";
 import * as S from "./SetNameModal.styled";
 import { CLASSES } from "../../../../entities/characterClasses";
@@ -13,6 +9,7 @@ import sniper from "../../../../assets/classIcons/sniper.svg";
 import tank from "../../../../assets/classIcons/soldier.svg";
 import { FLAGS } from "../../../../constants";
 import { SLIDERS } from "../../../../entities/sliders";
+import { SearchField } from "../../../../common/SearchField";
 
 // REFACTORING CHECKED ✅
 
@@ -72,7 +69,7 @@ export const SetNameModal = () => {
     <S.ModalContainer open disableEscapeKeyDown>
       <S.ModalContent>
         <div>
-          <S.NameField
+          <SearchField
             onBlur={handleBlur}
             onFocus={handleFocus}
             helperText={
@@ -84,8 +81,6 @@ export const SetNameModal = () => {
             fullWidth
             onKeyDown={handleKeyDown}
             hasNoAttemptsLeft={tryAmount === 0}
-            InputProps={NAME_FIELD_INPUT_PROPS}
-            InputLabelProps={NAME_FIELD_LABEL_PROPS}
             value={name}
             onChange={handleChangeName}
           />

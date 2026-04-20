@@ -1,19 +1,18 @@
 import { getPotionByTier } from "../../../constants/items";
 import { DUNGEONS, ECONOMIC_TYPES } from "../../../entities";
-import { POTION_TYPES } from "../../../entities/consumables";
-import { generatePotionsList } from "../../../utils/generatePotionsToBuy";
+
 import {
+  memoizeItem,
+  getItemPrice,
   generateGenericItemInCurrentPool,
   generateStoreItems,
-} from "../../../utils/generateStoreItems";
-import { getItemPrice } from "../../../utils/getItemPrice";
-import { memoizeItem } from "../../../utils/memoizeItem";
+  generatePotionsList,
+} from "../../../utils";
 import {
   MIN_ENCOUNTER_CHANCE,
   SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 } from "../../constants";
 import { StoreSet } from "./types";
-import { RESOURCES } from "../../../entities/resources";
 
 const MIN_AMOUNT_OF_DAILY_POTIONS = 2;
 const MIN_AMOUNT_OF_DAILY_GOLD = 1500;

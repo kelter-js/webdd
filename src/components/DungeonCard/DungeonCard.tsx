@@ -3,9 +3,8 @@ import { FC } from "react";
 import { useAppState, useGameState } from "../../stores";
 import { getDungeonDataByType } from "./utils";
 import { QuestCardProps } from "./types";
-import * as S from "./DungeonCard.styled";
 import { DUNGEONS } from "../../entities";
-import { DUNGEON_TYPES } from "../../Views/Settlement/constants";
+import * as S from "./DungeonCard.styled";
 
 // REFACTORING CHECKED ✅
 

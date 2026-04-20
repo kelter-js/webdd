@@ -8,9 +8,8 @@ import {
   getRandomPotionByTier,
   getRandomResources,
 } from "../utils";
-import { getRandom } from "../../../utils";
+import { getRandom, getFlagStoryBossByTier } from "../../../utils";
 import { STORY_BOSSES_LIST } from "../../../constants/creatures";
-import { getFlagStoryBossByTier } from "../../../utils/getFlagStoryBossByTier";
 
 //   items?: Item[];
 

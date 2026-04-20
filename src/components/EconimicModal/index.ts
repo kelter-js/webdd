@@ -1,0 +1,1 @@
+export { EconimicModal } from "./EconimicModal";

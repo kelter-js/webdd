@@ -1,20 +1,10 @@
 import { FC, MouseEvent, useState } from "react";
-import {
-  Button,
-  Popper,
-  Paper,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ClickAwayListener,
-} from "@mui/material";
+
 import { PotionsListProps } from "./types";
 import { POTION_TYPES } from "../../../../../../entities/consumables";
 import { useGameState } from "../../../../../../stores";
-import { getPotionDescriptionByType } from "../../../../../../utils/getPotionDescriptionByType";
 import { StyledButton, StyledMenu, StyledMenuItem } from "./PotionsList.styled";
-import { wait } from "../../../../../../utils";
+import { wait, getPotionDescriptionByType } from "../../../../../../utils";
 
 export const PotionsList: FC<PotionsListProps> = ({
   onPotionClick,

@@ -1,11 +1,9 @@
 // ТИПИЗАЦИЯ НУЖНА
 import {
   Battle,
-  BattleEffects,
   Character,
   Creature,
   EFFECT_TYPES,
-  GameStateData,
   GearData,
   Item,
   StoreState,
@@ -19,7 +17,11 @@ import {
   VISITED_LOCATION_WITHOUT_LIGHT,
 } from "./constants";
 import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
-import { getRandom } from "../utils";
+import {
+  getRandom,
+  getPotionDescriptionByType,
+  getPotionPriceByTypeAndTier,
+} from "../utils";
 import { GEAR_SLOTS } from "../entities/gear";
 import { POTION_TYPES } from "../entities/consumables";
 import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
@@ -29,9 +31,7 @@ import {
   getRandomJunkByTier,
 } from "../components/Battle/utils";
 import { CreatureBaseModel, QuestReward, RewardTypes } from "../types";
-import { generatePotion } from "../utils/generatePotionsToBuy";
 import {
-  EnemyInitialData,
   EnemyPrototypeData,
   FIRST_TIER_BOSS,
   FIRST_TIER_CREATURES_LIST,
@@ -48,13 +48,7 @@ import {
 } from "../constants/creatures";
 import { DUNGEONS, QUEST_STATUSES } from "../entities";
 import { v4 } from "uuid";
-import { getPotionDescriptionByType } from "../utils/getPotionDescriptionByType";
 import { getPotionByTier } from "../constants/items";
-import { getPotionPriceByTypeAndTier } from "../utils/getPotionPriceByTypeAndTier";
-// import FIRST_TIER_CREATURES_DATA from "../../common/creatures";
-// FIRST_TIER_CREATURES_DATA - это массив из констант содержащих в себе - изначальные характеристики противника, его уникальный ID
-// _DATA - дописал потому что это именно ДАННЫЕ, отдельно будет в том же файле FIRST_TIER_CREATURES_SOUNDS, FIRST_TIER_CREATURES_IMAGES и FIRST_TIER_CREATURES_AI_PACK
-// FIRST_TIER_CREATURES_NAMES
 
 export const getEncounterRoll = (
   chance: number,

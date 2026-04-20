@@ -9,22 +9,21 @@ import {
   rows,
   bossFragWidth,
   bossFragHeight,
-  bossRows,
-  bossCols,
 } from "./constants";
-import { useGameState } from "../../../../stores/GameState";
+
 import { RenderedFragment } from "./components";
 import { Container, HealthBar, TargetContainer } from "./Enemy.styled";
 import { DamageEffect } from "./components/DamageEffect";
-import { ENEMIES, RENDER_LOCATIONS } from "../../../../entities";
+import { ENEMIES } from "../../../../entities";
 import { Icons, Tooltip } from "../../../../common";
 import { Stack, Typography } from "@mui/material";
-import { StartGameText } from "../../../CraftModal/TradeModal.styled";
-import { CREATURE_NAME_MAP, CREATURES } from "../../../../constants/creatures";
+
+import { CREATURE_NAME_MAP } from "../../../../constants/creatures";
 import {
   EFFECTS_DESCRIPTIONS,
   EFFECTS_ICONS,
 } from "../../../../entities/effects";
+import { MainButtonText } from "../../../../common/styled.index";
 
 const DEFAULT_ANIMATION_STATE = { x: "-50%", scale: 1, y: 0, rotate: 0 };
 
@@ -169,13 +168,12 @@ export const Enemy: FC<EnemyProps> = ({
           justifyContent="center"
           sx={{ transform: "translate(-50%, 0)", zIndex: 999999999 }}
         >
-          <StartGameText
-            disabled={false}
+          <MainButtonText
             variant="h4"
             sx={{ backgroundColor: "rgba(30, 20, 10, 0.9)" }}
           >
             {CREATURE_NAME_MAP[creature.type]}
-          </StartGameText>
+          </MainButtonText>
 
           <HealthBar>
             <div

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Room } from "../../types";
-import { generateDungeon } from "../../utils";
 
 import { ClosePortal, QTEGame } from "../Minigames";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
@@ -10,22 +9,19 @@ import {
   QUEST_STATUSES,
   DUNGEONS,
   DIRECTIONS,
-  ECONOMIC_TYPES,
 } from "../../entities";
 
 import { useAppState, useGameState } from "../../stores";
 import { ROOM_TYPES } from "../../entities/room";
-import { DiceRollModal } from "../../common";
 import { BattleResult } from "./components/BattleResult";
 import { usePlayer } from "../../contexts/Player";
 import encounterSFX from "../../assets/audio/encounter.mp3";
-import { SPECIAL_ENCOUNTERS } from "../../entities/specialEncounters";
 
 import { useMovement } from "./hooks/useMovement";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { getDungeonBackgroundByTier } from "./utils";
-import { getFlagStoryBossByTier } from "../../utils/getFlagStoryBossByTier";
+import { getFlagStoryBossByTier } from "../../utils";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { getRandomRewardByQuest } from "../../stores/utils";
 
@@ -71,7 +67,6 @@ export const Map = () => {
     position,
     type,
     isQuestCompleted,
-    ...rest
   } = location || {};
 
   useEffect(() => {
@@ -215,20 +210,6 @@ export const Map = () => {
       setQuestData(reward);
     }
   };
-
-  // const generateNewDungeon = () => {
-  //   const newDungeon = generateDungeon(5, 5);
-
-  //   // тут нужен мок код отвечающий за кол-во попыток исходя из типа подземелья
-  //   const DEFAULT_ATTEMPS_AMOUNT = 5;
-  //   // здесь определяется тип подземелья
-  //   setDungeon({
-  //     dungeon: newDungeon,
-  //     type: DUNGEONS.CLOSE_PORTAL,
-  //     attempts: DEFAULT_ATTEMPS_AMOUNT,
-  //     position: { x: 0, y: 0 },
-  //   });
-  // };
 
   const canMove = (direction: DIRECTIONS) => {
     const { x, y } = position;

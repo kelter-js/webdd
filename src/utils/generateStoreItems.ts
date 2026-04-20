@@ -1,3 +1,5 @@
+import { v4 } from "uuid";
+
 import {
   ARMORS_TIER_1,
   ARMORS_TIER_2,
@@ -24,7 +26,6 @@ import {
 import { MAX_AMOUNT_OF_ITEMS_TO_SELL } from "../stores/constants";
 import { Item } from "../types/gameState";
 import { getRandom } from "./getRandom";
-import { v4 } from "uuid";
 
 const getChancesByTier = (tier: number) => {
   if (tier === 2) {
@@ -62,7 +63,7 @@ export const generateItem = (
   return { ...item, gearId: v4() };
 };
 
-export const generateStoreItem = (tier: number) => {
+const generateStoreItem = (tier: number) => {
   const { hasNextTier, enhanced, currentTier } = getChancesByTier(tier);
 
   const rollForItem = getRandom(1, 100);

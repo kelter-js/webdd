@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Divider, Popper, Stack, Typography } from "@mui/material";
 
 import { ItemDataModalProps } from "./types";
-import { getIconByType } from "../../utils/getIconByType";
+import { getIconByType } from "../../utils";
 import { GEAR_SLOTS } from "../../entities/gear";
 import { Icons } from "..";
 

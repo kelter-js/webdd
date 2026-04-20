@@ -1,6 +1,5 @@
 import {
   Select,
-  SelectProps,
   Slider,
   Typography,
   sliderClasses,
@@ -169,4 +168,16 @@ export const StyledSelect = styled(Select)(() => ({
   "&.Mui-focused": {
     borderColor: "#e0c0a0",
   },
+}));
+
+export const MainButtonText = styled(Typography)(({ theme: { spacing } }) => ({
+  width: "100%",
+  color: "#c08040",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  padding: spacing(1),
+  borderBottom: "1px solid #5a3020",
+  borderTop: "1px solid #5a3020",
+  fontFamily: "inherit",
 }));

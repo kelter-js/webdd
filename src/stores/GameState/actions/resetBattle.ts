@@ -5,7 +5,7 @@ import { ROOM_TYPES } from "../../../entities/room";
 import { SLIDERS } from "../../../entities/sliders";
 import { ResourceData } from "../../../types";
 import { PotionsReceivedData } from "../../../types/gameState";
-import { memoizeItem } from "../../../utils/memoizeItem";
+import { memoizeItem } from "../../../utils";
 import { StoreSet } from "./types";
 
 // FIXME типизация

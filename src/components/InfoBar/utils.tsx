@@ -1,4 +1,9 @@
 import { Icons } from "../../common";
+import {
+  FIRST_TIER_DUNGEONS_AMOUNT,
+  SECOND_TIER_DUNGEONS_AMOUNT,
+  THIRD_TIER_DUNGEONS_AMOUNT,
+} from "../../constants";
 
 import { DUNGEONS, ECONOMIC_TYPES } from "../../entities";
 
@@ -32,4 +37,16 @@ export const getEconomicInfo = (economicType: ECONOMIC_TYPES | null) => {
   }
 
   return "";
+};
+
+export const getDungeonCounterByTier = (currentTier: number) => {
+  if (currentTier === 1) {
+    return FIRST_TIER_DUNGEONS_AMOUNT;
+  }
+
+  if (currentTier === 2) {
+    return SECOND_TIER_DUNGEONS_AMOUNT;
+  }
+
+  return THIRD_TIER_DUNGEONS_AMOUNT;
 };

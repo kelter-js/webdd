@@ -16,8 +16,7 @@ import {
 } from "../../constants/gear";
 import { POTION_TYPES } from "../../entities/consumables";
 import { ALL_RESOURCES_TYPE, RESOURCES } from "../../entities/resources";
-import { getRandom } from "../../utils";
-import { generateItem } from "../../utils/generateStoreItems";
+import { getRandom, generateItem } from "../../utils";
 import staticBgTier1 from "../../assets/static/dungeon_hallway/battle_tier_1/image (1).jpg";
 import staticBgTier2 from "../../assets/static/dungeon_hallway/battle_tier_1/image (2).jpg";
 import staticBgTier3 from "../../assets/static/dungeon_hallway/battle_tier_1/image (3).jpg";
@@ -53,7 +52,6 @@ import staticBgTier3_10 from "../../assets/static/dungeon_hallway/battle_tier_3/
 import {
   Battle,
   BattleCharacterModel,
-  BattleEffects,
   Creature,
   Effects,
   Statistics,

@@ -3,16 +3,18 @@ import { GameModal } from "../../../GameModal";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { Icons, Tooltip } from "../../../../common";
 import { getGearIcon } from "./utils";
-import { getPotionIcon } from "../../../../utils/getPotionIcon";
-
-import { getPotionDescriptionByType } from "../../../../utils/getPotionDescriptionByType";
 
 import { DEFAULT_BAG_SIZE } from "../../../../constants";
 import { useMemo, useState } from "react";
 import { v4 } from "uuid";
 
-import { getResourceIcon } from "../../../../utils/getResourceIcon";
-import { getResourceDescription } from "../../../../utils/getResourceDescription";
+import {
+  getResourceIcon,
+  getResourceDescription,
+  getPotionIcon,
+  getPotionDescriptionByType,
+} from "../../../../utils";
+
 import { ResourceData } from "../../../../types";
 import { JUNK_DATA } from "../../../../constants/items";
 import { useSnackbar } from "../../../../contexts/Snackbar";

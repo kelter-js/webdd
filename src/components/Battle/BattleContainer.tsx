@@ -22,7 +22,7 @@ import { DIALOGUE_FLAGS } from "../../entities/dialogues";
 import { BUILDING_NAMES } from "../../constants";
 import { useGetDialogue } from "../../hooks";
 import { Dialogue } from "../Dialogue";
-import { getPrevTargetIndex } from "../../utils/getTargets";
+import { getPrevTargetIndex } from "../../utils";
 import { usePlayer } from "../../contexts/Player";
 import attackSfx from "../../assets/audio/enemy_attack.mp3";
 import { WEAPONS_SFX_SOURCES } from "../../constants/guns";

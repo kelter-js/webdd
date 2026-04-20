@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useAppState } from "../../stores";
 import { GameModal } from "../GameModal";
-import { StartGameText } from "../Initiate/components/SetNameModal/SetNameModal.styled";
+import { MainButtonText } from "../../common/styled.index";
 
 export const AudioEnabler = () => {
   const { enableAudio, setNewGame } = useAppState();
@@ -31,7 +31,7 @@ export const AudioEnabler = () => {
           sx={{ p: 0 }}
           onClick={handleEnablerClick}
         >
-          <StartGameText variant="h5">Начать игру</StartGameText>
+          <MainButtonText variant="h5">Начать игру</MainButtonText>
         </Button>
       </Stack>
     </GameModal>

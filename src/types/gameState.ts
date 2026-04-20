@@ -356,9 +356,6 @@ export interface StoreState {
 
   // ф-ии чисто для тестов
   killEnemy: VoidFunction;
-  removePotions: VoidFunction;
-  endTurn: VoidFunction;
-  cheatGold: VoidFunction;
 }
 
 // Define the type for persisted state
@@ -428,9 +425,6 @@ export type PersistedState = Omit<
 
   // ф-ии чисто для тестов
   | "killEnemy"
-  | "removePotions"
-  | "cheatGold"
-  | "endTurn"
 >;
 
 // Define storage value type

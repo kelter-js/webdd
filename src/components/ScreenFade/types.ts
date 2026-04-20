@@ -1,9 +1,8 @@
 export interface ScreenFadeProps {
-  isVisible: boolean; // Управление видимостью извне
-  duration?: number; // Длительность анимации в ms
-  color?: string; // Цвет фона
-  onFadeComplete?: () => void; // Колбэк по завершении анимации
-  timeout?: { enter: number; exit: number };
+  isVisible: boolean;
+  duration?: number;
+  color?: string;
+  onFadeComplete?: () => void;
 }
 
 export interface FadeContainerProps {
