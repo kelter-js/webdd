@@ -4,11 +4,9 @@ import { JUNK_TYPES } from "../../../entities/junk";
 import { ROOM_TYPES } from "../../../entities/room";
 import { SLIDERS } from "../../../entities/sliders";
 import { ResourceData } from "../../../types";
-import { PotionsReceivedData } from "../../../types/gameState";
 import { memoizeItem } from "../../../utils";
 import { StoreSet } from "./types";
 
-// FIXME типизация
 export const resetBattle =
   (set: StoreSet) =>
   (newResources: ResourceData[] | null, gold: number, cb?: VoidFunction) => {

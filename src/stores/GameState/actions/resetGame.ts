@@ -1,15 +1,13 @@
-import { DUNGEONS, ENEMIES, RENDER_LOCATIONS } from "../../../entities";
-import { JUNK_TYPES } from "../../../entities/junk";
-import { KillCounter } from "../../../types/gameState";
 import {
-  DEFAULT_GAME_STATE,
   MIN_ENCOUNTER_CHANCE,
   SPECIAL_ENCOUNTER_DEFAULT_CHANCE,
 } from "../../constants";
+import { DUNGEONS, ENEMIES, RENDER_LOCATIONS } from "../../../entities";
+import { KillCounter } from "../../../types/gameState";
+import { JUNK_TYPES } from "../../../entities/junk";
 import { StoreSet } from "./types";
 
 export const resetGame = (set: StoreSet) => () =>
-  // FIXME: возможно тут нужно рекалькулировать статы
   set(() => {
     return {
       player: {

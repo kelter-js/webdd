@@ -1,5 +1,5 @@
 import { StoreSet } from "./types";
-// FIXME типизация
+
 export const updateGameTier = (set: StoreSet) => () => {
   set((state) => {
     return {

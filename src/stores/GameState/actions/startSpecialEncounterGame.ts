@@ -5,16 +5,20 @@ export const startSpecialEncounterGame = (set: StoreSet) => (node?: string) => {
   set((state) => {
     const copyState = { ...state, player: { ...state.player } };
 
-    if (copyState.player.location) {
+    const location = copyState.player.location;
+
+    if (location) {
+      const newLocation = { ...location };
+
       if (node) {
-        copyState.player.location.node = node;
+        newLocation.node = node;
       }
 
-      copyState.player.location.attempts =
-        copyState.player.location.specialEncounter === SPECIAL_ENCOUNTERS.GHOST
-          ? 3
-          : 2;
-      copyState.player.location.success = 0;
+      newLocation.attempts =
+        newLocation.specialEncounter === SPECIAL_ENCOUNTERS.GHOST ? 3 : 2;
+      newLocation.success = 0;
+
+      copyState.player.location = newLocation;
     }
 
     return copyState;

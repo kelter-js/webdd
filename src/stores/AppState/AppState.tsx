@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { AppState, LeveledUpData } from "../../types/appState";
 
 export const useAppState = create<AppState>((set) => ({

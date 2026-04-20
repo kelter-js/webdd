@@ -39,19 +39,14 @@ export interface AppState {
   reset: VoidFunction;
   selectedEnemy: number;
   setSelectedEnemy: (index: number) => void;
-
   isCraftMenuOpen: boolean;
   toggleCraftMenu: VoidFunction;
-
   isDungeonModalOpen: boolean;
   toggleDungeonModal: VoidFunction;
-
   isTorchBuyOpen: boolean;
   toggleTorchBuyMenu: VoidFunction;
-
   isShootingGameEnabled: boolean;
   toggleShootingGame: VoidFunction;
-
   charactersLeveledUp: LeveledUpData[];
   pushLeveledUpList: (characterData: LeveledUpData) => void;
   deleteLeveledUpList: (characterName: string) => void;

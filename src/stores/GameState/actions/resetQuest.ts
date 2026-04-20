@@ -4,36 +4,39 @@ import { StoreSet } from "./types";
 
 export const resetQuest = (set: StoreSet) => () => {
   set((state) => {
-    const copyState = { ...state, player: { ...state.player } };
+    if (!state.player.quest) return state;
 
-    if (copyState.player.quest) {
-      const questData = copyState.player.quest;
-      const { item, exp, gold } = questData;
+    const questData = state.player.quest;
+    const { item, exp, gold: questGold } = questData;
 
-      copyState.player.quest = null;
+    const { gold, party, inventory_memoized } = state.player;
 
-      copyState.player.gold += gold;
-
-      copyState.player.party = copyState.player.party.map((player) => ({
+    const newPlayerState = {
+      ...state.player,
+      quest: null,
+      gold: gold + questGold,
+      party: party.map((player) => ({
         ...player,
         experience: player.experience + exp,
-      }));
+      })),
+      inventory_memoized: item
+        ? [...inventory_memoized, memoizeItem(item)]
+        : inventory_memoized,
+    };
 
-      if (
-        copyState.player.location &&
-        copyState.player.location?.isQuestCompleted
-      ) {
-        copyState.player.location.isQuestCompleted = false;
-      }
-
-      if (item) {
-        copyState.player.inventory_memoized.push(memoizeItem(item));
-
-        copyState.inventory =
-          copyState.player.inventory_memoized.map(dememoizeItem);
-      }
+    if (newPlayerState.location) {
+      newPlayerState.location = {
+        ...newPlayerState.location,
+        isQuestCompleted: false,
+      };
     }
 
-    return copyState;
+    return {
+      ...state,
+      player: newPlayerState,
+      inventory: item
+        ? newPlayerState.inventory_memoized.map(dememoizeItem)
+        : state.inventory,
+    };
   });
 };

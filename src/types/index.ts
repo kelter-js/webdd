@@ -1,22 +1,22 @@
 // types.ts
 
 import { ReactNode } from "react";
-import { BASE_ITEMS_ID } from "../constants/items";
-import { MEDIC_PERKS } from "../constants/perks";
-import { DUNGEONS, ENEMIES, QUEST_STATUSES } from "../entities";
-import { AI_CATEGORIES } from "../entities/ai";
-import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
-import { RESOURCES } from "../entities/resources";
-import { ROOM_TYPES } from "../entities/room";
-import { GameStateData, Item, PERK_ID_DATA } from "./gameState";
 
-export type Location =
-  | "Ruins"
-  | "Warrens"
-  | "Weald"
-  | "Cove"
-  | "Darkest Dungeon"
-  | "Hamlet";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
+import { DUNGEONS, ENEMIES, QUEST_STATUSES, TURN_STATES } from "../entities";
+import {
+  Battle,
+  Character,
+  GameStateData,
+  GearData,
+  Item,
+  PERK_ID_DATA,
+} from "./gameState";
+import { BASE_ITEMS_ID } from "../constants/items";
+import { RESOURCES } from "../entities/resources";
+import { AI_CATEGORIES } from "../entities/ai";
+import { ROOM_TYPES } from "../entities/room";
+import { EnemyPrototypeData } from "../constants/creatures";
 
 export interface Room {
   id: string; // Уникальный ID
@@ -113,4 +113,20 @@ export interface QuestReward {
   item?: Item;
   status: QUEST_STATUSES;
   type: DUNGEONS;
+}
+
+export interface BattleGenerationProps {
+  tier: number;
+  turn: TURN_STATES;
+  party: Character[];
+  isSpecial?: boolean;
+  characterGear: GearData | null;
+  isBoss?: boolean;
+  isQuest?: boolean;
+}
+
+export interface GenerationBattleEnemyModel {
+  model: Battle;
+  entity: EnemyPrototypeData | EnemyPrototypeData[];
+  hasTurn: boolean;
 }

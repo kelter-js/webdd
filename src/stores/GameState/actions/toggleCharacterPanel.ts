@@ -1,7 +1,6 @@
 import { RENDER_LOCATIONS } from "../../../entities";
 import { StoreSet } from "./types";
 // FIXME типизация
-// FIXME: возможно код объединяем с toggleInventory - посмотреть
 export const toggleCharacterPanel = (set: StoreSet) => () => {
   set((state) => {
     //здесь учитываем текущее местоположение - из инвентаря в окно пресонажа и наоборот

@@ -41,7 +41,6 @@ export const handleExitDungeon = (set: StoreSet) => () => {
     }
 
     if (stateCopy.player.economic === ECONOMIC_TYPES.ALCHEMISTRY) {
-      // FIXME: по мере дополнения систем инвентаря - допилить
       newConsumables = [...stateCopy.player.consumables];
       // FIXME определиться с фиксированным вознаграждением и названиями эликсиров, заменить стринги на енамы
       // проверяем, есть ли у игрока вообще уже такие зелья

@@ -57,7 +57,6 @@ const GEAR_BY_CLASS_MAP = {
   [CLASSES.TANK]: TANK_DEFAULT_GEAR,
 };
 
-// FIXME типизация
 export const setPlayerName =
   (set: StoreSet) => (name: string, characterClass: CLASSES) => {
     set((state) => {

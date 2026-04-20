@@ -1,22 +1,19 @@
 // ТИПИЗАЦИЯ НУЖНА
+import { v4 } from "uuid";
+
 import {
   Battle,
   Character,
-  Creature,
   EFFECT_TYPES,
-  GearData,
   Item,
   StoreState,
 } from "../types/gameState";
 import {
   DEAD_END_ENEMY_CHANCE,
-  MIN_ENCOUNTER_CHANCE,
-  MIN_ENCOUNTER_CHANCE_HIGHT_TIER,
-  MIN_ENCOUNTER_CHANCE_MID_TIER,
   VISITED_LOCATION_WITH_LIGHT,
   VISITED_LOCATION_WITHOUT_LIGHT,
 } from "./constants";
-import { BATTLE_STATES, TURN_STATES } from "../entities/battle";
+import { TURN_STATES } from "../entities/battle";
 import {
   getRandom,
   getPotionDescriptionByType,
@@ -30,9 +27,14 @@ import {
   getGoldByTier,
   getRandomJunkByTier,
 } from "../components/Battle/utils";
-import { CreatureBaseModel, QuestReward, RewardTypes } from "../types";
 import {
-  EnemyPrototypeData,
+  BattleGenerationProps,
+  CreatureBaseModel,
+  GenerationBattleEnemyModel,
+  QuestReward,
+  RewardTypes,
+} from "../types";
+import {
   FIRST_TIER_BOSS,
   FIRST_TIER_CREATURES_LIST,
   FIRST_TIER_MINIBOSS_LIST,
@@ -47,7 +49,7 @@ import {
   THIRD_TIER_QUEST_MINIBOSS,
 } from "../constants/creatures";
 import { DUNGEONS, QUEST_STATUSES } from "../entities";
-import { v4 } from "uuid";
+
 import { getPotionByTier } from "../constants/items";
 
 export const getEncounterRoll = (
@@ -71,23 +73,6 @@ export const getEncounterRoll = (
   return encounterChance;
 };
 
-export const getMultiplierBattleChanceByTier = (tier: number) => {
-  // заменить на enum и switch
-  if (tier === 1) {
-    return MIN_ENCOUNTER_CHANCE;
-  }
-
-  if (tier === 2) {
-    return MIN_ENCOUNTER_CHANCE_MID_TIER;
-  }
-
-  if (tier === 3) {
-    return MIN_ENCOUNTER_CHANCE_HIGHT_TIER;
-  }
-
-  return MIN_ENCOUNTER_CHANCE;
-};
-
 export const reviver = (_: string, value: any) => {
   if (
     typeof value === "string" &&
@@ -104,6 +89,12 @@ const WITHOUT_FIGHT_POTION_CHANCE = 40;
 const WITHOUT_FIGHT_GOLD_CHANCE = 60;
 const WITHOUT_FIGHT_JUNK_CHANCE = 80;
 const SPECIAL_ITEM_CHANCE_WITHOUT_FIGHT = 50;
+const CHANCE_TO_SPAWN_ITEM_AS_REWARD = 50;
+const DEFAULT_ENEMY_START_FIRST_CHANCE = 50;
+const LOWER_ENEMY_START_FIRST_CHANCE = 30;
+const SPECIAL_ENEMY_CHANCE = 10;
+const SECOND_TIER_ENEMY_CHANCE = 15;
+const THIRD_TIER_ENEMY_CHANCE = 15;
 
 export const getRandomRewardWithoutFight = (currentTier: number) => {
   const roll = getRandom(1, 100);
@@ -166,7 +157,7 @@ export const getRandomRewardWithoutFight = (currentTier: number) => {
   };
 };
 
-export const getExpByQuest = (currentTier: number) => {
+const getExpByQuest = (currentTier: number) => {
   if (currentTier === 1) {
     return 800;
   }
@@ -178,7 +169,7 @@ export const getExpByQuest = (currentTier: number) => {
   return 8000;
 };
 
-export const getGoldByQuest = (currentTier: number) => {
+const getGoldByQuest = (currentTier: number) => {
   if (currentTier === 1) {
     return 2500;
   }
@@ -189,8 +180,6 @@ export const getGoldByQuest = (currentTier: number) => {
 
   return 8000;
 };
-
-const CHANCE_TO_SPAWN_ITEM_AS_REWARD = 50;
 
 export const getRandomRewardByQuest = (
   currentTier: number,
@@ -229,9 +218,6 @@ export const getRandomRewardByQuest = (
   return reward;
 };
 
-const DEFAULT_ENEMY_START_FIRST_CHANCE = 50;
-const LOWER_ENEMY_START_FIRST_CHANCE = 30;
-
 export const getFirstTurn = (
   enemyTier: number,
   players: Character[],
@@ -260,17 +246,17 @@ export const getFirstTurn = (
       enemyChance += 0;
       break;
     case 2:
-      enemyChance += 15;
+      enemyChance += SECOND_TIER_ENEMY_CHANCE;
       break;
     case 3:
-      enemyChance += 30;
+      enemyChance += THIRD_TIER_ENEMY_CHANCE;
       break;
     default:
       enemyChance = DEFAULT_ENEMY_START_FIRST_CHANCE;
   }
 
   if (isSpecial) {
-    enemyChance += 10;
+    enemyChance += SPECIAL_ENEMY_CHANCE;
   }
 
   const roll = getRandom(0, 100);
@@ -456,28 +442,6 @@ export const calculateStatistics = (
   return statistics;
 };
 
-export const getBattleState = (enemy: Creature, party: Character[]) => {
-  if (enemy.hp <= 0) {
-    return BATTLE_STATES.PLAYER_WIN;
-  }
-
-  if (!party.some((player) => player.currentHealth > 0)) {
-    return BATTLE_STATES.ENEMY_WIN;
-  }
-
-  return BATTLE_STATES.STILL_FIGHTING;
-};
-
-export interface BattleGenerationProps {
-  tier: number;
-  turn: TURN_STATES;
-  party: Character[];
-  isSpecial?: boolean;
-  characterGear: GearData | null;
-  isBoss?: boolean;
-  isQuest?: boolean;
-}
-
 const getDeadEndEnemyByTier = (currentTier: number) => {
   if (currentTier === 1) {
     return FIRST_TIER_MINIBOSS_LIST;
@@ -517,11 +481,7 @@ const generateBattleEnemyModel = ({
   model,
   entity,
   hasTurn,
-}: {
-  model: Battle;
-  entity: EnemyPrototypeData | EnemyPrototypeData[];
-  hasTurn: boolean;
-}) => {
+}: GenerationBattleEnemyModel) => {
   const isEntityArray = Array.isArray(entity);
 
   if (isEntityArray) {

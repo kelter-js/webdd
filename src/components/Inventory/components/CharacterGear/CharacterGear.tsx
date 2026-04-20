@@ -105,16 +105,15 @@ export const CharacterGear: FC<CharacterGearProps> = ({
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Attack size={40} />
                 <Typography fontFamily="inherit">
-                  {`${characterStatistics?.minAttack ?? 12} - ${characterStatistics?.maxAttack ?? 15}`}
+                  {`${characterStatistics?.minAttack || 0} - ${characterStatistics?.maxAttack || 0}`}
                 </Typography>
               </Stack>
             </Tooltip>
-
             <Tooltip title="Защита">
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Defense size={40} />
                 <Typography fontFamily="inherit">
-                  {characterStatistics?.defense || 8}
+                  {characterStatistics?.defense || 0}
                 </Typography>
               </Stack>
             </Tooltip>
@@ -123,7 +122,7 @@ export const CharacterGear: FC<CharacterGearProps> = ({
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Health size={40} />
                 <Typography fontFamily="inherit">
-                  {`${currentHealth ?? 150}/${characterStatistics?.maxHealth ?? 150}`}
+                  {`${currentHealth ?? 0}/${characterStatistics?.maxHealth ?? 0}`}
                 </Typography>
               </Stack>
             </Tooltip>
@@ -132,7 +131,7 @@ export const CharacterGear: FC<CharacterGearProps> = ({
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Evasion size={40} />
                 <Typography fontFamily="inherit">
-                  {characterStatistics.evasionChance}
+                  {characterStatistics.evasionChance || 0}
                 </Typography>
               </Stack>
             </Tooltip>
@@ -141,7 +140,7 @@ export const CharacterGear: FC<CharacterGearProps> = ({
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Critical size={40} />
                 <Typography fontFamily="inherit">
-                  {characterStatistics.critChance}
+                  {characterStatistics.critChance || 0}
                 </Typography>
               </Stack>
             </Tooltip>

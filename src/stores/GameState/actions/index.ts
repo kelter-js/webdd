@@ -19,6 +19,7 @@ import { increaseAgility } from "./increaseAgility";
 import { toggleInventory } from "./toggleInventory";
 import { updateGameTier } from "./updateGameTier";
 import { changeAttempts } from "./changeAttempts";
+import { updateDungeon } from "./updateDungeon";
 import { consumePotion } from "./consumePotion";
 import { initiateState } from "./initiateState";
 import { setPlayerName } from "./setPlayerName";
@@ -32,7 +33,6 @@ import { setGameOver } from "./setGameOver";
 import { resetBattle } from "./resetBattle";
 import { acquirePerk } from "./acquirePerk";
 import { buyTorches } from "./buyTorches";
-import { useAbility } from "./useAbility";
 import { setSliders } from "./setSliders";
 import { setDungeon } from "./setDungeon";
 import { resetQuest } from "./resetQuest";
@@ -40,7 +40,6 @@ import { setVolume } from "./setVolume";
 import { buyPotion } from "./buyPotion";
 import { setReward } from "./setReward";
 import { resetGame } from "./resetGame";
-import { setBattle } from "./setBattle";
 import { buyCamera } from "./buyCamera";
 import { equipItem } from "./equipItem";
 import { craftItem } from "./craftItem";
@@ -73,6 +72,7 @@ export {
   toggleInventory,
   updateGameTier,
   changeAttempts,
+  updateDungeon,
   setPlayerName,
   setBattleTurn,
   giveResources,
@@ -86,7 +86,6 @@ export {
   resetBattle,
   acquirePerk,
   buyTorches,
-  useAbility,
   setSliders,
   setDungeon,
   resetQuest,
@@ -94,7 +93,6 @@ export {
   buyPotion,
   setReward,
   resetGame,
-  setBattle,
   buyCamera,
   equipItem,
   craftItem,

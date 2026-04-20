@@ -1,10 +1,9 @@
-import { GameStateData } from "../../../types/gameState";
 import { dememoizeItem } from "../../../utils/dememoizeItem";
+import { GameStateData } from "../../../types/gameState";
 import { StoreSet } from "./types";
+
 export const setState = (set: StoreSet) => (gameState: GameStateData) => {
   set(() => ({
-    // FIXME
-    // нужна полная реинициализация - пересчет характеристик, инвентаря, гира и статов
     player: {
       ...gameState,
       location: gameState.location
@@ -28,8 +27,5 @@ export const setState = (set: StoreSet) => (gameState: GameStateData) => {
         gear.map(dememoizeItem),
       ]),
     ),
-
-    // FIXME
-    // вызвать пересчет статов
   }));
 };

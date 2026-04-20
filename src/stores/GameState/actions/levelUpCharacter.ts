@@ -4,24 +4,24 @@ const DEFAULT_POINTS_AMOUNT_PER_LEVEL = 3;
 
 export const levelUpCharacter =
   (set: StoreSet) => (characterName: string, amountOfExp: number) => {
-    set((state) => {
-      const stateCopy = {
-        ...state,
-        player: { ...state.player },
-      };
+    set((state) => ({
+      ...state,
+      player: {
+        ...state.player,
+        party: state.player.party.map((character) => {
+          if (character.name === characterName) {
+            const { experience, points, level } = character;
 
-      stateCopy.player.party = stateCopy.player.party.map((character) => {
-        const characterCopy = { ...character };
+            return {
+              ...character,
+              experience: experience - amountOfExp,
+              points: points + DEFAULT_POINTS_AMOUNT_PER_LEVEL,
+              level: level + 1,
+            };
+          }
 
-        if (characterCopy.name === characterName) {
-          characterCopy.experience = characterCopy.experience - amountOfExp;
-          characterCopy.points += DEFAULT_POINTS_AMOUNT_PER_LEVEL;
-          characterCopy.level += 1;
-        }
-
-        return characterCopy;
-      });
-
-      return stateCopy;
-    });
+          return { ...character };
+        }),
+      },
+    }));
   };

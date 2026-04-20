@@ -5,21 +5,17 @@ import {
   ResourceData,
   Room,
 } from ".";
-import { POSITIONS } from "../common/TurnIndicator/entities";
-
+import {
+  RENDER_LOCATIONS,
+  ENEMIES,
+  DUNGEONS,
+  TURN_STATES,
+  ECONOMIC_TYPES,
+} from "../entities";
 import { FLAGS } from "../constants";
 import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
 
-import {
-  RENDER_LOCATIONS,
-  QUEST_STATUSES,
-  ENEMIES,
-  DUNGEONS,
-  TURN_STATES,
-  BATTLE_TARGET,
-  ECONOMIC_TYPES,
-} from "../entities";
 import { AI_CATEGORIES } from "../entities/ai";
 import { CLASSES } from "../entities/characterClasses";
 import { POTION_TYPES } from "../entities/consumables";
@@ -47,7 +43,6 @@ export interface Character {
   points: number;
   critChance: number;
   critStrike: number;
-  // заменить any на типизацию
   perksList: Perk[];
   characterClass: CLASSES;
   hasTurn?: boolean;
@@ -59,7 +54,6 @@ export interface BattleCharacterModel {
   perksList: Perk[];
   currentHealth: number;
   characterClass: CLASSES;
-  // FIXME: это должно быть обязательным полем!
   currentAmountOfRounds?: number;
 }
 
@@ -280,14 +274,12 @@ export interface StoreState {
   setPlayerName: (name: string, selectedClass: CLASSES) => void;
   setLocationState: (newLocation: RENDER_LOCATIONS) => void;
   // подвезти типизацию
-  setBattle: (battleState: any) => void;
   updateBattle: (battleState: Battle) => void;
   changeAttempts: (attempts: number) => void;
   increaseEndurance: (characterName: string) => void;
   increaseAccuracy: (characterName: string) => void;
   increaseAgility: (characterName: string) => void;
   isDiceRequiredRoll: boolean;
-  useAbility: (characterName: string, abilityId: string) => void;
   toggleInventory: VoidFunction;
   handleExitDungeon: VoidFunction;
   toggleCharacterPanel: VoidFunction;
@@ -328,7 +320,7 @@ export interface StoreState {
   buyPotion: (index: number) => void;
   levelUpCharacter: (name: string, amountOfExp: number) => void;
   generateDungeon: (data: DungeonCreationData) => void;
-  setSliders: (newTurn: string | null) => void;
+  setSliders: (newTurn: SLIDERS | null) => void;
   acquirePerk: (perkId: PERK_ID_DATA, characterName: string) => void;
   removeItemFromGear: (characterName: string, itemId: string) => void;
   acquireArtifact: (
@@ -366,7 +358,6 @@ export type PersistedState = Omit<
   | "setPlayerPosition"
   | "setPlayerName"
   | "setLocationState"
-  | "setBattle"
   | "handleExitDungeon"
   | "updateBattle"
   | "changeAttempts"
@@ -394,7 +385,6 @@ export type PersistedState = Omit<
   | "inventory"
   | "sell_inventory"
   | "increaseEndurance"
-  | "useAbility"
   | "increaseAccuracy"
   | "increaseAgility"
   | "setBattleTurn"

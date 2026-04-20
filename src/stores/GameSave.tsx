@@ -5,7 +5,6 @@ import { PersistedState, StorageValue, StoreState } from "../types/gameSave";
 
 import { reviver } from "./utils";
 
-// Define persistence configuration
 const persistConfig: PersistOptions<StoreState, PersistedState> = {
   name: "game-saves",
   partialize: (state) => ({

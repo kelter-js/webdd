@@ -1,17 +1,28 @@
 import { StoreSet } from "./types";
 
 export const healTeam = (set: StoreSet) => () => {
-  set((state) => ({
-    ...state,
-    player: {
-      ...state.player,
-      party: state.player.party.map((character) => {
-        if (state.statistics) {
-          character.currentHealth = state.statistics[character.name].maxHealth;
-        }
+  set((state) => {
+    const { statistics } = state;
 
-        return character;
-      }),
-    },
-  }));
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        party: statistics
+          ? state.player.party.map((character) => {
+              const stat = statistics[character.name];
+
+              if (stat) {
+                return {
+                  ...character,
+                  currentHealth: stat.maxHealth,
+                };
+              }
+
+              return character;
+            })
+          : state.player.party,
+      },
+    };
+  });
 };

@@ -1,10 +1,11 @@
 import { v4 } from "uuid";
-import { FLAGS } from "../../../constants";
-import { BASE_ITEMS_ID } from "../../../constants/items";
+
 import { SPECIAL_ENCOUNTERS } from "../../../entities/specialEncounters";
-import { StoreSet } from "./types";
-import { dememoizeItem } from "../../../utils/dememoizeItem";
+import { BASE_ITEMS_ID } from "../../../constants/items";
 import { RENDER_LOCATIONS } from "../../../entities";
+import { dememoizeItem } from "../../../utils";
+import { FLAGS } from "../../../constants";
+import { StoreSet } from "./types";
 
 const getSpecialEncounterFlagByType = (
   type: SPECIAL_ENCOUNTERS,

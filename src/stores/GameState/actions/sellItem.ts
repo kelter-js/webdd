@@ -1,24 +1,24 @@
 import { StoreSet } from "./types";
-// FIXME типизация
 export const sellItem = (set: StoreSet) => (itemId: string) => {
   set((state) => {
-    const copyState = { ...state, player: { ...state.player } };
-
     const itemData = state.inventory?.find((item) => item.gearId === itemId);
 
-    if (itemData) {
-      copyState.player.gold += itemData.price;
+    if (!itemData) return state;
 
-      copyState.inventory = copyState.inventory!.filter(
-        (item) => item.gearId !== itemId,
-      );
+    const { gold, inventory_memoized } = state.player;
 
-      copyState.player.inventory_memoized =
-        copyState.player.inventory_memoized.filter(
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        gold: gold + itemData.price,
+        inventory_memoized: inventory_memoized.filter(
           ([_, gearId]) => gearId !== itemId,
-        );
-    }
-
-    return copyState;
+        ),
+      },
+      inventory: (state.inventory || []).filter(
+        (item) => item.gearId !== itemId,
+      ),
+    };
   });
 };

@@ -1,16 +1,14 @@
 import { StoreSet } from "./types";
 
+interface SpecialEncounterUpdateData {
+  node?: string;
+  reset?: boolean;
+  isSuccessful?: boolean;
+}
+
 export const updateSpecialEncounter =
   (set: StoreSet) =>
-  ({
-    node,
-    reset,
-    isSuccessful,
-  }: {
-    node?: string;
-    reset?: boolean;
-    isSuccessful?: boolean;
-  }) => {
+  ({ node, reset, isSuccessful }: SpecialEncounterUpdateData) => {
     set((state) => {
       const copyState = { ...state, player: { ...state.player } };
 

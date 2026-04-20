@@ -5,19 +5,20 @@ const MAX_BAG_LEVEL = 3;
 
 export const increaseResourcesBagLevel = (set: StoreSet) => () => {
   set((state) => {
-    const copyState = { ...state, player: { ...state.player } };
+    const { gold, resourcesBagLevel } = state.player;
 
-    const improvementPrice = getImprovementPrice(
-      copyState.player.resourcesBagLevel,
-    );
-    copyState.player.gold = copyState.player.gold - improvementPrice;
+    const improvementPrice = getImprovementPrice(resourcesBagLevel);
 
-    copyState.player.resourcesBagLevel += 1;
+    const increasedLevelBag = resourcesBagLevel + 1;
 
-    if (copyState.player.resourcesBagLevel > MAX_BAG_LEVEL) {
-      copyState.player.resourcesBagLevel = MAX_BAG_LEVEL;
-    }
-
-    return copyState;
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        gold: gold - improvementPrice,
+        resourcesBagLevel:
+          increasedLevelBag > MAX_BAG_LEVEL ? MAX_BAG_LEVEL : increasedLevelBag,
+      },
+    };
   });
 };
