@@ -7,7 +7,7 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { StartGameText } from "../TradeModal.styled";
+import { CraftButton } from "../TradeModal.styled";
 import { usePlayer } from "../../../contexts/Player";
 import craftSfx from "../../../assets/audio/craft.mp3";
 
@@ -91,7 +91,7 @@ export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
   }, []);
 
   return (
-    <StartGameText
+    <CraftButton
       ref={buttonRef}
       as={motion.div}
       onMouseDown={handleMouseDown}
@@ -117,6 +117,6 @@ export const HoldProgressButton: FC<HoldProgressButtonProps> = ({
       <span style={{ position: "relative", zIndex: 1, pointerEvents: "none" }}>
         {children}
       </span>
-    </StartGameText>
+    </CraftButton>
   );
 };

@@ -1,6 +1,9 @@
-import { ENEMIES } from "../../entities";
-import { AI_CATEGORIES } from "../../entities/ai";
 import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../../entities/enemies";
+import { TEMPLATE_DAMAGE, TEMPLATE_TARGET } from "..";
+import { AI_CATEGORIES } from "../../entities/ai";
+import { Creature } from "../../types/gameState";
+import { ENEMIES } from "../../entities";
+import { getRandom } from "../../utils";
 
 import spider from "../../assets/enemies/first_tier/spider.png";
 import torso from "../../assets/enemies/first_tier/torso.png";
@@ -20,27 +23,8 @@ import actress from "../../assets/enemies/third_tier/actress.png";
 import singer from "../../assets/enemies/third_tier/singer.png";
 import ballerine from "../../assets/enemies/third_tier/ballerina_boss.png";
 import mergedMass from "../../assets/enemies/third_tier/mergemass.png";
-import { Creature } from "../../types/gameState";
-import { getRandom } from "../../utils";
-import { TEMPLATE_DAMAGE, TEMPLATE_TARGET } from "..";
-
-// Здесь будут хардкод объектов противников - все объекты и их объединения в массивах
-// также здесь
 
 // Поступаем также как с предметами - дублируем модели для улучшенных противников - есть overAllTier, а есть просто tier
-
-// у 3 тира существ особая логика атаки будет - вешают доты
-// у 2 тира и 3 тира локаций у существ появляется шанс уклониться
-// у 3 тира локаций существ есть шанс атаковать дважды
-
-// 1 минибосс накладывает минус броню
-// 2 минибосс и минус броня и отравление на всех на весь бой
-// 3 минибосс и минус броня и отравление ожог и запрет на использование способностей
-
-// 1 босс - минус броня и повышенный шанс промаха
-// 2 босс накладывает эффект требующий перезарядки после каждого выстрела, фокусит хила
-// 3 босс режет макс хп на 15%, увеличивает шанс промаха по себе, рандомно вешает на всех бомбы, которые
-// взрываются через несколько ходов взрываются и отнимают ход у персонажа на котором была бомба
 
 export const CREATURE_TO_IMG_MAP = {
   [ENEMIES.SPIDER_TIER_1]: spider,
@@ -364,8 +348,6 @@ export const getEnemyPhrase = (
 
 export interface EnemyPrototypeData {
   aiPackage: AI_CATEGORIES;
-  pictureSrc: string;
-  audioSrc: string;
   baseModel: Omit<Creature, "aiPackage" | "id">;
 }
 
@@ -373,15 +355,8 @@ export type EnemyInitialData = Record<ENEMIES, EnemyPrototypeData>;
 
 export const CREATURES: EnemyInitialData = {
   [ENEMIES.SPIDER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 15,
       maxHP: 15,
@@ -395,15 +370,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SPIDER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 25,
       maxHP: 25,
@@ -417,15 +385,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SPIDER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 35,
       maxHP: 35,
@@ -440,15 +401,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.TORSO_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 40,
       maxHP: 40,
@@ -462,15 +416,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.TORSO_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 55,
       maxHP: 55,
@@ -484,15 +431,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.TORSO_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 70,
       maxHP: 70,
@@ -507,15 +447,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.WATCHER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 75,
       maxHP: 75,
@@ -529,15 +462,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.WATCHER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 100,
       maxHP: 100,
@@ -551,15 +477,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.WATCHER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 130,
       maxHP: 130,
@@ -574,15 +493,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.SPIRIT_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 110,
       maxHP: 110,
@@ -596,15 +508,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SPIRIT_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 140,
       maxHP: 140,
@@ -618,15 +523,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SPIRIT_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.DEFAULT,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 180,
       maxHP: 180,
@@ -641,15 +539,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.BIRD_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_1,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 250,
       maxHP: 250,
@@ -663,15 +554,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.BIRD_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_1,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 350,
       maxHP: 350,
@@ -685,15 +569,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.BIRD_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_1,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 450,
       maxHP: 450,
@@ -708,15 +585,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.SIN_ICON_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.BOSS_TIER_1,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 750,
       maxHP: 750,
@@ -731,15 +601,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.SOLDIER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 80,
       maxHP: 80,
@@ -753,15 +616,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SOLDIER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 100,
       maxHP: 100,
@@ -775,15 +631,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SOLDIER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 130,
       maxHP: 130,
@@ -798,15 +647,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.FIREFIGHTER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 150,
       maxHP: 150,
@@ -820,15 +662,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.FIREFIGHTER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 160,
       maxHP: 160,
@@ -842,15 +677,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.FIREFIGHTER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 200,
       maxHP: 200,
@@ -865,15 +693,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.SNEAKER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 220,
       maxHP: 220,
@@ -887,15 +708,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SNEAKER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 240,
       maxHP: 240,
@@ -909,15 +723,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SNEAKER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 260,
       maxHP: 260,
@@ -932,15 +739,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.LOST_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 240,
       maxHP: 240,
@@ -955,15 +755,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.LOST_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 260,
       maxHP: 260,
@@ -978,15 +771,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.LOST_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 280,
       maxHP: 280,
@@ -1001,15 +787,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.INVENTOR_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 450,
       maxHP: 450,
@@ -1024,15 +803,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.INVENTOR_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 500,
       maxHP: 500,
@@ -1047,15 +819,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.INVENTOR_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 550,
       maxHP: 550,
@@ -1070,15 +835,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.GENERAL_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.BOSS_TIER_2,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 1250,
       maxHP: 1250,
@@ -1093,15 +851,8 @@ export const CREATURES: EnemyInitialData = {
   },
 
   [ENEMIES.ALL_SEEING_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 250,
       maxHP: 250,
@@ -1115,15 +866,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.ALL_SEEING_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 270,
       maxHP: 270,
@@ -1137,15 +881,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.ALL_SEEING_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 290,
       maxHP: 290,
@@ -1159,15 +896,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.KNIGHT_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 270,
       maxHP: 270,
@@ -1181,15 +911,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.KNIGHT_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 290,
       maxHP: 290,
@@ -1203,15 +926,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.KNIGHT_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 310,
       maxHP: 310,
@@ -1225,15 +941,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.ACTRESS_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 290,
       maxHP: 290,
@@ -1247,15 +956,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.ACTRESS_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 310,
       maxHP: 310,
@@ -1269,15 +971,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.ACTRESS_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 330,
       maxHP: 330,
@@ -1291,15 +986,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SINGER_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 310,
       maxHP: 310,
@@ -1313,15 +1001,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SINGER_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 330,
       maxHP: 330,
@@ -1335,15 +1016,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.SINGER_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 350,
       maxHP: 350,
@@ -1357,15 +1031,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.BALLERINE_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 350,
       maxHP: 350,
@@ -1379,15 +1046,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.BALLERINE_TIER_2]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 400,
       maxHP: 400,
@@ -1401,15 +1061,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.BALLERINE_TIER_3]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.MINIBOSS_TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 450,
       maxHP: 450,
@@ -1423,15 +1076,8 @@ export const CREATURES: EnemyInitialData = {
     },
   },
   [ENEMIES.MERGED_MASS_TIER_1]: {
-    // здесь айди типа aiPackage использовать для обозначения какой тип ai использовать в бою
-    // aiPackage: AI_CATEGORIES.DEFAULT,
-
-    // mock
     aiPackage: AI_CATEGORIES.BOSS_TIER_3,
-    pictureSrc: "",
-    audioSrc: "",
 
-    // другие данные по типу хп и прочего
     baseModel: {
       hp: 2500,
       maxHP: 2500,
@@ -1498,7 +1144,6 @@ export const SECOND_TIER_MINIBOSS_LIST = [
 
 export const SECOND_TIER_QUEST_MINIBOSS = CREATURES[ENEMIES.INVENTOR_TIER_3];
 
-// MOCK
 export const SECOND_TIER_BOSS = CREATURES[ENEMIES.GENERAL_TIER_1];
 
 export const THIRD_TIER_CREATURES_LIST = [

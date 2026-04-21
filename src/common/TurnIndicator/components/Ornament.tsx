@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { motion } from "framer-motion";
 
-import { OrnamentProps } from "../types";
-import { POSITIONS } from "../entities";
 import {
   ORNAMENT_ANIMATION_CONFIG,
   ORNAMENT_EXIT_CONFIG,
@@ -10,6 +8,8 @@ import {
   ORNAMENT_TRANSITION_CONFIG,
   positions,
 } from "../constants";
+import { OrnamentProps } from "../types";
+import { POSITIONS } from "../entities";
 
 export const Ornament: FC<OrnamentProps> = ({
   position = POSITIONS.TOP_LEFT,

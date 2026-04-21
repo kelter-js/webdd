@@ -9,7 +9,7 @@ import emptySlot from "../../../../../../assets/static/empty_slot.png";
 
 import { createPortal } from "react-dom";
 
-import { ItemDataModal } from "../../../../../../common/ItemDataModal/ItemDataModal";
+import { ItemDataModal } from "../../../../../../common/ItemDataModal";
 import { getItemIcon } from "../../../../../../utils";
 
 export const ShopItem: FC<ShopItemProps> = ({

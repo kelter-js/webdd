@@ -1,33 +1,40 @@
 import { memoizeItem, getBaseItemByBaseId } from "../../../utils";
 import { StoreSet } from "./types";
-// FIXME типизация
+
 export const buyItem = (set: StoreSet) => (itemId: string) => {
   set((state) => {
-    const copyState = { ...state, player: { ...state.player } };
-
     const itemData = state.sell_inventory?.find(
       (item) => item.gearId === itemId,
     );
 
-    if (itemData) {
-      copyState.player.gold -= itemData.price;
+    const {
+      sell_inventory,
+      inventory,
+      player: { itemsToBuy, gold, inventory_memoized },
+    } = state;
 
-      copyState.sell_inventory = copyState.sell_inventory!.filter(
-        (item) => item.gearId !== itemId,
-      );
+    if (!itemData || !sell_inventory || !itemsToBuy) return state;
 
-      copyState.player.itemsToBuy = copyState.player.itemsToBuy!.filter(
-        ([_, gearId]) => gearId !== itemId,
-      );
-
-      copyState.inventory?.push({
-        ...itemData,
-        // сбрасываем цену - мы ее получили с  наценкой торговца, теперь в инвентаре храним с базовой ценой
-        price: getBaseItemByBaseId(itemData.baseId).price,
-      });
-      copyState.player.inventory_memoized.push(memoizeItem(itemData));
-    }
-
-    return copyState;
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        gold: gold - itemData.price,
+        itemsToBuy: itemsToBuy.filter(([_, gearId]) => gearId !== itemId),
+        inventory_memoized: [
+          ...(inventory_memoized || []),
+          memoizeItem(itemData),
+        ],
+      },
+      sell_inventory: sell_inventory.filter((item) => item.gearId !== itemId),
+      inventory: [
+        ...(inventory || []),
+        {
+          ...itemData,
+          // сбрасываем цену - мы ее получили с  наценкой торговца, теперь в инвентаре храним с базовой ценой
+          price: getBaseItemByBaseId(itemData.baseId).price,
+        },
+      ],
+    };
   });
 };

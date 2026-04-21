@@ -1,6 +1,6 @@
-import { GUN_TYPES } from "../../entities/guns";
-import { CLASSES } from "../../entities/characterClasses";
 import { TEMPLATE_DAMAGE, TEMPLATE_NAME, TEMPLATE_TARGET } from "..";
+import { CLASSES } from "../../entities/characterClasses";
+import { GUN_TYPES } from "../../entities/guns";
 
 export const TANK_ALLOWED_GUNS = [GUN_TYPES.MACHINE_GUN, GUN_TYPES.SHOTGUN];
 export const MEDIC_ALLOWED_GUNS = [GUN_TYPES.PISTOL, GUN_TYPES.SMG];

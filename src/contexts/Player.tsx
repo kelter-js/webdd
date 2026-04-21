@@ -12,8 +12,6 @@ import {
 import { AudioFilesData, PlayerContextData } from "./types";
 import { useGameState } from "../stores";
 
-// REFACTORING CHECKED ✅
-
 const PlayerContext = createContext<PlayerContextData>({
   players: {},
   handleSetSrc: () => {},
@@ -23,7 +21,6 @@ const PlayerContext = createContext<PlayerContextData>({
 
 export const usePlayer = () => useContext(PlayerContext);
 
-// Возможно нужно будет несколько playerов, для эмбиента и для эффектов
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const [players, setPlayers] = useState<AudioFilesData>({});
   const refs = useRef<Record<string, HTMLAudioElement | null>>({});

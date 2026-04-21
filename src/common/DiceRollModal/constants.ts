@@ -1,4 +1,5 @@
 import { MotionStyle } from "framer-motion";
+
 import { DicesData } from "./types";
 
 export const DEFAULT_DICES_STATE: DicesData = [null, null];
@@ -9,6 +10,7 @@ export const DICES_AMOUNT = [0, 1];
 export const DICE_SHADOWS_INITIAL = { opacity: 0 };
 export const DICE_SHADOWS_ANIMATE = { opacity: 0.9 };
 export const DICE_SHADOWS_EXIT = { opacity: 0 };
+
 export const DICE_SHADOWS_STYLES: MotionStyle = {
   position: "absolute",
   width: "100%",
@@ -16,6 +18,7 @@ export const DICE_SHADOWS_STYLES: MotionStyle = {
   background:
     "radial-gradient(circle, rgba(0,0,0,0.9) 0%, rgba(20,0,0,0.95) 100%)",
 };
+
 export const DICE_ROLL_CONTAINER_STYLES: MotionStyle = {
   display: "flex",
   flexDirection: "column",

@@ -3,35 +3,35 @@ import { StoreSet } from "./types";
 
 export const giveResources = (set: StoreSet) => (resourceToGive: RESOURCES) => {
   set((state) => {
-    const stateCopy = { ...state, player: { ...state.player } };
+    let counter = 0;
 
-    const resourceItem = stateCopy.player.resources.filter(
-      (item) => item === resourceToGive,
-    );
-
-    if (resourceItem) {
-      const collectedResource = stateCopy.player.collected.find(
-        (item) => item[0] === resourceToGive,
-      );
-
-      if (collectedResource) {
-        stateCopy.player.collected = stateCopy.player.collected.map((item) =>
-          item[0] === resourceToGive
-            ? [item[0], String(Number(item[1]) + Number(resourceItem.length))]
-            : item,
-        );
-      } else {
-        stateCopy.player.collected.push([
-          resourceToGive,
-          String(resourceItem.length),
-        ]);
+    const resourcesFiltered = state.player.resources.filter((resource) => {
+      if (resource === resourceToGive) {
+        counter++;
       }
 
-      stateCopy.player.resources = stateCopy.player.resources.filter(
-        (resource) => resource !== resourceToGive,
-      );
-    }
+      return resource !== resourceToGive;
+    });
 
-    return stateCopy;
+    if (!counter) return state;
+
+    const collectedResource = state.player.collected.find(
+      (item) => item[0] === resourceToGive,
+    );
+
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        collected: collectedResource
+          ? state.player.collected.map((item) =>
+              item[0] === resourceToGive
+                ? [item[0], String(Number(item[1]) + Number(counter))]
+                : item,
+            )
+          : [...state.player.collected, [resourceToGive, String(counter)]],
+        resources: resourcesFiltered,
+      },
+    };
   });
 };

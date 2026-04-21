@@ -7,7 +7,7 @@ import { Item } from "../../../../types/gameState";
 import { GEAR_SLOTS } from "../../../../entities/gear";
 import { CLASS_GUN_RESTRICTIONS } from "../../../../constants/characters";
 import frame from "../../../../assets/static/gear_slot_frame.png";
-import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
+import { ItemDataModal } from "../../../../common/ItemDataModal";
 import { getItemIcon } from "../../../../utils";
 import { InventoryCellProps } from "./types";
 

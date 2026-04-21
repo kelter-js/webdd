@@ -1,6 +1,6 @@
 import { Typography, styled } from "@mui/material";
 
-export const StartGameText = styled(Typography, {
+export const CraftButton = styled(Typography, {
   shouldForwardProp: (prop) => prop !== "disabled",
 })<{ disabled: boolean }>(({ theme: { spacing }, disabled }) => ({
   pointerEvents: disabled ? "none" : "all",

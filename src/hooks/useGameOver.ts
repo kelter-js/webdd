@@ -2,8 +2,6 @@ import { useEffect } from "react";
 
 import { useGameState } from "../stores";
 
-// REFACTORING CHECKED ✅
-
 export const useGameOver = () => {
   const {
     player: { battle, name },

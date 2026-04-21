@@ -1,4 +1,4 @@
-import { TURN_STATES, BATTLE_STATES, BATTLE_TARGET } from "./battle";
+import { TURN_STATES } from "./battle";
 import { RENDER_LOCATIONS } from "./renderLocations";
 import { QUEST_STATUSES } from "./questStatuses";
 import { ECONOMIC_TYPES } from "./economic";
@@ -14,8 +14,6 @@ export {
   DIRECTIONS,
   SAVE_MODES,
   TURN_STATES,
-  BATTLE_STATES,
-  BATTLE_TARGET,
   DUNGEONS,
   ENEMIES,
 };

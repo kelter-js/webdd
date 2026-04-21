@@ -1,6 +1,5 @@
 import { StoreSet } from "./types";
 
-// FIXME типизация
 export const buyPotion = (set: StoreSet) => (mainIndex: number) => {
   set((state) => {
     const potionsList = state.player.potionsToBuy;

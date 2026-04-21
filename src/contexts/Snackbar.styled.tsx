@@ -1,6 +1,5 @@
 import { SnackbarProps, Snackbar, Alert, styled } from "@mui/material";
 
-// Стилизованный Snackbar
 export const StyledSnackbar = styled(
   ({ className, ...props }: SnackbarProps) => (
     <Snackbar {...props} classes={{ root: className }} />

@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 
-// REFACTORING CHECKED ✅
-
 export const useClickOutside = (
   ref: React.RefObject<HTMLElement | null>,
-  callback: () => void
+  callback: () => void,
 ) => {
   useEffect(() => {
     if (ref) {

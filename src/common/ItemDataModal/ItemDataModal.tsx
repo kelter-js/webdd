@@ -1,10 +1,12 @@
 import { FC } from "react";
 import { Divider, Popper, Stack, Typography } from "@mui/material";
 
+import { GEAR_SLOTS } from "../../entities/gear";
+import { POPPER_MODIFIERS } from "./constants";
 import { ItemDataModalProps } from "./types";
 import { getIconByType } from "../../utils";
-import { GEAR_SLOTS } from "../../entities/gear";
 import { Icons } from "..";
+import { Container } from "./ItemDataModal.styled";
 
 export const ItemDataModal: FC<ItemDataModalProps> = ({
   open,
@@ -29,14 +31,8 @@ export const ItemDataModal: FC<ItemDataModalProps> = ({
   } = item;
 
   const itemDataView = (
-    <Stack
-      direction="row"
-      gap={0.5}
-      sx={{
-        backdropFilter: "blur(2px)",
-      }}
-    >
-      <Stack
+    <Stack direction="row" gap={0.5} sx={{ backdropFilter: "blur(2px)" }}>
+      <Container
         gap={0.5}
         bgcolor="rgba(30, 20, 10, 0.50)"
         border="1px solid rgba(192, 160, 128, 0.3)"
@@ -106,7 +102,7 @@ export const ItemDataModal: FC<ItemDataModalProps> = ({
             {price}
           </Typography>
         )}
-      </Stack>
+      </Container>
 
       {sameGear && Boolean(sameGear?.length) && (
         <Stack
@@ -187,10 +183,7 @@ export const ItemDataModal: FC<ItemDataModalProps> = ({
       open={!!open}
       anchorEl={anchorEl}
       placement="bottom"
-      modifiers={[
-        { name: "flip", enabled: true },
-        { name: "preventOverflow", enabled: true },
-      ]}
+      modifiers={POPPER_MODIFIERS}
       sx={{ position: "fixed", zIndex: 2000 }}
     >
       {itemDataView}

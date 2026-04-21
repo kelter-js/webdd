@@ -1,15 +1,22 @@
 import { DIALOGUE_FLAGS } from "../../../entities/dialogues";
 import { StoreSet } from "./types";
 
-// FIXME типизация
+const CAMERA_PRICE = 5000;
+
 export const buyCamera = (set: StoreSet) => () => {
   set((state) => {
-    const copyState = { ...state, player: { ...state.player } };
+    const {
+      player: { gold, dialogFlags },
+    } = state;
 
-    copyState.player.hasCamera = true;
-    copyState.player.gold = copyState.player.gold - 5000;
-    copyState.player.dialogFlags.push(DIALOGUE_FLAGS.CAMERA);
-
-    return copyState;
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        hasCamera: true,
+        gold: gold - CAMERA_PRICE,
+        dialogFlags: [...dialogFlags, DIALOGUE_FLAGS.CAMERA],
+      },
+    };
   });
 };

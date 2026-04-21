@@ -1,6 +1,6 @@
-import { MEDIC_PERKS } from "../../../constants/perks";
 import { CLASSES } from "../../../entities/characterClasses";
 import { POTION_TYPES } from "../../../entities/consumables";
+import { MEDIC_PERKS } from "../../../constants/perks";
 import { Battle } from "../../../types/gameState";
 import { getPotionHealth } from "../../utils";
 import { StoreSet } from "./types";

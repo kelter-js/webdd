@@ -1,6 +1,7 @@
-import { GEAR_SLOTS } from "../../entities/gear";
 import { EFFECT_TYPES } from "../../types/gameState";
+import { GEAR_SLOTS } from "../../entities/gear";
 import { BASE_ITEMS_ID } from "../items";
+
 import healthOrb1 from "../../assets/gear/artifacts/health_orb (1).png";
 import healthOrb2 from "../../assets/gear/artifacts/health_orb (2).png";
 import healthOrb3 from "../../assets/gear/artifacts/health_orb (3).png";

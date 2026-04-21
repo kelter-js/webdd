@@ -30,13 +30,11 @@ export const QuestCardText = styled(Typography)(({ theme: { spacing } }) => ({
 }));
 
 export const StyledSlider = styled(Slider)(({ theme }) => ({
-  color: "#c0a080", // Основной цвет в стиле тултипа
+  color: "#c0a080",
 
-  // Стили для вертикальной ориентации
   "&.MuiSlider-vertical": {
     width: 20,
 
-    // Стили для трека (активная часть)
     [`& .${sliderClasses.track}`]: {
       backgroundColor: "rgba(192, 160, 128, 0.7)",
       border: "none",
@@ -46,7 +44,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       transform: "translateX(-50%)",
     },
 
-    // Стили для неактивной части (rail)
     [`& .${sliderClasses.rail}`]: {
       backgroundColor: "rgba(192, 160, 128, 0.2)",
       width: 6,
@@ -55,7 +52,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       transform: "translateX(-50%)",
     },
 
-    // Стили для ползунка (thumb)
     [`& .${sliderClasses.thumb}`]: {
       height: 15,
       width: 15,
@@ -76,7 +72,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       },
     },
 
-    // Стили для меток
     [`& .${sliderClasses.mark}`]: {
       backgroundColor: "#c0a080",
       width: 8,
@@ -87,7 +82,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       transform: "translateX(-50%)",
     },
 
-    // Стили для активных меток
     [`& .${sliderClasses.markActive}`]: {
       opacity: 1,
       backgroundColor: "#e0c0a0",
@@ -95,7 +89,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       height: 2,
     },
 
-    // Стили для подписей меток
     [`& .${sliderClasses.markLabel}`]: {
       color: "#e0c0a0",
       fontFamily: "Cormorant Unicase",
@@ -108,13 +101,11 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
       whiteSpace: "nowrap",
     },
 
-    // Стили для отображаемого значения
     [`& .${sliderClasses.valueLabel}`]: {
       left: "auto",
       right: 35,
       transform: "translateY(-50%)",
 
-      // Сам лейбл значения
       [`& .${sliderClasses.valueLabelLabel}`]: {
         backgroundColor: "rgba(30, 20, 10, 0.9)",
         color: "#e0c0a0",
@@ -128,7 +119,6 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
         letterSpacing: "0.5px",
       },
 
-      // Стрелка стилизуется через псевдоэлемент самого valueLabel
       "&::before": {
         content: '""',
         position: "absolute",

@@ -39,22 +39,22 @@ export const TurnIndicator: FC<TurnIndicatorProps> = ({ show, text }) => (
             transformStyle: "preserve-3d",
           }}
         >
-          {/* Основные осколки */}
+          {/* основные осколки */}
           <Shards count={12} color="#FF4444" />
 
-          {/* Вторичные осколки */}
+          {/* вторичные осколки */}
           <Shards count={6} color="#8B0000" />
 
-          {/* Капли крови */}
+          {/* капли крови */}
           <BloodDrops count={8} />
 
-          {/* Орнаменты по углам */}
+          {/* орнаменты по углам */}
           <Ornament position={POSITIONS.TOP_LEFT} />
           <Ornament position={POSITIONS.TOP_RIGHT} />
           <Ornament position={POSITIONS.BOTTOM_LEFT} />
           <Ornament position={POSITIONS.BOTTOM_RIGHT} />
 
-          {/* Основная панель */}
+          {/* основная панель */}
           <motion.div
             initial={{ boxShadow: "0 0 0px rgba(139, 0, 0, 0.5)" }}
             animate={TURN_INDICATOR_MAIN_PANEL_ANIMATE_CONFIG}
@@ -64,7 +64,7 @@ export const TurnIndicator: FC<TurnIndicatorProps> = ({ show, text }) => (
             transition={TURN_INDICATOR_MAIN_PANEL_TRANSITION_CONFIG}
             style={TURN_INDICATOR_MAIN_PANEL_STYLE_CONFIG}
           >
-            {/* Фоновые узоры */}
+            {/* фоновые узоры */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.1 }}
@@ -82,7 +82,7 @@ export const TurnIndicator: FC<TurnIndicatorProps> = ({ show, text }) => (
               <TurnName variant="h3">{text}</TurnName>
             </motion.div>
 
-            {/* Пульсирующая обводка */}
+            {/* пульсирующая обводка */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0] }}

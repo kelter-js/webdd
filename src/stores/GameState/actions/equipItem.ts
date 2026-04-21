@@ -1,8 +1,7 @@
-import { StoreSet } from "./types";
-
 import { rebuildDerivedState } from "../../../utils";
 import { GEAR_SLOTS } from "../../../entities/gear";
 import { memoizeItem } from "../../../utils";
+import { StoreSet } from "./types";
 
 export const equipItem =
   (set: StoreSet) =>

@@ -43,7 +43,6 @@ export const StaticInterference = styled(Box)<MotionStyledBoxProps>(() => ({
   width: "100%",
   height: "100%",
   background: `
-                  /* Густые горизонтальные линии */
                   repeating-linear-gradient(
                     0deg,
                     rgba(255, 255, 255, 0.05) 0px,
@@ -51,7 +50,6 @@ export const StaticInterference = styled(Box)<MotionStyledBoxProps>(() => ({
                     transparent 1px,
                     transparent 2px
                   ),
-                  /* Вертикальные линии */
                   repeating-linear-gradient(
                     90deg,
                     rgba(255, 255, 255, 0.03) 0px,
@@ -59,7 +57,6 @@ export const StaticInterference = styled(Box)<MotionStyledBoxProps>(() => ({
                     transparent 1px,
                     transparent 3px
                   ),
-                  /* Диагональные линии */
                   repeating-linear-gradient(
                     45deg,
                     rgba(255, 255, 255, 0.02) 0px,
@@ -189,11 +186,11 @@ export const GameEndText = styled(Typography)<MotionStyledTypographyProps>(
     fontFamily: "inherit",
     letterSpacing: "0.3em",
     textTransform: "uppercase",
-  })
+  }),
 );
 
 export const GameEndTextDuplicate = styled(
-  Typography
+  Typography,
 )<MotionStyledTypographyProps>(() => ({
   color: "white",
   fontSize: "5rem",
@@ -240,5 +237,5 @@ export const RandomLine = styled(Box)<MotionStyledBoxProps & { index: number }>(
         transparent
       )`,
     zIndex: 2,
-  })
+  }),
 );

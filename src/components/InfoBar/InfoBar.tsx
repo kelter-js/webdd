@@ -10,7 +10,7 @@ import {
 } from "./utils";
 import * as S from "./InfoBar.styled";
 import { createPortal } from "react-dom";
-import { ExclamationBlink } from "../../common/ExclamationBlink/ExclamationBlink";
+import { ExclamationBlink } from "../../common/ExclamationBlink";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { StyledSlider } from "../../common/styled.index";
 import { useGetResourceState } from "./useGetResourceState";
@@ -218,7 +218,7 @@ export const InfoBar = () => {
       </S.StatContainer>
 
       {aliveCharacters.map((character) => (
-        <S.StatContainer>
+        <S.StatContainer key={character.name}>
           <Tooltip title={`Здоровье ${character.name}`}>
             <Stack alignItems="center" direction="row">
               {character.currentHp} / {character.maxHp}
@@ -232,7 +232,7 @@ export const InfoBar = () => {
         const [potionType, amount] = consumable;
 
         return (
-          <S.StatContainer>
+          <S.StatContainer key={potionType}>
             <Tooltip title={getPotionDescriptionByType(potionType)}>
               <Stack alignItems="center" direction="row">
                 {amount}

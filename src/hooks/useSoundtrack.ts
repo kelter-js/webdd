@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 
-import { useAppState, useGameState } from "../stores";
-import { RENDER_LOCATIONS } from "../entities";
-import { usePlayer } from "../contexts/Player";
 import dungeonAmbient from "../assets/audio/dungeon_ambient.mp3";
 import battleAmbient from "../assets/audio/battle_ambient.mp3";
 import settlementAmbient from "../assets/audio/settlement.mp3";
+import { useAppState, useGameState } from "../stores";
+import { RENDER_LOCATIONS } from "../entities";
+import { usePlayer } from "../contexts/Player";
 
 const AMBIENT_DUNGEON_SOUNDTRACK = "ambient_dungeon";
 const AMBIENT_SETTLEMENT_SOUNDTRACK = "ambient_settlement";
 const AMBIENT_BATTLE_SOUNDTRACK = "ambient_battle";
 
 export const useSoundtrack = (loaded: boolean) => {
-  const { handleSetSrc, handleRemoveSrc, getPlayerRef } = usePlayer();
+  const { handleSetSrc, handleRemoveSrc } = usePlayer();
   const { isAudioEnabled } = useAppState();
 
   const {

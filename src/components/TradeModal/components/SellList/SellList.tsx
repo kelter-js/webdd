@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SELL_SFX_ID } from "../../../../constants";
 import sellSfx from "../../../../assets/audio/sell.mp3";
 import { usePlayer } from "../../../../contexts/Player";
-import { ItemDataModal } from "../../../../common/ItemDataModal/ItemDataModal";
+import { ItemDataModal } from "../../../../common/ItemDataModal";
 import { getItemIcon } from "../../../../utils";
 
 export const SellList = () => {

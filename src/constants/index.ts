@@ -3,9 +3,9 @@ import city2Image from "../assets/city2.png";
 import city3Image from "../assets/city3.png";
 
 export enum LOCATION_NAMES {
-  CITY = "CITY",
-  CITY2 = "CITY2",
-  CITY3 = "CITY3",
+  VILLAGE = "VILLAGE",
+  BUNKER = "BUNKER",
+  OUTPOST = "OUTPOST",
 }
 
 export enum BUILDING_NAMES {
@@ -17,15 +17,15 @@ export enum BUILDING_NAMES {
   TAVERN = "tavern",
   SHOP = "shop",
   CITADEL = "citadel",
-  CRAZY_TRADER = "CRAZY_TRADER",
-  GHOST = "GHOST",
-  TUTOR = "TUTOR",
-  SHOOTING = "SHOOTING",
-  FINAL_DIALOGUE = "FINAL_DIALOGUE",
+  CRAZY_TRADER = "crazy_trader",
+  GHOST = "ghost",
+  TUTOR = "tutor",
+  SHOOTING = "shooting",
+  FINAL_DIALOGUE = "final_dialogue",
 }
 
 export const LOCATIONS = {
-  [LOCATION_NAMES.CITY]: {
+  [LOCATION_NAMES.VILLAGE]: {
     coords: [
       {
         coords: "385,696,556,643,560,548,475,450,227,373,109,384,14,494,24,579",
@@ -66,7 +66,8 @@ export const LOCATIONS = {
     ],
     mapImage: cityImage,
   },
-  [LOCATION_NAMES.CITY2]: {
+
+  [LOCATION_NAMES.BUNKER]: {
     coords: [
       {
         // Большая область слева вверху
@@ -112,7 +113,7 @@ export const LOCATIONS = {
     mapImage: city2Image,
   },
 
-  [LOCATION_NAMES.CITY3]: {
+  [LOCATION_NAMES.OUTPOST]: {
     coords: [
       {
         coords:

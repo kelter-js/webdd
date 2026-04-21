@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, Box } from "@mui/material";
 import { motion } from "framer-motion";
 
 export const LevelUpContainer = styled("div")(() => ({
@@ -43,4 +43,13 @@ export const PlayerLevel = styled(AnimatedTextBase)(() => ({
   textShadow: "0 0 4px #ff0000, 0 0 10px #ff6600",
   fontWeight: "900",
   zIndex: 1000000,
+}));
+
+export const NameContainer = styled(Box)(() => ({
+  position: "absolute",
+  top: 0,
+  left: "50%",
+  transform: "translateX(-50%)",
+  pointerEvents: "none",
+  zIndex: 2000,
 }));

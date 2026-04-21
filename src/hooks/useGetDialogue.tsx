@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import {
   questDeskDialog,
   smithDialog,
@@ -27,9 +29,6 @@ import {
   FINAL_TEXT_SHOOTING,
   SUCCESS_OPTIONS_SHOOTING,
 } from "../constants/dialogs";
-
-import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
-import { useAppState, useGameState } from "../stores";
 import {
   BUILDING_NAMES,
   FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT,
@@ -38,10 +37,12 @@ import {
   SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
   THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
 } from "../constants";
+
 import { getImprovementPrice, getTotalAmountOfResourceByType } from "../utils";
-import { useMemo } from "react";
-import { RESOURCES } from "../entities/resources";
 import { isEveryEnemyUnlocked } from "../components/AlmanacModal/utils";
+import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
+import { useAppState, useGameState } from "../stores";
+import { RESOURCES } from "../entities/resources";
 
 export const useGetDialogue = (npc: string | null) => {
   const { player } = useGameState();
@@ -282,13 +283,6 @@ export const useGetDialogue = (npc: string | null) => {
           }
         }
 
-        // Вот здесь должна быть логика реакции на накопленные ресурсы
-        // нужна логика вычисления-  в зависимости от типа р есурса - сколько его нужно накопить
-        // и устанавливать флаг - что вещь получена для вычисления какой айтем выдавать
-        // здесь мы должны установить, что клик на опцию с айди  DIALOGUE_IDS.RELEASE_ORE - если кол-во сданных ресурсов + на руках ресурсы позволяют апгрейднуть или улучшить айтем
-        // что мы отсюда диалог следующий устанавливаем receiveSmithArtifactFirstTier/receiveSmithArtifactSecondTier/receiveSmithArtifactThirdTier
-        // mock
-
         return priestDialog;
       }
 
@@ -419,7 +413,6 @@ export const useGetDialogue = (npc: string | null) => {
     resources,
     collected,
     player,
-
     location?.attempts,
     location?.success,
     location?.node,

@@ -10,8 +10,6 @@ import {
 import { LowHpAuraProps } from "./types";
 import { LowHealthAuraContainer } from "./LowHealthAura.styled";
 
-// REFACTORING CHECKED ✅
-
 export const LowHealthAura: FC<LowHpAuraProps> = ({ isActive }) => (
   <LowHealthAuraContainer>
     {isActive && (

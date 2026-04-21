@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Stack, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 
 import {
   DEFAULT_DICES_STATE,
@@ -18,10 +18,8 @@ import {
   DICES_SIDES,
 } from "./constants";
 import { DiceRollModalProps, DicesData } from "./types";
-import { DiceRollContainer } from "./DiceRollFramer.styled";
 import { wait } from "../../utils";
-
-// REFACTORING CHECKED ✅
+import { DiceRollContainer } from "./DiceRollFramer.styled";
 
 export const DiceRollModal: FC<DiceRollModalProps> = ({
   turnOwner,
@@ -43,9 +41,9 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({
 
     return () => clearTimeout(timer);
   }, []);
+
   return (
     <DiceRollContainer>
-      {/* Затемнённый фон */}
       <motion.div
         initial={DICE_SHADOWS_INITIAL}
         animate={DICE_SHADOWS_ANIMATE}
@@ -53,9 +51,7 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({
         style={DICE_SHADOWS_STYLES}
       />
 
-      {/* Контейнер для кубиков */}
       <motion.div style={DICE_ROLL_CONTAINER_STYLES}>
-        {/* Анимация для двух кубиков */}
         <Stack direction="row" gap={2}>
           {DICES_AMOUNT.map((index) => (
             <motion.div
@@ -74,6 +70,7 @@ export const DiceRollModal: FC<DiceRollModalProps> = ({
             </motion.div>
           ))}
         </Stack>
+
         {!isRolling && (
           <Typography variant="h5" fontFamily="inherit">
             {turnOwner}

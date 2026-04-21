@@ -7,6 +7,7 @@ export const BLACK_HOLE_ANIMATION_CONFIG = {
     ease: "easeOut",
   },
 };
+
 export const BLACK_HOLE_INITIAL_CONFIG = {
   clipPath: "circle(0% at 50% 50%)",
 };

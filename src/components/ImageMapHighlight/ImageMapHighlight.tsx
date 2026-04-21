@@ -101,7 +101,7 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
               />
             </filter>
 
-            <filter id="soft-glow" color-interpolation-filters="sRGB">
+            <filter id="soft-glow" colorInterpolationFilters="sRGB">
               <feGaussianBlur stdDeviation="1.5" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
@@ -142,7 +142,7 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
                 stroke="rgba(200, 160, 60, 0.15)"
                 strokeWidth="0.6"
                 transform="scale(0.97)"
-                transform-origin="center"
+                transform-Origin="center"
               />
             </>
           )}

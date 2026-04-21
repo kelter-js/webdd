@@ -11,8 +11,6 @@ import { ONE_SECOND_IN_MS } from "../../constants";
 import { ScreenShakeProps } from "./types";
 import { ShakeContainer } from "./Skare.styled";
 
-// REFACTORING CHECKED ✅
-
 export const Shake: FC<ScreenShakeProps> = ({
   children,
   duration = DEFAULT_SHAKE_DURATION,

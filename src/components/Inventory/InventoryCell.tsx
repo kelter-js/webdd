@@ -5,7 +5,7 @@ import { useDrag } from "react-dnd";
 import emptySlot from "../../assets/static/empty_slot.png";
 import { Item } from "../../types/gameState";
 
-import { ItemDataModal } from "../../common/ItemDataModal/ItemDataModal";
+import { ItemDataModal } from "../../common/ItemDataModal";
 import { getItemIcon } from "../../utils";
 import { InventoryCellProps } from "./components/CharacterCell/types";
 

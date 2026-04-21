@@ -51,13 +51,6 @@ export const InventoryContainer: FC<InventoryContainerProps> = ({
     return inventory.reduce<Item[]>((acc, item) => {
       let isIncluded = false;
 
-      if (
-        normalizedSearchTerm &&
-        item.name.toLocaleLowerCase().includes(normalizedSearchTerm)
-      ) {
-        isIncluded = true;
-      }
-
       if (tier) {
         switch (tier) {
           case SORT_TYPES_BY_TIER.FIRST: {
@@ -102,8 +95,15 @@ export const InventoryContainer: FC<InventoryContainerProps> = ({
             item.gunType!,
           );
         } else {
-          isIncluded = false;
+          return acc;
         }
+      }
+
+      if (
+        normalizedSearchTerm &&
+        item.name.toLocaleLowerCase().includes(normalizedSearchTerm)
+      ) {
+        isIncluded = true;
       }
 
       if (

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { useAppState, useGameState, useGameSaves } from "../stores/";
+import { getNextTargetIndex, getPrevTargetIndex } from "../utils";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
 import { ROOM_TYPES } from "../entities/room";
 import { useSnackbar } from "../contexts/Snackbar";
@@ -8,9 +9,6 @@ import { usePlayer } from "../contexts/Player";
 import { SELL_SFX_ID } from "../constants";
 import sellSfx from "../assets/audio/sell.mp3";
 import { TURN_STATES } from "../entities";
-import { getNextTargetIndex, getPrevTargetIndex } from "../utils";
-
-// REFACTORING CHECKED ✅
 
 export const useGlobalListeners = () => {
   const {

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Box } from "@mui/material";
 
-import ornament from "../../assets/effects/lvlup.png";
-import { LevelUpContainer, PlayerLevel, PlayerName } from "./LevelUp.styled";
+import {
+  ORNAMENT_ANIMATE_CONFIG,
+  ORNAMENT_TRANSITION_CONFIG,
+} from "./constants";
 import { useAppState } from "../../stores";
 import { LeveledUpData } from "../../types/appState";
+import ornament from "../../assets/effects/lvlup.png";
+
+import * as S from "./LevelUp.styled";
 
 export const LevelUp = () => {
   const { deleteLeveledUpList, charactersLeveledUp } = useAppState();
@@ -21,7 +25,6 @@ export const LevelUp = () => {
     }
   }, [charactersLeveledUp, current]);
 
-  // Автоматически скрываем через 2.5 секунды
   useEffect(() => {
     if (!isVisible) return;
 
@@ -35,7 +38,7 @@ export const LevelUp = () => {
   if (!current) return null;
 
   return (
-    <LevelUpContainer>
+    <S.LevelUpContainer>
       <AnimatePresence
         mode="wait"
         onExitComplete={() => {
@@ -51,72 +54,41 @@ export const LevelUp = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Центрирование ТОЛЬКО здесь */}
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: "50%",
-                transform: "translateX(-50%)",
-                pointerEvents: "none",
-                zIndex: 2000,
-              }}
-            >
-              {/* ВНУТРЕННЯЯ обёртка для scale */}
+            <S.NameContainer>
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
-                animate={{
-                  scale: 1,
-                  opacity: 1,
-                }}
-                exit={{
-                  scale: 0.9,
-                  opacity: 0,
-                }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <motion.img
                   src={ornament}
                   alt="Level Up Ornament"
-                  animate={{
-                    filter: [
-                      "drop-shadow(0 0 8px #ff0000)",
-                      "drop-shadow(0 0 16px #ff4444)",
-                      "drop-shadow(0 0 8px #ff0000)",
-                    ],
-                  }}
-                  transition={{
-                    duration: 1.2,
-                    repeat: 1,
-                  }}
-                  style={{
-                    maxWidth: "600px",
-                  }}
+                  animate={ORNAMENT_ANIMATE_CONFIG}
+                  transition={ORNAMENT_TRANSITION_CONFIG}
+                  style={{ maxWidth: "600px" }}
                 />
 
-                <PlayerName
+                <S.PlayerName
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
                   {current.name}
-                </PlayerName>
+                </S.PlayerName>
 
-                <PlayerLevel
+                <S.PlayerLevel
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.35 }}
                 >
                   {current.level}
-                </PlayerLevel>
+                </S.PlayerLevel>
               </motion.div>
-            </Box>
+            </S.NameContainer>
           </motion.div>
         )}
       </AnimatePresence>
-    </LevelUpContainer>
+    </S.LevelUpContainer>
   );
 };

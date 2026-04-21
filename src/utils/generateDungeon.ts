@@ -113,8 +113,9 @@ export const generateDungeon = (
     let counter = 0;
 
     while (counter < MAX_ITERATIONS_COUNTER) {
-      const randomRow = getRandom(0, width);
-      const randomColumn = getRandom(0, height);
+      const randomRow = getRandom(0, width - 1);
+      const randomColumn = getRandom(0, height - 1);
+
       const cell = dungeon[randomColumn][randomRow];
 
       if (

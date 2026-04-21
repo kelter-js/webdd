@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 
-import { useAppState, useGameState } from "../stores";
 import { RENDER_LOCATIONS } from "../entities/renderLocations";
-import { BUILDING_NAMES, FLAGS } from "../constants";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
-
-// REFACTORING CHECKED ✅
+import { useAppState, useGameState } from "../stores";
+import { BUILDING_NAMES, FLAGS } from "../constants";
 
 export const useTutorial = (loaded: boolean) => {
   const { setDialogueOpen } = useAppState();

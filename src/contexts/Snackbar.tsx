@@ -12,8 +12,6 @@ import { SnackbarContextType } from "./types";
 import { VOID_EMPTY_FUNCTION } from "../share/constants";
 import { StyledAlert, StyledSnackbar } from "./Snackbar.styled";
 
-// REFACTORING CHECKED ✅
-
 const SnackbarContext = createContext<SnackbarContextType>({
   showSnackbar: VOID_EMPTY_FUNCTION,
 });

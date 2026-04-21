@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-// REFACTORING CHECKED ✅
-
 export const useScrollbarWidth = () => {
   useEffect(() => {
     const getScrollbarWidth = () =>
@@ -9,7 +7,7 @@ export const useScrollbarWidth = () => {
 
     document.documentElement.style.setProperty(
       "--scrollbar-width",
-      `${getScrollbarWidth()}px`
+      `${getScrollbarWidth()}px`,
     );
   }, []);
 };

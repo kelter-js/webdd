@@ -1,10 +1,8 @@
 import { PERK_DATA_BY_CLASSES } from "../../../constants/perks";
 import { PERK_ID_DATA } from "../../../types/gameState";
-import { rebuildDerivedState } from "../../../utils/rebuildDerivedState";
 import { calculateStatistics } from "../../utils";
-
 import { StoreSet } from "./types";
-// FIXME типизация
+
 export const acquirePerk =
   (set: StoreSet) => (perkToAddId: PERK_ID_DATA, characterName: string) => {
     set((state) => {

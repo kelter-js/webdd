@@ -14,30 +14,30 @@ export const LeveledUpCharacter = () => (
     <text
       x="6"
       y="8"
-      font-family="Arial"
-      font-size="4"
+      fontFamily="Arial"
+      fontSize="4"
       fill="#FFD700"
-      text-anchor="middle"
+      textAnchor="middle"
     >
       ?
     </text>
     <text
       x="18"
       y="8"
-      font-family="Arial"
-      font-size="4"
+      fontFamily="Arial"
+      fontSize="4"
       fill="#FFD700"
-      text-anchor="middle"
+      textAnchor="middle"
     >
       ?
     </text>
     <text
       x="12"
       y="14"
-      font-family="Arial"
-      font-size="3"
+      fontFamily="Arial"
+      fontSize="3"
       fill="#FFA500"
-      text-anchor="middle"
+      textAnchor="middle"
     >
       ?
     </text>
@@ -48,9 +48,9 @@ export const LeveledUpCharacter = () => (
       r="7"
       fill="none"
       stroke="#FFD700"
-      stroke-width="0.5"
+      strokeWidth="0.5"
       opacity="0.6"
-      stroke-dasharray="2,1"
+      strokeDasharray="2,1"
     />
   </svg>
 );

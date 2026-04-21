@@ -4,13 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SAVE_LOAD_STATUSES } from "../../components/SaveList/constants";
 import { useAppState, useGameSaves, useGameState } from "../../stores";
 import { useSnackbar } from "../../contexts/Snackbar";
-
+import { resetDialogs } from "../../constants/dialogs";
 import * as A from "./animation";
 import * as C from "./constants";
 import * as S from "./GameOverScreen.styled";
-import { resetDialogs } from "../../constants/dialogs";
-
-// REFACTORING CHECKED ✅
 
 export const GameOverScreen = () => {
   const {
@@ -41,27 +38,22 @@ export const GameOverScreen = () => {
 
   return (
     <AnimatePresence>
-      <>
-        {/* Блокирующий слой - перехватывает все клики */}
+      <div>
         <S.OverlayBlocker />
 
-        {/* Основной компонент конца игры */}
         <S.OverlayContent>
-          {/* Анимация распространяющейся черной пелены */}
           <S.BlackHole
             component={motion.div}
             initial={A.BLACK_HOLE_INITIAL_CONFIG}
             animate={A.BLACK_HOLE_ANIMATION_CONFIG}
           />
 
-          {/* Основной слой статических помех */}
           <S.StaticInterference
             component={motion.div}
             initial={A.STATIC_INTERFERENCE_INITIAL_CONFIG}
             animate={A.STATIC_INTERFERENCE_ANIMATION_CONFIG}
           />
 
-          {/* Быстрые движущиеся линии - группа 1 */}
           {C.MAIN_LINE_GROUP.map((_, i) => (
             <S.MainInterferenceLine
               key={`main-line-${i}`}
@@ -80,7 +72,6 @@ export const GameOverScreen = () => {
             />
           ))}
 
-          {/* Медленные толстые линии сканирования - группа 2 */}
           {C.SUB_LINE_GROUP.map((_, i) => (
             <S.SubInterferenceLine
               key={`sub-line-${i}`}
@@ -99,7 +90,6 @@ export const GameOverScreen = () => {
             />
           ))}
 
-          {/* Цветные движущиеся линии */}
           {C.MOVING_LINES_GROUP.map((line, i) => (
             <S.MovingLine
               key={`color-line-${i}`}
@@ -118,7 +108,6 @@ export const GameOverScreen = () => {
             />
           ))}
 
-          {/* Случайные вспышки полос */}
           {C.FLASHES_GROUP.map((_, i) => (
             <S.Flash
               key={`flash-${i}`}
@@ -133,30 +122,25 @@ export const GameOverScreen = () => {
             />
           ))}
 
-          {/* Горизонтальные волны искажения */}
           <S.HorizontalWave
             component={motion.div}
             animate={A.HORIZONTAL_WAVE_ANIMATION_CONFIG}
             transition={A.HORIZONTAL_WAVE_TRANSITION_CONFIG}
           />
 
-          {/* Частые тонкие линии */}
           <S.ThinLines
             component={motion.div}
             initial={A.STATIC_INTERFERENCE_INITIAL_CONFIG}
             animate={A.THIN_LINES_ANIMATION_CONFIG}
           />
 
-          {/* Мерцающий слой */}
           <S.TwinklingOverlay
             component={motion.div}
             initial={A.STATIC_INTERFERENCE_INITIAL_CONFIG}
             animate={A.TWINKLING_OVERLAY_ANIMATION_CONFIG}
           />
 
-          {/* Текст "КОНЕЦ ИГРЫ" */}
           <Box position="relative" zIndex={4} textAlign="center">
-            {/* Основной текст */}
             <S.GameEndText
               component={motion.h1}
               initial={A.GAME_END_INITIAL_CONFIG}
@@ -166,7 +150,6 @@ export const GameOverScreen = () => {
               КОНЕЦ ИГРЫ
             </S.GameEndText>
 
-            {/* Мерцающая копия текста с эффектом помех */}
             <S.GameEndTextDuplicate
               component={motion.div}
               initial={A.STATIC_INTERFERENCE_INITIAL_CONFIG}
@@ -194,7 +177,6 @@ export const GameOverScreen = () => {
             </S.GameEndButton>
           </Box>
 
-          {/* Дополнительные случайные полосы по бокам */}
           {C.RANDOM_LINES_GROUP.map((_, i) => (
             <S.RandomLine
               key={`side-stripe-${i}`}
@@ -212,7 +194,7 @@ export const GameOverScreen = () => {
             />
           ))}
         </S.OverlayContent>
-      </>
+      </div>
     </AnimatePresence>
   );
 };
