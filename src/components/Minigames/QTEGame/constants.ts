@@ -1,6 +1,9 @@
 export const MIN_SEQUENCE_LENGTH = 10;
 export const QTE_SEQUENCE_TEMPLATE = new Array(MIN_SEQUENCE_LENGTH).fill(null);
 export const NO_MORE_ATTEMPTS = 0;
+export const MAX_INTERVAL = 3.0;
+export const MIN_DELAY = 100;
+export const MAX_INTERVAL_PORTAL = 24.0;
 
 export const VALID_KEYS = [
   "A",

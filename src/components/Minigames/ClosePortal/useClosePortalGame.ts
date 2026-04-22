@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react";
 
+import { MAX_INTERVAL_PORTAL, MIN_DELAY } from "../QTEGame/constants";
+import { ONE_SECOND_IN_MS } from "../../../constants";
 import { useGameState } from "../../../stores";
 import { MiniGameProps } from "../types";
 
@@ -38,8 +40,6 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
   const gameStartTime = useRef<number>(0);
   const successStartTime = useRef<number | null>(null);
 
-  const MAX_INTERVAL = 24.0;
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameActive.current && e.code === "Space") {
@@ -64,11 +64,11 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
       if (
         (gameActive.current &&
           (playerX.current <= 0 || playerX.current >= 440)) ||
-        startInterval.current >= MAX_INTERVAL
+        startInterval.current >= MAX_INTERVAL_PORTAL
       ) {
         endGame(false);
       }
-    }, 100);
+    }, MIN_DELAY);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
@@ -107,9 +107,8 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
     if (!gameActive.current) return;
 
     const now = performance.now();
-    const elapsed = (now - gameStartTime.current) / 1000;
+    const elapsed = (now - gameStartTime.current) / ONE_SECOND_IN_MS;
 
-    // Move player
     playerX.current += playerSpeedX.current;
 
     if (!isSpacePressed.current) {
@@ -142,9 +141,7 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
       totalSuccessTime.current = currentSuccess;
 
       if (timerRef.current) {
-        timerRef.current.textContent = `✅ В зоне: ${currentSuccess.toFixed(
-          1,
-        )}s`;
+        timerRef.current.textContent = ` В зоне: ${currentSuccess.toFixed(1)}s`;
       }
 
       if (currentSuccess >= 5.0) {
@@ -154,7 +151,7 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
       successStartTime.current = null;
       totalSuccessTime.current = 0;
       if (timerRef.current) {
-        timerRef.current.textContent = "❌ Вне зоны";
+        timerRef.current.textContent = " Вне зоны";
       }
     }
 
@@ -168,7 +165,7 @@ export const useClosePortalGame = ({ onFail, onWin }: MiniGameProps) => {
       gameTimeRef.current.textContent = `${elapsed.toFixed(1)}/24.0s`;
     }
 
-    if (elapsed >= MAX_INTERVAL) {
+    if (elapsed >= MAX_INTERVAL_PORTAL) {
       endGame(false);
     }
   };

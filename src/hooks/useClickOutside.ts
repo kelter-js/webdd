@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export const useClickOutside = (
   ref: React.RefObject<HTMLElement | null>,
-  callback: () => void,
+  callback: VoidFunction,
 ) => {
   useEffect(() => {
     if (ref) {

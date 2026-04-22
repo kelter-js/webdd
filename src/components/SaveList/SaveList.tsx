@@ -10,8 +10,6 @@ import { useSnackbar } from "../../contexts/Snackbar";
 import { SaveListProps } from "./types";
 import { SaveListContainer } from "./SaveList.styled";
 
-// REFACTORING CHECKED ✅
-
 export const SaveList: FC<SaveListProps> = ({ isLoadMode }) => {
   const { gameSaves, updateGameSaves, defaultSave } = useGameSaves();
   const { toggleMenu, toggleSaveList } = useAppState();
@@ -26,7 +24,7 @@ export const SaveList: FC<SaveListProps> = ({ isLoadMode }) => {
     }
 
     showSnackbar(
-      isLoadMode ? SAVE_LOAD_STATUSES.LOAD : SAVE_LOAD_STATUSES.SAVE
+      isLoadMode ? SAVE_LOAD_STATUSES.LOAD : SAVE_LOAD_STATUSES.SAVE,
     );
 
     toggleMenu();

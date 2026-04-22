@@ -1,11 +1,13 @@
 import { FC, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Box, Paper, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
-import { StorySlideProps } from "./types";
-import { useGameState } from "../../stores";
+import { SLIDE_ANIMATION_STYLES } from "./constants";
 import { SLIDERS } from "../../entities/sliders";
+import { useGameState } from "../../stores";
+import { StorySlideProps } from "./types";
 import { FLAGS } from "../../constants";
+import { Container, SlideTextContainer, TextHolder } from "./StorySlide.styled";
 
 export const StorySlide: FC<StorySlideProps> = ({ slides, sliderId }) => {
   const [index, setIndex] = useState(0);
@@ -27,22 +29,7 @@ export const StorySlide: FC<StorySlideProps> = ({ slides, sliderId }) => {
   const current = slides[index];
 
   return (
-    <Box
-      onClick={handleNext}
-      sx={{
-        position: "fixed",
-        inset: 0,
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-        cursor: "pointer",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        bgcolor: "black",
-        zIndex: 9999,
-      }}
-    >
+    <Container onClick={handleNext}>
       <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
@@ -51,34 +38,14 @@ export const StorySlide: FC<StorySlideProps> = ({ slides, sliderId }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
           style={{
-            position: "absolute",
-            inset: 0,
+            ...SLIDE_ANIMATION_STYLES,
             backgroundImage: `url(${current.image})`,
-            // backgroundSize: "100% 100%", // Изменено с "cover"
-            backgroundSize: "cover", // Изменено с "cover"
-            backgroundPosition: "center",
           }}
         />
       </AnimatePresence>
 
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          width: "100%",
-          p: 3,
-          boxSizing: "border-box",
-        }}
-      >
-        <Paper
-          elevation={6}
-          sx={{
-            p: 2,
-            borderRadius: 3,
-            bgcolor: "rgba(0,0,0,0.6)",
-            color: "white",
-          }}
-        >
+      <SlideTextContainer>
+        <TextHolder elevation={6}>
           <Typography
             variant="body1"
             sx={{ fontSize: "1.2rem" }}
@@ -86,8 +53,8 @@ export const StorySlide: FC<StorySlideProps> = ({ slides, sliderId }) => {
           >
             {current.text}
           </Typography>
-        </Paper>
-      </Box>
-    </Box>
+        </TextHolder>
+      </SlideTextContainer>
+    </Container>
   );
 };

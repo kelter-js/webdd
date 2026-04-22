@@ -7,7 +7,7 @@ import { QuestResults } from "../../components/QuestResults";
 import { useGetDialogue, useGetLocation } from "../../hooks";
 import { AlmanacModal } from "../../components/AlmanacModal";
 import { useAppState, useGameState } from "../../stores";
-import { TradeModal } from "../../components/TradeModal";
+import { TradeModal } from "../../components";
 import { CraftModal } from "../../components/CraftModal";
 import { BuyTorches } from "../../components/BuyTorches";
 import { Dialogue } from "../../components/Dialogue";

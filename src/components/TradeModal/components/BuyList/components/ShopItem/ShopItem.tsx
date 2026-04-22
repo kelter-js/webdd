@@ -1,16 +1,16 @@
-import { FC, useEffect, useMemo, useRef } from "react";
-import { ShopItemProps } from "./types";
-import { useGameState } from "../../../../../../stores";
-import { GEAR_SLOTS } from "../../../../../../entities/gear";
-import { CLASS_BY_GUN_TYPE_MAPPING } from "../../../../../../constants/characters";
-
-import { ShopItemContainer } from "./ShopItem.styled";
-import emptySlot from "../../../../../../assets/static/empty_slot.png";
-
+import { FC, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 
+import { CLASS_BY_GUN_TYPE_MAPPING } from "../../../../../../constants/characters";
 import { ItemDataModal } from "../../../../../../common/ItemDataModal";
+import { ItemIconContainer } from "../../../../../../common";
+import { GEAR_SLOTS } from "../../../../../../entities/gear";
+import { Item } from "../../../../../../types/gameState";
+import { useGameState } from "../../../../../../stores";
 import { getItemIcon } from "../../../../../../utils";
+import { ShopItemProps } from "./types";
+import emptySlot from "../../../../../../assets/static/empty_slot.png";
+import { ShopItemContainer } from "./ShopItem.styled";
 
 export const ShopItem: FC<ShopItemProps> = ({
   isHovered,
@@ -19,7 +19,6 @@ export const ShopItem: FC<ShopItemProps> = ({
   itemData,
   onBlur,
   onHover,
-  index,
   onClick,
 }) => {
   const { gunType, type } = itemData ?? {};
@@ -33,6 +32,7 @@ export const ShopItem: FC<ShopItemProps> = ({
     if (isHovered && gear) {
       if (type === GEAR_SLOTS.WEAPON) {
         const availableClassByGunType = CLASS_BY_GUN_TYPE_MAPPING[gunType!];
+
         const characterName = party.find(
           (character) => character.characterClass === availableClassByGunType,
         )?.name;
@@ -52,50 +52,24 @@ export const ShopItem: FC<ShopItemProps> = ({
         return [];
       }
 
-      return Object.entries(gear)
-        .map(([name, items]) => ({
-          name,
-          item: items.find((item) => item.type === type),
-        }))
-        .filter((item) => Boolean(item.item));
+      return Object.entries(gear).reduce<{ name: string; item: Item }[]>(
+        (acc, [name, items]) => {
+          const item = items.find((item) => item.type === type);
+
+          if (item) {
+            acc.push({ name, item });
+          }
+
+          return acc;
+        },
+        [],
+      );
     }
 
     return [];
   }, [gunType, type, isHovered, gear]);
 
-  const hasSomeGearEquipped = Boolean(sameTypeGearEquipped.length);
-
-  useEffect(() => {
-    if (!isHovered) return;
-    if (!itemRef.current || !floatingRef.current) return;
-
-    const anchor = itemRef.current.getBoundingClientRect();
-    const floating = floatingRef.current;
-
-    const gap = 8;
-
-    let top = anchor.bottom + gap;
-    let left = anchor.left;
-
-    const floatingRect = floating.getBoundingClientRect();
-
-    if (top + floatingRect.height > window.innerHeight) {
-      top = anchor.top - floatingRect.height - gap;
-    }
-
-    if (left + floatingRect.width > window.innerWidth) {
-      left = window.innerWidth - floatingRect.width - 8;
-    }
-
-    top = Math.max(8, top);
-    left = Math.max(8, left);
-
-    floating.style.top = `${top}px`;
-    floating.style.left = `${left}px`;
-  }, [isHovered, index, hasSomeGearEquipped]);
-
   const itemRef = useRef<HTMLDivElement>(null);
-  const floatingRef = useRef<HTMLDivElement>(null);
 
   const itemIcon = useMemo(() => {
     if (itemData?.type && itemData?.baseId) {
@@ -118,18 +92,8 @@ export const ShopItem: FC<ShopItemProps> = ({
       }}
     >
       <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
-      <img
-        src={itemIcon}
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-          objectFit: "contain",
-        }}
-      />
+
+      <ItemIconContainer src={itemIcon} />
 
       {itemData &&
         itemRef.current &&

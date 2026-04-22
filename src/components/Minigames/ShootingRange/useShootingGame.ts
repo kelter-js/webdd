@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { generateTargets } from "./utils";
 
 import { CoordinatesData, MiniGameProps } from "../types";
+import { generateTargets } from "./utils";
 
 const MAX_INDEX = 19;
 const GAME_OVER_FAILS = 5;

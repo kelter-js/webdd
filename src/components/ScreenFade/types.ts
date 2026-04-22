@@ -2,7 +2,7 @@ export interface ScreenFadeProps {
   isVisible: boolean;
   duration?: number;
   color?: string;
-  onFadeComplete?: () => void;
+  onFadeComplete?: VoidFunction;
 }
 
 export interface FadeContainerProps {

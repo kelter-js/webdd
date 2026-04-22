@@ -1,8 +1,6 @@
 import { useAppState } from "../../stores";
 import { MenuIconWrapper, MenuLine } from "./MenuIcon.styled";
 
-// REFACTORING CHECKED ✅
-
 export const MenuIcon = () => {
   const { isMenuOpen, toggleMenu } = useAppState();
 

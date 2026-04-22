@@ -6,16 +6,12 @@ import { getQuestDataByType } from "./utils";
 import { QuestCardProps } from "./types";
 import * as S from "./QuestCard.styled";
 
-// REFACTORING CHECKED ✅
-
 export const QuestCard: FC<QuestCardProps> = ({ type }) => {
   const { setQuestData } = useGameState();
   const { toggleQuestModal } = useAppState();
 
   const { src, reward, title, description } = getQuestDataByType(type);
-  // в зависимости от reward выводить иконки
 
-  // FIXME: нужно разделение по типу квеста - конкретные награды
   const handleStartQuest = () => {
     setQuestData({
       exp: 1000,

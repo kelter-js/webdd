@@ -1,15 +1,7 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
-import {
-  AbilityGrid,
-  CharacterContainer,
-  CharacterName,
-  StatItem,
-} from "./Leveling.styled";
-import { CharacterCardProps } from "./types";
-import { useGameState } from "../../stores";
 import {
   FIRST_PERK_LEVEL_REQUIREMENT,
   SECOND_PERK_LEVEL_REQUIREMENT,
@@ -25,6 +17,14 @@ import {
 } from "../../constants/perks";
 import { PERK_ID_DATA } from "../../types/gameState";
 import { PerkList } from "./components/PerkList";
+import { CharacterCardProps } from "./types";
+import { useGameState } from "../../stores";
+import {
+  AbilityGrid,
+  CharacterContainer,
+  CharacterName,
+  StatItem,
+} from "./Leveling.styled";
 
 export const CharacterCard: FC<CharacterCardProps> = ({
   name,
@@ -59,13 +59,6 @@ export const CharacterCard: FC<CharacterCardProps> = ({
 
   const handleAcquirePerk = (perkId: PERK_ID_DATA) => {
     acquirePerk(perkId, name);
-  };
-
-  const [activeAbility, setActiveAbility] = useState<null | number>(null);
-
-  const handleAbilityClick = (index: number) => {
-    setActiveAbility(index);
-    setTimeout(() => setActiveAbility(null), 1000);
   };
 
   const hasSparePoints = points > 0;

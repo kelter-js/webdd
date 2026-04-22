@@ -1,13 +1,18 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { useGameState } from "../../../../stores";
-import emptySlot from "../../../../assets/static/empty_slot.png";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { SELL_SFX_ID } from "../../../../constants";
-import sellSfx from "../../../../assets/audio/sell.mp3";
-import { usePlayer } from "../../../../contexts/Player";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { Stack, Typography } from "@mui/material";
+import { PartialOptions } from "overlayscrollbars";
+
+import { SCROLLBAR_SETTINGS, SCROLLBAR_STYLES } from "./constants";
+import { ItemIconContainer, MainText } from "../../../../common";
 import { ItemDataModal } from "../../../../common/ItemDataModal";
+import { usePlayer } from "../../../../contexts/Player";
+import { SELL_SFX_ID } from "../../../../constants";
+import { useGameState } from "../../../../stores";
 import { getItemIcon } from "../../../../utils";
+import emptySlot from "../../../../assets/static/empty_slot.png";
+import sellSfx from "../../../../assets/audio/sell.mp3";
+import { SellItemButton } from "./SellList.styled";
 
 export const SellList = () => {
   const { inventory, sellItem } = useGameState();
@@ -21,8 +26,10 @@ export const SellList = () => {
     sellItem(currentItemToSellData?.gearId);
     setSelectedIndex(0);
     handleSetSrc(SELL_SFX_ID, sellSfx);
+
     setTimeout(() => {
       const osInstance = scrollListElement.current?.osInstance();
+
       if (!osInstance) {
         console.warn("osInstance still not ready");
         return;
@@ -64,27 +71,9 @@ export const SellList = () => {
   return (
     <Stack gap={4} pt={6} px={5} direction="row">
       <OverlayScrollbarsComponent
-        options={{
-          overflow: {
-            y: "scroll",
-            x: "hidden",
-          },
-          scrollbars: {
-            theme: "os-theme-light",
-            autoHide: "scroll",
-            autoHideDelay: 800,
-            autoHideSuspend: false,
-            clickScroll: true,
-          },
-        }}
+        options={SCROLLBAR_SETTINGS as PartialOptions}
         defer
-        style={{
-          width: "35%",
-          height: "550px",
-          border: "4px solid rgba(192, 160, 128, 0.3)",
-          background: "rgba(0,0,0,0.3)",
-          padding: "8px",
-        }}
+        style={SCROLLBAR_STYLES}
         ref={scrollListElement}
       >
         {!hasEmptyInventory && (
@@ -128,18 +117,8 @@ export const SellList = () => {
                 src={emptySlot}
                 style={{ width: "190px", height: "190px" }}
               />
-              <img
-                src={itemIcon}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                  left: "50%",
-                  top: "50%",
-                  transform: "translate(-50%, -50%)",
-                  objectFit: "contain",
-                }}
-              />
+
+              <ItemIconContainer src={itemIcon} />
             </div>
             <ItemDataModal item={currentItemToSellData} displayDescription />
           </Stack>
@@ -154,30 +133,9 @@ export const SellList = () => {
             </Typography>
           </Stack>
 
-          <Button
-            sx={{
-              position: "absolute",
-              bottom: 0,
-              right: 270,
-              zIndex: 9,
-            }}
-            onClick={handleSellItem}
-          >
-            <Typography
-              sx={{
-                width: "100%",
-                color: "#c08040",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
-                padding: (theme) => theme.spacing(1),
-                fontFamily: "Cormorant Unicase",
-              }}
-              variant="h5"
-            >
-              Продать предмет [T]
-            </Typography>
-          </Button>
+          <SellItemButton onClick={handleSellItem}>
+            <MainText variant="h5">Продать предмет [T]</MainText>
+          </SellItemButton>
         </Stack>
       )}
     </Stack>

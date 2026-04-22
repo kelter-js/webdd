@@ -1,14 +1,11 @@
 import { FC } from "react";
-import { Modal } from "@mui/material";
 
 import { useClosePortalGame } from "./useClosePortalGame";
 import { MiniGameProps } from "../types";
-import { QteContainer } from "../QTEGame/QTEGame.styled";
+import { ModalWindow, QteContainer } from "../QTEGame/QTEGame.styled";
 import goblin from "../../../assets/minigame/goblin.png";
 import bag from "../../../assets/minigame/bag.png";
 import * as S from "./ClosePortal.styled";
-
-// REFACTORING CHECKED ✅
 
 export const ClosePortal: FC<MiniGameProps> = (props) => {
   const {
@@ -23,16 +20,7 @@ export const ClosePortal: FC<MiniGameProps> = (props) => {
   } = useClosePortalGame(props);
 
   return (
-    <Modal
-      open={true}
-      disableEscapeKeyDown
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backdropFilter: "blur(2px)",
-      }}
-    >
+    <ModalWindow open={true} disableEscapeKeyDown>
       <QteContainer>
         <S.PlayerZone ref={playerZoneRef}>
           <img src={bag} width="80px" height="80px" />
@@ -58,6 +46,6 @@ export const ClosePortal: FC<MiniGameProps> = (props) => {
 
         <S.Attempts>Количество попыток - {gameAttempts}</S.Attempts>
       </QteContainer>
-    </Modal>
+    </ModalWindow>
   );
 };

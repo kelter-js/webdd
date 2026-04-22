@@ -1,7 +1,5 @@
 import { styled } from "@mui/material";
 
-// REFACTORING CHECKED ✅
-
 export const MenuIconWrapper = styled("div")(() => ({
   cursor: "pointer",
   width: "50px",
@@ -34,7 +32,6 @@ export const MenuLine = styled("span")(() => ({
   width: "100%",
   height: "3px",
   backgroundColor: "var(--menu-line)",
-  // Контур и тень для видимости
   boxShadow: `
     0 0 1px var(--white),
     0 0 2px var(--white),

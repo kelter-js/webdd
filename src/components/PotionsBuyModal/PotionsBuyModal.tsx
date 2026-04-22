@@ -1,13 +1,14 @@
-import { GameModal } from "../GameModal";
-import { useAppState, useGameState } from "../../stores";
-import coat from "../../assets/traders/potionsTrader.png";
 import { Stack } from "@mui/material";
-import { Potion } from "./Potion/Potion";
-import { POTION_COORDINATES } from "./constants";
+
+import { useAppState, useGameState } from "../../stores";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { usePlayer } from "../../contexts/Player";
-import sellSfx from "../../assets/audio/sell.mp3";
+import { POTION_COORDINATES } from "./constants";
 import { SELL_SFX_ID } from "../../constants";
+import { GameModal } from "../GameModal";
+import { Potion } from "./Potion/Potion";
+import coat from "../../assets/traders/potionsTrader.png";
+import sellSfx from "../../assets/audio/sell.mp3";
 
 export const PotionsBuyModal = () => {
   const { toggleBuyPotionsModal, isBuyPotionsModalOpen } = useAppState();

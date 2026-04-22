@@ -1,17 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { Fade } from "@mui/material";
 
+import { ONE_SECOND_IN_MS } from "../../constants";
 import { ScreenFadeProps } from "./types";
 import { FadeContainer } from "./ScreenFade.styled";
-
-// REFACTORING CHECKED ✅
 
 const timeout_config = { enter: 100, exit: 500 };
 
 export const ScreenFade: FC<ScreenFadeProps> = ({
   isVisible,
   onFadeComplete,
-  duration = 1000,
+  duration = ONE_SECOND_IN_MS,
   color = "rgb(0, 0, 0)",
 }) => {
   const [internalVisible, setInternalVisible] = useState(isVisible);

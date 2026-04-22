@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { DIRECTIONS } from "../../../entities";
 
 export const useMovement = (

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+
+import { BUILDING_NAMES } from "../../../../constants";
 import { useGetDialogue } from "../../../../hooks";
 import { useAppState } from "../../../../stores";
 import { Dialogue } from "../../../Dialogue";
-import { BUILDING_NAMES } from "../../../../constants";
 import crazyTraderBg from "../../../../assets/static/special_encounters/crazy_trader.png";
 
 export const CrazyTrader = () => {

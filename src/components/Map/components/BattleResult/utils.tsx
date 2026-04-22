@@ -1,6 +1,6 @@
-import { Icons } from "../../../../common";
 import { GEAR_SLOTS } from "../../../../entities/gear";
 import { GUN_TYPES } from "../../../../entities/guns";
+import { Icons } from "../../../../common";
 
 export const getGearIcon = (gear: GEAR_SLOTS, gunType?: GUN_TYPES) => {
   if (gear === GEAR_SLOTS.WEAPON) {

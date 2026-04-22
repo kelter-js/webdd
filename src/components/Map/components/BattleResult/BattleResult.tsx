@@ -1,11 +1,5 @@
-import { useGameState } from "../../../../stores";
-import { GameModal } from "../../../GameModal";
-import { Button, Divider, Stack, Typography } from "@mui/material";
-import { Icons, Tooltip } from "../../../../common";
-import { getGearIcon } from "./utils";
-
-import { DEFAULT_BAG_SIZE } from "../../../../constants";
 import { useMemo, useState } from "react";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import { v4 } from "uuid";
 
 import {
@@ -14,10 +8,22 @@ import {
   getPotionIcon,
   getPotionDescriptionByType,
 } from "../../../../utils";
-
-import { ResourceData } from "../../../../types";
-import { JUNK_DATA } from "../../../../constants/items";
+import { Icons, MainText, Tooltip } from "../../../../common";
 import { useSnackbar } from "../../../../contexts/Snackbar";
+import { DEFAULT_BAG_SIZE } from "../../../../constants";
+import { JUNK_DATA } from "../../../../constants/items";
+import { useGameState } from "../../../../stores";
+import { ResourceData } from "../../../../types";
+import { GameModal } from "../../../GameModal";
+import { getGearIcon } from "./utils";
+
+import {
+  ResourceSelectionButton,
+  RewardEntityContainer,
+  RewardExpText,
+} from "./BattleResult.styled";
+
+const BASE_DUNGEON_RESOURCE_PRICE = 50;
 
 export const BattleResult = () => {
   const {
@@ -83,42 +89,27 @@ export const BattleResult = () => {
     <GameModal width="500px" height="auto">
       <Stack alignItems="center" gap={1}>
         {money && (
-          <Stack alignItems="center" width="100%" direction="row" gap={1}>
+          <RewardEntityContainer>
             <Stack alignItems="center" justifyContent="center" width="55px">
               <Icons.GoldIcon />
             </Stack>
+
             <Typography fontSize={20} fontFamily="inherit">
               {money}
             </Typography>
-          </Stack>
+          </RewardEntityContainer>
         )}
 
-        <Stack alignItems="center" width="100%" direction="row" gap={1}>
-          <Typography
-            sx={{
-              color: "#c08040",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-            }}
-            fontFamily="inherit"
-            fontSize={30}
-          >
-            EXP
-          </Typography>
+        <RewardEntityContainer>
+          <RewardExpText>EXP</RewardExpText>
+
           <Typography fontSize={20} fontFamily="inherit">
             {experience}
           </Typography>
-        </Stack>
+        </RewardEntityContainer>
 
         {potions?.map(({ type, amount }) => (
-          <Stack
-            alignItems="center"
-            width="100%"
-            direction="row"
-            gap={1}
-            key={type}
-          >
+          <RewardEntityContainer key={type}>
             <Stack alignItems="center" justifyContent="center" width="55px">
               {getPotionIcon(type)}
             </Stack>
@@ -126,14 +117,15 @@ export const BattleResult = () => {
             <Typography fontSize={20} fontFamily="inherit">
               {getPotionDescriptionByType(type)} -
             </Typography>
+
             <Typography fontFamily="inherit" fontSize={20}>
               {amount}
             </Typography>
-          </Stack>
+          </RewardEntityContainer>
         ))}
 
         {junk && (
-          <Stack alignItems="center" width="100%" direction="row" gap={1}>
+          <RewardEntityContainer>
             <Stack alignItems="center" justifyContent="center" width="55px">
               <Icons.Scrap />
             </Stack>
@@ -141,17 +133,11 @@ export const BattleResult = () => {
             <Typography fontSize={20} fontFamily="inherit">
               {JUNK_DATA[junk].title}
             </Typography>
-          </Stack>
+          </RewardEntityContainer>
         )}
 
         {items?.map(({ type, gunType, tier, gearId, name }) => (
-          <Stack
-            alignItems="center"
-            width="100%"
-            direction="row"
-            gap={1}
-            key={gearId}
-          >
+          <RewardEntityContainer key={gearId}>
             <Stack alignItems="center" justifyContent="center" width="55px">
               {getGearIcon(type, gunType)}
             </Stack>
@@ -159,7 +145,7 @@ export const BattleResult = () => {
             <Typography fontFamily="inherit" fontSize={20}>
               {name} MK{tier}
             </Typography>
-          </Stack>
+          </RewardEntityContainer>
         ))}
       </Stack>
 
@@ -197,7 +183,7 @@ export const BattleResult = () => {
               Ваши ресурсы:
             </Typography>
 
-            {inventoryResources!.map((resourceItem) => {
+            {inventoryResources!.map((resourceItem, index) => {
               const { resource, id } = resourceItem;
 
               const isSelected = Boolean(
@@ -205,22 +191,18 @@ export const BattleResult = () => {
               );
 
               return (
-                <Tooltip title={getResourceDescription(resource)}>
+                <Tooltip title={getResourceDescription(resource)} key={index}>
                   <div>
-                    <Button
+                    <ResourceSelectionButton
                       disabled={isResourceBagFull && !isSelected}
                       key={id}
-                      sx={{
-                        minWidth: 40,
-                        border: isSelected ? "1px solid #e0c0a0" : "none",
-                        cursor: "pointer",
-                      }}
                       onClick={() =>
                         handleSelectResources(resourceItem, isSelected)
                       }
+                      isSelected={isSelected}
                     >
                       {getResourceIcon(resource, 40)}
-                    </Button>
+                    </ResourceSelectionButton>
                   </div>
                 </Tooltip>
               );
@@ -234,7 +216,7 @@ export const BattleResult = () => {
               Награда:
             </Typography>
 
-            {rewardResources!.map((resourceItem) => {
+            {rewardResources!.map((resourceItem, index) => {
               const { resource, id } = resourceItem;
 
               const isSelected = Boolean(
@@ -242,22 +224,18 @@ export const BattleResult = () => {
               );
 
               return (
-                <Tooltip title={getResourceDescription(resource)}>
+                <Tooltip title={getResourceDescription(resource)} key={index}>
                   <div>
-                    <Button
+                    <ResourceSelectionButton
                       disabled={isResourceBagFull && !isSelected}
                       key={id}
-                      sx={{
-                        minWidth: 40,
-                        border: isSelected ? "1px solid #e0c0a0" : "none",
-                        cursor: "pointer",
-                      }}
+                      isSelected={isSelected}
                       onClick={() =>
                         handleSelectResources(resourceItem, isSelected)
                       }
                     >
                       {getResourceIcon(resource, 40)}
-                    </Button>
+                    </ResourceSelectionButton>
                   </div>
                 </Tooltip>
               );
@@ -283,7 +261,7 @@ export const BattleResult = () => {
               ({ id }) => !selectedResourcesIds.includes(id),
             );
 
-            goldAmount = leftOverResources.length * 50;
+            goldAmount = leftOverResources.length * BASE_DUNGEON_RESOURCE_PRICE;
           }
 
           resetBattle(
@@ -296,21 +274,9 @@ export const BattleResult = () => {
           );
         }}
       >
-        <Typography
-          sx={{
-            width: "100%",
-            color: "#c08040",
-            fontWeight: "bold",
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            padding: (theme) => theme.spacing(1),
-            borderBottom: "1px solid #5a3020",
-            fontFamily: "Cormorant Unicase",
-          }}
-          variant="h5"
-        >
+        <MainText borderBottom="1px solid #5a3020" variant="h5">
           Победа!
-        </Typography>
+        </MainText>
       </Button>
     </GameModal>
   );

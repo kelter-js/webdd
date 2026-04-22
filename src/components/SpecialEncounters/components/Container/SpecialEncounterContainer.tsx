@@ -1,7 +1,7 @@
 import { SPECIAL_ENCOUNTERS } from "../../../../entities/specialEncounters";
+import { ImmortalWarrior } from "../ImmortalWarrior";
 import { useGameState } from "../../../../stores";
 import { CrazyTrader } from "../CrazyTrader";
-import { ImmortalWarrior } from "../ImmortalWarrior";
 import { Widow } from "../Widow";
 
 export const SpecialEncounterContainer = () => {

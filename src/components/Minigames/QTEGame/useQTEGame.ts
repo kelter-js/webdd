@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-import { NO_MORE_ATTEMPTS } from "./constants";
+import { MAX_INTERVAL, MIN_DELAY, NO_MORE_ATTEMPTS } from "./constants";
+import { ONE_SECOND_IN_MS } from "../../../constants";
 import { useGameState } from "../../../stores";
 import { generateSequence } from "./utils";
 import { MiniGameProps } from "../types";
-
-// REFACTORING CHECKED ✅
 
 export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
   const {
@@ -40,8 +39,6 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
     }
   }, [currentIndex, sequence, onWin]);
 
-  const MAX_INTERVAL = 3.0;
-
   const startGame = () => {
     if (gameInterval.current !== null) {
       clearInterval(gameInterval.current);
@@ -53,7 +50,7 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
     setGameActiveFlag(true);
     startInterval.current = 0;
 
-    startTimeRef.current = performance.now(); // ← ВАЖНО
+    startTimeRef.current = performance.now();
 
     if (startBtnRef.current) {
       startBtnRef.current.style.display = "none";
@@ -78,7 +75,8 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
   const gameLoop = () => {
     if (!gameActive.current) return;
 
-    const elapsed = (performance.now() - startTimeRef.current) / 1000;
+    const elapsed =
+      (performance.now() - startTimeRef.current) / ONE_SECOND_IN_MS;
 
     startInterval.current = elapsed;
 
@@ -100,8 +98,8 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
     if (resultRef.current) {
       resultRef.current.style.display = "block";
       resultRef.current.innerHTML = success
-        ? "🎉 ПОБЕДА! Вы выдержали испытание 8 секунд"
-        : "💀 ПРОВАЛ. Попробуйте ещё раз!";
+        ? " ПОБЕДА! Вы выдержали испытание 8 секунд"
+        : " ПРОВАЛ. Попробуйте ещё раз!";
       resultRef.current.style.color = success ? "#0f0" : "#d33";
     }
 
@@ -139,7 +137,7 @@ export const useQTEGame = ({ onFail, onWin }: MiniGameProps) => {
       if (startInterval.current >= MAX_INTERVAL) {
         endGame(false);
       }
-    }, 100);
+    }, MIN_DELAY);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);

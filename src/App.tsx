@@ -99,6 +99,9 @@ export const App = () => {
   );
 };
 
+// 23.04
+// продолжаем рефакторинг от Leveling компонента + заполнить index.ts в /components
+
 // 22.04
 // рефакторинг components с заполнением index.ts
 

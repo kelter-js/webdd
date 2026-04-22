@@ -284,7 +284,7 @@ export interface StoreState {
   handleExitDungeon: VoidFunction;
   toggleCharacterPanel: VoidFunction;
   setQuestData: (data: QuestReward | null) => void;
-  resetQuest: () => void;
+  resetQuest: VoidFunction;
   updateDialogFlags: (flags: DIALOGUE_FLAGS[]) => void;
   setGameOver: VoidFunction;
   resetGame: VoidFunction;

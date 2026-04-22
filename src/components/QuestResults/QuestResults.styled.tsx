@@ -1,4 +1,4 @@
-import { Box, Button, styled, Typography } from "@mui/material";
+import { Box, Button, styled, Typography, Modal } from "@mui/material";
 
 export const ModalContent = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -14,6 +14,22 @@ export const ModalContent = styled(Box)(({ theme }) => ({
     rgba(50, 30, 15, 0.9)
   )`,
   color: "#e0c0a0",
+}));
+
+export const ExpHeader = styled(Typography)(() => ({
+  color: "#c08040",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  fontSize: 30,
+  fontFamily: "inherit",
+}));
+
+export const ModalWindow = styled(Modal)(() => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backdropFilter: "blur(2px)",
 }));
 
 export const ResultHeader = styled(Typography)({

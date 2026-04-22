@@ -1,4 +1,5 @@
 import { Box, styled } from "@mui/material";
+
 import { FadeContainerProps } from "./types";
 
 export const FadeContainer = styled(Box, {

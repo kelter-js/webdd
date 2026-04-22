@@ -1,10 +1,11 @@
-import { useGetDialogue } from "../../../../hooks";
+import { useEffect } from "react";
+
 import { useAppState, useGameState } from "../../../../stores";
+import { BUILDING_NAMES } from "../../../../constants";
+import { useGetDialogue } from "../../../../hooks";
+import { ShootingRange } from "../../../Minigames";
 import { Dialogue } from "../../../Dialogue";
 import shootingBg from "../../../../assets/static/special_encounters/shooting.png";
-import { ShootingRange } from "../../../Minigames";
-import { useEffect } from "react";
-import { BUILDING_NAMES } from "../../../../constants";
 
 export const ImmortalWarrior = () => {
   useEffect(() => {

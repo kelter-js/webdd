@@ -1,11 +1,10 @@
 import { FC } from "react";
+import { Stack, Typography } from "@mui/material";
 
+import { Icons, Tooltip } from "../../../common";
 import { getPotionIcon } from "../../../utils";
 import { PotionProps } from "./types";
 import * as S from "./Potion.styled";
-import { Stack, Typography } from "@mui/material";
-import { Icons } from "../../../common";
-import { Tooltip } from "../../../common";
 
 const POTION_SIZE = 55;
 

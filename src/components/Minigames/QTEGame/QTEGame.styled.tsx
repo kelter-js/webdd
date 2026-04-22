@@ -1,4 +1,11 @@
-import { styled, Box } from "@mui/material";
+import { styled, Box, Modal } from "@mui/material";
+
+export const ModalWindow = styled(Modal)(() => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backdropFilter: "blur(2px)",
+}));
 
 export const SequenceContainer = styled(Box)(({ theme: { spacing } }) => ({
   marginTop: spacing(4),
@@ -60,7 +67,6 @@ export const QteContainer = styled(Box)(({ theme }) => ({
   width: "500px",
 }));
 
-// Стиль символа (базовый)
 export const SymbolBase = styled(Box)({
   display: "flex",
   alignItems: "center",
@@ -75,7 +81,6 @@ export const SymbolBase = styled(Box)({
   transition: "all 0.3s ease",
 });
 
-// Прошлый/следующий символ (бледный)
 export const AdjacentSymbol = styled(SymbolBase)({
   border: "1px solid #5a3020",
   backgroundColor: "rgba(30, 20, 10, 0.5)",
@@ -83,7 +88,6 @@ export const AdjacentSymbol = styled(SymbolBase)({
   opacity: 0.7,
 });
 
-// Текущий символ (акцентный)
 export const CurrentSymbol = styled(SymbolBase)({
   border: "2px solid #c08040",
   backgroundColor: "rgba(50, 30, 15, 0.8)",

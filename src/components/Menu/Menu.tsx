@@ -1,14 +1,12 @@
 import { useRef } from "react";
 import { Button } from "@mui/material";
 
+import { useGameState, useAppState } from "../../stores";
+import { resetDialogs } from "../../constants/dialogs";
 import { SAVE_MODES } from "../../entities/saveModes";
 import { useClickOutside } from "../../hooks";
 import { SaveList } from "../SaveList";
 import { MenuButtonText, ModalContent, ModalWindow } from "./Menu.styled";
-import { useGameState, useAppState } from "../../stores";
-import { resetDialogs } from "../../constants/dialogs";
-
-// REFACTORING CHECKED ✅
 
 export const Menu = () => {
   const { isMenuOpen, toggleMenu, toggleSaveList, saveMode, resetMenu, reset } =

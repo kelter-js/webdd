@@ -1,21 +1,22 @@
-import { motion } from "framer-motion";
 import { useMemo, FC } from "react";
+import { motion } from "framer-motion";
 
-import staticTarget from "../../../../../assets/static/target.png";
+import { ENIMATE_IDLE, TRANSITION_CONFIG } from "./constants";
 import { TargetProps } from "./types";
+import staticTarget from "../../../../../assets/static/target.png";
+
+const DISTANCE = 40;
 
 export const Target: FC<TargetProps> = ({
   isScattering,
   onScatterComplete,
 }) => {
-  // случайное направление разлёта (фиксируется на инстанс)
   const scatterOffset = useMemo(() => {
     const angle = Math.random() * Math.PI * 2;
-    const distance = 40;
 
     return {
-      x: Math.cos(angle) * distance,
-      y: Math.sin(angle) * distance,
+      x: Math.cos(angle) * DISTANCE,
+      y: Math.sin(angle) * DISTANCE,
     };
   }, []);
 
@@ -31,26 +32,15 @@ export const Target: FC<TargetProps> = ({
               y: scatterOffset.y,
               filter: "blur(6px)",
             }
-          : {
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
-              filter: "blur(0px)",
-            }
+          : ENIMATE_IDLE
       }
-      transition={{
-        duration: 1,
-        ease: "easeOut",
-      }}
+      transition={TRANSITION_CONFIG}
       onAnimationComplete={() => {
         if (isScattering) {
           onScatterComplete?.();
         }
       }}
-      style={{
-        willChange: "transform, opacity, filter",
-      }}
+      style={{ willChange: "transform, opacity, filter" }}
     >
       <img src={staticTarget} />
     </motion.div>

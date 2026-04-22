@@ -1,12 +1,10 @@
 import { FC } from "react";
-import { Button, Modal, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
 import { useQTEGame } from "./useQTEGame";
 import { MiniGameProps } from "../types";
 import { Text } from "../../../common/styled.index";
 import * as S from "./QTEGame.styled";
-
-// REFACTORING CHECKED ✅
 
 export const QTEGame: FC<MiniGameProps> = (props) => {
   const {
@@ -21,16 +19,7 @@ export const QTEGame: FC<MiniGameProps> = (props) => {
   } = useQTEGame(props);
 
   return (
-    <Modal
-      open={true}
-      disableEscapeKeyDown
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backdropFilter: "blur(2px)",
-      }}
-    >
+    <S.ModalWindow open={true} disableEscapeKeyDown>
       <S.QteContainer>
         {gameActiveFlag && (
           <S.SequenceContainer>
@@ -80,6 +69,6 @@ export const QTEGame: FC<MiniGameProps> = (props) => {
           <S.Result ref={resultRef} />
         </Stack>
       </S.QteContainer>
-    </Modal>
+    </S.ModalWindow>
   );
 };
