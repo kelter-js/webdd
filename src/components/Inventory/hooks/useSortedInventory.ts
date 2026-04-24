@@ -7,7 +7,32 @@ import {
 } from "../types";
 import { CLASS_GUN_RESTRICTIONS } from "../../../constants/characters";
 import { GEAR_SLOTS } from "../../../entities/gear";
-import { Item } from "../../../types/gameState";
+import { CLASSES } from "../../../entities/characterClasses";
+import { GUN_TYPES } from "../../../entities/guns";
+
+const isMismatchTierFilter = (
+  tier: SORT_TYPES_BY_TIER,
+  itemAllOverTier: number,
+) =>
+  (tier === SORT_TYPES_BY_TIER.FIRST && itemAllOverTier !== 1) ||
+  (tier === SORT_TYPES_BY_TIER.SECOND && itemAllOverTier !== 2) ||
+  (tier === SORT_TYPES_BY_TIER.THIRD && itemAllOverTier !== 3);
+
+const isMismatchUpgradeTier = (
+  upgradeTier: SORT_TYPES_BY_UPGRADE,
+  itemTier: number,
+) =>
+  (upgradeTier === SORT_TYPES_BY_UPGRADE.FIRST && itemTier !== 1) ||
+  (upgradeTier === SORT_TYPES_BY_UPGRADE.SECOND && itemTier !== 2) ||
+  (upgradeTier === SORT_TYPES_BY_UPGRADE.THIRD && itemTier !== 3);
+
+const isMismatchClassFilter = (
+  classFilter: CLASSES,
+  itemType: GEAR_SLOTS,
+  gunType: GUN_TYPES,
+) =>
+  itemType !== GEAR_SLOTS.WEAPON ||
+  !CLASS_GUN_RESTRICTIONS[classFilter].includes(gunType);
 
 export const useSortedInventory = ({
   inventory,
@@ -21,74 +46,33 @@ export const useSortedInventory = ({
 
     const normalizedSearchTerm = searchTerm?.toLocaleLowerCase();
 
-    return inventory.reduce<Item[]>((acc, item) => {
-      let isIncluded = false;
-
+    return inventory.filter((item) => {
       if (tier) {
-        switch (tier) {
-          case SORT_TYPES_BY_TIER.FIRST: {
-            isIncluded = item.overAllTier === 1;
-            break;
-          }
-
-          case SORT_TYPES_BY_TIER.SECOND: {
-            isIncluded = item.overAllTier === 2;
-            break;
-          }
-
-          case SORT_TYPES_BY_TIER.THIRD: {
-            isIncluded = item.overAllTier === 3;
-            break;
-          }
+        if (isMismatchTierFilter(tier, item.overAllTier)) {
+          return false;
         }
       }
 
       if (upgradeTier) {
-        switch (upgradeTier) {
-          case SORT_TYPES_BY_UPGRADE.FIRST: {
-            isIncluded = item.tier === 1;
-            break;
-          }
-
-          case SORT_TYPES_BY_UPGRADE.SECOND: {
-            isIncluded = item.tier === 2;
-            break;
-          }
-
-          case SORT_TYPES_BY_UPGRADE.THIRD: {
-            isIncluded = item.tier === 3;
-            break;
-          }
+        if (isMismatchUpgradeTier(upgradeTier, item.tier)) {
+          return false;
         }
       }
 
       if (classFilter) {
-        if (item.type === GEAR_SLOTS.WEAPON) {
-          isIncluded = CLASS_GUN_RESTRICTIONS[classFilter].includes(
-            item.gunType!,
-          );
-        } else {
-          return acc;
+        if (isMismatchClassFilter(classFilter, item.type, item.gunType!)) {
+          return false;
         }
       }
 
       if (normalizedSearchTerm) {
-        if (item.name.toLocaleLowerCase().includes(normalizedSearchTerm)) {
-          isIncluded = true;
-        } else if (isIncluded) {
-          isIncluded = false;
+        if (!item.name.toLocaleLowerCase().includes(normalizedSearchTerm)) {
+          return false;
         }
       }
 
-      if (
-        isIncluded ||
-        (!normalizedSearchTerm && !tier && !upgradeTier && !classFilter)
-      ) {
-        acc.push(item);
-      }
-
-      return acc;
-    }, []);
+      return true;
+    });
   }, [inventory, searchTerm, tier, upgradeTier, classFilter]);
 
   return inventoryList;

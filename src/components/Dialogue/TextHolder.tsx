@@ -17,6 +17,16 @@ export const TextHolder: FC<TextHolderProps> = ({ text }) => {
 
   const playerRef = getPlayerRef(DIALOGUE_AMBIENT_PLAYER_REF);
 
+  const handleCancelAnimation = () => {
+    setVisibleText(text);
+
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    startTime.current = null;
+  };
+
   useEffect(() => {
     handleSetSrc(DIALOGUE_AMBIENT_PLAYER_REF, typewriteEffect);
   }, []);
@@ -50,5 +60,9 @@ export const TextHolder: FC<TextHolderProps> = ({ text }) => {
     };
   }, [text, duration]);
 
-  return <SmoothText variant="h6">{visibleText}</SmoothText>;
+  return (
+    <SmoothText onClick={handleCancelAnimation} variant="h6">
+      {visibleText}
+    </SmoothText>
+  );
 };
