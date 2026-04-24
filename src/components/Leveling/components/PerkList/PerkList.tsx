@@ -1,8 +1,10 @@
 import { FC } from "react";
-import { PerkListProps } from "./types";
-import { Tooltip } from "../../../../common";
-import { AbilityIcon } from "../../Leveling.styled";
+
+import { ABILITY_ANIMATE_CONFIG } from "./constants";
 import { getImgSrcByClass } from "../../constants";
+import { Tooltip } from "../../../../common";
+import { PerkListProps } from "./types";
+import { AbilityIcon } from "../../Leveling.styled";
 
 export const PerkList: FC<PerkListProps> = ({
   perksList,
@@ -13,6 +15,12 @@ export const PerkList: FC<PerkListProps> = ({
 }) => {
   return perksList.map(({ id, description }, index) => {
     const isPerkSelected = selectedPerksList.includes(id);
+
+    const handleSelectPerk = () => {
+      if (canAcquirePerk) {
+        onSelect(id);
+      }
+    };
 
     return (
       <Tooltip
@@ -38,25 +46,10 @@ export const PerkList: FC<PerkListProps> = ({
         <AbilityIcon
           isSelected={isPerkSelected}
           canAcquirePerk={canAcquirePerk}
-          onClick={() => {
-            if (canAcquirePerk) {
-              onSelect(id);
-            }
-          }}
+          onClick={handleSelectPerk}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          animate={
-            isPerkSelected
-              ? {
-                  scale: [1, 1.1, 1],
-                  boxShadow: [
-                    "0 0 0px rgba(160, 80, 80, 0)",
-                    "0 0 20px rgba(255, 0, 0, 0.8)",
-                    "0 0 0px rgba(160, 80, 80, 0)",
-                  ],
-                }
-              : {}
-          }
+          animate={isPerkSelected ? ABILITY_ANIMATE_CONFIG : undefined}
           transition={{ duration: 0.3 }}
           style={{
             marginLeft: index === 0 ? "60px" : 0,

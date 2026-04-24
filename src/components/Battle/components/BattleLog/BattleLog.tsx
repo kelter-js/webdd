@@ -1,8 +1,9 @@
+import { useEffect, useRef } from "react";
+import { Typography } from "@mui/material";
+
+import { useGameState } from "../../../../stores/GameState/GameState";
 import logsScreen from "../../../../assets/static/logs.png";
 import { LogsContainer, MessagesContainer } from "./BattleLog.styled";
-import { Typography } from "@mui/material";
-import { useGameState } from "../../../../stores/GameState/GameState";
-import { useEffect, useRef } from "react";
 
 export const BattleLog = () => {
   const {
@@ -21,6 +22,7 @@ export const BattleLog = () => {
   return (
     <LogsContainer>
       <img src={logsScreen} />
+
       {battle?.messages?.length && (
         <MessagesContainer ref={containerElement}>
           {(battle?.messages).map((item, index) => (

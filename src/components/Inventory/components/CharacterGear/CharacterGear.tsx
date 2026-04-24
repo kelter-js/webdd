@@ -1,15 +1,16 @@
+import { FC } from "react";
 import { Stack, Typography } from "@mui/material";
-import character from "../../../../assets/static/character_bg.png";
-import namePattern from "../../../../assets/static/inventory_name.png";
-import * as S from "../../Inventory.styled";
+
+import { getUnitAvatarSrc } from "../../../Battle/components/CharactersBar/utils";
+import { CLASS_DESCRIPTIONS } from "../../../../constants/characters";
 import { CharacterCell } from "../CharacterCell/CharacterCell";
 import { GEAR_SLOTS } from "../../../../entities/gear";
-import { FC } from "react";
-import { CharacterGearProps } from "./types";
-import { useGameState } from "../../../../stores";
-import { CLASS_DESCRIPTIONS } from "../../../../constants/characters";
 import { Icons, Tooltip } from "../../../../common";
-import { getUnitAvatarSrc } from "../../../Battle/components/CharactersBar/utils";
+import { useGameState } from "../../../../stores";
+import { CharacterGearProps } from "./types";
+import namePattern from "../../../../assets/static/inventory_name.png";
+import character from "../../../../assets/static/character_bg.png";
+import * as S from "../../Inventory.styled";
 
 export const CharacterGear: FC<CharacterGearProps> = ({
   name,
@@ -61,28 +62,11 @@ export const CharacterGear: FC<CharacterGearProps> = ({
         />
       </Stack>
 
-      <img
-        style={{
-          width: "110px",
-          height: "110px",
-          position: "absolute",
-          top: 13,
-          left: 242,
-        }}
+      <S.CharacterAvatar
         src={getUnitAvatarSrc(characterClass, currentHealth <= 0)}
       />
 
-      <img
-        src={namePattern}
-        style={{
-          position: "relative",
-          top: 275,
-          left: 0,
-          width: "100%",
-          height: "135px",
-          zIndex: 5,
-        }}
-      />
+      <S.NamePattern src={namePattern} />
 
       <Stack position="absolute" zIndex="5" left="45px" bottom="-4px" gap={2}>
         <Typography fontFamily="inherit" variant="h4" color="#c08040">
@@ -109,6 +93,7 @@ export const CharacterGear: FC<CharacterGearProps> = ({
                 </Typography>
               </Stack>
             </Tooltip>
+
             <Tooltip title="Защита">
               <Stack direction="column" gap={0.5} alignItems="center">
                 <Icons.Defense size={40} />

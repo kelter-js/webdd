@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import { useGameState } from "../../../stores";
+
 import {
   Battle,
   BattleCharacterModel,
   Creature,
 } from "../../../types/gameState";
 import { TURN_STATES } from "../../../entities";
-
-// по окончанию floating damage или shooting анимации вызывается ВСЕГДА handleSelectNextPlayer или handleSelectNextEnemy и в аргументы передаем АКТУАЛЬНОЕ состояние
-// смена ХОДА ТОЛЬКО ЧЕРЕЗ ЭТУ ФУНКЦИЮ
+import { useGameState } from "../../../stores";
 
 export const usePlayerControl = () => {
   const {
@@ -24,12 +22,6 @@ export const usePlayerControl = () => {
   const { turn } = battle || {};
 
   const [currentEnemy, setSelectedEnemy] = useState<Creature | undefined>();
-  // !!! убираем возможность игроку выбирать персонажа для хода самостоятельно !!!
-  // вместо этого нужно сделать так - если ход игрока - выбираем персонажа - и делаем ход
-  // далее после его хода переключаем на другого члена группа
-  // по факту, при переключении на персонажа - нужно на нем отработать имеющийся эффект - яд или что-то иное, если оно есть
-  // тоже самое с противником - при его ходе, проверяем есть ли эффекты и применяем сначала их
-  // если currentDuration - 1 === 0 - то сразу убираем эффекты дебаффа, после нанесения урона
 
   useEffect(() => {
     if (turn === TURN_STATES.ENEMY_TURN) {
@@ -46,12 +38,8 @@ export const usePlayerControl = () => {
   }, [battle?.enemy.party, battle?.turn]);
 
   const handleSelectNextPlayer = (newBattleState: Battle) => {
-    // расширить, возможно на игроке висит эффект оглушения или какой-то другой, который мешает делать ход
-    // возможно другие проверки кроме здоровья
-
     const updatedEffects = { ...newBattleState.player.effects };
 
-    // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
     if (selectedPlayer && updatedEffects[selectedPlayer.name]) {
       updatedEffects[selectedPlayer.name] = {
         ...updatedEffects[selectedPlayer.name],
@@ -96,12 +84,8 @@ export const usePlayerControl = () => {
   };
 
   const handleSelectNextEnemy = (newBattleModel: Battle) => {
-    // расширить, возможно на игроке висит эффект оглушения или какой-то другой, который мешает делать ход
-    // возможно другие проверки кроме здоровья
-
     const updatedEffects = { ...newBattleModel.enemy.effects };
 
-    // Сбрасываем флаг только если персонаж существовал и у него есть запись в эффектах
     if (currentEnemy && updatedEffects[currentEnemy.id!]) {
       updatedEffects[currentEnemy.id!] = {
         ...updatedEffects[currentEnemy.id!],
@@ -144,7 +128,6 @@ export const usePlayerControl = () => {
   };
 
   useEffect(() => {
-    // mock
     if (turn === TURN_STATES.PLAYER_TURN && battle?.player) {
       const readyToBattlePartyMembers = (battle?.player?.party || []).filter(
         (character) => character.currentHealth > 0 && character.hasTurn,

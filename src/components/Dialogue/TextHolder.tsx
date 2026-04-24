@@ -1,9 +1,10 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { SmoothText } from "./Dialogue.styled";
+
+import { DIALOGUE_AMBIENT_PLAYER_REF } from "./constants";
+import { usePlayer } from "../../contexts/Player";
 import { TextHolderProps } from "./types";
 import typewriteEffect from "../../assets/audio/typewriter.mp3";
-import { usePlayer } from "../../contexts/Player";
-import { DIALOGUE_AMBIENT_PLAYER_REF } from "./constants";
+import { SmoothText } from "./Dialogue.styled";
 
 const TEXT_DURATION_PER_SYMBOL = 50;
 

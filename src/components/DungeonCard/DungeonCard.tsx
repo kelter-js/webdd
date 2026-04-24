@@ -6,8 +6,6 @@ import { QuestCardProps } from "./types";
 import { DUNGEONS } from "../../entities";
 import * as S from "./DungeonCard.styled";
 
-// REFACTORING CHECKED ✅
-
 export const DungeonCard: FC<QuestCardProps> = ({
   type,
   selectedDifficulty,

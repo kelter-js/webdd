@@ -7,6 +7,7 @@ import { useAppState, useGameState } from "../../stores";
 import { DungeonCard } from "./DungeonCard";
 import { GameModal } from "../GameModal";
 import { StyledSelect } from "../../common/styled.index";
+import { CardsContainer } from "./DungeonCard.styled";
 
 export const DungeonContainer = () => {
   const {
@@ -59,18 +60,11 @@ export const DungeonContainer = () => {
         </Typography>
       </Stack>
 
-      <Stack
-        direction="row"
-        justifyContent="center"
-        gap={5}
-        height="100%"
-        pt={14}
-        alignItems="center"
-      >
+      <CardsContainer>
         {availableDungeonTypes.map((type) => (
           <DungeonCard type={type} key={type} selectedDifficulty={difficulty} />
         ))}
-      </Stack>
+      </CardsContainer>
     </GameModal>
   );
 };

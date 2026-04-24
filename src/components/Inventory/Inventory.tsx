@@ -3,14 +3,13 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { Stack } from "@mui/material";
 
-import { CharacterGear } from "./components/CharacterGear";
-import { InventoryContainer } from "./InventoryContainer";
-import { useGameState } from "../../stores";
+import { SortContainer } from "./components/SortContainer/SortContainer";
 
 import { SORT_TYPES_BY_TIER, SORT_TYPES_BY_UPGRADE } from "./types";
+import { CharacterGear } from "./components/CharacterGear";
+import { InventoryContainer } from "./InventoryContainer";
 import { CLASSES } from "../../entities/characterClasses";
-
-import { SortContainer } from "./components/SortContainer/SortContainer";
+import { useGameState } from "../../stores";
 import * as S from "./Inventory.styled";
 
 export const Inventory = () => {

@@ -1,26 +1,16 @@
 import { ChangeEventHandler, KeyboardEvent, useState } from "react";
 import { Button, Stack } from "@mui/material";
 
-import { useGameState, useAppState } from "../../../../stores";
-import * as S from "./SetNameModal.styled";
 import { CLASSES } from "../../../../entities/characterClasses";
+import { useGameState, useAppState } from "../../../../stores";
+import { SearchField } from "../../../../common/SearchField";
+import { SLIDERS } from "../../../../entities/sliders";
+import { CLASS_DESCRIPTIONS } from "./constants";
+import { FLAGS } from "../../../../constants";
 import medic from "../../../../assets/classIcons/medical.svg";
 import sniper from "../../../../assets/classIcons/sniper.svg";
 import tank from "../../../../assets/classIcons/soldier.svg";
-import { FLAGS } from "../../../../constants";
-import { SLIDERS } from "../../../../entities/sliders";
-import { SearchField } from "../../../../common/SearchField";
-
-// REFACTORING CHECKED ✅
-
-const CLASS_DESCRIPTIONS = {
-  [CLASSES.SNIPER]:
-    "Класс стрелка - рассчитан на нанесение большого количества урона, мало защиты.",
-  [CLASSES.MEDIC]:
-    "Класс поддержки - направлен на лечение сопартийцев, средняя защита и урон.",
-  [CLASSES.TANK]:
-    "Класс инженера - способен пережить большое количество ранений, наносит мало урона.",
-};
+import * as S from "./SetNameModal.styled";
 
 export const SetNameModal = () => {
   const [name, setName] = useState("");
@@ -38,7 +28,6 @@ export const SetNameModal = () => {
     } else {
       setFading(true);
       setPlayerName(name, selectedClass);
-      // FIXME: передавать нужно реальный объект слайдеров
       setSliders(SLIDERS.INTRO);
       updateFlags(FLAGS.GAME_INITIATED);
       setNewGame(true);
@@ -86,38 +75,26 @@ export const SetNameModal = () => {
           />
 
           <Stack gap={1} direction="row" justifyContent="center">
-            <Button
+            <S.CharacterClassButton
               onClick={() => setSelectedClass(CLASSES.SNIPER)}
-              sx={{
-                ...(selectedClass === CLASSES.SNIPER && {
-                  border: "2px solid #c0a080",
-                }),
-              }}
+              isSelected={selectedClass === CLASSES.SNIPER}
             >
               <img src={sniper} />
-            </Button>
+            </S.CharacterClassButton>
 
-            <Button
+            <S.CharacterClassButton
               onClick={() => setSelectedClass(CLASSES.MEDIC)}
-              sx={{
-                ...(selectedClass === CLASSES.MEDIC && {
-                  border: "2px solid #c0a080",
-                }),
-              }}
+              isSelected={selectedClass === CLASSES.MEDIC}
             >
               <img src={medic} />
-            </Button>
+            </S.CharacterClassButton>
 
-            <Button
+            <S.CharacterClassButton
               onClick={() => setSelectedClass(CLASSES.TANK)}
-              sx={{
-                ...(selectedClass === CLASSES.TANK && {
-                  border: "2px solid #c0a080",
-                }),
-              }}
+              isSelected={selectedClass === CLASSES.TANK}
             >
               <img src={tank} />
-            </Button>
+            </S.CharacterClassButton>
           </Stack>
 
           <div>

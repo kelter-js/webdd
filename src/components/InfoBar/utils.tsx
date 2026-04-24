@@ -1,11 +1,10 @@
-import { Icons } from "../../common";
 import {
   FIRST_TIER_DUNGEONS_AMOUNT,
   SECOND_TIER_DUNGEONS_AMOUNT,
   THIRD_TIER_DUNGEONS_AMOUNT,
 } from "../../constants";
-
 import { DUNGEONS, ECONOMIC_TYPES } from "../../entities";
+import { Icons } from "../../common";
 
 export const getQuestInfo = (questType?: DUNGEONS) => {
   if (questType === DUNGEONS.CLOSE_PORTAL) {

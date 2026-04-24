@@ -1,13 +1,13 @@
 import { FC, useState, MouseEvent, useMemo } from "react";
-import { Stack } from "@mui/material";
 import { useDrag } from "react-dnd";
 
-import emptySlot from "../../assets/static/empty_slot.png";
-import { Item } from "../../types/gameState";
-
-import { ItemDataModal } from "../../common/ItemDataModal";
-import { getItemIcon } from "../../utils";
 import { InventoryCellProps } from "./components/CharacterCell/types";
+import { ItemDataModal } from "../../common/ItemDataModal";
+import { ItemIconContainer } from "../../common";
+import { Item } from "../../types/gameState";
+import { getItemIcon } from "../../utils";
+import emptySlot from "../../assets/static/empty_slot.png";
+import { InventoryCellContainer, ItemContainer } from "./Inventory.styled";
 
 export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
@@ -27,7 +27,6 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
     unknown,
     { isDragging: boolean }
   >({
-    //Здесь будет указан тип, приходящий из массива инвентаря, чтобы в будущем понимать - шлем, броня или оружие это
     type,
     item,
     canDrag: true,
@@ -43,45 +42,19 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
   }, [type, item?.baseId]);
 
   return (
-    <Stack
+    <InventoryCellContainer
+      isDragging={isDragging}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       ref={(node: any) => {
         drag(node);
       }}
-      sx={{
-        border: `${isDragging ? "5px" : "1px"} solid ${
-          isDragging ? "gold" : "transparent"
-        }`,
-        height: 190,
-        width: 190,
-        flexGrow: 0,
-        opacity: isDragging ? 0 : 1,
-        cursor: "pointer",
-      }}
     >
-      <Stack
-        style={{
-          position: "relative",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        direction="row"
-      >
+      <ItemContainer>
         <img src={emptySlot} style={{ width: "100%", height: "100%" }} />
-        <img
-          src={itemIcon}
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            objectFit: "contain",
-          }}
-        />
-      </Stack>
+
+        <ItemIconContainer src={itemIcon} />
+      </ItemContainer>
 
       {item && anchorEl && (
         <ItemDataModal
@@ -91,6 +64,6 @@ export const InventoryCell: FC<InventoryCellProps> = ({ type, item }) => {
           displayDescription
         />
       )}
-    </Stack>
+    </InventoryCellContainer>
   );
 };

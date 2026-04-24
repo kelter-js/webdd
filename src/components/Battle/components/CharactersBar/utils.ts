@@ -1,33 +1,25 @@
-import { CLASSES } from "../../../../entities/characterClasses";
-
-import sniper from "../../../../assets/avatars/sniper.png";
-import medic from "../../../../assets/avatars/medic.png";
-import skeleton from "../../../../assets/avatars/dead.png";
-import tank from "../../../../assets/avatars/tank.png";
 import {
   Battle,
   Creature,
-  Effects,
-  GameStateData,
   PERK_ID_DATA,
   Statistics,
-  StoreState,
 } from "../../../../types/gameState";
-import { getRandom } from "../../../../utils";
-import { calculateCritDamage } from "../../../../stores/constants";
 import {
-  ABILITY_PERKS,
   MEDIC_PERKS,
   SNIPER_PERKS,
   TANK_PERKS,
 } from "../../../../constants/perks";
+import { calculateCritDamage } from "../../../../stores/constants";
+import { CLASSES } from "../../../../entities/characterClasses";
 import { EFFECTS } from "../../../../entities/effects";
-import { DamageData } from "../../types";
 import { generatePlayerMessage } from "../../utils";
 import { ENEMIES } from "../../../../entities";
-import { POTION_TYPES } from "../../../../entities/consumables";
-import { getPotionHealth } from "../../../../stores/utils";
-import { duration } from "@mui/material";
+import { getRandom } from "../../../../utils";
+import { DamageData } from "../../types";
+import sniper from "../../../../assets/avatars/sniper.png";
+import medic from "../../../../assets/avatars/medic.png";
+import skeleton from "../../../../assets/avatars/dead.png";
+import tank from "../../../../assets/avatars/tank.png";
 
 export const getUnitAvatarSrc = (unitType: CLASSES, isDead: boolean) => {
   if (isDead) {
@@ -144,8 +136,6 @@ export const calculateDamage = (
   if (isCrit) {
     damage = Math.round(calculateCritDamage(damage, sourcePlayer.critStrike));
   }
-
-  //FIXME: нужна доработка по текущим перкам
 
   const perkIds = playerData.perksList.map(({ id }) => id);
 

@@ -15,16 +15,16 @@ import {
   FIFTH_TIER_PERKS,
   PERK_DATA_BY_CLASSES,
 } from "../../constants/perks";
+import {
+  ANIMATION_CONTAINER_STYLES,
+  STAT_ANIMATE_CONFIG,
+  STAT_TRANSITION_CONFIG,
+} from "./constants";
 import { PERK_ID_DATA } from "../../types/gameState";
 import { PerkList } from "./components/PerkList";
 import { CharacterCardProps } from "./types";
 import { useGameState } from "../../stores";
-import {
-  AbilityGrid,
-  CharacterContainer,
-  CharacterName,
-  StatItem,
-} from "./Leveling.styled";
+import * as S from "./Leveling.styled";
 
 export const CharacterCard: FC<CharacterCardProps> = ({
   name,
@@ -70,29 +70,20 @@ export const CharacterCard: FC<CharacterCardProps> = ({
   );
 
   return (
-    <CharacterContainer>
+    <S.CharacterContainer>
       <motion.div
-        style={{ height: "100%", display: "flex", flexDirection: "column" }}
+        style={ANIMATION_CONTAINER_STYLES}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={STAT_TRANSITION_CONFIG}
       >
-        <CharacterName variant="h2">{name}</CharacterName>
+        <S.CharacterName variant="h2">{name}</S.CharacterName>
 
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#a08060",
-            textAlign: "center",
-            mb: 2,
-            textDecoration: "underline",
-            textUnderlineOffset: "6px",
-          }}
-        >
+        <S.AbilitiesTitle mb={2} variant="h6">
           Способности
-        </Typography>
+        </S.AbilitiesTitle>
 
-        <AbilityGrid>
+        <S.AbilityGrid>
           <PerkList
             perksList={perks.firstTier}
             onSelect={handleAcquirePerk}
@@ -157,40 +148,21 @@ export const CharacterCard: FC<CharacterCardProps> = ({
             }
             characterClass={characterClass}
           />
-        </AbilityGrid>
+        </S.AbilityGrid>
 
-        {/* Блок характеристик */}
         <Stack mt="auto">
-          <Typography
-            variant="h6"
-            sx={{
-              color: "#a08060",
-              textAlign: "center",
-              mt: 2,
-              mb: hasSparePoints ? 0 : 2,
-              textDecoration: "underline",
-              textUnderlineOffset: "6px",
-            }}
-          >
+          <S.AbilitiesTitle variant="h6" mt={2} mb={hasSparePoints ? 0 : 2}>
             Характеристики
-          </Typography>
+          </S.AbilitiesTitle>
 
           {hasSparePoints && (
-            <Typography
-              variant="h6"
-              sx={{
-                color: "#a08060",
-                textAlign: "center",
-                mt: 1,
-                mb: 2,
-              }}
-            >
+            <S.SparePointsText variant="h6">
               Свободных очков: {points}
-            </Typography>
+            </S.SparePointsText>
           )}
 
           <Stack spacing={1}>
-            <StatItem
+            <S.StatItem
               hasSparePoints={hasSparePoints}
               onClick={handleIncreaseEndurance}
             >
@@ -198,40 +170,16 @@ export const CharacterCard: FC<CharacterCardProps> = ({
 
               <motion.div
                 className="stat-value"
-                animate={{
-                  color: ["#e0b050", "#ff0000", "#e0b050"],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{ duration: 0.8 }}
+                animate={STAT_ANIMATE_CONFIG}
+                transition={STAT_TRANSITION_CONFIG}
               >
                 {endurance}
               </motion.div>
 
-              {hasSparePoints && (
-                <Typography
-                  fontSize={50}
-                  fontFamily="inherit"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "absolute",
-                    top: "-3px",
-                    right: "-5px",
-                    minWidth: 40,
-                    width: 40,
-                    height: 40,
-                    padding: 0,
-                    textAlign: "center",
-                    userSelect: "none",
-                  }}
-                >
-                  +
-                </Typography>
-              )}
-            </StatItem>
+              {hasSparePoints && <S.AddPoint>+</S.AddPoint>}
+            </S.StatItem>
 
-            <StatItem
+            <S.StatItem
               hasSparePoints={hasSparePoints}
               onClick={handleIncreaseAccuracy}
             >
@@ -239,40 +187,16 @@ export const CharacterCard: FC<CharacterCardProps> = ({
 
               <motion.div
                 className="stat-value"
-                animate={{
-                  color: ["#e0b050", "#ff0000", "#e0b050"],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{ duration: 0.8 }}
+                animate={STAT_ANIMATE_CONFIG}
+                transition={STAT_TRANSITION_CONFIG}
               >
                 {accuracy}
               </motion.div>
 
-              {hasSparePoints && (
-                <Typography
-                  fontSize={50}
-                  fontFamily="inherit"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "absolute",
-                    top: "-3px",
-                    right: "-5px",
-                    minWidth: 40,
-                    width: 40,
-                    height: 40,
-                    padding: 0,
-                    textAlign: "center",
-                    userSelect: "none",
-                  }}
-                >
-                  +
-                </Typography>
-              )}
-            </StatItem>
+              {hasSparePoints && <S.AddPoint>+</S.AddPoint>}
+            </S.StatItem>
 
-            <StatItem
+            <S.StatItem
               hasSparePoints={hasSparePoints}
               onClick={handleIncreaseAgility}
             >
@@ -280,42 +204,17 @@ export const CharacterCard: FC<CharacterCardProps> = ({
 
               <motion.div
                 className="stat-value"
-                animate={{
-                  color: ["#e0b050", "#ff0000", "#e0b050"],
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{ duration: 0.8 }}
+                animate={STAT_ANIMATE_CONFIG}
+                transition={STAT_TRANSITION_CONFIG}
               >
                 {agility}
               </motion.div>
 
-              {hasSparePoints && (
-                <Typography
-                  fontSize={50}
-                  fontFamily="inherit"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    position: "absolute",
-                    top: "-3px",
-                    right: "-5px",
-                    minWidth: 40,
-                    width: 40,
-                    height: 40,
-                    padding: 0,
-                    textAlign: "center",
-
-                    userSelect: "none",
-                  }}
-                >
-                  +
-                </Typography>
-              )}
-            </StatItem>
+              {hasSparePoints && <S.AddPoint>+</S.AddPoint>}
+            </S.StatItem>
           </Stack>
         </Stack>
       </motion.div>
-    </CharacterContainer>
+    </S.CharacterContainer>
   );
 };

@@ -5,8 +5,6 @@ import { getEconomicBranchDataByType } from "./utils";
 import { EconomicCardProps } from "./types";
 import * as S from "./EconomicCard.styled";
 
-// REFACTORING CHECKED ✅
-
 export const EconomicCard: FC<EconomicCardProps> = ({ type }) => {
   const {
     setEconomicBranch,

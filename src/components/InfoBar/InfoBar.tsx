@@ -1,29 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Stack, Typography } from "@mui/material";
+import { createPortal } from "react-dom";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
-import { Icons, Tooltip } from "../../common";
-import { useGameState } from "../../stores";
 import {
   getDungeonCounterByTier,
   getEconomicInfo,
   getQuestInfo,
 } from "./utils";
-import * as S from "./InfoBar.styled";
-import { createPortal } from "react-dom";
-import { ExclamationBlink } from "../../common/ExclamationBlink";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import { StyledSlider } from "../../common/styled.index";
-import { useGetResourceState } from "./useGetResourceState";
 import {
   getResourceIcon,
   getPotionIcon,
   getPotionDescriptionByType,
 } from "../../utils";
+
+import { ExclamationBlink } from "../../common/ExclamationBlink";
+import { useCharacterState } from "./hooks/useCharacterState";
+import { useGetResourceState } from "./useGetResourceState";
+import { DEFAULT_VOLUME_ADJUST_DELAY } from "./constants";
 import { RESOURCES } from "../../entities/resources";
 import { DEFAULT_BAG_SIZE } from "../../constants";
+import { Icons, Tooltip } from "../../common";
+import { useGameState } from "../../stores";
 import bagIcon from "../../assets/minigame/bag.png";
-import { DEFAULT_EXP_BY_CLASS_MAP } from "../../stores/constants";
-import { expForLevel } from "../../hooks/useWatchCharacterLevels";
+import { StyledSlider } from "../../common/styled.index";
+import * as S from "./InfoBar.styled";
 
 export const InfoBar = () => {
   const {
@@ -32,7 +33,6 @@ export const InfoBar = () => {
       torches,
       quest,
       consumables,
-      party,
       economic,
       volume: storageVolume,
       resourcesBagLevel,
@@ -40,7 +40,6 @@ export const InfoBar = () => {
       playStatistics,
       currentTier,
     },
-    statistics,
     toggleCharacterPanel,
     setVolume: setVolumeInStorage,
   } = useGameState();
@@ -54,7 +53,7 @@ export const InfoBar = () => {
   useEffect(() => {
     const timerId = setTimeout(
       () => setVolumeInStorage(Array.isArray(volume) ? volume[0] : volume),
-      900,
+      DEFAULT_VOLUME_ADJUST_DELAY,
     );
 
     return () => clearTimeout(timerId);
@@ -64,115 +63,38 @@ export const InfoBar = () => {
   const handleVolumeHide = () => setVolumeVisible(false);
 
   const { title, icon } = getQuestInfo(quest?.type);
-  const [player1, player2, player3] = party;
 
   const { ore, treasures, soul } = useGetResourceState();
 
-  const { charactersWithPointsToSpend, deadCharacter, aliveCharacters } =
-    useMemo(() => {
-      return party.reduce<{
-        charactersWithPointsToSpend: string[];
-        deadCharacter: string[];
-        aliveCharacters: { currentHp: number; maxHp: number; name: string }[];
-      }>(
-        (acc, character) => {
-          if (character.points) {
-            acc.charactersWithPointsToSpend.push(character.name);
-          }
-
-          if (character.currentHealth <= 0) {
-            acc.deadCharacter.push(character.name);
-          } else {
-            const maxHp =
-              statistics && statistics[character?.name]
-                ? statistics[character?.name]?.maxHealth
-                : null;
-
-            if (maxHp) {
-              acc.aliveCharacters.push({
-                currentHp: character.currentHealth,
-                maxHp,
-                name: character.name,
-              });
-            }
-          }
-
-          return acc;
-        },
-        {
-          charactersWithPointsToSpend: [],
-          deadCharacter: [],
-          aliveCharacters: [],
-        },
-      );
-    }, [
-      player1?.points,
-      player2?.points,
-      player3?.points,
-      player1?.currentHealth,
-      player2?.currentHealth,
-      player3?.currentHealth,
-      statistics,
-    ]);
-
-  const playersExp = useMemo(() => {
-    return party.map((player) => {
-      const characterDefaultExpAmount =
-        DEFAULT_EXP_BY_CLASS_MAP[player.characterClass];
-      const expForNextLevel = expForLevel(
-        player.level,
-        characterDefaultExpAmount,
-      );
-
-      return {
-        exp: `${player.experience}/${expForNextLevel}`,
-        name: player.name,
-      };
-    });
-  }, [player1, player2, player3]);
+  const {
+    charactersWithPointsToSpend,
+    deadCharacter,
+    aliveCharacters,
+    expStatistics,
+  } = useCharacterState();
 
   return createPortal(
     <S.ModalContent>
-      <Box
-        sx={{
-          position: "relative",
-          display: "inline-flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      <S.Container
         onMouseEnter={handleVolumeVisible}
         onMouseLeave={handleVolumeHide}
       >
         <VolumeUpIcon />
 
         {isVolumeVisible && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: "40px", // Регулируйте отступ под ваши нужды
-              left: "50%",
-              paddingTop: "55px",
-              transform: "translateX(-50%)",
-              height: "210px", // Фиксированная высота для слайдера
-              zIndex: 9999, // Чтобы слайдер был поверх других элементов
-              backgroundColor: "rgba(0,0,0,0.1)", // Для отладки, можно убрать
-              padding: "10px 5px",
-              borderRadius: "20px",
-            }}
-          >
+          <S.VolumeContainer>
             <StyledSlider
               orientation="vertical"
               value={volume}
               min={1}
               max={100}
               onChange={(_, val) => setVolume(val)}
-              valueLabelDisplay="auto" // или "on" если хотите всегда показывать значение
+              valueLabelDisplay="auto"
               sx={{ height: "100%" }}
             />
-          </Box>
+          </S.VolumeContainer>
         )}
-      </Box>
+      </S.Container>
 
       <S.StatContainer>
         <Tooltip title="Продвижение по сюжету...">
@@ -184,22 +106,18 @@ export const InfoBar = () => {
         </Tooltip>
       </S.StatContainer>
 
-      {playersExp.map(({ exp, name }) => (
+      {expStatistics.map(({ exp, name }) => (
         <S.StatContainer key={name}>
           <Tooltip title={`Текущий опыт ${name}`}>
             <Stack alignItems="center" direction="row" gap={1}>
-              <Typography
-                sx={{
-                  color: "#c08040",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                }}
+              <S.BarStatusText
+                letterSpacing="1px"
                 fontFamily="inherit"
                 fontSize={20}
               >
                 EXP
-              </Typography>
+              </S.BarStatusText>
+
               <Typography fontSize={20} fontFamily="inherit">
                 {exp}
               </Typography>

@@ -1,4 +1,3 @@
-import { ENEMIES } from "../../../../entities";
 import { Creature, Effects } from "../../../../types/gameState";
 
 export interface FragmentProps {

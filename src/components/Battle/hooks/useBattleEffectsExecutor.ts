@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { useGameState } from "../../../stores";
-import { TURN_STATES } from "../../../entities";
+import { useEffect } from "react";
+
+import { UseBattleEffectsExecutorProps } from "../types";
+import { Effects } from "../../../types/gameState";
 import { EFFECTS } from "../../../entities/effects";
-import { Battle, Effects } from "../../../types/gameState";
-import { DamageData } from "../types";
+import { TURN_STATES } from "../../../entities";
+import { useGameState } from "../../../stores";
 
 export const useBattleEffectsExecutor = ({
   selectedCharacter,
@@ -12,14 +13,7 @@ export const useBattleEffectsExecutor = ({
   toggleNextPlayer,
   updateDamageModel,
   isReadyToTrigger,
-}: {
-  selectedCharacter?: string;
-  selectedEnemy?: string;
-  toggleNextEnemy: (data: Battle) => void;
-  toggleNextPlayer: (data: Battle) => void;
-  updateDamageModel: (battleModel: Battle, damageModel: DamageData) => void;
-  isReadyToTrigger: boolean;
-}) => {
+}: UseBattleEffectsExecutorProps) => {
   const {
     player: { battle },
     updateBattle,
@@ -112,7 +106,6 @@ export const useBattleEffectsExecutor = ({
               },
             };
 
-            // если не изменилось ХП - значит урона не было - а просто нужно обновить флаги
             if (currentHp === enemy.hp) {
               if (needToToggleEnemy) {
                 toggleNextEnemy(newBattleModel);

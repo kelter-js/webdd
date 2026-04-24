@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useGameState } from "../../../stores";
-import { Item, Reward } from "../../../types/gameState";
+
 import {
   generateRandomItem,
   getGoldByTier,
@@ -10,8 +9,8 @@ import {
 } from "../utils";
 import { getRandom, getFlagStoryBossByTier } from "../../../utils";
 import { STORY_BOSSES_LIST } from "../../../constants/creatures";
-
-//   items?: Item[];
+import { Item, Reward } from "../../../types/gameState";
+import { useGameState } from "../../../stores";
 
 export const useHandleBattleEnd = () => {
   const {
@@ -40,8 +39,7 @@ export const useHandleBattleEnd = () => {
 
       const { gold, exp } = battle.enemy.party.reduce(
         (acc, creature) => {
-          // mock ?? 20 - убрать
-          acc.exp += creature.exp ?? 20;
+          acc.exp += creature.exp || 0;
           acc.gold += getGoldByTier(
             location?.dungeonLevel || currentTier,
             creature?.isEnhanced,

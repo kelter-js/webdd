@@ -4,8 +4,6 @@ import weaponry from "../../assets/economic/weaponry.png";
 import fish from "../../assets/economic/fish.png";
 
 export const getEconomicBranchDataByType = (type: ECONOMIC_TYPES) => {
-  // тут нужна логика - в зависимости от тира возвращать разное название, но суть та же
-
   if (type === ECONOMIC_TYPES.ALCHEMISTRY) {
     return {
       src: alchemistry,

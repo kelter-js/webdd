@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 
 export const Container = styled("div", {
   shouldForwardProp: (prop) => prop !== "index",
@@ -20,4 +20,18 @@ export const Container = styled("div", {
     marginRight: spacing(index === 0 ? 0 : 10),
     marginLeft: spacing(index === 0 ? 10 : 0),
   },
+}));
+
+export const CreatureDescription = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== "isFirstOne",
+})<{ isFirstOne: boolean }>(({ isFirstOne }) => ({
+  fontFamily: "inherit",
+  backgroundColor: "rgba(255,255,255,0.2)",
+  backdropFilter: "blur(8px)",
+  position: "absolute",
+  bottom: "-32px",
+  width: "83%",
+  color: "black",
+  left: isFirstOne ? "95px" : "unset",
+  right: isFirstOne ? "unset" : "111px",
 }));

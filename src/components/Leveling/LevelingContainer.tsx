@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
-import { CharacterCard } from "./Leveling";
+
 import { useGameState } from "../../stores";
+import { CharacterCard } from "./Leveling";
 
 export const LevelingContainer = () => {
   const {

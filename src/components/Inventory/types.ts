@@ -25,3 +25,11 @@ export interface InventoryContainerProps {
   tier: null | SORT_TYPES_BY_TIER;
   classFilter: null | CLASSES;
 }
+
+export interface SortedInventoryProps {
+  inventory: Item[] | null;
+  searchTerm?: string;
+  tier: SORT_TYPES_BY_TIER | null;
+  upgradeTier: SORT_TYPES_BY_UPGRADE | null;
+  classFilter: CLASSES | null;
+}

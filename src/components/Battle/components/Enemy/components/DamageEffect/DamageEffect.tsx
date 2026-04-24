@@ -9,9 +9,9 @@ import {
 } from "./DamageEffect.styled";
 import {
   getCriticalAnimationConfig,
-  getCriticalInitialAnimationConfig,
   getDamageAnimationConfig,
-  getDamageInitialAnimationConfig,
+  DAMAGE_INITIAL_ANIMATION_CONFIG,
+  CRITICAL_INITIAL_ANIMATION_CONFIG,
 } from "./constants";
 
 export const DamageEffect: FC<DamageEffectProps> = ({
@@ -30,18 +30,13 @@ export const DamageEffect: FC<DamageEffectProps> = ({
   );
 
   useEffect(() => {
-    // containerId теперь обязательный, но на всякий случай проверяем
     if (!containerId) {
-      console.warn("DamageEffect: containerId is required");
       return;
     }
 
     const container = document.getElementById(containerId);
 
     if (!container) {
-      console.warn(
-        `DamageEffect: Container with id "${containerId}" not found`,
-      );
       return;
     }
 
@@ -94,8 +89,8 @@ export const DamageEffect: FC<DamageEffectProps> = ({
       >
         <DamageNumber
           as={motion.div}
-          initial={getDamageInitialAnimationConfig(0, 0)}
-          animate={getDamageAnimationConfig(0, 0)}
+          initial={DAMAGE_INITIAL_ANIMATION_CONFIG}
+          animate={getDamageAnimationConfig()}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           onAnimationComplete={removeDamageNumber}
@@ -110,8 +105,8 @@ export const DamageEffect: FC<DamageEffectProps> = ({
         {isCritical && !isEvasion && (
           <CriticalText
             as={motion.div}
-            initial={getCriticalInitialAnimationConfig(0, 0)}
-            animate={getCriticalAnimationConfig(0, 0)}
+            initial={CRITICAL_INITIAL_ANIMATION_CONFIG}
+            animate={getCriticalAnimationConfig()}
             transition={{ duration: 1.1, ease: "easeOut" }}
             style={{
               position: "relative",

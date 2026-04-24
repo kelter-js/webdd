@@ -1,1 +1,0 @@
-export { ConsumablesInventory } from "./ConsumablesInventory";

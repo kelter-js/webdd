@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, Stack } from "@mui/material";
 import { QuestCardText } from "../../common/styled.index";
 
 export const QuestCardContainer = styled("div")`
@@ -30,3 +30,12 @@ export const QuestCardDescription = styled(QuestCardText)`
   left: 50%;
   transform: translateX(-50%);
 `;
+
+export const CardsContainer = styled(Stack)(({ theme: { spacing } }) => ({
+  flexDirection: "row",
+  justifyContent: "center",
+  gap: spacing(5),
+  height: "100%",
+  paddingTop: spacing(14),
+  alignItems: "center",
+}));

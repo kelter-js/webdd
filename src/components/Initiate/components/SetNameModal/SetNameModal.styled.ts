@@ -1,4 +1,10 @@
-import { Box, styled, Modal, Typography } from "@mui/material";
+import { Box, styled, Modal, Typography, Button } from "@mui/material";
+
+export const CharacterClassButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "isSelected",
+})<{ isSelected: boolean }>(({ isSelected }) => ({
+  border: isSelected ? "2px solid #c0a080" : "unset",
+}));
 
 export const ModalContent = styled(Box)(({ theme }) => ({
   position: "relative",

@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
-import { resetDialogs } from "../../constants/dialogs";
+
 import { useAppState, useGameState } from "../../stores";
-import { Text, Container } from "./End.styled";
+import { resetDialogs } from "../../constants/dialogs";
 import { FLAGS } from "../../constants";
+import { Text, Container } from "./End.styled";
 
 export const End = () => {
   const {

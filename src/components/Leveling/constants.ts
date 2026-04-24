@@ -45,6 +45,7 @@ import fortification from "../../assets/perks/medic/fortification.png";
 import { SNIPER_PERKS, TANK_PERKS, MEDIC_PERKS } from "../../constants/perks";
 import { CLASSES } from "../../entities/characterClasses";
 import { PERK_ID_DATA } from "../../types/gameState";
+import { MotionStyle } from "framer-motion";
 
 export const SNIPER_CLASS_PERKS_IMG = {
   [SNIPER_PERKS.CRITICAL_CHANCE]: critChance,
@@ -119,3 +120,16 @@ export const getImgSrcByClass = (
     }
   }
 };
+
+export const ANIMATION_CONTAINER_STYLES: MotionStyle = {
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+};
+
+export const STAT_ANIMATE_CONFIG = {
+  color: ["#e0b050", "#ff0000", "#e0b050"],
+  scale: [1, 1.2, 1],
+};
+
+export const STAT_TRANSITION_CONFIG = { duration: 0.8 };

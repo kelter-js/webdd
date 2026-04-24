@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useAppState, useGameState } from "../../../stores";
 import { TURN_STATES } from "../../../entities";
 
+const DEFAULT_DELAY = 900;
+
 export const usePlayerTurnIsOver = (
   showDices: boolean,
   isFirstRender: boolean,
@@ -54,7 +56,7 @@ export const usePlayerTurnIsOver = (
         setTimeout(() => {
           resetFirstRender();
           setNextTurn(null);
-        }, 900);
+        }, DEFAULT_DELAY);
       }
 
       return;
@@ -63,7 +65,7 @@ export const usePlayerTurnIsOver = (
     setTimeout(() => {
       setBattleTurn(upcomingTurn);
       setNextTurn(null);
-    }, 900);
+    }, DEFAULT_DELAY);
 
     setNextTurn(upcomingTurn);
   }, [

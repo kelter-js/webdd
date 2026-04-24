@@ -1,16 +1,37 @@
 import { useMemo } from "react";
+
 import {
-  FIRST_TIER_CREATURES_LIST,
-  SECOND_TIER_CREATURES_LIST,
-  THIRD_TIER_CREATURES_LIST,
-} from "../../../constants/creatures";
+  DEFAULT_PAGE_DISPLAY_AMOUNT,
+  ENEMY_DESCRIPTIONS,
+  ENEMY_DESCRIPTIONS_LOCKED,
+  ENEMY_IMAGES,
+} from "../constants";
+import { getEnemiesByTier, isEnemyUnlocked } from "../utils";
 import { useGameState } from "../../../stores";
 
-export const useGetEnemiesData = () => {
-  const {
-    // player: { playStatistics, currentTier },
-  } = useGameState();
+export const useGetEnemiesData = (pageHeader: number, page: number) => {
+  const { player } = useGameState();
 
-  // тут в зависимости от тира помещаем вычисления в useMemo - выбираем массив хардкод значений, дополняем описания и добавляем данных по кол-ву убитых - если 10 есть
-  // то выводим данные и фулл изображение - нужно делать мок изображения, которые только силует показывают
+  const creaturesToRender = useMemo(() => {
+    const list = getEnemiesByTier(pageHeader);
+
+    return list
+      .slice(
+        page * DEFAULT_PAGE_DISPLAY_AMOUNT,
+        page * DEFAULT_PAGE_DISPLAY_AMOUNT + DEFAULT_PAGE_DISPLAY_AMOUNT,
+      )
+      .map((enemy) => {
+        const { locked, unlocked } = ENEMY_IMAGES[enemy];
+        const lockedDescription = ENEMY_DESCRIPTIONS_LOCKED[enemy];
+        const description = ENEMY_DESCRIPTIONS[enemy];
+        const isUnlocked = isEnemyUnlocked(player, enemy);
+
+        return {
+          description: isUnlocked ? description : lockedDescription,
+          src: isUnlocked ? unlocked : locked,
+        };
+      });
+  }, [pageHeader, page, player]);
+
+  return creaturesToRender;
 };

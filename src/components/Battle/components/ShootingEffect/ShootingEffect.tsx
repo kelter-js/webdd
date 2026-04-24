@@ -1,15 +1,20 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import { motion } from "framer-motion";
-import { Box } from "@mui/material";
 
+import {
+  DEFAULT_AMOUNT_OF_SHOTS,
+  DEFAULT_SHOOTING_DURATION,
+  PROJECTILE_STYLES,
+} from "./constants";
 import { Projectile, ProjectileLayerProps } from "./types";
 import { getCenter } from "./utils";
+import { ShootingContainer } from "./ShootingEffect.styled";
 
 export const ShootingEffect: FC<ProjectileLayerProps> = ({
   sourceId,
   targetId,
-  shots = 1,
-  duration = 0.4,
+  shots = DEFAULT_AMOUNT_OF_SHOTS,
+  duration = DEFAULT_SHOOTING_DURATION,
   onComplete,
 }) => {
   const idRef = useRef(0);
@@ -59,14 +64,7 @@ export const ShootingEffect: FC<ProjectileLayerProps> = ({
   const lastProjectileId = projectiles[projectiles.length - 1]?.id;
 
   return (
-    <Box
-      sx={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 9999,
-      }}
-    >
+    <ShootingContainer>
       {projectiles.map((p) => {
         const dx = p.to.x - p.from.x;
         const dy = p.to.y - p.from.y;
@@ -104,18 +102,12 @@ export const ShootingEffect: FC<ProjectileLayerProps> = ({
               }
             }}
             style={{
-              position: "absolute",
+              ...PROJECTILE_STYLES,
               width: distance,
-              height: 3,
-              transformOrigin: "0% 50%",
-              background:
-                "linear-gradient(90deg, rgba(255,200,50,1) 0%, rgba(255,200,50,0) 100%)",
-              boxShadow: "0 0 6px rgba(255,200,50,0.8)",
-              willChange: "transform",
             }}
           />
         );
       })}
-    </Box>
+    </ShootingContainer>
   );
 };

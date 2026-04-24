@@ -1,6 +1,11 @@
 import { FC, useState, useRef, useEffect, useMemo } from "react";
 
-import { originalHeight, originalWidth } from "./constants";
+import {
+  HOVERED_AREA_POLYGON_STYLES,
+  HOVERED_AREA_PULSE_ANIMATION_CONFIG,
+  originalHeight,
+  originalWidth,
+} from "./constants";
 import { ImageMapHighlightProps } from "./types";
 
 export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
@@ -19,39 +24,39 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
     }
   }, [isDialogueOpen]);
 
-  // Оригинальные размеры изображения и координаты
+  const mapCoordinates = useMemo(
+    () =>
+      coords.map((_, index) => {
+        const handleMouseEnter = () => {
+          if (!isDialogueOpen) {
+            setHoveredArea(index);
+          }
+        };
 
-  const mapCoordinates = useMemo(() => {
-    return coords.map((_, index) => {
-      const handleMouseEnter = () => {
-        if (!isDialogueOpen) {
-          setHoveredArea(index);
-        }
-      };
+        const handleMouseLeave = () => {
+          if (!isDialogueOpen) {
+            setHoveredArea(null);
+          }
+        };
 
-      const handleMouseLeave = () => {
-        if (!isDialogueOpen) {
-          setHoveredArea(null);
-        }
-      };
+        const handleAreaClick = () => {
+          onOpen(coords[index].name, index);
+        };
 
-      const handleAreaClick = () => {
-        onOpen(coords[index].name, index);
-      };
-
-      return (
-        <area
-          key={index}
-          shape="poly"
-          coords={coords[index].coords}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={handleAreaClick}
-          href="#"
-        />
-      );
-    });
-  }, [coords, isDialogueOpen, onOpen]);
+        return (
+          <area
+            key={index}
+            shape="poly"
+            coords={coords[index].coords}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleAreaClick}
+            href="#"
+          />
+        );
+      }),
+    [coords, isDialogueOpen, onOpen],
+  );
 
   return (
     <div className="image-map-container" ref={containerRef}>
@@ -112,11 +117,7 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
               <polygon
                 points={coords[hoveredArea].coords}
                 fill="url(#souls-glow-v2)"
-                style={{
-                  animation: "gentlePulse 3s ease-in-out infinite alternate",
-                  mixBlendMode: "hard-light",
-                  filter: "url(#subtle-ripple)",
-                }}
+                style={HOVERED_AREA_POLYGON_STYLES}
               />
 
               <polygon
@@ -126,14 +127,7 @@ export const ImageMapHighlight: FC<ImageMapHighlightProps> = ({
                 strokeWidth="1.2"
                 strokeDasharray="6 3"
                 strokeLinejoin="round"
-                style={{
-                  animation: `
-            gentleStroke 2s ease-in-out infinite alternate,
-            dashOffset 4s linear infinite
-          `,
-                  paintOrder: "stroke",
-                  filter: "url(#soft-glow)",
-                }}
+                style={HOVERED_AREA_PULSE_ANIMATION_CONFIG}
               />
 
               <polygon

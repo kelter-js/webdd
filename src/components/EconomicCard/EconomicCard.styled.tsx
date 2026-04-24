@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+
 import { QuestCardText } from "../../common/styled.index";
 
 export const QuestCardContainer = styled("div", {

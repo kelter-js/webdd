@@ -1,9 +1,10 @@
 import { FC } from "react";
+
 import { RenderedFragmentProps } from "./types";
 import { Fragment } from "../../Enemy.styled";
 
 export const RenderedFragment: FC<RenderedFragmentProps> = ({
-  data,
+  data: { dx, dy, left, top, backgroundPosition },
   imgSrc,
   animated,
   onAnimationComplete,
@@ -11,15 +12,15 @@ export const RenderedFragment: FC<RenderedFragmentProps> = ({
 }) => (
   <Fragment
     isBoss={isBoss}
-    dx={data.dx}
-    dy={data.dy}
+    dx={dx}
+    dy={dy}
     imgSrc={imgSrc}
     animated={animated}
     onAnimationEnd={onAnimationComplete}
     style={{
-      left: `${data.left}px`,
-      top: `${data.top}px`,
-      backgroundPosition: data.backgroundPosition,
+      left: `${left}px`,
+      top: `${top}px`,
+      backgroundPosition: backgroundPosition,
     }}
   />
 );

@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import watcher from "../../../assets/enemies/first_tier/watcher.png";
 import torso from "../../../assets/enemies/first_tier/torso.png";
 import spider from "../../../assets/enemies/first_tier/spider.png";
@@ -19,7 +21,6 @@ import singer from "../../../assets/enemies/third_tier/singer.png";
 import ballerina_boss from "../../../assets/enemies/third_tier/ballerina_boss.png";
 import mergemass from "../../../assets/enemies/third_tier/mergemass.png";
 import { ENEMIES } from "../../../entities/enemies";
-import { useMemo } from "react";
 
 export const useGetEnemyImage = (type: ENEMIES) => {
   return useMemo(() => {

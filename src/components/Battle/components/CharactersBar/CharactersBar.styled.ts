@@ -1,5 +1,50 @@
-import { styled } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+
+import { MainButtonText } from "../../../../common/styled.index";
+
+export const PlayerWeaponContainer = styled("div")(() => ({
+  width: 150,
+  minWidth: 150,
+  height: 110,
+
+  position: "relative",
+}));
+
+export const RoundStateText = styled(Typography)(() => ({
+  fontFamily: "inherit",
+  whiteSpace: "pre",
+  position: "absolute",
+  zIndex: 99999999,
+  top: "0px",
+}));
+
+export const ActionButton = styled(MainButtonText, {
+  shouldForwardProp: (prop) => prop !== "isPlayerTurnAvailable",
+})<{ isPlayerTurnAvailable: boolean }>(
+  ({ theme: { spacing }, isPlayerTurnAvailable }) => ({
+    fontFamily: "inherit",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+    border: "1px solid #c0a080",
+    color: "#e0c0a0",
+    backgroundColor: "rgba(30, 20, 10, 0.9)",
+    padding: spacing(1, 2),
+    opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important`,
+
+    "&:hover": {
+      backgroundColor: "rgba(30, 20, 10, 0.95)",
+      border: "1px solid #ffd700",
+      color: "#ffd700",
+    },
+  }),
+);
+
+export const WeaponIcon = styled("img")(() => ({
+  width: "100%",
+  height: "100%",
+  objectFit: "contain",
+}));
 
 export const Container = styled("div")`
   position: fixed;

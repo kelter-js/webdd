@@ -1,20 +1,19 @@
 import { useEffect, useMemo, useRef, useState, ChangeEvent } from "react";
-import { GameModal } from "../GameModal";
-
-import { useAppState, useGameState } from "../../stores";
-import { Item } from "../../types/gameState";
-import { RECEIPTS } from "../../constants/receipts";
-import { Stack, Typography } from "@mui/material";
-import craftBg from "../../assets/static/craft.png";
-
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { Stack, Typography } from "@mui/material";
+
 import { HoldProgressButton } from "./components/HoldProgressButton";
-import { Icons } from "../../common";
-import { CraftDrop } from "./components/CraftDrop";
-
-import { useSnackbar } from "../../contexts/Snackbar";
-
+import { useAppState, useGameState } from "../../stores";
 import { SearchField } from "../../common/SearchField";
+import { useSnackbar } from "../../contexts/Snackbar";
+import { RECEIPTS } from "../../constants/receipts";
+import { CraftDrop } from "./components/CraftDrop";
+import { Item } from "../../types/gameState";
+import { GameModal } from "../GameModal";
+import { Icons, ItemIconContainer } from "../../common";
+import craftBg from "../../assets/static/craft.png";
+import { SCROLLBAR_CONFIG, SCROLLBAR_STYLES } from "./constants";
+import * as S from "./CraftModal.styled";
 
 export const CraftModal = () => {
   const { player, craftItem } = useGameState();
@@ -50,7 +49,7 @@ export const CraftModal = () => {
   const psRef = useRef(null);
 
   useEffect(() => {
-    // @ts-ignore
+    // @ts-ignore - нет типизации корректной у библиотеки
     const ps = psRef.current?.ps;
     if (!ps) return;
 
@@ -100,27 +99,9 @@ export const CraftModal = () => {
     <GameModal onClose={toggleCraftMenu} withoutPadding>
       <Stack gap={2} direction="row" p={2} height="675px">
         <OverlayScrollbarsComponent
-          options={{
-            overflow: {
-              y: "scroll",
-              x: "hidden",
-            },
-            scrollbars: {
-              theme: "os-theme-light",
-              autoHide: "scroll",
-              autoHideDelay: 800,
-              autoHideSuspend: false,
-              clickScroll: true,
-            },
-          }}
+          options={SCROLLBAR_CONFIG}
           defer
-          style={{
-            width: "45%",
-            height: "100%",
-            border: "4px solid rgba(192, 160, 128, 0.3)",
-            background: "rgba(0,0,0,0.3)",
-            padding: "8px",
-          }}
+          style={SCROLLBAR_STYLES}
         >
           <Stack gap={1} width="100%" pr={0.5}>
             <SearchField
@@ -133,17 +114,19 @@ export const CraftModal = () => {
             />
 
             {receiptsList.map((receipt, index) => {
+              const handleSelect = () => {
+                if (!craftedItem) {
+                  setSelectedIndex(index);
+                }
+              };
+
               return (
                 <Typography
                   fontFamily="inherit"
                   variant="h5"
                   key={index}
                   p={0.5}
-                  onClick={() => {
-                    if (!craftedItem) {
-                      setSelectedIndex(index);
-                    }
-                  }}
+                  onClick={handleSelect}
                   sx={{ cursor: "pointer", opacity: craftedItem ? 0.3 : 1 }}
                   border={`${index === selectedIndex ? "4px" : "2px"} solid ${
                     index === selectedIndex
@@ -160,126 +143,33 @@ export const CraftModal = () => {
 
         {currentCraftData && (
           <Stack alignItems="center" justifyContent="center" width="100%">
-            <img
-              src={craftBg}
-              style={{
-                position: "absolute",
-                width: 815,
-                height: 630,
-                top: "-22px",
-              }}
-            />
+            <S.CraftBackgroundImg src={craftBg} />
+
             <Stack gap={3} mb={8}>
-              <Stack
-                border="1px solid #5a3020"
-                sx={{
-                  position: "absolute",
-                  right: "151px",
-                  top: "44px",
-                  height: "107px",
-                  width: "151px",
-                }}
-              >
-                <img
-                  src={currentCraftData?.sourceItemIcon}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                    objectFit: "contain",
-                  }}
-                />
-              </Stack>
-              <Stack
-                border="1px solid #5a3020"
-                sx={{
-                  position: "absolute",
-                  right: "333px",
-                  top: "44px",
-                  height: "107px",
-                  width: "151px",
-                }}
-              >
-                <img
-                  src={currentCraftData?.sourceItemIcon}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                    objectFit: "contain",
-                  }}
-                />
-              </Stack>
-              <Stack
-                border="1px solid #5a3020"
-                sx={{
-                  position: "absolute",
-                  right: "522px",
-                  top: "44px",
-                  height: "107px",
-                  width: "151px",
-                }}
-              >
-                <img
-                  src={currentCraftData?.sourceItemIcon}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                    objectFit: "contain",
-                  }}
-                />
-              </Stack>
+              <S.ReceiptImageContainer right="151px" top="44px">
+                <ItemIconContainer src={currentCraftData?.sourceItemIcon} />
+              </S.ReceiptImageContainer>
+
+              <S.ReceiptImageContainer right="333px" top="44px">
+                <ItemIconContainer src={currentCraftData?.sourceItemIcon} />
+              </S.ReceiptImageContainer>
+
+              <S.ReceiptImageContainer right="522px" top="44px">
+                <ItemIconContainer src={currentCraftData?.sourceItemIcon} />
+              </S.ReceiptImageContainer>
             </Stack>
 
             <Stack>
-              <Stack
-                border="1px solid #5a3020"
-                sx={{
-                  position: "absolute",
-                  right: "265px",
-                  top: "326px",
-                  height: "180px",
-                  width: "290px",
-                }}
-              >
-                <img
-                  src={currentCraftData?.targetItemIcon}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                    objectFit: "contain",
-                  }}
-                />
-              </Stack>
+              <S.ReceiptResultImageContainer>
+                <ItemIconContainer src={currentCraftData?.targetItemIcon} />
+              </S.ReceiptResultImageContainer>
             </Stack>
 
             {currentCraftData?.goldRequiredToCraft && (
-              <Typography
-                position="absolute"
-                bottom="90px"
-                fontFamily="inherit"
-                display="flex"
-                alignItems="center"
-                gap={1}
-                variant="h4"
-              >
+              <S.RequiredResourcesText variant="h4">
                 Требуется: {currentCraftData?.goldRequiredToCraft}{" "}
                 <Icons.GoldIcon />
-              </Typography>
+              </S.RequiredResourcesText>
             )}
 
             {craftedItem && (

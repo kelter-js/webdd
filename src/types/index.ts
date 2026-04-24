@@ -86,8 +86,7 @@ export interface DungeonCreationData {
 
 export interface CreatureBaseModel {
   aiPackage: AI_CATEGORIES;
-  pictureSrc: string;
-  audioSrc: string;
+
   baseModel: {
     hp: number;
     maxHP: number;

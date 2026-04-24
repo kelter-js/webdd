@@ -40,6 +40,7 @@ export const PotionsBuyModal = () => {
 
         {(potionsToBuy || []).map((potion, index) => (
           <Potion
+            key={index}
             {...POTION_COORDINATES[index]}
             type={potion.type}
             price={potion.price || 0}

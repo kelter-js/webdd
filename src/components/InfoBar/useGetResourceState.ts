@@ -1,24 +1,15 @@
 import { useMemo } from "react";
-import { useGameState } from "../../stores";
+
 import {
   FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT,
   SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
   THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
 } from "../../constants";
-import { RESOURCES } from "../../entities/resources";
 import { DIALOGUE_FLAGS } from "../../entities/dialogues";
+import { RESOURCES } from "../../entities/resources";
+import { useGameState } from "../../stores";
 import { FLAGS } from "../../constants";
-
-interface ResourceCollectionData {
-  collected: number;
-  required: number;
-}
-
-interface ResourcesMapData {
-  ore: null | ResourceCollectionData;
-  soul: null | ResourceCollectionData;
-  treasures: null | ResourceCollectionData;
-}
+import { ResourcesMapData } from "./types";
 
 export const useGetResourceState = () => {
   const {

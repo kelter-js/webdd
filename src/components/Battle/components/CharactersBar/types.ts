@@ -1,7 +1,7 @@
 import { Battle, BattleCharacterModel } from "../../../../types/gameState";
+import { BASE_ITEMS_ID } from "../../../../constants/items";
 import { PerkData } from "../../../../types";
 import { DamageData } from "../../types";
-import { BASE_ITEMS_ID } from "../../../../constants/items";
 
 export interface CharactersBarProps {
   selectedPlayer?: BattleCharacterModel;

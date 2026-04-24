@@ -1,36 +1,33 @@
-import { FC, useMemo } from "react";
-import { useGameState } from "../../../../stores/GameState/GameState";
-
+import { FC } from "react";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { CharactersBarProps } from "./types";
-import { Icons, Tooltip } from "../../../../common";
-import { getBattleStateAfterAbilityUsage, getUnitAvatarSrc } from "./utils";
-import { POTION_TYPES } from "../../../../entities/consumables";
-import { PotionsList } from "./components/PotionsList";
-import { TURN_STATES } from "../../../../entities";
-import { DamageEffect } from "../Enemy/components/DamageEffect";
-import { usePlayer } from "../../../../contexts/Player";
-import potionSfx from "../../../../assets/audio/potion.mp3";
-import { CLASSES } from "../../../../entities/characterClasses";
+
 import {
-  ABILITY_PERKS,
   MEDIC_PERKS,
-  MEDIC_PERKS_DATA,
   SNIPER_PERKS,
-  SNIPER_PERKS_DATA,
   TANK_PERKS,
-  TANK_PERKS_DATA,
 } from "../../../../constants/perks";
 import {
   EFFECTS,
   EFFECTS_DESCRIPTIONS,
   EFFECTS_ICONS,
 } from "../../../../entities/effects";
-import { PERK_ID_DATA } from "../../../../types/gameState";
-import * as S from "./CharactersBar.styled";
+import { getBattleStateAfterAbilityUsage, getUnitAvatarSrc } from "./utils";
+import { useGameState } from "../../../../stores/GameState/GameState";
 import { WEAPONS_ICON_SOURCES } from "../../../../constants/guns";
-import { GEAR_SLOTS } from "../../../../entities/gear";
+import { useGetPlayerAbility } from "./hooks/useGetPlayerAbility";
 import { MainButtonText } from "../../../../common/styled.index";
+import { DamageEffect } from "../Enemy/components/DamageEffect";
+import { POTION_TYPES } from "../../../../entities/consumables";
+import { PERK_ID_DATA } from "../../../../types/gameState";
+import { usePlayer } from "../../../../contexts/Player";
+import { PotionsList } from "./components/PotionsList";
+import { GEAR_SLOTS } from "../../../../entities/gear";
+import { Icons, Tooltip } from "../../../../common";
+import { TURN_STATES } from "../../../../entities";
+import { CharactersBarProps } from "./types";
+
+import potionSfx from "../../../../assets/audio/potion.mp3";
+import * as S from "./CharactersBar.styled";
 
 const POTION_SFX = "consumePotionSfx";
 
@@ -68,54 +65,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
     }
   };
 
-  const playerAbility = useMemo(() => {
-    if (!selectedPlayer) return null;
-
-    const abilities = selectedPlayer?.perksList.filter(
-      (perk) => perk.isAbility,
-    );
-
-    if (abilities.length === 0) return null;
-
-    const descriptorList = (
-      selectedPlayer?.characterClass === CLASSES.MEDIC
-        ? MEDIC_PERKS_DATA
-        : selectedPlayer?.characterClass === CLASSES.SNIPER
-          ? SNIPER_PERKS_DATA
-          : TANK_PERKS_DATA
-    ).fifthTier;
-
-    const ability = descriptorList.find((perk) =>
-      ABILITY_PERKS.includes(perk.id),
-    );
-
-    if (!ability) return null;
-
-    const effectsList = battle?.player.effects[selectedPlayer.name].list;
-
-    const { id } = ability;
-
-    const isPerkDisabled =
-      (id === TANK_PERKS.LAST_STAND &&
-        !effectsList?.find(
-          (effect) => effect.type === EFFECTS.LAST_STAND_FATIGUE,
-        )) ||
-      (id === MEDIC_PERKS.HEAL_ALL &&
-        !effectsList?.find(
-          (effect) =>
-            effect.type === EFFECTS.HEAL_ALL_FATIGUE ||
-            effect.type === EFFECTS.HEAL_IMMUNE,
-        )) ||
-      (id === SNIPER_PERKS.INSTAKILL &&
-        !effectsList?.find(
-          (effect) => effect.type === EFFECTS.INSTA_KILL_FATIGUE,
-        ));
-
-    return {
-      ...ability,
-      isDisabled: isPerkDisabled,
-    };
-  }, [selectedPlayer, battle?.player.effects]);
+  const playerAbility = useGetPlayerAbility(selectedPlayer);
 
   const handleUseAbility = (ability: PERK_ID_DATA) => {
     if (battle && selectedPlayer?.name && statistics) {
@@ -157,6 +107,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
         {!isPotionsListDisabled && (
           <PotionsList onPotionClick={handleConsumePotion} />
         )}
+
         {playerAbility && (
           <Tooltip title={playerAbility.description}>
             <div>
@@ -204,15 +155,14 @@ export const CharactersBar: FC<CharactersBarProps> = ({
               ]
             : null;
 
+          console.log("weaponIcon", weaponIcon);
+
           const effectsList =
             battle?.player?.effects[partyMember.name]?.list || [];
 
           return (
             <div key={partyMember.name} id={`${partyMember.name}-id`}>
-              <S.CharacterContainer
-                key={partyMember.name}
-                id={`${partyMember.name}-id`}
-              >
+              <S.CharacterContainer>
                 <S.Avatar
                   id={partyMember.name}
                   isSelected={partyMember.name === selectedPlayer?.name}
@@ -233,38 +183,16 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                   />
 
                   {/* контейнер для отображения иконки оружия */}
-                  <div
-                    style={{
-                      width: 150,
-                      minWidth: 150,
-                      height: 110,
-                      border: "2px solid purple",
-                      position: "relative",
-                    }}
-                  >
-                    {weaponIcon && (
-                      <img
-                        src={weaponIcon}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "contain",
-                        }}
-                      />
-                    )}
+                  <S.PlayerWeaponContainer>
+                    {weaponIcon && <S.WeaponIcon src={weaponIcon} />}
 
                     {currentMaxMagSize[partyMember.name].magSize && (
-                      <Typography
-                        fontFamily="inherit"
-                        whiteSpace="pre"
-                        position="absolute"
-                        zIndex={99999999}
-                        top="0px"
-                      >
+                      <S.RoundStateText>
                         {`${partyMember?.currentAmountOfRounds} / ${currentMaxMagSize[partyMember.name].magSize}`}
-                      </Typography>
+                      </S.RoundStateText>
                     )}
-                  </div>
+                  </S.PlayerWeaponContainer>
+
                   <Stack sx={{ pb: 1, width: "100%", mr: 1 }}>
                     <Stack direction="row" gap={1} justifyContent="center">
                       <Tooltip title="Урон">
@@ -344,27 +272,12 @@ export const CharactersBar: FC<CharactersBarProps> = ({
               }
             }}
           >
-            <MainButtonText
-              sx={{
-                fontFamily: "inherit",
-                textTransform: "uppercase",
-                letterSpacing: "0.5px",
-                border: "1px solid #c0a080",
-                color: "#e0c0a0",
-                backgroundColor: "rgba(30, 20, 10, 0.9)",
-                padding: (theme) => theme.spacing(1, 2),
-                opacity: `${isPlayerTurnAvailable ? 1 : 0.5} !important`,
-
-                "&:hover": {
-                  backgroundColor: "rgba(30, 20, 10, 0.95)",
-                  border: "1px solid #ffd700",
-                  color: "#ffd700",
-                },
-              }}
+            <S.ActionButton
+              isPlayerTurnAvailable={isPlayerTurnAvailable}
               variant="h6"
             >
               {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
-            </MainButtonText>
+            </S.ActionButton>
           </Button>
         </S.BattleControls>
       )}

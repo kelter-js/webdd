@@ -1,6 +1,7 @@
-import { styled } from "@mui/system";
-import { FragmentProps } from "./types";
 import { motion } from "framer-motion";
+import { styled } from "@mui/system";
+
+import { FragmentProps } from "./types";
 
 export const Container = styled(motion.div, {
   shouldForwardProp: (prop: PropertyKey) =>
@@ -13,7 +14,7 @@ export const Container = styled(motion.div, {
   textAlign: "center",
   zIndex: 99999999,
   left: left,
-  top: isBoss ? "-2%" : "0%", // вертикальное смещение выше центра
+  top: isBoss ? "-2%" : "0%",
 }));
 
 export const TargetContainer = styled("div")`
@@ -57,7 +58,6 @@ export const HealthBar = styled("div")(({ theme }) => ({
   height: "25px",
   marginTop: theme.spacing(0.5),
 
-  /* Заполнение (HP) */
   "& > div": {
     background: "linear-gradient(90deg, #e34d4d, #ff6b6b)",
     borderRadius: "4px",

@@ -1,81 +1,58 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Stack } from "@mui/material";
-import { CharactersBar } from "./components/CharactersBar";
-import { BattleLog } from "./components/BattleLog";
 
-import { Enemy } from "./components/Enemy";
-import { useAppState, useGameState } from "../../stores";
-import { DiceRollModal, TurnIndicator } from "../../common";
-import { ENEMIES, TURN_STATES } from "../../entities";
+import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
+import { calculateDamage } from "./components/CharactersBar/utils";
 import { usePlayerTurnIsOver } from "./hooks/usePlayerTurnIsOver";
-import { usePlayerControl } from "./hooks/usePlayerControl";
+import {
+  calculateAiDamage,
+  getBattleBackground,
+  getLayoutCoordinates,
+} from "./utils";
+import {
+  DEFAULT_CENTER,
+  ENEMY_ATTACK_SFX,
+  PLAYER_ATTACK_SFX,
+  PLAYER_RELOAD_SFX,
+} from "./constants";
 import { useHandleBattleEnd } from "./hooks/useHandleBattleEnd";
 import { ShootingEffect } from "./components/ShootingEffect";
-import { GEAR_SLOTS } from "../../entities/gear";
-import { Battle, Creature } from "../../types/gameState";
-import { calculateAiDamage, getBattleBackground } from "./utils";
-import { DamageData } from "./types";
-import { useBattleEffectsExecutor } from "./hooks/useBattleEffectsExecutor";
-import { AnimatePresence } from "framer-motion";
-import { calculateDamage } from "./components/CharactersBar/utils";
-import { DIALOGUE_FLAGS } from "../../entities/dialogues";
-import { BUILDING_NAMES } from "../../constants";
-import { useGetDialogue } from "../../hooks";
-import { Dialogue } from "../Dialogue";
-import { getPrevTargetIndex } from "../../utils";
-import { usePlayer } from "../../contexts/Player";
-import attackSfx from "../../assets/audio/enemy_attack.mp3";
+import { DiceRollModal, TurnIndicator } from "../../common";
+import { usePlayerControl } from "./hooks/usePlayerControl";
+import { CharactersBar } from "./components/CharactersBar";
 import { WEAPONS_SFX_SOURCES } from "../../constants/guns";
+import { useAppState, useGameState } from "../../stores";
+import { Battle } from "../../types/gameState";
+import { TURN_STATES } from "../../entities";
+import { BattleLog } from "./components/BattleLog";
+import { usePlayer } from "../../contexts/Player";
+import { getPrevTargetIndex } from "../../utils";
+import { useGetDialogue } from "../../hooks";
+import { Enemy } from "./components/Enemy";
+import { Dialogue } from "../Dialogue";
+import { DamageData } from "./types";
 
-const ENEMY_ATTACK_SFX = "enemyAttack";
-const PLAYER_ATTACK_SFX = "playerAttack";
-const DEFAULT_CENTER = "50%";
-
-const getLayoutCoordinates = (enemiesAmount?: Creature[]) => {
-  if (!enemiesAmount) {
-    return null;
-  }
-
-  const aliveEnemyPartyMembers = enemiesAmount.filter((enemy) => enemy.hp > 0);
-
-  let counter = 25;
-
-  return aliveEnemyPartyMembers.reduce<{ [id: string]: string }>(
-    (acc, item, _, self) => {
-      if (self.length === 1) {
-        acc[item.id] = DEFAULT_CENTER;
-      } else if (self.length === 2) {
-        acc[item.id] = `${counter}%`;
-        counter += 50;
-      } else {
-        acc[item.id] = `${counter}%`;
-        counter += 25;
-      }
-
-      return acc;
-    },
-    {},
-  );
-};
+import attackSfx from "../../assets/audio/enemy_attack.mp3";
+import reloadSfx from "../../assets/audio/reload.mp3";
+import { useMagSize } from "./hooks/useMagSize";
+import { useBattleStateInitiation } from "./hooks/useBattleStateInitiation";
+import { useTrackFinalBossDialogue } from "./hooks/useTrackFinalBossDialogue";
 
 export const BattleContainer = () => {
   // SelectedEnemy - выбранный противник
-  const { selectedEnemy, setSelectedEnemy, setDialogueOpen, isDialogueOpen } =
-    useAppState();
+  const { selectedEnemy, setSelectedEnemy, isDialogueOpen } = useAppState();
 
   const {
     isDiceRequiredRoll,
     turnOffDices,
-    player: { battle, party, currentTier, location, dialogFlags },
+    player: { battle, currentTier, location },
     statistics,
-    initiateState,
-    gear,
+
     updateBattle,
   } = useGameState();
 
   const [showDices, setShowDices] = useState(isDiceRequiredRoll);
-
-  console.log("battle", battle);
 
   useHandleBattleEnd();
 
@@ -89,31 +66,8 @@ export const BattleContainer = () => {
     resetFirstRender,
   );
 
-  useEffect(() => {
-    if (
-      battle?.enemy.party[0].type === ENEMIES.MERGED_MASS_TIER_1 &&
-      !isDialogueOpen &&
-      !dialogFlags.includes(DIALOGUE_FLAGS.FINAL_DIALOG_ENDED)
-    ) {
-      setDialogueOpen(BUILDING_NAMES.FINAL_DIALOGUE);
-    }
-  }, [battle?.enemy.party, isDialogueOpen]);
-
-  useEffect(() => {
-    const [player1, player2, player3] = battle?.player.party || [];
-
-    if (
-      player1 &&
-      player2 &&
-      player3 &&
-      (!statistics ||
-        !statistics[player1.name] ||
-        !statistics[player2.name] ||
-        !statistics[player3.name])
-    ) {
-      initiateState();
-    }
-  }, [statistics, battle, initiateState]);
+  useTrackFinalBossDialogue();
+  useBattleStateInitiation();
 
   const dialogTree = useGetDialogue(isDialogueOpen);
 
@@ -124,40 +78,17 @@ export const BattleContainer = () => {
     handleSelectNextEnemy,
   } = usePlayerControl();
 
-  const magSizesMap = useMemo(() => {
-    if (!gear) {
-      return Object.fromEntries(
-        party.map((item) => [
-          item.name,
-          {
-            magSize: 1,
-            baseId: null,
-            roundsPerTurn: null,
-          },
-        ]),
-      );
-    }
-
-    return Object.fromEntries(
-      Object.entries(gear).map(([key, value]) => {
-        const currentWeapon = value.find(
-          (item) => item.type === GEAR_SLOTS.WEAPON,
-        );
-
-        return [
-          key,
-          {
-            magSize: currentWeapon?.magSize || 1,
-            baseId: currentWeapon?.baseId || null,
-            roundsPerTurn: currentWeapon?.bulletsPerTurn || null,
-          },
-        ];
-      }),
-    );
-  }, [gear, party]);
+  const magSizesMap = useMagSize();
 
   // флаги анимации атаки и
   const [isShooting, setShooting] = useState(false);
+
+  useEffect(() => {
+    if (isShooting) {
+      const timerId = setTimeout(() => setShooting(false), 3000);
+      return () => clearTimeout(timerId);
+    }
+  }, [isShooting]);
 
   // отвечает за то, что противник должен проиграть анимацию атаки
   const [attackingEnemyId, setAttackingEnemyId] = useState<string | null>(null);
@@ -225,16 +156,6 @@ export const BattleContainer = () => {
     (newState?: Battle) => {
       const stateSource = newState ?? battle;
 
-      console.log("and we here? stateSource", stateSource);
-      console.log("and we here? statistics", statistics);
-      console.log("and we here? selectedPlayer", selectedPlayer);
-      console.log("and we here? !isShooting", !isShooting);
-      console.log("and we here? selectedEnemy", selectedEnemy);
-      console.log(
-        "and we here? stateSource?.enemy.party[selectedEnemy]",
-        stateSource?.enemy.party[selectedEnemy],
-      );
-      console.log("and we here? isPlayerTurnAvailable", isPlayerTurnAvailable);
       const enemyData =
         stateSource?.enemy?.party?.length === 1
           ? stateSource?.enemy.party[0]
@@ -248,7 +169,6 @@ export const BattleContainer = () => {
         enemyData &&
         isPlayerTurnAvailable
       ) {
-        console.log("and we here? inside");
         const { model, damageModel } = calculateDamage(
           stateSource,
           statistics,
@@ -289,6 +209,8 @@ export const BattleContainer = () => {
 
   const handlePlayerReload = () => {
     if (battle) {
+      handleSetSrc(PLAYER_RELOAD_SFX, reloadSfx);
+
       handleSelectNextPlayer({
         ...battle,
         player: {
@@ -360,14 +282,6 @@ export const BattleContainer = () => {
   });
 
   useEffect(() => {
-    // если нет анимаций кубика, нет анимаций переключения хода, если ход противника, выбран противник для хода и нет анимации атаки противника - запускаем логику боя
-    console.log("some? currentEnemy", currentEnemy);
-    console.log("some? battle", battle);
-    console.log(
-      "some? battle.enemy.effects[currentEnemy.id].hasTriggered",
-      battle?.enemy.effects[currentEnemy?.id ?? 0]?.hasTriggered,
-    );
-
     if (
       !showDices &&
       !nextTurn &&
@@ -379,7 +293,6 @@ export const BattleContainer = () => {
       battle.enemy.effects[currentEnemy.id].hasTriggered &&
       !dialogTree
     ) {
-      console.log("are we INSIDE AI ATTACK LOGIC?");
       const { damageModel, model } = calculateAiDamage(
         battle,
         statistics,
@@ -420,7 +333,7 @@ export const BattleContainer = () => {
     <Stack
       position="relative"
       sx={{
-        "& img": {
+        "& > img": {
           width: "calc(100vw - var(--scrollbar-width, 0px))",
           height: "100vh",
         },
@@ -464,6 +377,12 @@ export const BattleContainer = () => {
 
         const effects = battle.enemy.effects[creature.id];
 
+        const isEnemySelected =
+          battle?.turn === TURN_STATES.PLAYER_TURN &&
+          index === selectedEnemy &&
+          !isShooting &&
+          self.length > 1;
+
         return (
           <Enemy
             creature={creature}
@@ -482,12 +401,7 @@ export const BattleContainer = () => {
             isAttacking={creature.id === attackingEnemyId}
             onAttackEnd={resetAnimations}
             isEvasion={Boolean(isEvasion)}
-            isSelected={
-              battle?.turn === TURN_STATES.PLAYER_TURN &&
-              index === selectedEnemy &&
-              !isShooting &&
-              self.length > 1
-            }
+            isSelected={isEnemySelected}
             isHealing={isHealing}
             effectsList={effects.list}
           />
@@ -521,7 +435,7 @@ export const BattleContainer = () => {
       <AnimatePresence onExitComplete={() => turnOffDices()}>
         {showDices && (
           <DiceRollModal
-            key="dice-modal" // Ключ обязателен для AnimatePresence!
+            key="dice-modal"
             turnOwner={`Первым ходит: ${battle?.turn === TURN_STATES.ENEMY_TURN ? "Противник" : "Игрок"}`}
             onAnimationEnd={() => setShowDices(false)}
           />

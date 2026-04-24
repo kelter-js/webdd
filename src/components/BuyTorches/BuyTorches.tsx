@@ -1,14 +1,17 @@
 import { ChangeEvent, useState } from "react";
-import { useAppState, useGameState } from "../../stores";
-import { isTorchesAffordable } from "./utils";
 import { Button, Stack, Typography } from "@mui/material";
+
+import { useAppState, useGameState } from "../../stores";
+import { SearchField } from "../../common/SearchField";
+import { isTorchesAffordable } from "./utils";
 import { TORCH_PRICE } from "../../constants";
 import { GameModal } from "../GameModal";
-import { SearchField } from "../../common/SearchField";
+import { MainText } from "../../common";
 
 export const BuyTorches = () => {
   const [amountOfTorches, setAmountOfTorches] = useState(1);
   const { toggleTorchBuyMenu, isTorchBuyOpen } = useAppState();
+
   const {
     player: { gold },
     buyTorches,
@@ -58,21 +61,12 @@ export const BuyTorches = () => {
           onClick={handleBuyTorches}
           disabled={!isAffordable}
         >
-          <Typography
-            sx={{
-              width: "100%",
-              color: "#c08040",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              padding: (theme) => theme.spacing(1),
-              borderBottom: "1px solid #5a3020",
-              borderTop: "1px solid #5a3020",
-              fontFamily: "inherit",
-            }}
+          <MainText
+            borderBottom="1px solid #5a3020"
+            borderTop="1px solid #5a3020"
           >
             Закончить сделку
-          </Typography>
+          </MainText>
         </Button>
       </Stack>
     </GameModal>

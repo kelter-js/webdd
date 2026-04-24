@@ -2,17 +2,13 @@ import { Typography, Paper, keyframes, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { motion } from "framer-motion";
 
-// Grid для навыков (чтобы заполнить пространство)
 export const AbilitiesGrid = styled(Box)({
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)", // 2 колонки
+  gridTemplateColumns: "repeat(2, 1fr)",
   gap: "12px",
   marginTop: "16px",
 });
 
-// =============================================
-// 1. АНИМАЦИИ (все используются в компоненте)
-// =============================================
 export const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -34,9 +30,6 @@ export const bloodDrip = keyframes`
   100% { background-position: 0 10px; }
 `;
 
-// =============================================
-// 2. СТИЛИЗОВАННЫЕ КОМПОНЕНТЫ
-// =============================================
 export const CharacterContainer = styled(Paper)({
   position: "relative",
   width: "350px",
@@ -177,4 +170,35 @@ export const StatItem = styled(Box, {
     backgroundColor: "rgba(80, 40, 40, 0.3)",
     borderLeftColor: "#a05050",
   },
+}));
+
+export const AbilitiesTitle = styled(Typography)(() => ({
+  color: "#a08060",
+  textAlign: "center",
+  textDecoration: "underline",
+  textUnderlineOffset: "6px",
+}));
+
+export const SparePointsText = styled(Typography)(({ theme: { spacing } }) => ({
+  marginTop: spacing(1),
+  marginBottom: spacing(2),
+  color: "#a08060",
+  textAlign: "center",
+}));
+
+export const AddPoint = styled(Typography)(() => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "absolute",
+  top: "-3px",
+  right: "-5px",
+  minWidth: 40,
+  width: 40,
+  height: 40,
+  padding: 0,
+  textAlign: "center",
+  fontFamily: "inherit",
+  fontSize: 50,
+  userSelect: "none",
 }));

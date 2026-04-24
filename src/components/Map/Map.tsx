@@ -137,7 +137,9 @@ export const Map = () => {
   const dungeon = currentDungeon || [];
 
   const currentCell =
-    position?.y && position?.x && dungeon[position.y]
+    typeof position?.y === "number" &&
+    typeof position?.x === "number" &&
+    dungeon[position.y]
       ? dungeon[position.y][position.x]
       : undefined;
 

@@ -1,18 +1,19 @@
-import { DialogueTree } from "../../types/dialogue";
-import blacksmith from "../../assets/npc/smith.png";
-import questDesk from "../../assets/npc/quest_desk.png";
-import potionTrader from "../../assets/npc/potion-trader.png";
-import accountant from "../../assets/npc/accountant.png";
-import crazyTrader from "../../assets/npc/crazy_trader.png";
-import ghost from "../../assets/npc/ghost.png";
-import priest from "../../assets/npc/priest.png";
-import tutor from "../../assets/npc/tutor.png";
-import starcounter from "../../assets/npc/starcounter.png";
-import watchmen from "../../assets/npc/watchmen.png";
-import mergedMass from "../../assets/npc/merged_mass.png";
-import shooter from "../../assets/npc/shooter.png";
-import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
 import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../../entities/dialogues";
+import { BUILDING_NAMES, LEGENDARY_ARMOR_PRICE } from "..";
+import { DialogueTree } from "../../types/dialogue";
+
+import potionTrader from "../../assets/npc/potion-trader.png";
+import crazyTrader from "../../assets/npc/crazy_trader.png";
+import starcounter from "../../assets/npc/starcounter.png";
+import mergedMass from "../../assets/npc/merged_mass.png";
+import accountant from "../../assets/npc/accountant.png";
+import questDesk from "../../assets/npc/quest_desk.png";
+import watchmen from "../../assets/npc/watchmen.png";
+import blacksmith from "../../assets/npc/smith.png";
+import shooter from "../../assets/npc/shooter.png";
+import priest from "../../assets/npc/priest.png";
+import ghost from "../../assets/npc/ghost.png";
+import tutor from "../../assets/npc/tutor.png";
 
 export const FINAL_FAIL_TEXT_SHOOTING =
   "Это было смешно. Ещё раз попробуете или с вас хватит позора?";
@@ -437,7 +438,6 @@ export const priestDialog: DialogueTree = {
         },
       ],
     },
-    // Здесь рандомную генерацию фраз
     heal: {
       text: "Ого... Давно не видел столько крови.",
       options: [{ text: "[Уйти]", nextNode: "end" }],

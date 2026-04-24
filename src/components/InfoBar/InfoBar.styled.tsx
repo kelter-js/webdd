@@ -1,5 +1,26 @@
 import { styled, Box, Typography } from "@mui/material";
 
+export const Container = styled(Box)(() => ({
+  position: "relative",
+  display: "inline-flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
+export const VolumeContainer = styled(Box)(() => ({
+  position: "absolute",
+  top: "40px",
+  left: "50%",
+  paddingTop: "55px",
+  transform: "translateX(-50%)",
+  height: "210px",
+  zIndex: 9999,
+  backgroundColor: "rgba(0,0,0,0.1)",
+  padding: "10px 5px",
+  borderRadius: "20px",
+}));
+
 export const ModalContent = styled(Box)(({ theme }) => ({
   position: "fixed",
   top: 0,
@@ -30,7 +51,7 @@ export const StatContainer = styled("div")(({ theme }) => ({
 }));
 
 export const BarStatusText = styled(Typography)(() => ({
-  fontFamily: "Cormorant Unicase",
+  fontFamily: "inherit",
   color: "#c08040",
   fontWeight: "bold",
   textTransform: "uppercase",

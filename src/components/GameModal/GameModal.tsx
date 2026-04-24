@@ -3,8 +3,6 @@ import { FC } from "react";
 import { GameModalProps } from "./types";
 import * as S from "./GameModal.styled";
 
-// REFACTORING CHECKED ✅
-
 export const GameModal: FC<GameModalProps> = ({
   onClose,
   children,

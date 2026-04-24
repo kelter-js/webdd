@@ -1,5 +1,5 @@
-import { SxProps } from "@mui/material";
 import { PropsWithChildren } from "react";
+import { SxProps } from "@mui/material";
 
 export interface HoldProgressButtonProps extends PropsWithChildren {
   onComplete: VoidFunction;

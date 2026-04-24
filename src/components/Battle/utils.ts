@@ -1,5 +1,3 @@
-// каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
-
 import {
   FIRST_TIER_JUNK,
   getPotionByTier,
@@ -14,9 +12,30 @@ import {
   ALL_ITEMS_TIER_2,
   ALL_ITEMS_TIER_3,
 } from "../../constants/gear";
-import { POTION_TYPES } from "../../entities/consumables";
+import {
+  TEMPLATE_DAMAGE,
+  TEMPLATE_NAME,
+  TEMPLATE_TARGET,
+} from "../../constants";
+import {
+  Battle,
+  BattleCharacterModel,
+  Creature,
+  Effects,
+  Statistics,
+} from "../../types/gameState";
+import { calculateFinalEvasion, getFinalDamage } from "../../stores/constants";
+import { CREATURE_NAME_MAP, getEnemyPhrase } from "../../constants/creatures";
 import { ALL_RESOURCES_TYPE, RESOURCES } from "../../entities/resources";
+import { CHARACTER_MESSAGES } from "../../constants/characters";
+import { POTION_TYPES } from "../../entities/consumables";
+import { CLASSES } from "../../entities/characterClasses";
 import { getRandom, generateItem } from "../../utils";
+import { AI_CATEGORIES } from "../../entities/ai";
+import { EFFECTS } from "../../entities/effects";
+import { ENEMIES } from "../../entities";
+import { DamageData } from "./types";
+
 import staticBgTier1 from "../../assets/static/dungeon_hallway/battle_tier_1/image (1).jpg";
 import staticBgTier2 from "../../assets/static/dungeon_hallway/battle_tier_1/image (2).jpg";
 import staticBgTier3 from "../../assets/static/dungeon_hallway/battle_tier_1/image (3).jpg";
@@ -49,41 +68,7 @@ import staticBgTier3_7 from "../../assets/static/dungeon_hallway/battle_tier_3/i
 import staticBgTier3_8 from "../../assets/static/dungeon_hallway/battle_tier_3/image (8).jpg";
 import staticBgTier3_9 from "../../assets/static/dungeon_hallway/battle_tier_3/image (9).jpg";
 import staticBgTier3_10 from "../../assets/static/dungeon_hallway/battle_tier_3/image (10).jpg";
-import {
-  Battle,
-  BattleCharacterModel,
-  Creature,
-  Effects,
-  Statistics,
-} from "../../types/gameState";
-import { DamageData } from "./types";
-import { AI_CATEGORIES } from "../../entities/ai";
-import { ENEMIES } from "../../entities";
-import { CREATURE_NAME_MAP, getEnemyPhrase } from "../../constants/creatures";
-import { CHARACTER_MESSAGES } from "../../constants/characters";
-import {
-  TEMPLATE_DAMAGE,
-  TEMPLATE_NAME,
-  TEMPLATE_TARGET,
-} from "../../constants";
-import { calculateFinalEvasion, getFinalDamage } from "../../stores/constants";
-import { EFFECTS } from "../../entities/effects";
-import { CLASSES } from "../../entities/characterClasses";
-
-// каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
-// ключи - айди существа - значение это путь к коллбэкам логики существа
-// AI_PACK возвращает коллбэк, этот коллбэк получает массив дебафов противника, массив персонажей игрока
-// текущие характеристики существа и на основании этого возвращает модель атаки
-// ATACK MODEL = {
-// target: имя персонажа или ALL
-// action: "ATTACK" или "DEBUFF" или "HEAL" - хилит себя, вешает дебафф, атакует
-// damage?: number
-// }
-export const CREATURE_ID_TO_AI_PACK_MAP = {};
-
-// каждый проотивник имеет свой уникальный айди, вместо функций делаем отображение
-// ключи - айди существа - значение это путь к имени с существом
-export const CREATURE_ID_TO_NAME_MAP = {};
+import { DEFAULT_CENTER } from "./constants";
 
 export const getGoldByTier = (currentTier: number, isSpecial?: boolean) => {
   if (currentTier === 1) {
@@ -399,6 +384,7 @@ const calculateDamageModelByAi = (
   if (!playerData || !playerStatistics) {
     return { model: battleModel, damageModel: null };
   }
+
   // высчитываем шанс промахнуться по игроку
   const evasionChance = calculateFinalEvasion(playerStatistics.evasionChance);
   // получаем читаемо имя персонажа
@@ -439,6 +425,7 @@ const calculateDamageModelByAi = (
   }
 
   const initialDamage = getRandom(source.minDmg, source.maxDmg);
+
   let damageAfterArmorReduction = getFinalDamage(
     initialDamage,
     playerStatistics.defense,
@@ -961,4 +948,31 @@ export const generatePlayerMessage = (
   message = message.replace(TEMPLATE_DAMAGE, String(damage));
 
   return message;
+};
+
+export const getLayoutCoordinates = (enemiesAmount?: Creature[]) => {
+  if (!enemiesAmount) {
+    return null;
+  }
+
+  const aliveEnemyPartyMembers = enemiesAmount.filter((enemy) => enemy.hp > 0);
+
+  let counter = 25;
+
+  return aliveEnemyPartyMembers.reduce<{ [id: string]: string }>(
+    (acc, item, _, self) => {
+      if (self.length === 1) {
+        acc[item.id] = DEFAULT_CENTER;
+      } else if (self.length === 2) {
+        acc[item.id] = `${counter}%`;
+        counter += 50;
+      } else {
+        acc[item.id] = `${counter}%`;
+        counter += 25;
+      }
+
+      return acc;
+    },
+    {},
+  );
 };

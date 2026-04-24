@@ -15,7 +15,6 @@ export const DamageNumber = styled(motion.div, {
   zIndex: 999999999,
   fontFamily: '"Arial Black", sans-serif',
 
-  // 🎨 Цвет
   color: isHealing ? "#00ff88" : "#ffd700",
 
   WebkitTextStroke: "2px #000000",
@@ -42,7 +41,6 @@ export const CriticalText = styled(motion.div)`
   pointer-events: none;
   font-family: "Arial Black", sans-serif;
 
-  /* Яркий оранжево-красный градиент */
   color: #ff0000;
   -webkit-text-stroke: 1.5px #000000;
   text-stroke: 1.5px #000000;
@@ -50,7 +48,6 @@ export const CriticalText = styled(motion.div)`
     0 0 8px #ff4500,
     0 0 16px #ff0000;
 
-  /* Дополнительные эффекты */
   letter-spacing: 1px;
   text-transform: uppercase;
   filter: brightness(1.3) drop-shadow(0 2px 4px #000);

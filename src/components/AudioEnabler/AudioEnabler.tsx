@@ -1,7 +1,9 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack } from "@mui/material";
+
 import { useAppState } from "../../stores";
 import { GameModal } from "../GameModal";
 import { MainButtonText } from "../../common/styled.index";
+import { ContinueButton } from "./AudioEnabler.styled";
 
 export const AudioEnabler = () => {
   const { enableAudio, setNewGame } = useAppState();
@@ -14,17 +16,9 @@ export const AudioEnabler = () => {
   return (
     <GameModal height="155px" width="375px">
       <Stack height="100%" justifyContent="space-between">
-        <Typography
-          sx={{
-            borderBottom: "none",
-            borderTop: "none",
-            fontSize: "18px",
-            textAlign: "center",
-          }}
-          variant="h5"
-        >
+        <ContinueButton variant="h5">
           Готовы продолжить путешествие?
-        </Typography>
+        </ContinueButton>
         <Button
           variant="text"
           fullWidth
