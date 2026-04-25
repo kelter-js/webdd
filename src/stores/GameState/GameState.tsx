@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 import { DEFAULT_GAME_STATE } from "../constants";
 
-import { Battle, Enemy, StoreState } from "../../types/gameState";
+import { StoreState } from "../../types/gameState";
 
 import { persistConfig } from "./config";
 import {
@@ -60,11 +60,9 @@ import {
   updateDungeon,
 } from "./actions";
 
-// Create the store
 export const useGameState = create<StoreState>()(
   persist(
     (set) => ({
-      // Initial state
       player: DEFAULT_GAME_STATE,
       effects: null,
       sell_inventory: null,
@@ -75,8 +73,6 @@ export const useGameState = create<StoreState>()(
       isDiceRequiredRoll: false,
       isAutoSaveRequired: false,
       playersLvlUpNotifications: [],
-
-      // Methods
 
       updateDungeon: updateDungeon(set),
       updateDialogFlags: updateDialogFlags(set),
@@ -129,25 +125,6 @@ export const useGameState = create<StoreState>()(
       giveResources: giveResources(set),
       handleExitDungeon: handleExitDungeon(set),
       buyItem: buyItem(set),
-
-      // ф-ии чисто для тестов
-      killEnemy: () =>
-        set((state) => ({
-          ...state,
-          player: {
-            ...state.player,
-            battle: {
-              ...(state.player.battle || ({} as Battle)),
-
-              enemy: {
-                ...(state.player.battle?.enemy || ({} as Enemy)),
-                party: (state.player.battle?.enemy?.party || []).map(
-                  (enemy) => ({ ...enemy, hp: 0 }),
-                ),
-              },
-            },
-          },
-        })),
     }),
     persistConfig,
   ),

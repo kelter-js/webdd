@@ -1,9 +1,9 @@
-import { LevelingContainer } from "../../components/Leveling/LevelingContainer";
-import { SpecialEncounterContainer } from "../../components/SpecialEncounters";
-import { InfoBar } from "../../components/InfoBar/InfoBar";
-import { BattleContainer } from "../../components/Battle";
+import { LevelingContainer } from "../../components/";
+import { SpecialEncounterContainer } from "../../components";
+import { InfoBar } from "../../components/";
+import { BattleContainer } from "../../components";
 import { useAppState, useGameState } from "../../stores";
-import { Inventory } from "../../components/Inventory";
+import { Inventory } from "../../components";
 import { RENDER_LOCATIONS } from "../../entities";
 import { LevelUp, Shake } from "../../common";
 import { Map } from "../../components/Map";

@@ -12,22 +12,21 @@ import {
   TURN_STATES,
   ECONOMIC_TYPES,
 } from "../entities";
-import { FLAGS } from "../constants";
-import { BASE_ITEMS_ID } from "../constants/items";
 import { MEDIC_PERKS, SNIPER_PERKS, TANK_PERKS } from "../constants/perks";
-
-import { AI_CATEGORIES } from "../entities/ai";
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
+import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
 import { CLASSES } from "../entities/characterClasses";
 import { POTION_TYPES } from "../entities/consumables";
 import { DIALOGUE_FLAGS } from "../entities/dialogues";
-import { EFFECTS } from "../entities/effects";
-import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
-import { GEAR_SLOTS } from "../entities/gear";
-import { GUN_TYPES } from "../entities/guns";
-import { JUNK_TYPES } from "../entities/junk";
+import { BASE_ITEMS_ID } from "../constants/items";
 import { RESOURCES } from "../entities/resources";
+import { AI_CATEGORIES } from "../entities/ai";
+import { EFFECTS } from "../entities/effects";
+import { GEAR_SLOTS } from "../entities/gear";
+import { JUNK_TYPES } from "../entities/junk";
 import { SLIDERS } from "../entities/sliders";
-import { SPECIAL_ENCOUNTERS } from "../entities/specialEncounters";
+import { GUN_TYPES } from "../entities/guns";
+import { FLAGS } from "../constants";
 
 // интерфейс модели игрока, в свойстве party будет массив из трех таких моделей
 export interface Character {
@@ -99,7 +98,7 @@ export interface Item {
   price: number;
   tier: number;
   baseId: BASE_ITEMS_ID;
-  // нужно будет типизировать - уникальный айди каждому предмету
+
   gearId: string;
   description: string;
   name: string;
@@ -112,7 +111,7 @@ export interface Item {
   overAllTier: number;
   effectType?: EFFECT_TYPES;
 }
-// интерфейс модели представляющий противника ЛЮБОГО
+// интерфейс модели представляющий противника
 export interface Creature {
   type: ENEMIES;
   hp: number;
@@ -273,7 +272,6 @@ export interface StoreState {
   setPlayerPosition: (position: DungeonCoordinates) => void;
   setPlayerName: (name: string, selectedClass: CLASSES) => void;
   setLocationState: (newLocation: RENDER_LOCATIONS) => void;
-  // подвезти типизацию
   updateBattle: (battleState: Battle) => void;
   changeAttempts: (attempts: number) => void;
   increaseEndurance: (characterName: string) => void;
@@ -345,12 +343,8 @@ export interface StoreState {
     reset?: boolean;
     isSuccessful?: boolean;
   }) => void;
-
-  // ф-ии чисто для тестов
-  killEnemy: VoidFunction;
 }
 
-// Define the type for persisted state
 export type PersistedState = Omit<
   StoreState,
   | "setDungeon"
@@ -412,12 +406,8 @@ export type PersistedState = Omit<
   | "buyTorches"
   | "updatePlayerState"
   | "acquireArtifact"
-
-  // ф-ии чисто для тестов
-  | "killEnemy"
 >;
 
-// Define storage value type
 export interface StorageValue {
   state: {
     player: GameStateData;

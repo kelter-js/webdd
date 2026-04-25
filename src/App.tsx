@@ -12,19 +12,19 @@ import {
   useGameOver,
   useSoundtrack,
 } from "./hooks";
-import { AudioEnabler } from "./components/AudioEnabler/AudioEnabler";
+import {
+  AudioEnabler,
+  ScreenFade,
+  StorySlide,
+  Initiate,
+  End,
+} from "./components";
 import { LoadingModal, GameOverScreen } from "./common";
-import { getSliderById } from "./utils";
-
-import { ScreenFade } from "./components/ScreenFade";
+import { DIALOGUE_FLAGS } from "./entities/dialogues";
 import { useAppState, useGameState } from "./stores";
-import { StorySlide } from "./components/StorySlide";
 import { BUILDING_NAMES, FLAGS } from "./constants";
 import { ViewManager } from "./Views/ViewManager";
-import { Initiate } from "./components/Initiate";
-import { DIALOGUE_FLAGS } from "./entities/dialogues";
-
-import { End } from "./components/End";
+import { getSliderById } from "./utils";
 
 export const App = () => {
   const { progress, loaded } = usePreloadAllAssets();
@@ -34,7 +34,6 @@ export const App = () => {
   const {
     player: { name, sliderId, flags, dialogFlags },
     initiateState,
-    killEnemy,
   } = useGameState();
 
   const { setFading, isFading, isNewGame, setDialogueOpen } = useAppState();
@@ -85,13 +84,6 @@ export const App = () => {
         flags?.includes(FLAGS.GAME_INITIATED) &&
         !isNewGame && <AudioEnabler />}
 
-      <button
-        style={{ position: "absolute", zIndex: 9999999999, top: 0, left: 0 }}
-        onClick={() => killEnemy()}
-      >
-        TEST
-      </button>
-
       <GameOverScreen />
 
       <End />
@@ -100,18 +92,19 @@ export const App = () => {
 };
 
 // 24.05
-// сделать рефакторинг battle - заполнить index.ts в /components
-// попробовать сделать билд
-// заблокировать фильтрацию по тирам если включена фильтрация по классам в инвентаре
+// сделать рефакторинг battle - заполнить index.ts в /components - done
+// попробовать сделать билд - done
+// рефакторинг фильтрации - done
+// быстрый скип диалогов по клику на текст - done
 
 // 23.04
-// продолжаем рефакторинг от Initiate компонента + заполнить index.ts в /components
+// продолжаем рефакторинг от Initiate компонента + заполнить index.ts в /components - done
 
 // 22.04
-// рефакторинг components с заполнением index.ts
+// рефакторинг components с заполнением index.ts - done
 
 // 21.04
-// рефакторинг common + contexts + constants + entities + hooks
+// рефакторинг common + contexts + constants + entities + hooks - done
 
 // 20.04
 // вывести в инфобар кол-во посещенных подземелий и подземелий для следующего тира - done

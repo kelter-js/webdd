@@ -1,16 +1,18 @@
-import { ImageMapHighlight } from "../../components/ImageMapHighlight";
-import { QuestModal } from "../../components/QuestModal/QuestModal";
-import { PotionsBuyModal } from "../../components/PotionsBuyModal";
-import { DungeonContainer } from "../../components/DungeonCard";
-import { EconimicModal } from "../../components/EconimicModal";
-import { QuestResults } from "../../components/QuestResults";
+import {
+  ImageMapHighlight,
+  QuestModal,
+  PotionsBuyModal,
+  DungeonContainer,
+  EconimicModal,
+  QuestResults,
+  AlmanacModal,
+  TradeModal,
+  CraftModal,
+  BuyTorches,
+  Dialogue,
+} from "../../components";
 import { useGetDialogue, useGetLocation } from "../../hooks";
-import { AlmanacModal } from "../../components/AlmanacModal";
 import { useAppState, useGameState } from "../../stores";
-import { TradeModal } from "../../components";
-import { CraftModal } from "../../components/CraftModal";
-import { BuyTorches } from "../../components/BuyTorches";
-import { Dialogue } from "../../components/Dialogue";
 import { BUILDING_NAMES } from "../../constants";
 
 export const Settlement = () => {
