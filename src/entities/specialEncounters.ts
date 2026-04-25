@@ -1,0 +1,5 @@
+export enum SPECIAL_ENCOUNTERS {
+  TRADER = "TRADER",
+  SHOOTING = "SHOOTING",
+  GHOST = "GHOST",
+}

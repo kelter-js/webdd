@@ -1,0 +1,422 @@
+import { useMemo } from "react";
+
+import {
+  questDeskDialog,
+  smithDialog,
+  citadelDialog,
+  priestDialog,
+  tavernDialog,
+  traderDialog,
+  starCounterDialog,
+  DEFAULT_TAVERN_WELCOME_OPTIONS,
+  crazyTraderDialog,
+  ghostDialog,
+  ACQUIRE_ALMANAC_ARTIFACT_OPTION,
+  LEAVE_OPTION,
+  FINAL_DEFAULT_OPTIONS,
+  REWARD_HELMET_OPTION,
+  REWARD_ARTIFACT_OPTION,
+  FINAL_FULL_FAIL_TEXT,
+  FINAL_FAIL_TEXT,
+  FINAL_TEXT,
+  tutorDialog,
+  finalDialog,
+  FINAL_DEFAULT_OPTIONS_SHOOTING,
+  shootingDialog,
+  FINAL_FAIL_TEXT_SHOOTING,
+  LEAVE_OPTION_SHOOTING,
+  FINAL_FULL_FAIL_TEXT_SHOOTING,
+  FINAL_TEXT_SHOOTING,
+  SUCCESS_OPTIONS_SHOOTING,
+} from "../constants/dialogs";
+import {
+  BUILDING_NAMES,
+  FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT,
+  FLAGS,
+  LEGENDARY_ARMOR_PRICE,
+  SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT,
+  THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT,
+} from "../constants";
+
+import { getImprovementPrice, getTotalAmountOfResourceByType } from "../utils";
+import { isEveryEnemyUnlocked } from "../components/AlmanacModal/utils";
+import { DIALOGUE_FLAGS, DIALOGUE_IDS } from "../entities/dialogues";
+import { useAppState, useGameState } from "../stores";
+import { RESOURCES } from "../entities/resources";
+
+export const useGetDialogue = (npc: string | null) => {
+  const { player } = useGameState();
+
+  const {
+    dialogFlags,
+    gold,
+    resourcesBagLevel,
+    resources,
+    collected,
+    flags,
+    location,
+  } = player;
+
+  const { toggleEconomicModal, setDialogueOpen } = useAppState();
+
+  const dialogue = useMemo(() => {
+    switch (npc) {
+      case BUILDING_NAMES.SMITH:
+        if (dialogFlags.includes(DIALOGUE_FLAGS.SMITH_WELCOMED)) {
+          smithDialog.startNode = "alreadyWelcomed";
+        }
+
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.ORE,
+        );
+
+        if (
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.SMITH_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = smithDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_ORE,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveSmithArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_ORE_WITH_ARTIFACT;
+          }
+        }
+
+        return smithDialog;
+
+      case BUILDING_NAMES.QUEST_DESK:
+        return questDeskDialog;
+
+      case BUILDING_NAMES.TAVERN: {
+        if (dialogFlags.includes(DIALOGUE_FLAGS.BODY_PARTS)) {
+          tavernDialog.startNode = "alreadyWelcomed";
+        }
+
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.PARTS,
+        );
+
+        if (
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.ALCHEMISTRY_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = tavernDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_PARTS,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receiveAlchemistryArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_PARTS_WITH_ARTIFACT;
+          }
+        }
+
+        return tavernDialog;
+      }
+
+      case BUILDING_NAMES.SHOP:
+        if (dialogFlags.includes(DIALOGUE_FLAGS.IMPROVE_BAG)) {
+          traderDialog.nodes.welcome.options =
+            traderDialog.nodes.welcome.options.filter(
+              (option) => option.id !== DIALOGUE_IDS.IMPROVE_BAG_INTRO,
+            );
+
+          const isImprovementAvailable = resourcesBagLevel !== 3;
+
+          if (isImprovementAvailable) {
+            const priceForImprovement = getImprovementPrice(resourcesBagLevel);
+            const cantAffordBag = gold < priceForImprovement;
+
+            traderDialog.nodes.welcome.options = [
+              ...DEFAULT_TAVERN_WELCOME_OPTIONS.slice(0, 2),
+              {
+                text: "[купить улучшение сумки на 8 дополнительных слотов]",
+                nextNode: "end",
+                id: DIALOGUE_IDS.BUY_BAG_IMPROVEMENT,
+                isDisabled: cantAffordBag,
+              },
+            ];
+          } else {
+            traderDialog.nodes.welcome.options =
+              DEFAULT_TAVERN_WELCOME_OPTIONS.slice(0, 2);
+          }
+        } else {
+          const hasNoImprovementsYet = resourcesBagLevel === 1;
+
+          if (hasNoImprovementsYet) {
+            const priceForImprovement = getImprovementPrice(resourcesBagLevel);
+            const cantAffordBag = gold < priceForImprovement;
+
+            traderDialog.nodes.services.options[0].isDisabled = cantAffordBag;
+          }
+        }
+
+        if (player.resourcesBagLevel !== 1) {
+          traderDialog.nodes.welcome.options =
+            traderDialog.nodes.welcome.options.filter(
+              (option) => option.id !== DIALOGUE_IDS.IMPROVE_BAG_INTRO,
+            );
+        }
+
+        return traderDialog;
+
+      case BUILDING_NAMES.MEDICAL_STATION: {
+        if (dialogFlags.includes(DIALOGUE_FLAGS.PRIEST_WELCOME)) {
+          priestDialog.startNode = "alreadyWelcomed";
+        }
+
+        const totalAmountOfResources = getTotalAmountOfResourceByType(
+          resources,
+          collected,
+          RESOURCES.OLD_WORLD_TREASURES,
+        );
+
+        if (
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          totalAmountOfResources >= FIRST_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactFirstTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_2) &&
+          totalAmountOfResources >= SECOND_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactSecondTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
+          }
+        }
+
+        if (
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_1) &&
+          flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_2) &&
+          !flags.includes(FLAGS.PRIEST_ARTIFACT_ACHIEVED_TIER_3) &&
+          totalAmountOfResources >= THIRD_TIER_ARTIFACT_RESOURCES_AMOUNT
+        ) {
+          const dialogNode = priestDialog.nodes.alreadyWelcomed.options.find(
+            (option) => option.id === DIALOGUE_IDS.RELEASE_TREASURES,
+          );
+
+          if (dialogNode) {
+            dialogNode.nextNode = "receivePriestArtifactThirdTier";
+            dialogNode.id = DIALOGUE_IDS.RELEASE_TREASURES_WITH_ARTIFACT;
+          }
+        }
+
+        return priestDialog;
+      }
+
+      case BUILDING_NAMES.TOWER:
+        if (dialogFlags.includes(DIALOGUE_FLAGS.PHOTO)) {
+          starCounterDialog.startNode = "buy_camera";
+
+          const buyNode = starCounterDialog.nodes.buy_camera.options.find(
+            (option) => option.id === DIALOGUE_IDS.BUY_CAMERA,
+          );
+
+          if (buyNode) {
+            buyNode.isDisabled = gold < 5000;
+          }
+        }
+
+        if (dialogFlags.includes(DIALOGUE_FLAGS.CAMERA)) {
+          const isAlmanacFullyUnlocked = isEveryEnemyUnlocked(player);
+
+          if (isAlmanacFullyUnlocked) {
+            const isOptionIncluded =
+              starCounterDialog.nodes.almanac.options.find(
+                (option) => option.id === DIALOGUE_IDS.ACQUIRE_ALMANAC_ARTIFACT,
+              );
+
+            if (!isOptionIncluded) {
+              starCounterDialog.nodes.almanac.options = [
+                ...starCounterDialog.nodes.almanac.options,
+                ACQUIRE_ALMANAC_ARTIFACT_OPTION,
+              ];
+            }
+          }
+
+          starCounterDialog.startNode = "almanac";
+        }
+
+        return starCounterDialog;
+
+      case BUILDING_NAMES.CITADEL: {
+        if (dialogFlags.includes(DIALOGUE_FLAGS.ECONOMIC_INTRO)) {
+          toggleEconomicModal(true);
+          setDialogueOpen(null);
+          return null;
+        }
+
+        return citadelDialog;
+      }
+
+      case BUILDING_NAMES.CRAZY_TRADER: {
+        const optionToBuy = crazyTraderDialog.nodes.elaborate.options.find(
+          (option) => option.id === DIALOGUE_IDS.BUY_LEGENDARY_ARMOR,
+        );
+
+        if (optionToBuy) {
+          optionToBuy.isDisabled = gold < LEGENDARY_ARMOR_PRICE;
+        }
+
+        return crazyTraderDialog;
+      }
+
+      case BUILDING_NAMES.GHOST: {
+        ghostDialog.startNode = location?.node ?? "welcome";
+        ghostDialog.nodes.final.options = [...FINAL_DEFAULT_OPTIONS];
+        ghostDialog.nodes.final.text = FINAL_FAIL_TEXT;
+
+        if (location?.attempts === 0) {
+          ghostDialog.nodes.final.options = [LEAVE_OPTION];
+          ghostDialog.nodes.final.text = FINAL_FULL_FAIL_TEXT;
+        }
+
+        if (Number(location?.success) >= 3) {
+          ghostDialog.nodes.final.text = `${FINAL_TEXT}. Ответов: ${location?.success ?? 0}/5`;
+          ghostDialog.nodes.final.options.push(REWARD_ARTIFACT_OPTION);
+        }
+
+        if (Number(location?.success) === 5) {
+          ghostDialog.nodes.final.options.push(REWARD_HELMET_OPTION);
+        }
+
+        return ghostDialog;
+      }
+
+      case BUILDING_NAMES.SHOOTING: {
+        shootingDialog.startNode = location?.node ?? "welcome";
+        shootingDialog.nodes.shootingEnd.options = [
+          ...FINAL_DEFAULT_OPTIONS_SHOOTING,
+        ];
+        shootingDialog.nodes.shootingEnd.text = FINAL_FAIL_TEXT_SHOOTING;
+
+        if (location?.attempts && location?.attempts <= 0) {
+          shootingDialog.nodes.shootingEnd.options = [LEAVE_OPTION_SHOOTING];
+          shootingDialog.nodes.shootingEnd.text = FINAL_FULL_FAIL_TEXT_SHOOTING;
+        }
+
+        if (Number(location?.success) === 1) {
+          shootingDialog.nodes.shootingEnd.text = FINAL_TEXT_SHOOTING;
+          shootingDialog.nodes.shootingEnd.options = [
+            ...SUCCESS_OPTIONS_SHOOTING,
+          ];
+        }
+
+        return shootingDialog;
+      }
+
+      case BUILDING_NAMES.TUTOR: {
+        if (dialogFlags.includes(DIALOGUE_FLAGS.TUTOR_TIER_1_ENDED)) {
+          tutorDialog.startNode = "welcome_tier_2";
+        }
+
+        if (dialogFlags.includes(DIALOGUE_FLAGS.TUTOR_TIER_2_ENDED)) {
+          tutorDialog.startNode = "welcome_tier_3";
+        }
+
+        return tutorDialog;
+      }
+
+      case BUILDING_NAMES.FINAL_DIALOGUE:
+        return finalDialog;
+
+      default:
+        return null;
+    }
+  }, [
+    npc,
+    dialogFlags.length,
+    resourcesBagLevel,
+    gold,
+    resources,
+    collected,
+    player,
+    location?.attempts,
+    location?.success,
+    location?.node,
+  ]);
+
+  return dialogue;
+};

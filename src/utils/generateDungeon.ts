@@ -1,16 +1,43 @@
+import {
+  FIRST_TIER_DUNGEONS_AMOUNT,
+  SECOND_TIER_DUNGEONS_AMOUNT,
+  THIRD_TIER_DUNGEONS_AMOUNT,
+} from "../constants";
+
 import { DIRECTIONS } from "../entities/directions";
+import { ROOM_TYPES } from "../entities/room";
+import { isDeadEnd, getRandom } from "./";
+import { DirectionTuple } from "./types";
+import { DUNGEONS } from "../entities";
 import { Room } from "../types";
-import { isDeadEnd } from "./isDeadEnd";
 
-type DirectionTuple = [
-  dx: number,
-  dy: number,
-  exit: DIRECTIONS,
-  backExit: DIRECTIONS
-];
+const MAX_ITERATIONS_COUNTER = 100000;
 
-export const generateDungeon = (width: number, height: number): Room[][] => {
+const getEndRoomTypeByCounter = (counter: number, isQuest?: boolean) => {
+  if (isQuest) {
+    return ROOM_TYPES.END;
+  }
+
+  if (
+    counter === FIRST_TIER_DUNGEONS_AMOUNT ||
+    counter === SECOND_TIER_DUNGEONS_AMOUNT ||
+    counter >= THIRD_TIER_DUNGEONS_AMOUNT
+  ) {
+    return ROOM_TYPES.STORY_BOSS;
+  }
+
+  return ROOM_TYPES.END;
+};
+
+export const generateDungeon = (
+  width: number,
+  height: number,
+  dungeonsAmount: number,
+  dungeonType: DUNGEONS,
+): Room[][] => {
   // 1. Создаём пустую сетку комнат
+  const isQuest = dungeonType !== DUNGEONS.STORY;
+
   let dungeon: Room[][] = Array(height)
     .fill(null)
     .map((_, y) =>
@@ -20,15 +47,15 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
           id: `${x}-${y}`,
           x,
           y,
-          type: "empty",
+          type: ROOM_TYPES.EMPTY,
           visited: false,
           exits: { top: false, right: false, bottom: false, left: false },
-        }))
+        })),
     );
 
   // 2. Начинаем с (0, 0)
   const stack: [number, number][] = [[0, 0]];
-  dungeon[0][0].type = "start";
+  dungeon[0][0].type = ROOM_TYPES.START;
   dungeon[0][0].visited = true;
 
   // 3. Пока есть непосещённые комнаты
@@ -68,17 +95,42 @@ export const generateDungeon = (width: number, height: number): Room[][] => {
   }
 
   // 9. Делаем последнюю комнату "концом"
-  dungeon[height - 1][width - 1].type = "end";
+  dungeon[height - 1][width - 1].type = getEndRoomTypeByCounter(
+    dungeonsAmount,
+    isQuest,
+  );
 
-  console.log("dungeon", dungeon);
-
-  dungeon = dungeon.map((row) =>
-    row.map((room) => {
+  dungeon = dungeon.map((row, rowIndex) =>
+    row.map((room, roomIndex) => {
       const isDeadEndRoom = isDeadEnd(room);
+      room.visited = rowIndex === 0 && roomIndex === 0 ? true : false;
 
       return { ...room, isDeadEndRoom };
-    })
+    }),
   );
+
+  if (dungeonType === DUNGEONS.FIND) {
+    let counter = 0;
+
+    while (counter < MAX_ITERATIONS_COUNTER) {
+      const randomRow = getRandom(0, width - 1);
+      const randomColumn = getRandom(0, height - 1);
+
+      const cell = dungeon[randomColumn][randomRow];
+
+      if (
+        cell.type === ROOM_TYPES.END ||
+        cell.type === ROOM_TYPES.START ||
+        cell.isDeadEndRoom
+      ) {
+        counter++;
+        continue;
+      }
+
+      cell.type = ROOM_TYPES.ENEMY;
+      break;
+    }
+  }
 
   return dungeon;
 };

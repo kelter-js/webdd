@@ -1,0 +1,13 @@
+// Перечисление ресурсов
+
+export enum RESOURCES {
+  ORE = "ORE",
+  PARTS = "PARTS",
+  OLD_WORLD_TREASURES = "OLD_WORLD_TREASURES",
+}
+
+export const ALL_RESOURCES_TYPE = [
+  RESOURCES.ORE,
+  RESOURCES.PARTS,
+  RESOURCES.OLD_WORLD_TREASURES,
+];

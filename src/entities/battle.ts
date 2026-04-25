@@ -1,0 +1,4 @@
+export enum TURN_STATES {
+  PLAYER_TURN = "PLAYER_TURN",
+  ENEMY_TURN = "ENEMY_TURN",
+}

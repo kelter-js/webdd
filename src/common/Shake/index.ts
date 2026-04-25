@@ -1,0 +1,1 @@
+export { Shake } from "./Shake";

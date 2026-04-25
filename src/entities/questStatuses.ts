@@ -1,0 +1,5 @@
+export enum QUEST_STATUSES {
+  FAILED = "FAILED",
+  SUCCESS = "SUCCESS",
+  INITIATED = "INITIATED",
+}

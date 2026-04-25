@@ -1,24 +1,26 @@
-// contexts/SnackbarContext.tsx
-import React, { createContext, useContext, useState } from "react";
-import { Alert, AlertColor, Snackbar } from "@mui/material";
+import {
+  FC,
+  createContext,
+  useContext,
+  useState,
+  PropsWithChildren,
+  useMemo,
+} from "react";
+import { AlertColor } from "@mui/material";
 
-type SnackbarContextType = {
-  showSnackbar: (message: string, severity?: AlertColor) => void;
-};
+import { SnackbarContextType } from "./types";
+import { VOID_EMPTY_FUNCTION } from "../share/constants";
+import { StyledAlert, StyledSnackbar } from "./Snackbar.styled";
 
 const SnackbarContext = createContext<SnackbarContextType>({
-  showSnackbar: () => {},
+  showSnackbar: VOID_EMPTY_FUNCTION,
 });
 
 export const useSnackbar = () => useContext(SnackbarContext);
 
-type SnackbarProviderProps = {
-  children: React.ReactNode;
-};
+const SNACKBAR_HIDE_DURATION = 3000;
 
-export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
-  children,
-}) => {
+export const SnackbarProvider: FC<PropsWithChildren> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<AlertColor>("info");
@@ -29,23 +31,27 @@ export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const memoizedValue = useMemo(() => ({ showSnackbar }), []);
+
+  const handleClose = () => setOpen(false);
 
   return (
-    <SnackbarContext.Provider value={{ showSnackbar }}>
+    <SnackbarContext.Provider value={memoizedValue}>
       {children}
-      <Snackbar
+      <StyledSnackbar
         open={open}
-        autoHideDuration={3000}
+        autoHideDuration={SNACKBAR_HIDE_DURATION}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+        <StyledAlert
+          onClose={handleClose}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
           {message}
-        </Alert>
-      </Snackbar>
+        </StyledAlert>
+      </StyledSnackbar>
     </SnackbarContext.Provider>
   );
 };

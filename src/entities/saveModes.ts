@@ -1,0 +1,4 @@
+export enum SAVE_MODES {
+  SAVE_MODE = "SAVE_MODE",
+  LOAD_MODE = "LOAD_MODE",
+}

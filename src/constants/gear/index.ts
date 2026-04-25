@@ -1,0 +1,61 @@
+import {
+  ARMORS_TIER_1,
+  ARMORS_TIER_2,
+  ARMORS_TIER_3,
+  RARE_ARMORS_TIER_1,
+  RARE_ARMORS_TIER_2,
+  RARE_ARMORS_TIER_3,
+} from "../armor";
+import {
+  RARE_WEAPONS_TIER_1,
+  RARE_WEAPONS_TIER_2,
+  RARE_WEAPONS_TIER_3,
+  WEAPONS_TIER_1,
+  WEAPONS_TIER_2,
+  WEAPONS_TIER_3,
+} from "../guns";
+import {
+  HELMETS_TIER_1,
+  HELMETS_TIER_2,
+  HELMETS_TIER_3,
+  RARE_HELMETS_TIER_1,
+  RARE_HELMETS_TIER_2,
+  RARE_HELMETS_TIER_3,
+} from "../helmets";
+
+export const ALL_ITEMS_TIER_1 = [
+  ...WEAPONS_TIER_1,
+  ...ARMORS_TIER_1,
+  ...HELMETS_TIER_1,
+];
+
+export const ALL_ITEMS_RARE_TIER_1 = [
+  ...RARE_ARMORS_TIER_1,
+  ...RARE_WEAPONS_TIER_1,
+  ...RARE_HELMETS_TIER_1,
+];
+
+export const ALL_ITEMS_TIER_2 = [
+  ...WEAPONS_TIER_2,
+  ...ARMORS_TIER_2,
+  ...HELMETS_TIER_2,
+];
+
+export const ALL_ITEMS_RARE_TIER_2 = [
+  ...RARE_ARMORS_TIER_2,
+  ...RARE_WEAPONS_TIER_2,
+  ...RARE_HELMETS_TIER_2,
+];
+
+// Tier 3
+export const ALL_ITEMS_TIER_3 = [
+  ...WEAPONS_TIER_3,
+  ...ARMORS_TIER_3,
+  ...HELMETS_TIER_3,
+];
+
+export const ALL_ITEMS_RARE_TIER_3 = [
+  ...RARE_ARMORS_TIER_3,
+  ...RARE_WEAPONS_TIER_3,
+  ...RARE_HELMETS_TIER_3,
+];

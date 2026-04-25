@@ -1,30 +1,28 @@
 // types.ts
-export type Hero = {
-  id: string;
-  name: string;
-  class: "Crusader" | "Plague Doctor" | "Highwayman" | "Vestal"; // и т.д.
-  health: number;
-  maxHealth: number;
-  stress: number;
-  maxStress: number;
-  skills: string[];
-  perks: string[];
-  quirks: string[]; // Особенности персонажа (позитивные/негативные)
-};
 
-export type Location =
-  | "Ruins"
-  | "Warrens"
-  | "Weald"
-  | "Cove"
-  | "Darkest Dungeon"
-  | "Hamlet";
+import { ReactNode } from "react";
+
+import { ALMANAC_ENEMIES_GENERIC_TYPES } from "../entities/enemies";
+import { DUNGEONS, ENEMIES, QUEST_STATUSES, TURN_STATES } from "../entities";
+import {
+  Battle,
+  Character,
+  GameStateData,
+  GearData,
+  Item,
+  PERK_ID_DATA,
+} from "./gameState";
+import { BASE_ITEMS_ID } from "../constants/items";
+import { RESOURCES } from "../entities/resources";
+import { AI_CATEGORIES } from "../entities/ai";
+import { ROOM_TYPES } from "../entities/room";
+import { EnemyPrototypeData } from "../constants/creatures";
 
 export interface Room {
   id: string; // Уникальный ID
   x: number; // Позиция по X
   y: number; // Позиция по Y
-  type: "start" | "end" | "enemy" | "treasure" | "empty";
+  type: ROOM_TYPES;
   visited: boolean; // Посещена ли комната
   exits: {
     // Куда можно пойти
@@ -34,45 +32,100 @@ export interface Room {
     left: boolean;
   };
   isDeadEndRoom?: boolean;
+  isLighted?: boolean;
+  isLooted?: boolean;
 }
 
-export type GameState = {
-  // Текущее местоположение и прогресс
-  currentLocation: Location;
-  currentRoom: Room | null;
-  discoveredRooms: Room[];
-  exploredLocations: Location[];
+// BASE_ITEMS_ID - для маппинга на основной предмет
+// второй стринг - uuidv4 уникальный айди для каждого предмета
+export type MemoizedItem = [BASE_ITEMS_ID, string];
 
-  // Отряд героев
-  party: Hero[];
-  reserveHeroes: Hero[]; // Герои в городе
-  wagonHeroes: Hero[]; // Новые рекруты
+export interface PerkData {
+  id: PERK_ID_DATA;
+  description: string;
+  isAbility?: boolean;
+  title?: string;
+}
 
-  // Ресурсы
-  gold: number;
-  heirlooms: {
-    deeds: number;
-    portraits: number;
-    busts: number;
-    crests: number;
-  };
+export enum RECEIPT_TYPES {
+  CONSUMABLE = "CONSUMABLE",
+  ITEM = "ITEM",
+}
 
-  // Стресс и освещение (механика "Torch")
-  torchLevel: number; // 0-100, влияет на сложность
-  isDarkestDungeon: boolean; // Особый режим для финальных подземелий
-
-  // Инвентарь
-  inventory: {
-    provisions: {
-      food: number;
-      torches: number;
-      shovels: number;
-      keys: number;
-    };
-    trinkets: string[]; // Артефакты
-  };
-
-  // Флаги событий
-  stageCoachWeek: number; // Номер недели для вагонетки
-  hasActiveQuest: boolean;
+export type CraftFunctionType = (state: GameStateData) => {
+  state: GameStateData;
+  item: Item | null | string;
 };
+
+export interface ReceiptData {
+  isDisabled: (state: GameStateData) => boolean;
+  create: CraftFunctionType;
+  title: string;
+  sourceItemIcon: string;
+  targetItemIcon: string;
+  goldRequiredToCraft?: number;
+  type: RECEIPT_TYPES;
+}
+
+export interface ResourceData {
+  resource: RESOURCES;
+  id: string;
+}
+
+export enum RewardTypes {
+  ITEM = "ITEM",
+  JUNK = "JUNK",
+  POTION = "POTION",
+  GOLD = "GOLD",
+}
+
+export interface DungeonCreationData {
+  dungeonType?: DUNGEONS;
+  dungeonLevel?: number;
+}
+
+export interface CreatureBaseModel {
+  aiPackage: AI_CATEGORIES;
+
+  baseModel: {
+    hp: number;
+    maxHP: number;
+    minDmg: number;
+    maxDmg: number;
+    exp: number;
+    evasionChance: number;
+    type: ENEMIES;
+    isEnhanced: boolean;
+    subType: ALMANAC_ENEMIES_GENERIC_TYPES | null;
+  };
+}
+
+export interface SlideData {
+  id: number;
+  text: string | ReactNode;
+  image: string;
+}
+
+export interface QuestReward {
+  gold: number;
+  exp: number;
+  item?: Item;
+  status: QUEST_STATUSES;
+  type: DUNGEONS;
+}
+
+export interface BattleGenerationProps {
+  tier: number;
+  turn: TURN_STATES;
+  party: Character[];
+  isSpecial?: boolean;
+  characterGear: GearData | null;
+  isBoss?: boolean;
+  isQuest?: boolean;
+}
+
+export interface GenerationBattleEnemyModel {
+  model: Battle;
+  entity: EnemyPrototypeData | EnemyPrototypeData[];
+  hasTurn: boolean;
+}

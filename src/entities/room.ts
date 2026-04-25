@@ -1,0 +1,9 @@
+export enum ROOM_TYPES {
+  START = "START",
+  END = "END",
+  ENEMY = "ENEMY",
+  TREASURE = "TREASURE",
+  EMPTY = "EMPTY",
+  STORY_BOSS = "STORY_BOSS",
+  CLEARED = "CLEARED",
+}

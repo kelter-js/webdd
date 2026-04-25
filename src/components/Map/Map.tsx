@@ -1,438 +1,385 @@
-import { useState } from "react";
-import { DIRECTIONS } from "../../entities/directions";
+import { useCallback, useMemo, useState } from "react";
+import { Stack, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+
+import {
+  RENDER_LOCATIONS,
+  QUEST_STATUSES,
+  DUNGEONS,
+  DIRECTIONS,
+} from "../../entities";
+import {
+  ARROW_MAP,
+  ENCOUNTER_SFX_PLAYER_REF,
+  MAP_LEGEND_STYLES,
+  ROOM_STYLES,
+} from "./constants";
+import { getRandomRewardByQuest } from "../../stores/utils";
+import { useAppState, useGameState } from "../../stores";
+import { BattleResult } from "./components/BattleResult";
+import { useSnackbar } from "../../contexts/Snackbar";
+import { getDungeonBackgroundByTier } from "./utils";
+import { getFlagStoryBossByTier } from "../../utils";
+import { ClosePortal, QTEGame } from "../Minigames";
+import { usePlayer } from "../../contexts/Player";
+import { useMovement } from "./hooks/useMovement";
+import { ROOM_TYPES } from "../../entities/room";
+
 import { Room } from "../../types";
-import { generateDungeon } from "../../utils/generateDungeon";
-import { useGameSaves } from "../../stores/GameSave";
-import { useGameState } from "../../stores/GameState";
-
-// Текстура каменной стены в base64
-const COBBLESTONE_TEXTURE = `
-  linear-gradient(0deg, 
-    #333 1px, #444 1px, #444 2px, 
-    #555 2px, #555 3px, #444 3px
-  )
-`;
-
-const ROOM_STYLES = {
-  start: { bg: "#065f46", symbol: "🚪", color: "white" },
-  end: { bg: "#7f1d1d", symbol: "🏁", color: "white" },
-  deadEnd: { bg: "#1e293b", symbol: "✖", color: "#f59e0b" },
-  visited: { bg: "#334155", symbol: "•", color: "white" },
-  unvisited: { bg: "#1e293b", symbol: "?", color: "#64748b" },
-};
+import encounterSFX from "../../assets/audio/encounter.mp3";
+import * as S from "./Map.styled";
 
 export const Map = () => {
   const {
-    player: {
-      location: { dungeon },
-    },
+    player: { location, economic, battle, currentTier, flags },
     setDungeon,
+    setPlayerPosition,
+    updateDungeon,
+    setLocationState,
+    setQuestData,
+    handleExitDungeon,
   } = useGameState();
-  console.log("dungeon", dungeon);
+  const { setFading, toggleAutoSave } = useAppState();
+  const [isMapVisible, setMapVisible] = useState(false);
+  const { showSnackbar } = useSnackbar();
 
-  const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 });
+  const handleMapVisibilityChange = () => setMapVisible((state) => !state);
 
-  const canMove = (direction: DIRECTIONS) => {
-    const { x, y } = playerPos;
-    const room = dungeon[y]?.[x];
-    return room?.exits[direction] || false;
-  };
+  const { handleSetSrc } = usePlayer();
 
-  const generateNewDungeon = () => {
-    const newDungeon = generateDungeon(5, 5);
-    setDungeon(newDungeon);
-    setPlayerPos({ x: 0, y: 0 });
-  };
+  const {
+    dungeon: currentDungeon,
+    position,
+    type,
+    isQuestCompleted,
+  } = location || {};
+
+  const handleWin = useCallback(() => {
+    if (!location?.type) return;
+
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+    const reward = getRandomRewardByQuest(
+      currentTier,
+      location.type,
+      QUEST_STATUSES.SUCCESS,
+    );
+
+    setFading(true);
+    setQuestData(reward);
+    handleExitDungeon();
+    setDungeon(null);
+  }, [
+    toggleAutoSave,
+    economic,
+    handleExitDungeon,
+    location?.type,
+    currentTier,
+  ]);
+
+  const handleFail = useCallback(() => {
+    if (!location?.type) return;
+
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+    setFading(true);
+    const reward = getRandomRewardByQuest(
+      currentTier,
+      location.type,
+      QUEST_STATUSES.FAILED,
+    );
+    setQuestData(reward);
+
+    handleExitDungeon();
+    setDungeon(null);
+    toggleAutoSave();
+  }, [
+    toggleAutoSave,
+    economic,
+    handleExitDungeon,
+    location?.type,
+    currentTier,
+  ]);
 
   const movePlayer = (direction: DIRECTIONS) => {
-    if (!canMove(direction)) return;
+    if (!canMove(direction) || !position) return;
 
-    const { x, y } = playerPos;
+    const { x, y } = position;
     const newPos = {
       x:
         direction === DIRECTIONS.LEFT
           ? x - 1
           : direction === DIRECTIONS.RIGHT
-          ? x + 1
-          : x,
+            ? x + 1
+            : x,
       y:
         direction === DIRECTIONS.UP
           ? y - 1
           : direction === DIRECTIONS.DOWN
-          ? y + 1
-          : y,
+            ? y + 1
+            : y,
     };
 
-    setPlayerPos(newPos);
+    setPlayerPosition(newPos);
 
-    setDungeon(dungeon, newPos);
+    updateDungeon(
+      { position: newPos },
+      (isSpecialEncounter = false) => {
+        setFading(true);
 
-    //mock
-    // setDungeon((state) => {
-    //   const newDungeon = dungeon.map((row) => [...row]);
-    //   console.log(
-    //     "newDungeon[newPos.y][newPos.x]",
-    //     newDungeon[newPos.y][newPos.x]
-    //   );
-    //   newDungeon[newPos.y][newPos.x].visited = true;
-    //   return newDungeon;
-    // });
+        if (!isSpecialEncounter) {
+          handleSetSrc(ENCOUNTER_SFX_PLAYER_REF, encounterSFX);
+        }
+      },
+      (result) => showSnackbar(result),
+    );
+  };
+
+  const dungeon = currentDungeon || [];
+
+  const currentCell =
+    typeof position?.y === "number" &&
+    typeof position?.x === "number" &&
+    dungeon[position.y]
+      ? dungeon[position.y][position.x]
+      : undefined;
+
+  const isDungeonExit =
+    currentCell?.type === ROOM_TYPES.END ||
+    (currentCell?.type === ROOM_TYPES.STORY_BOSS &&
+      flags.includes(getFlagStoryBossByTier(currentTier)));
+
+  const reward = battle?.reward;
+
+  const hasQuest =
+    (isDungeonExit && type === DUNGEONS.CLOSE_PORTAL) ||
+    (isDungeonExit && type === DUNGEONS.CATCH_GOBLIN) ||
+    Boolean(reward);
+
+  useMovement(movePlayer, hasQuest);
+
+  const currentBackground = useMemo(
+    () => getDungeonBackgroundByTier(location?.dungeonLevel || currentTier),
+    [position?.x, position?.y, currentTier],
+  );
+
+  if (!location || !position || !dungeon) {
+    return null;
+  }
+
+  const handleEscapeFromDungeon = () => {
+    setFading(true);
+    handleExitDungeon();
+    setDungeon(null);
+    toggleAutoSave();
+    setLocationState(RENDER_LOCATIONS.SETTLEMENT);
+
+    if (location.type === DUNGEONS.FIND) {
+      const reward = getRandomRewardByQuest(
+        currentTier,
+        location.type,
+        QUEST_STATUSES.SUCCESS,
+      );
+
+      setQuestData(reward);
+    }
+  };
+
+  const canMove = (direction: DIRECTIONS) => {
+    const { x, y } = position;
+    const room = dungeon[y]?.[x];
+    return room?.exits[direction] || false;
   };
 
   const renderRoom = (room: Room) => {
-    const isCurrent = playerPos.x === room.x && playerPos.y === room.y;
+    const isCurrent = position.x === room.x && position.y === room.y;
 
     const roomType =
-      room.type === "start"
-        ? "start"
-        : room.type === "end"
-        ? "end"
-        : room.isDeadEndRoom
-        ? "deadEnd"
-        : room.visited
-        ? "visited"
-        : "unvisited";
+      room.type === ROOM_TYPES.START
+        ? ROOM_TYPES.START
+        : room.type === ROOM_TYPES.END || room.type === ROOM_TYPES.STORY_BOSS
+          ? ROOM_TYPES.END
+          : room.isDeadEndRoom
+            ? "deadEnd"
+            : room.visited
+              ? "visited"
+              : "unvisited";
 
     // Определяем направление входа для тупика
     const entranceDir = room.isDeadEndRoom
       ? Object.entries(room.exits).find(([_, open]) => open)?.[0]
       : null;
 
-    const arrowMap = {
-      [DIRECTIONS.UP]: "↓",
-      [DIRECTIONS.RIGHT]: "←",
-      [DIRECTIONS.DOWN]: "↑",
-      [DIRECTIONS.LEFT]: "→",
-    };
+    const currentRoom = ROOM_STYLES[roomType];
 
     return (
-      <div
-        style={{
-          width: 60,
-          height: 60,
-          backgroundColor: ROOM_STYLES[roomType].bg,
-          border: isCurrent ? "3px solid #fbbf24" : "none",
-          borderRadius: 4,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 20,
-          color: ROOM_STYLES[roomType].color,
-          position: "relative",
-          zIndex: 2,
-          boxShadow: room.isDeadEndRoom
-            ? "inset 0 0 10px rgba(245,158,11,0.5)"
-            : "none",
-        }}
+      <S.MapContainer
+        bgColor={currentRoom.bg}
+        color={currentRoom.color}
+        isDeadEndRoom={Boolean(room.isDeadEndRoom)}
+        isCurrent={isCurrent}
       >
         {/* Стены комнаты */}
-        {!room.exits[DIRECTIONS.UP] && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 8,
-              backgroundImage: COBBLESTONE_TEXTURE,
-              boxShadow:
-                "inset 0 0 5px rgba(0,0,0,0.5), 1px 1px 2px rgba(0,0,0,0.3)",
-              backgroundSize: "8px 8px",
-              backgroundColor: "#222",
-              backgroundPosition: "0 0, 0 4px, 4px -4px, -4px 0px",
-              zIndex: 3,
-            }}
-          />
-        )}
-        {!room.exits[DIRECTIONS.RIGHT] && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: 8, // Увеличим толщину для заметности
-              backgroundImage: COBBLESTONE_TEXTURE,
-              backgroundSize: "8px 8px",
-              backgroundColor: "#222",
-              boxShadow: "inset 2px 0 3px rgba(0,0,0,0.5)",
-              zIndex: 3,
-            }}
-          />
-        )}
-        {!room.exits[DIRECTIONS.DOWN] && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 6,
-              backgroundImage: COBBLESTONE_TEXTURE,
-              boxShadow:
-                "inset 0 0 5px rgba(0,0,0,0.5), 1px 1px 2px rgba(0,0,0,0.3)",
-              backgroundSize: "8px 8px",
-              backgroundColor: "#222",
-              backgroundPosition: "0 0, 0 4px, 4px -4px, -4px 0px",
-              zIndex: 3,
-            }}
-          />
-        )}
-        {!room.exits[DIRECTIONS.LEFT] && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              bottom: 0,
-              width: 6,
-              backgroundImage: COBBLESTONE_TEXTURE,
-              boxShadow:
-                "inset 0 0 5px rgba(0,0,0,0.5), 1px 1px 2px rgba(0,0,0,0.3)",
-              backgroundSize: "8px 8px",
-              backgroundColor: "#222",
-              backgroundPosition: "0 0, 0 4px, 4px -4px, -4px 0px",
-              zIndex: 3,
-            }}
-          />
-        )}
+        {!room.exits[DIRECTIONS.UP] && <S.DirectionUpWall />}
+        {!room.exits[DIRECTIONS.RIGHT] && <S.DirectionRightWall />}
+        {!room.exits[DIRECTIONS.DOWN] && <S.DirectionDownWall />}
+        {!room.exits[DIRECTIONS.LEFT] && <S.DirectionLeftWall />}
 
         {/* Содержимое комнаты */}
         <div style={{ position: "relative", zIndex: 4 }}>
-          {roomType === "start" && ROOM_STYLES.start.symbol}
-          {roomType === "end" && ROOM_STYLES.end.symbol}
+          {roomType === ROOM_TYPES.START &&
+            ROOM_STYLES[ROOM_TYPES.START].symbol}
+
+          {roomType === ROOM_TYPES.END && ROOM_STYLES[ROOM_TYPES.END].symbol}
+
           {roomType === "deadEnd" && (
             <div style={{ textAlign: "center" }}>
               {entranceDir && (
                 <div style={{ fontSize: 14, marginBottom: -8 }}>
-                  {arrowMap[entranceDir as DIRECTIONS]}
+                  {ARROW_MAP[entranceDir as DIRECTIONS]}
                 </div>
               )}
+
               {ROOM_STYLES.deadEnd.symbol}
             </div>
           )}
+
           {roomType === "visited" && ROOM_STYLES.visited.symbol}
           {roomType === "unvisited" && ROOM_STYLES.unvisited.symbol}
         </div>
-      </div>
+      </S.MapContainer>
     );
   };
 
-  const renderConnections = () => {
-    const connections = [];
-    const cellSize = 64;
-    const connectionColor = "#4ade80";
-
-    for (let y = 0; y < dungeon.length; y++) {
-      for (let x = 0; x < dungeon[y].length; x++) {
-        const room = dungeon[y][x];
-
-        // Горизонтальные соединения
-        if (room.exits[DIRECTIONS.LEFT] && x > 0) {
-          connections.push(
-            <div
-              key={`h-${x}-${y}`}
-              style={{
-                position: "absolute",
-                left: x * cellSize,
-                top: y * cellSize + cellSize / 2 - 2,
-                width: cellSize,
-                height: 4,
-                backgroundColor: connectionColor,
-                zIndex: 1,
-              }}
-            />
-          );
-        }
-
-        // Вертикальные соединения
-        if (room.exits[DIRECTIONS.UP] && y > 0) {
-          connections.push(
-            <div
-              key={`v-${x}-${y}`}
-              style={{
-                position: "absolute",
-                left: x * cellSize + cellSize / 2 - 2,
-                top: y * cellSize,
-                width: 4,
-                height: cellSize,
-                backgroundColor: connectionColor,
-                zIndex: 1,
-              }}
-            />
-          );
-        }
-      }
-    }
-
-    return connections;
-  };
+  const isAbleToMoveUp = canMove(DIRECTIONS.UP);
+  const isAbleToMoveLeft = canMove(DIRECTIONS.LEFT);
+  const isAbleToMoveRight = canMove(DIRECTIONS.RIGHT);
+  const isAbleToMoveDown = canMove(DIRECTIONS.DOWN);
 
   return (
-    <div style={{ padding: 20, maxWidth: 600, margin: "0 auto" }}>
-      <button
-        style={{
-          fontSize: 18,
-          padding: "10px 20px",
-          marginBottom: 20,
-          backgroundColor: "#3b82f6",
-          color: "white",
-          border: "none",
-          borderRadius: 5,
-        }}
-        onClick={generateNewDungeon}
-      >
-        Сгенерировать подземелье
-      </button>
+    <S.MainContainer>
+      <S.BackgroundMap src={currentBackground} />
 
       {dungeon.length > 0 && (
-        <div
-          style={{
-            position: "relative",
-            width: dungeon[0].length * 64,
-            height: dungeon.length * 64,
-            marginBottom: 20,
-            backgroundColor: "#111827",
-
-            boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)",
-            // Добавляем внешние стены
-          }}
+        <S.DungeonContainer
+          width={dungeon[0].length * 64}
+          height={dungeon.length * 64}
         >
           {/* Комнаты */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${dungeon[0].length}, 64px)`,
-              gridTemplateRows: `repeat(${dungeon.length}, 64px)`,
-              position: "relative",
-              zIndex: 2,
-            }}
-          >
+          <S.Rooms columns={dungeon[0].length} rows={dungeon.length}>
             {dungeon.map((row, y) =>
               row.map((room, x) => (
-                <div
+                <S.RoomContainer
+                  gridColumn={x + 1}
+                  gridRow={y + 1}
                   key={room.id}
-                  style={{
-                    gridColumn: x + 1,
-                    gridRow: y + 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
                 >
                   {renderRoom(room)}
-                </div>
-              ))
+                </S.RoomContainer>
+              )),
             )}
-          </div>
-        </div>
+          </S.Rooms>
+        </S.DungeonContainer>
       )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateAreas: `". up ." "left . right" ". down ."`,
-          gap: 10,
-          marginBottom: 20,
-        }}
-      >
-        <button
-          style={{
-            gridArea: "up",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.UP) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.UP)}
-          disabled={!canMove(DIRECTIONS.UP)}
-        >
-          ↑ Вверх
-        </button>
-        <button
-          style={{
-            gridArea: "left",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.LEFT) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.LEFT)}
-          disabled={!canMove(DIRECTIONS.LEFT)}
-        >
-          ← Влево
-        </button>
-        <button
-          style={{
-            gridArea: "right",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.RIGHT) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.RIGHT)}
-          disabled={!canMove(DIRECTIONS.RIGHT)}
-        >
-          Вправо →
-        </button>
-        <button
-          style={{
-            gridArea: "down",
-            padding: "12px 20px",
-            fontSize: 18,
-            backgroundColor: canMove(DIRECTIONS.DOWN) ? "#4ade80" : "#64748b",
-            color: "white",
-            border: "none",
-            borderRadius: 5,
-          }}
-          onClick={() => movePlayer(DIRECTIONS.DOWN)}
-          disabled={!canMove(DIRECTIONS.DOWN)}
-        >
-          ↓ Вниз
-        </button>
-      </div>
+      <S.ControlsContainer>
+        {isDungeonExit &&
+          (type === DUNGEONS.STORY ||
+            (type === DUNGEONS.FIND && isQuestCompleted)) && (
+            <S.LeaveDungeonButton onClick={handleEscapeFromDungeon}>
+              Выйти из подземелья
+            </S.LeaveDungeonButton>
+          )}
 
-      <div
-        style={{
-          backgroundColor: "#1e293b",
-          padding: 15,
-          borderRadius: 5,
-          color: "#e2e8f0",
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>Легенда карты:</h3>
-        <ul style={{ paddingLeft: 20, marginBottom: 0 }}>
-          <li>
-            <span style={{ color: ROOM_STYLES.start.color }}>🚪</span> - Старт
-          </li>
-          <li>
-            <span style={{ color: ROOM_STYLES.end.color }}>🏁</span> - Выход
-          </li>
-          <li>
-            <span style={{ color: ROOM_STYLES.deadEnd.color }}>
-              ✖ + стрелка
-            </span>{" "}
-            - Тупик (стрелка показывает вход)
-          </li>
-          <li>
-            <span style={{ color: "#4ade80" }}>Зеленые линии</span> - Проходы
-            между комнатами
-          </li>
-          <li>
-            <span style={{ color: "#fbbf24" }}>Золотая рамка</span> - Ваша
-            позиция
-          </li>
-          <li>
-            Стрелка над тупиком всегда указывает, откуда в него можно войти
-          </li>
-        </ul>
-      </div>
-    </div>
+        <S.GuideButtonContainer
+          onMouseEnter={handleMapVisibilityChange}
+          onMouseLeave={handleMapVisibilityChange}
+        >
+          <QuestionMarkIcon />
+        </S.GuideButtonContainer>
+      </S.ControlsContainer>
+
+      <S.MovementsContainer>
+        <S.MovementButton
+          canMove={isAbleToMoveUp}
+          onClick={() => movePlayer(DIRECTIONS.UP)}
+          disabled={!isAbleToMoveUp}
+        >
+          <Typography fontFamily="inherit">↑</Typography>
+        </S.MovementButton>
+
+        <Stack direction="row" gap={6}>
+          <S.MovementButton
+            canMove={isAbleToMoveLeft}
+            onClick={() => movePlayer(DIRECTIONS.LEFT)}
+            disabled={!isAbleToMoveLeft}
+          >
+            <Typography fontFamily="inherit">←</Typography>
+          </S.MovementButton>
+
+          <S.MovementButton
+            canMove={isAbleToMoveRight}
+            onClick={() => movePlayer(DIRECTIONS.RIGHT)}
+            disabled={!isAbleToMoveRight}
+          >
+            <Typography fontFamily="inherit">→</Typography>
+          </S.MovementButton>
+        </Stack>
+
+        <S.MovementButton
+          canMove={isAbleToMoveDown}
+          onClick={() => movePlayer(DIRECTIONS.DOWN)}
+          disabled={!isAbleToMoveDown}
+        >
+          <Typography fontFamily="inherit">↓</Typography>
+        </S.MovementButton>
+      </S.MovementsContainer>
+
+      {isMapVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+          style={MAP_LEGEND_STYLES}
+        >
+          <h3 style={{ marginTop: 0 }}>Легенда карты:</h3>
+          <ul style={{ paddingLeft: 20, marginBottom: 0 }}>
+            <li>
+              <span style={{ color: ROOM_STYLES[ROOM_TYPES.START].color }}>
+                🚪
+              </span>{" "}
+              - Старт
+            </li>
+
+            <li>
+              <span style={{ color: ROOM_STYLES[ROOM_TYPES.END].color }}>
+                🏁
+              </span>{" "}
+              - Выход
+            </li>
+
+            <li>
+              <span style={{ color: ROOM_STYLES.deadEnd.color }}>✖</span> -
+              Тупик (стрелка показывает вход)
+            </li>
+
+            <li>
+              <span style={{ color: "#fbbf24" }}>Золотая рамка</span> - Текущая
+              позиция
+            </li>
+          </ul>
+        </motion.div>
+      )}
+
+      {reward && <BattleResult />}
+
+      {isDungeonExit && type === DUNGEONS.CATCH_GOBLIN && (
+        <ClosePortal onFail={handleFail} onWin={handleWin} />
+      )}
+
+      {isDungeonExit && type === DUNGEONS.CLOSE_PORTAL && (
+        <QTEGame onFail={handleFail} onWin={handleWin} />
+      )}
+    </S.MainContainer>
   );
 };
