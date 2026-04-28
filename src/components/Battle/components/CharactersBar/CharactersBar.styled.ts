@@ -146,8 +146,7 @@ export const CharacterControls = styled("div")`
 export const BattleControls = styled("div")`
   position: absolute;
   right: 5px;
-  top: 25px;
+  top: 15px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 `;

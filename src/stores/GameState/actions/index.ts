@@ -19,6 +19,7 @@ import { increaseAgility } from "./increaseAgility";
 import { toggleInventory } from "./toggleInventory";
 import { updateGameTier } from "./updateGameTier";
 import { changeAttempts } from "./changeAttempts";
+import { runFromBattle } from "./runFromBattle";
 import { updateDungeon } from "./updateDungeon";
 import { consumePotion } from "./consumePotion";
 import { initiateState } from "./initiateState";
@@ -72,6 +73,7 @@ export {
   toggleInventory,
   updateGameTier,
   changeAttempts,
+  runFromBattle,
   updateDungeon,
   setPlayerName,
   setBattleTurn,

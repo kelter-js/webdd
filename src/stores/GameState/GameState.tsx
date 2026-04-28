@@ -58,6 +58,7 @@ import {
   resetQuest,
   craftItem,
   updateDungeon,
+  runFromBattle,
 } from "./actions";
 
 export const useGameState = create<StoreState>()(
@@ -125,6 +126,7 @@ export const useGameState = create<StoreState>()(
       giveResources: giveResources(set),
       handleExitDungeon: handleExitDungeon(set),
       buyItem: buyItem(set),
+      runFromBattle: runFromBattle(set),
     }),
     persistConfig,
   ),

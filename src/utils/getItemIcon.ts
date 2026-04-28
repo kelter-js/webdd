@@ -18,7 +18,5 @@ export const getItemIcon = (gear: GEAR_SLOTS, gearId: BASE_ITEMS_ID) => {
     return WEAPONS_ICON_SOURCES[gearId as keyof typeof WEAPONS_ICON_SOURCES];
   }
 
-  console.log("gearId", gearId);
-
   return ARTIFACT_ICON_SOURCES[gearId as keyof typeof ARTIFACT_ICON_SOURCES];
 };
