@@ -128,12 +128,7 @@ export const resetBattle =
           ? dungeon[position.y][position.x]
           : undefined;
 
-      console.log("currentCell", currentCell);
-      console.log("dungeon", dungeon);
-      console.log("position", position);
-
       if (currentCell && currentCell.type === ROOM_TYPES.ENEMY) {
-        console.log("are we here?");
         copyState.player.location!.isQuestCompleted = true;
         currentCell.type = ROOM_TYPES.CLEARED;
         cb?.();

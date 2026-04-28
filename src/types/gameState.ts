@@ -338,6 +338,7 @@ export interface StoreState {
   craftItem: (state: GameStateData) => void;
   setVolume: (volume: number) => void;
   startSpecialEncounterGame: (node?: string) => void;
+  runFromBattle: VoidFunction;
   updateSpecialEncounter: (data: {
     node?: string;
     reset?: boolean;
@@ -406,6 +407,7 @@ export type PersistedState = Omit<
   | "buyTorches"
   | "updatePlayerState"
   | "acquireArtifact"
+  | "runFromBattle"
 >;
 
 export interface StorageValue {

@@ -22,8 +22,9 @@ import { PERK_ID_DATA } from "../../../../types/gameState";
 import { usePlayer } from "../../../../contexts/Player";
 import { PotionsList } from "./components/PotionsList";
 import { GEAR_SLOTS } from "../../../../entities/gear";
+import { ROOM_TYPES } from "../../../../entities/room";
 import { Icons, Tooltip } from "../../../../common";
-import { TURN_STATES } from "../../../../entities";
+import { ENEMIES, TURN_STATES } from "../../../../entities";
 import { CharactersBarProps } from "./types";
 
 import potionSfx from "../../../../assets/audio/potion.mp3";
@@ -42,11 +43,12 @@ export const CharactersBar: FC<CharactersBarProps> = ({
   currentMaxMagSize,
 }) => {
   const {
-    player: { battle },
+    player: { battle, location },
     statistics,
     consumePotion,
     updateBattle,
     gear,
+    runFromBattle,
   } = useGameState();
 
   const party = battle?.player?.party || [];
@@ -54,7 +56,7 @@ export const CharactersBar: FC<CharactersBarProps> = ({
 
   const { handleSetSrc } = usePlayer();
 
-  if (!party) {
+  if (!party || !battle || !location) {
     return null;
   }
 
@@ -89,6 +91,25 @@ export const CharactersBar: FC<CharactersBarProps> = ({
       }
     }
   };
+
+  const firstCreature = battle?.enemy?.party[0];
+
+  const { position, dungeon } = location;
+
+  const currentCell =
+    dungeon &&
+    typeof position?.y === "number" &&
+    typeof position?.x === "number" &&
+    dungeon[position.y]
+      ? dungeon[position.y][position.x]
+      : undefined;
+
+  const isBoss =
+    battle?.enemy.party.length === 1 &&
+    (firstCreature.type === ENEMIES.SIN_ICON_TIER_1 ||
+      firstCreature.type === ENEMIES.GENERAL_TIER_1 ||
+      firstCreature.type === ENEMIES.MERGED_MASS_TIER_1 ||
+      currentCell?.type === ROOM_TYPES.ENEMY);
 
   const currentPlayerHasNoAmmo =
     (selectedPlayer?.currentAmountOfRounds || 0) <= 0;
@@ -154,8 +175,6 @@ export const CharactersBar: FC<CharactersBarProps> = ({
                 currentCharacterGear.baseId as keyof typeof WEAPONS_ICON_SOURCES
               ]
             : null;
-
-          console.log("weaponIcon", weaponIcon);
 
           const effectsList =
             battle?.player?.effects[partyMember.name]?.list || [];
@@ -279,6 +298,31 @@ export const CharactersBar: FC<CharactersBarProps> = ({
               {currentPlayerHasNoAmmo ? "Перезарядить" : "Атаковать"} (F)
             </S.ActionButton>
           </Button>
+
+          <Tooltip
+            title={
+              isBoss
+                ? "Вы не можете сбежать из боя с боссом... Придётся биться!"
+                : "Откуп из боя будет вам стоить 1000 золотых и 10% здоровья всех бойцов"
+            }
+          >
+            <div style={{ width: "100%" }}>
+              <Button
+                sx={{ opacity: isBoss ? 0.5 : 1 }}
+                fullWidth
+                disabled={isBoss}
+                variant="text"
+                onClick={() => runFromBattle()}
+              >
+                <S.ActionButton
+                  isPlayerTurnAvailable={isPlayerTurnAvailable}
+                  variant="h6"
+                >
+                  Сбежать
+                </S.ActionButton>
+              </Button>
+            </div>
+          </Tooltip>
         </S.BattleControls>
       )}
     </S.Container>
